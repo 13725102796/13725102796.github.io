@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="google-site-verification" content="TZE0rZyIqLl10trYu3BWBWa1Vmz6HFwhb2OcNEK4u-s" />
+     <link rel="shortcut icon" href= /img/favicon.ico >
+    <title>
+        Hexo
+    </title>
+    <meta name="description" content= 嘿，我是张业昌～这是我的网站，用于展示我的博客，欢迎访问！ >
+    <meta name="keywords" content= Blog,Theme,张业昌,YeChang Zhang >
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.1.0"></head>
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-home
+ replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            JS数组常用的操作方法
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h2 id="JS数组常用的操作方法"><a href="#JS数组常用的操作方法" class="headerlink" title="JS数组常用的操作方法"></a>JS数组常用的操作方法</h2><ul>
+<li>Array.length 获取数组长度</li>
+<li>Array.shift() Array.unshift()  Array.push() Array.pop()</li>
+<li>Array.concat(a1,a2….) 数组合并</li>
+<li>Array.reverse() 数组元素颠倒</li>
+<li>Array.join(‘拼接字符’) 数组转字符串</li>
+<li>Array.indexOf(item) ||  Array.includes(item) 判断Item 是否存在数组里面 </li>
+<li>Array.fill(填充val，下标1，下标2) 数组填充</li>
+<li>[…new Set(arr)]数组去重 || Array.from(new Set(arr))</li>
+<li>Array.slice(begin,end) 这一对象是一个由 begin 和 end 决定的原数组的浅拷贝</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line">// Array.length 获取数组长度</span><br><span class="line">const clothing = [<span class="string">&#x27;shoes&#x27;</span>, <span class="string">&#x27;shirts&#x27;</span>, <span class="string">&#x27;socks&#x27;</span>, <span class="string">&#x27;sweaters&#x27;</span>];</span><br><span class="line">console.log(clothing.length); // 4</span><br><span class="line"></span><br><span class="line">// ---------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.<span class="built_in">shift</span>() Array.unshift()  Array.push() Array.pop()</span><br><span class="line">const array1 = [1, 2, 3];</span><br><span class="line">// 往头部插入</span><br><span class="line">array1.unshift(4, 5); </span><br><span class="line">// array1: [4,5,1,2,3] </span><br><span class="line">// 往头部删除</span><br><span class="line">array1.shift() </span><br><span class="line">// array1: [5,1,2,3] </span><br><span class="line">// 往尾部插入</span><br><span class="line">array1.push(4)</span><br><span class="line">//  array1: [5,1,2,3,4] </span><br><span class="line">// 往尾部删除</span><br><span class="line">array1.pop()</span><br><span class="line">// array1: [5,1,2,3]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">//Array.reverse() 数组元素颠倒</span><br><span class="line">const array1 = [<span class="string">&#x27;one&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;three&#x27;</span>];</span><br><span class="line">array1.reverse() // [<span class="string">&quot;three&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;one&quot;</span>]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.<span class="built_in">join</span>(<span class="string">&#x27;拼接字符&#x27;</span>) 数组转字符串</span><br><span class="line">const elements = [<span class="string">&#x27;Fire&#x27;</span>, <span class="string">&#x27;Air&#x27;</span>, <span class="string">&#x27;Water&#x27;</span>];</span><br><span class="line">console.log(elements.join());</span><br><span class="line">// expected output: <span class="string">&quot;Fire,Air,Water&quot;</span></span><br><span class="line"></span><br><span class="line">console.log(elements.join(<span class="string">&#x27;&#x27;</span>));</span><br><span class="line">// expected output: <span class="string">&quot;FireAirWater&quot;</span></span><br><span class="line"></span><br><span class="line">console.log(elements.join(<span class="string">&#x27;-&#x27;</span>));</span><br><span class="line">// expected output: <span class="string">&quot;Fire-Air-Water&quot;</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.indexOf(item) ||  Array.includes(item) 判断Item 是否存在数组里面</span><br><span class="line">const beasts = [<span class="string">&#x27;ant&#x27;</span>, <span class="string">&#x27;bison&#x27;</span>, <span class="string">&#x27;camel&#x27;</span>, <span class="string">&#x27;duck&#x27;</span>, <span class="string">&#x27;bison&#x27;</span>];</span><br><span class="line"></span><br><span class="line">console.log(beasts.indexOf(<span class="string">&#x27;bison&#x27;</span>));// expected output: 1</span><br><span class="line">console.log(beasts.includes(<span class="string">&#x27;bison&#x27;</span>));// expected output: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.concat(a1,a2....) 数组合并</span><br><span class="line">const array1 = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">const array2 = [<span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>];</span><br><span class="line">const array3 = array1.concat(array2);</span><br><span class="line"></span><br><span class="line">console.log(array3);// [<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>, <span class="string">&quot;d&quot;</span>, <span class="string">&quot;e&quot;</span>, <span class="string">&quot;f&quot;</span>]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.fill(填充val，下标1，下标2) 数组填充</span><br><span class="line">const array1 = [1, 2, 3, 4];</span><br><span class="line">console.log(array1.fill(0, 2, 4)); // [1, 2, 0, 0]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">//*[...new Set(arr)]数组去重 || Array.from(new Set(arr))</span><br><span class="line"><span class="keyword">function</span> unique (arr) &#123;</span><br><span class="line">  <span class="built_in">return</span> Array.from(new Set(arr))</span><br><span class="line">&#125;</span><br><span class="line">var arr = [1,1,<span class="string">&#x27;true&#x27;</span>,<span class="string">&#x27;true&#x27;</span>,<span class="literal">true</span>,<span class="literal">true</span>,15,15,<span class="literal">false</span>,<span class="literal">false</span>, undefined,undefined, null,null, NaN, NaN,<span class="string">&#x27;NaN&#x27;</span>, 0, 0, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;a&#x27;</span>,&#123;&#125;,&#123;&#125;];</span><br><span class="line">console.log(unique(arr)) //[1, <span class="string">&quot;true&quot;</span>, <span class="literal">true</span>, 15, <span class="literal">false</span>, undefined, null, NaN, <span class="string">&quot;NaN&quot;</span>, 0, <span class="string">&quot;a&quot;</span>, &#123;&#125;, &#123;&#125;]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.slice(begin,end) 这一对象是一个由 begin 和 end 决定的原数组的浅拷贝</span><br><span class="line">const animals = [<span class="string">&#x27;ant&#x27;</span>, <span class="string">&#x27;bison&#x27;</span>, <span class="string">&#x27;camel&#x27;</span>, <span class="string">&#x27;duck&#x27;</span>, <span class="string">&#x27;elephant&#x27;</span>];</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(2));</span><br><span class="line">// expected output: Array [<span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>, <span class="string">&quot;elephant&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(2, 4));</span><br><span class="line">// expected output: Array [<span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(1, 5));</span><br><span class="line">// expected output: Array [<span class="string">&quot;bison&quot;</span>, <span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>, <span class="string">&quot;elephant&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(-2));</span><br><span class="line">// expected output: Array [<span class="string">&quot;duck&quot;</span>, <span class="string">&quot;elephant&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(2, -1));</span><br><span class="line">// expected output: Array [<span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice());</span><br><span class="line">// expected output: Array [<span class="string">&quot;ant&quot;</span>, <span class="string">&quot;bison&quot;</span>, <span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>, <span class="string">&quot;elephant&quot;</span>]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+        <hr class="fhr">
+        <div id="vcomments"></div>
+    
+</div>
+    <div class="footer" id="footer">
+    <p><h4>版权所有 © 2020 | 作者: YeChang Zhang | 主题 By <a class="theme-author" target="_blank" rel="noopener" href="https://github.com/Xunzhuo/hexo-theme-coder" style="font-size:14px; color: #969696">Coder</a></h4>
+    
+        <script>
+            var bszCaller,bszTag;!function(){var c,d,e,a=!1,b=[];ready=function(c){return a||"interactive"===document.readyState||"complete"===document.readyState?c.call(document):b.push(function(){return c.call(this)}),this},d=function(){for(var a=0,c=b.length;c>a;a++)b[a].apply(document);b=[]},e=function(){a||(a=!0,d.call(window),document.removeEventListener?document.removeEventListener("DOMContentLoaded",e,!1):document.attachEvent&&(document.detachEvent("onreadystatechange",e),window==window.top&&(clearInterval(c),c=null)))},document.addEventListener?document.addEventListener("DOMContentLoaded",e,!1):document.attachEvent&&(document.attachEvent("onreadystatechange",function(){/loaded|complete/.test(document.readyState)&&e()}),window==window.top&&(c=setInterval(function(){try{a||document.documentElement.doScroll("left")}catch(b){return}e()},5)))}(),bszCaller={fetch:function(a,b){var c="BusuanziCallback_"+Math.floor(1099511627776*Math.random());window[c]=this.evalCall(b),a=a.replace("=BusuanziCallback","="+c),scriptTag=document.createElement("SCRIPT"),scriptTag.type="text/javascript",scriptTag.defer=!0,scriptTag.src=a,scriptTag.referrerPolicy="no-referrer-when-downgrade",document.getElementsByTagName("HEAD")[0].appendChild(scriptTag)},evalCall:function(a){return function(b){ready(function(){try{a(b),scriptTag.parentElement.removeChild(scriptTag)}catch(c){bszTag.hides()}})}}},bszCaller.fetch("//busuanzi.ibruce.info/busuanzi?jsonpCallback=BusuanziCallback",function(a){bszTag.texts(a),bszTag.shows()}),bszTag={bszs:["site_pv","page_pv","site_uv"],texts:function(a){this.bszs.map(function(b){var c=document.getElementById("busuanzi_value_"+b);c&&(c.innerHTML=a[b])})},hides:function(){this.bszs.map(function(a){var b=document.getElementById("busuanzi_container_"+a);b&&(b.style.display="none")})},shows:function(){this.bszs.map(function(a){var b=document.getElementById("busuanzi_container_"+a);b&&(b.style.display="inline")})}};
+        </script>
+        <span id="busuanzi_container_site_pv">本站浏览总访问量: <span id="busuanzi_value_site_pv"></span></span>
+        <span class="post-meta-divider">|</span>
+        <span id="busuanzi_container_site_uv">本站访问人数: <span id="busuanzi_value_site_uv"></span></span>
+    
+    <label class="el-switch el-switch-blue el-switch-sm" style="vertical-align: sub;">
+        <input type="checkbox" name="switch" id="update_style">
+        <span class="el-switch-style"></span>
+    </label>
+
+    <!--         <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+    document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script> -->
+</p>
+</div>
+
+<input type="hidden" id="web_style" value="black">
+<input type="hidden" id="valine_appid" value="">
+<input type="hidden" id="valine_appKey" value="">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+color: #698fca;
+}
+.v .vlist .vcard .vhead .vsys {
+color: #3a3e4a;
+}
+.v .vlist .vcard .vh .vmeta .vat {
+color: #638fd5;
+}
+.v .vlist .vcard .vhead .vnick {
+color: #6ba1ff;
+}
+.v a {
+color: #8696b1;
+}
+.v .vlist .vcard .vhead .vnick:hover {
+color: #669bfc;
+}
+</style>
+    <script type="text/javascript" color="173,174,173" opacity='1' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+</body>
+</html>

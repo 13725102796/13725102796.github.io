@@ -23,110 +23,32 @@
 
 <meta name="generator" content="Hexo 6.1.0"></head>
 <body id="bodyx">
-    <div class="hd logodiv">
-    <img src="/img/male.png" class="logopng" alt="logo">
-    <p class="logot">
-         YeChang Zhang 
-         <span class="logo_2"></span>
-        <h3 class="words" style="font-weight: bold;font-family: Georgia;"> 
-            JavaScript Vue React Vant Uni-App Next Antd-Design-Pro Antd-Design-Vue 
-        </h3>
-    </p>
-</div>
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-home
+ replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            JS对象常用的操作方法
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h2 id="JS对象常用的操作方法"><a href="#JS对象常用的操作方法" class="headerlink" title="JS对象常用的操作方法"></a>JS对象常用的操作方法</h2><ul>
+<li>Object.assign(obj1,obj2) 对象合并，相同key后者替换前者</li>
+<li>JSON.parse(JSON.stringify(obj1))对象深拷贝</li>
+<li>Object.values(obj) 枚举对象属性值的数组 Object.keys(obj) 枚举对象keys的数组</li>
+<li>Object.prototype.toString.call(obj) &#x3D;&#x3D;&#x3D; ‘[object object] 判断对象 || constructor</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">// 复制一个对象</span><br><span class="line">const obj = &#123; a: 1 &#125;;</span><br><span class="line">const copy = Object.assign(&#123;&#125;, obj);</span><br><span class="line">console.log(copy); // &#123; a: 1 &#125;</span><br><span class="line"></span><br><span class="line">// 对象深拷贝Deep Clone</span><br><span class="line">const  obj1 = &#123; a: 0 , b: &#123; c: 0&#125;&#125;;</span><br><span class="line"><span class="built_in">let</span> obj3 = JSON.parse(JSON.stringify(obj1));</span><br><span class="line">obj1.a = 4;</span><br><span class="line">obj1.b.c = 4;</span><br><span class="line"></span><br><span class="line">//obj3: &#123; a: 0, b: &#123; c: 0&#125;&#125;</span><br><span class="line"></span><br><span class="line">// Object.values(obj) Object.keys(obj)</span><br><span class="line">var obj = &#123; 0: <span class="string">&#x27;a&#x27;</span>, 1: <span class="string">&#x27;b&#x27;</span>, 2: <span class="string">&#x27;c&#x27;</span> &#125;;</span><br><span class="line">console.log(Object.values(obj)); // [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>] </span><br><span class="line">console.log(Object.keys(obj)); // [<span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>]</span><br><span class="line"></span><br><span class="line">// Object.prototype.toString.call(obj) === <span class="string">&#x27;[object object]&#x27;</span></span><br><span class="line">var o = &#123;&#125;;</span><br><span class="line">o.constructor === Object; // <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">var o = new Object;</span><br><span class="line">o.constructor === Object; // <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">var a = [];</span><br><span class="line">a.constructor === Array; // <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">var a = new Array;</span><br><span class="line">a.constructor === Array // <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">var n = new Number(3);</span><br><span class="line">n.constructor === Number; // <span class="literal">true</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
-<div class="hd">
-    <ol class="breadcrumb">
-        
-            <li><a class="ba" href="/about">关于我👀</a></li>
-        
-            <li><a class="ba" href="https://">访问主站🎉</a></li>
-        
-            <li><a class="ba" target="_blank" rel="noopener" href="https://github.com/13725102796">GitHub🐒</a></li>
-        
+    </div>
 
-            
-<script src="/libs/jquery.min.js"></script>
-
-            
-<script src="/js/search.js"></script>
-
-            
-                <form class="site-search-form">
-                    <i class="fa fa-search" id="search-logo"><input type="text" id="local-search-input" class="st-search-input" /></i>
-                </form>
-                <div id="local-search-result" class="local-search-result-cls"></div>
-            
-            <script type="text/javascript" id="local.search.active">
-                var inputArea       = document.querySelector("#local-search-input");
-                var getSearchFile = function(){
-                    var path = "/search.xml";
-                    searchFunc(path, 'local-search-input', 'local-search-result');
-                }
-                inputArea.onfocus = function(){ getSearchFile() }
-
-                var $resetButton = $("#search-form .fa-times");
-                var $resultArea = $("#local-search-result");
-
-                inputArea.oninput = function(){ $resetButton.show(); }
-                resetSearch = function(){
-                    $resultArea.html("");
-                    document.querySelector("#search-form").reset();
-                    $resetButton.hide();
-                    $(".no-result").hide();
-                }
-                inputArea.onkeydown = function(){ if(event.keyCode == 13) return false }
-                //No search result
-                $resultArea.bind("DOMNodeRemoved DOMNodeInserted", function(e) {
-                    if (!$(e.target).text()) {
-                        $(".no-result").show(100);
-                    } else {
-                        $(".no-result").hide();
-                    }
-                })
-            </script>
-
-    </ol>
-    <hr>
-</div>
-<div class="hd">
     
-    
-        
-        
-            <div class="titlex">
-                <p><span class="jing"></span><span style="color: #6d9ee7;"> 公元</span> 
-                 2018年 🕛
-                </p>
-            </div>
-            
-        
-        <a class="flink" href="/2018/04/13/JS%E6%95%B0%E7%BB%84%E5%B8%B8%E7%94%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95/">
-            <div class="list">
-                <div class="postname">
-                    JS数组常用的操作方法
-                </div>
-                <div class="posttime">
-                    April 13th
-                </div>
-            </div>
-        </a>
-    
-        
-        
-        <a class="flink" href="/2018/04/10/JS%E9%81%8D%E5%8E%86%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E7%9A%84%E6%96%B9%E6%B3%95/">
-            <div class="list">
-                <div class="postname">
-                    JS遍历数组的方法
-                </div>
-                <div class="posttime">
-                    April 10th
-                </div>
-            </div>
-        </a>
+        <hr class="fhr">
+        <div id="vcomments"></div>
     
 </div>
-
     <div class="footer" id="footer">
     <p><h4>版权所有 © 2020 | 作者: YeChang Zhang | 主题 By <a class="theme-author" target="_blank" rel="noopener" href="https://github.com/Xunzhuo/hexo-theme-coder" style="font-size:14px; color: #969696">Coder</a></h4>
     
