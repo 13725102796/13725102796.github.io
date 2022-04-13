@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>浏览器BOM和JS中的DOM</title>
+      <link href="/2018/05/14/%E6%B5%8F%E8%A7%88%E5%99%A8BOM%E5%92%8CJS%E4%B8%AD%E7%9A%84DOM/"/>
+      <url>/2018/05/14/%E6%B5%8F%E8%A7%88%E5%99%A8BOM%E5%92%8CJS%E4%B8%AD%E7%9A%84DOM/</url>
+      
+        <content type="html"><![CDATA[<p>JavaScript是一种运行在客户端的脚本语言 （Script 是脚本的意思）,它有三部分组成 ：ECMAScript 语法 ， DOM(页面文档对象模型) ，BOM(浏览器对象模型)而Web API则包含了DOM和BOM</p><h1 id="什么是BOM"><a href="#什么是BOM" class="headerlink" title="什么是BOM"></a>什么是BOM</h1><p>BOM（Browser Object Model）即浏览器对象模型，它提供了独立于内容而与浏览器窗口进行交互的对象，其核心对象是 window。</p><p>BOM 由一系列相关的对象构成，并且每个对象都提供了很多方法与属性 ，但是BOM 缺乏标准，JavaScript 语法的标准化组织是 ECMA，DOM 的标准化组织是 W3C，BOM 最初是Netscape 浏览器标准的一部分。</p><h1 id="BOM的构成部分"><a href="#BOM的构成部分" class="headerlink" title="BOM的构成部分"></a>BOM的构成部分</h1><p>是window顶级对象 ，也是JS访问浏览器窗口的一个接口。<br>其中包含： document location navigator screen history</p><h1 id="window对象的常见的事件"><a href="#window对象的常见的事件" class="headerlink" title="window对象的常见的事件"></a>window对象的常见的事件</h1><ul><li>窗口加载事件 window.onload 当文档内容完全加载完成会触发该事件(包括图像、脚本文件、CSS 文件等), 就调用的处理函数。(JS代码都写在加载事件里面)</li><li>调整窗口大小的事件 window.onresize window.innerWidth 获取当前屏幕的宽度</li><li>window.setTimeout(调用函数， [延迟的毫秒数]) window.clearTimeout(timeoutID) setInterval clearInterval</li></ul><h1 id="什么是-DOM"><a href="#什么是-DOM" class="headerlink" title="什么是 DOM"></a>什么是 DOM</h1><p>DOM 英文全称“Document Object Model”，译为“文档对象模型”。<br>DOM 是一个与平台和编程语言无关的接口，通过这个接口程序和脚本可以动态的访问和修改文档的内容、结构和样式。</p><h1 id="DOM-的组成"><a href="#DOM-的组成" class="headerlink" title="DOM 的组成"></a>DOM 的组成</h1><p>核心DOM - 针对任何结构化文档的标准模型。<br>XML DOM - 针对 XML 文档的标准模型。<br>HTML DOM - 针对 HTML 文档的标准模型。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> BOM DOM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>JS浏览器事件循环机制</title>
       <link href="/2018/05/12/JS%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6/"/>
       <url>/2018/05/12/JS%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6/</url>
