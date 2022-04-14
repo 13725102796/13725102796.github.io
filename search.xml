@@ -4,6 +4,242 @@
   
     
     <entry>
+      <title>Vue 组件通讯的方法</title>
+      <link href="/2021/03/13/Vue-%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF%E7%9A%84%E6%96%B9%E6%B3%95/"/>
+      <url>/2021/03/13/Vue-%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF%E7%9A%84%E6%96%B9%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Vue-组件通讯的方法"><a href="#Vue-组件通讯的方法" class="headerlink" title="Vue 组件通讯的方法"></a>Vue 组件通讯的方法</h1><ul><li>props和$emit</li><li>$on&#x2F;$emit</li><li>$parent&#x2F;$childen &amp; ref</li><li>Vuex</li></ul><h2 id="props和-emit"><a href="#props和-emit" class="headerlink" title="props和$emit"></a>props和$emit</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=<span class="string">&quot;home&quot;</span>&gt;</span><br><span class="line">    &lt;div&gt;我是父组件&lt;/div&gt;</span><br><span class="line">    &lt;Child :msg=<span class="string">&quot;msg&quot;</span> v-on:changed=<span class="string">&quot;changed&quot;</span>/&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Child from <span class="string">&#x27;@/components/Child.vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default &#123;</span><br><span class="line">  name: <span class="string">&#x27;home&#x27;</span>,</span><br><span class="line">  components: &#123;</span><br><span class="line">    Child</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">data</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> &#123;</span><br><span class="line">      msg: <span class="string">&#x27;child&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    changed(e) &#123;</span><br><span class="line">      this.msg = e;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># ------- child component-------------</span></span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;p @click=<span class="string">&quot;change&quot;</span>&gt;</span><br><span class="line">          我是子组件:传递来的消息是：&#123;&#123;msg&#125;&#125;</span><br><span class="line">        &lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="built_in">export</span> default &#123;</span><br><span class="line">  name: <span class="string">&#x27;Child&#x27;</span>,</span><br><span class="line">  props: &#123;</span><br><span class="line">    msg: &#123;</span><br><span class="line">      <span class="built_in">type</span>: String,</span><br><span class="line">      default: <span class="string">&#x27;&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="function"><span class="title">change</span></span>() &#123;</span><br><span class="line">      this.<span class="variable">$emit</span>(<span class="string">&#x27;changed&#x27;</span>,<span class="string">&#x27;向父组件传值&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure><h2 id="on-x2F-emit"><a href="#on-x2F-emit" class="headerlink" title="$on&#x2F;$emit"></a>$on&#x2F;$emit</h2><p>通过一个空的vue实例作为中央事件总线，用它来触发和监听事件，跨级组件之间的通讯</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ------  bus --------------</span></span><br><span class="line">import Vue from <span class="string">&#x27;vue&#x27;</span></span><br><span class="line">var Event = new Vue()</span><br><span class="line"><span class="built_in">export</span> <span class="keyword">function</span> <span class="function"><span class="title">sendSDKLoadend</span></span> () &#123;</span><br><span class="line">  Event.<span class="variable">$emit</span>(<span class="string">&#x27;loadendSDK&#x27;</span>, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">export</span> <span class="keyword">function</span> monitorSDKLoadend(callback) &#123;</span><br><span class="line">  Event.<span class="variable">$on</span>(<span class="string">&#x27;loadendSDK&#x27;</span>, callback)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 当某个页面触发了sendSDKLoadend()时，绑定了monitorSDKLoadend(fn) 的地方，fn会执行</span></span><br></pre></td></tr></table></figure><h2 id="parent-x2F-childen，访问父-x2F-子实例-和-ref获取组件实例"><a href="#parent-x2F-childen，访问父-x2F-子实例-和-ref获取组件实例" class="headerlink" title="$parent&#x2F;$childen，访问父&#x2F;子实例 和 ref获取组件实例"></a>$parent&#x2F;$childen，访问父&#x2F;子实例 和 ref获取组件实例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在组件上绑定 ref</span></span><br><span class="line">&lt;Child ref=<span class="string">&quot;child&quot;</span> /&gt;</span><br><span class="line"><span class="comment"># 通过 this.$refs.child 获取子组件的实例</span></span><br><span class="line">this.<span class="variable">$refs</span>.child</span><br><span class="line"></span><br><span class="line"><span class="comment"># 子组件通过 $parent 获取父组件的实例</span></span><br><span class="line">this.<span class="variable">$parent</span></span><br></pre></td></tr></table></figure><h2 id="Vuex"><a href="#Vuex" class="headerlink" title="Vuex"></a>Vuex</h2><p>通过 this.$store.dispatch(‘actionName’,params) 触发Action去通知Mutation更新State的值。所有引用改State的值的组件都会更新</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Vue 组件通讯 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>TCP/IP 详解</title>
+      <link href="/2020/04/14/TCP-IP-%E8%AF%A6%E8%A7%A3/"/>
+      <url>/2020/04/14/TCP-IP-%E8%AF%A6%E8%A7%A3/</url>
+      
+        <content type="html"><![CDATA[<h1 id="1-TCP-和-UDP"><a href="#1-TCP-和-UDP" class="headerlink" title="1. TCP 和 UDP"></a>1. TCP 和 UDP</h1><h3 id="用户数据报协议-UDP"><a href="#用户数据报协议-UDP" class="headerlink" title="用户数据报协议 UDP"></a>用户数据报协议 UDP</h3><ul><li>UDP 在传送数据之前不需要先建立连接，远程主机在收到 UDP 报文后，不需要给出任何确认。</li><li>虽然 UDP 不提供可靠交付，但在某些情况下 UDP 确是一种最有效的工作方式（一般用于即时通信），比如：QQ 语音、 QQ 视频 、直播等等</li></ul><h1 id="2-传输控制协议-TCP"><a href="#2-传输控制协议-TCP" class="headerlink" title="2.传输控制协议 TCP"></a>2.传输控制协议 TCP</h1><ul><li>TCP 提供 面向连接的服务。在传送数据之前必须先建立连接，数据传送结束后要释放连接。</li><li>TCP 不提供广播或多播服务。由于 TCP 要提供 可靠的，面向连接的传输服务（TCP的可靠体现在TCP在传递数据之前，会有三次握手来建立连接，而且在数据传递时，有确认、窗口、重传、流量控制、拥塞控制机制，在数据传完后，还会四次挥手断开连接用来节约系统资源），这不仅使协议数据单元的首部增大很多，还要占用许多处理机资源</li><li>TCP 一般用于文件传输、发送和接收邮件、远程登录等场景。</li></ul><h1 id="TCP-三次握手建立连接"><a href="#TCP-三次握手建立连接" class="headerlink" title="TCP 三次握手建立连接"></a>TCP 三次握手建立连接</h1><ul><li><ol><li>第一次握手：客户端向服务端发送一个 SYN 报文（SYN &#x3D; 1），此时客户端处于 SYN_Send 状态（在发送连接请求后等待匹配的连接请求）。</li></ol></li><li><ol start="2"><li>第二次握手：服务器收到客户端的 SYN 报文之后，会发送 ACK 通知客户端我已收到。 此时服务器处于 SYN_REVD 的状态（收到和发送一个连接请求后等待对连接请求的确认）。</li></ol></li><li><ol start="3"><li>客户端收到服务器端响应的 ACK 报文之后，会发送一个 ack 报文，，表示已经收到了服务端发来的通知，此时客户端处于 Establised 状态。服务器收到 ack 报文之后，也处于 Establised 状态（代表一个打开的连接，数据可以传送给用户），至此，双方建立起了 TCP 连接。</li></ol></li></ul><h1 id="为什么要三次握手"><a href="#为什么要三次握手" class="headerlink" title="为什么要三次握手"></a>为什么要三次握手</h1><p>三次握手的目的是建立可靠的通信信道，说到通讯，简单来说就是数据的发送与接收，而三次握手最主要的目的就是双方确认自己与对方的发送与接收是正常的。</p><h1 id="三次握手过程中可以携带数据吗"><a href="#三次握手过程中可以携带数据吗" class="headerlink" title="三次握手过程中可以携带数据吗"></a>三次握手过程中可以携带数据吗</h1><p>第三次握手的时候，是可以携带数据的。但是，第一次、第二次握手绝对不可以携带数据假如第一次握手可以携带数据的话，容易被攻击。<br>SYN 洪泛攻击<br>就是 Client 在短时间内伪造大量不存在的 IP 地址，并向 Server 不断地发送 SYN 包，Server 则回复确认包，并等待 Client 确认，由于源地址不存在，因此 Server 需要不断重发直至超时，这些伪造的 SYN 包将长时间占用半连接队列，导致正常的 SYN 请求因为队列满而被丢弃，从而引起网络拥塞甚至系统瘫痪。</p><h1 id="TCP-四次挥手释放连接"><a href="#TCP-四次挥手释放连接" class="headerlink" title="TCP 四次挥手释放连接"></a>TCP 四次挥手释放连接</h1><p>建立一个 TCP 连接需要三次握手，而终止一个 TCP 连接要经过四次挥手（也有将四次挥手叫做四次握手的）。这是由于 TCP 的半关闭（half-close）特性造成的，TCP 提供了连接的一端在结束它的发送后还能接收来自另一端数据的能力。</p><ul><li>第一次挥手：客户端发送一个 FIN 报文主动关闭 TCP 连接。此时客户端处于 FIN_WAIT1 状态（等待远程TCP的连接中断请求，或先前的连接中断请求的确认；），等待服务端的确认。</li><li>第二次挥手：服务端收到 FIN 之后，会发送 ACK 报文，表明已经收到客户端的报文了，此时服务端处于 CLOSE_WAIT状态（等待从本地用户发来的连接中断请求）。</li></ul><h2 id="此时的-TCP-处于半关闭状态，客户端到服务端的连接释放。客户端收到服务端的确认后，进入FIN-WAIT2（终止等待-2）状态，等待服务端发出的连接释放报文段。"><a href="#此时的-TCP-处于半关闭状态，客户端到服务端的连接释放。客户端收到服务端的确认后，进入FIN-WAIT2（终止等待-2）状态，等待服务端发出的连接释放报文段。" class="headerlink" title="此时的 TCP 处于半关闭状态，客户端到服务端的连接释放。客户端收到服务端的确认后，进入FIN_WAIT2（终止等待 2）状态，等待服务端发出的连接释放报文段。"></a>此时的 TCP 处于半关闭状态，客户端到服务端的连接释放。客户端收到服务端的确认后，进入FIN_WAIT2（终止等待 2）状态，等待服务端发出的连接释放报文段。</h2><ul><li>第三次挥手：如果服务端也想断开连接了（没有要向客户端发出的数据），和客户端的第一次挥手一样，发送 FIN 报文，且指定一个序列号。此时服务端处于 LAST_ACK 的状态，等待客户端的确认</li><li>第四次挥手：客户端收到 FIN 之后，一样发送一个 ACK 报文作为应答（ack &#x3D; w+1），且把服务端的序列值 +1 作为自己 ACK 报文的序号值（seq&#x3D;u+1），此时客户端处于 TIME_WAIT（时间等待）状态。</li></ul><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>三次握手，为了测试双方能够正常发送，接收<br>第一次握手： 客户端发送SYN服务器 ，服务器正常接受   客户端发送正常 服务器接收正常<br>第二次握手： 服务器发送ACK到客户端，客户端正常接受  服务器发送正常 客户端接收正常<br>第三次握手： 客户端向服务器发送正式链接，至此，双方建立起了 TCP 连接</p><p>四次挥手，因为TCP半关闭的特性<br>TCP 提供了连接的一端在结束它的发送后还能接收来自另一端数据的能力。<br>A 和 B 打电话，通话即将结束后，A 说 “我没啥要说的了”，B 回答 “我知道了”，于是 A 向 B 的连接释放了。但是 B 可能还会有要说的话，于是 B 可能又巴拉巴拉说了一通，最后 B 说“我说完了”，A 回答“知道了”，于是 B 向 A 的连接释放了，</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> TCP/IP </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Vue v-model的实践</title>
+      <link href="/2020/04/13/Vue-v-model%E7%9A%84%E5%AE%9E%E8%B7%B5/"/>
+      <url>/2020/04/13/Vue-v-model%E7%9A%84%E5%AE%9E%E8%B7%B5/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Vue-v-model的实践"><a href="#Vue-v-model的实践" class="headerlink" title="Vue v-model的实践"></a>Vue v-model的实践</h1><p>v-model 只是语法糖，主要是通过input事件来触发input标签value值来实现我们说的“双向数据绑定”,其实它还是单向数据流。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> v-model=<span class="string">&quot;value&quot;</span> /&gt;</span><br><span class="line"><span class="comment">#等价于</span></span><br><span class="line">&lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> :value=<span class="string">&quot;value&quot;</span> @input=v=&gt;<span class="variable">$emit</span>(<span class="string">&#x27;input&#x27;</span>, v)/&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义组件实现v-model</span></span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> :value=<span class="string">&quot;value&quot;</span> @input=<span class="string">&quot;handleInput&quot;</span> :placeholder=<span class="string">&quot;placehodler&quot;</span> /&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="built_in">export</span> default &#123;</span><br><span class="line">    name: <span class="string">&#x27;kInput&#x27;</span>,</span><br><span class="line">    props: &#123;</span><br><span class="line">        value: [<span class="string">&#x27;String&#x27;</span>, <span class="string">&#x27;Number&#x27;</span>],</span><br><span class="line">        placeholder: String</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        handleInput(<span class="variable">$event</span>) &#123;</span><br><span class="line">            // 通过input标签的原生事件input将值emit出去，以达到值得改变实现双向绑定</span><br><span class="line">            this.<span class="variable">$emit</span>(<span class="string">&#x27;input&#x27;</span>, <span class="variable">$event</span>.target.value)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Vue v-model </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JS微任务和宏任务的执行顺序</title>
+      <link href="/2019/06/14/JS%E5%BE%AE%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%AE%8F%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/"/>
+      <url>/2019/06/14/JS%E5%BE%AE%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%AE%8F%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/</url>
+      
+        <content type="html"><![CDATA[<p>浏览器是多线程的，JS是单线程的（浏览器只分配一个线程来执行JS）意味着js每次只能执行一个任务，那么，遇到异步任务首先会放到任务队列中（执行栈），先执行主线程中的任务，当主线程中的任务被执行完后，在回过来依次将执行任务队列中任务放入主线程去执行。</p><p>js中的任务分为：同步任务和异步任务，而异步任务又可以分为微任务和宏任务</p><p>宏任务：macro task</p><ul><li>定时器(setTimeout,setInterval,setImmediate)</li><li>事件绑定(onClick)</li><li>ajax</li><li>回调函数    </li><li>nodejs中的fs I&#x2F;O操作</li></ul><p>微任务: micro task</p><ul><li>Promsie(async&#x2F;await)</li><li>process.nextTick</li><li>MutationObserver</li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">async <span class="keyword">function</span> <span class="function"><span class="title">asy1</span></span>()&#123;</span><br><span class="line">  await console.log(<span class="string">&#x27;asy1&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line">console.log(<span class="string">&#x27;script start&#x27;</span>)</span><br><span class="line">setTimeout(()=&gt;&#123;</span><br><span class="line">  console.log(<span class="string">&#x27;time out&#x27;</span>)</span><br><span class="line">&#125;,0)</span><br><span class="line">setTimeout(()=&gt;&#123;</span><br><span class="line">  setTimeout(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;宏任务中的宏任务&#x27;</span>)</span><br><span class="line">  &#125;,0)</span><br><span class="line">  Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;timeOut+promise1&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  console.log(<span class="string">&#x27;timeOut+promise1之前还是之后&#x27;</span>)</span><br><span class="line">&#125;,0)</span><br><span class="line"></span><br><span class="line">asy1()</span><br><span class="line">Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">  console.log(<span class="string">&#x27;promise1&#x27;</span>)</span><br><span class="line">&#125;).<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">  Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;promise1+promise1&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  setTimeout(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;promise time out&#x27;</span>)</span><br><span class="line">  &#125;,0)</span><br><span class="line">  console.log(<span class="string">&#x27;promise2&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">console.log(<span class="string">&#x27;script end&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># script start</span></span><br><span class="line"><span class="comment"># asy1</span></span><br><span class="line"><span class="comment"># script end</span></span><br><span class="line"><span class="comment"># promise1</span></span><br><span class="line"><span class="comment"># promise2</span></span><br><span class="line"><span class="comment"># promise1+promise1</span></span><br><span class="line"><span class="comment"># time out</span></span><br><span class="line"></span><br></pre></td></tr></table></figure><p>先执行微任务，执行完所有微任务之后（微任务中产生的微任务也要执行完），再执行宏任务，（宏任务中产生的微任务要优先执行）</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 微任务 宏任务 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>浏览器重排和重绘</title>
+      <link href="/2019/05/28/%E6%B5%8F%E8%A7%88%E5%99%A8%E9%87%8D%E6%8E%92%E5%92%8C%E9%87%8D%E7%BB%98/"/>
+      <url>/2019/05/28/%E6%B5%8F%E8%A7%88%E5%99%A8%E9%87%8D%E6%8E%92%E5%92%8C%E9%87%8D%E7%BB%98/</url>
+      
+        <content type="html"><![CDATA[<h1 id="重排和重绘区别"><a href="#重排和重绘区别" class="headerlink" title="重排和重绘区别"></a>重排和重绘区别</h1><p>重排顾名思义就是重新排列，意味着重新计算文档中元素的位置和几何信息（元素的位置、大小），会影响部分或整个页面的布局。元素的重排将导致DOM中所有子元素和其他兄弟元素重新排列。<br>重绘是更改元素的可见性，但是不影响元素的布局。例如可见性、背景色、轮廓等。</p><h1 id="什么会触发重排和重绘？"><a href="#什么会触发重排和重绘？" class="headerlink" title="什么会触发重排和重绘？"></a>什么会触发重排和重绘？</h1><ul><li>添加、删除、更新DOM节点都会触发重排</li><li>使用 display: none 隐藏元素会触发重排和重绘</li><li>使用 visibility:hidden 只会引起重绘，因为没有布局和位置的变更</li><li>移动节点、添加动画都会触发重排和重绘</li><li>改变浏览器窗口大小会触发重排</li><li>更改元素字体大小会触发重排</li><li>添加或者删除样式会触发重排和重绘</li><li>操作 DOM 脚本是昂贵的操作，因为每次 document 或者 document的部分改变时，它们都会重新计算</li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var bodyStyle = document.body.style; // cache</span><br><span class="line"></span><br><span class="line">bodyStyle.padding = <span class="string">&quot;20px&quot;</span>; // reflow, repaint</span><br><span class="line">bodyStyle.border = <span class="string">&quot;10px solid red&quot;</span>; // reflow, repaint</span><br><span class="line"></span><br><span class="line">bodyStyle.color = <span class="string">&quot;blue&quot;</span>; // repaint only, no dimensions changed</span><br><span class="line">bstyle.backgroundColor = <span class="string">&quot;#cc0000&quot;</span>; // repaint</span><br><span class="line"></span><br><span class="line">bodyStyle.fontSize = <span class="string">&quot;2em&quot;</span>; // reflow, repaint</span><br><span class="line"></span><br><span class="line">// new DOM element - reflow, repaint</span><br><span class="line">document.body.appendChild(document.createTextNode(<span class="string">&#x27;Hello!&#x27;</span>));</span><br></pre></td></tr></table></figure><h1 id="重排一定触发重绘，重绘不一定触发重排"><a href="#重排一定触发重绘，重绘不一定触发重排" class="headerlink" title="重排一定触发重绘，重绘不一定触发重排"></a>重排一定触发重绘，重绘不一定触发重排</h1><h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><ul><li>尽量批次改变元素css属性</li><li>将动画的元素设置position属性为absolute或fixed，这样使元素脱离文本流，不会影响渲染树。</li><li>当多个添加DOM元素时，使用文本碎片fragment（隐藏的元素不再渲染树中，）只触发一次重排重绘</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 重排 重绘 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JS 与 CSS 是否阻塞 DOM</title>
+      <link href="/2019/04/14/JS-%E4%B8%8E-CSS-%E6%98%AF%E5%90%A6%E9%98%BB%E5%A1%9E-DOM/"/>
+      <url>/2019/04/14/JS-%E4%B8%8E-CSS-%E6%98%AF%E5%90%A6%E9%98%BB%E5%A1%9E-DOM/</url>
+      
+        <content type="html"><![CDATA[<p>浏览器的解析渲染过程，解析DOM生成DOM Tree，解析CSS生成CSSOM Tree，两者结合生成render tree渲染树，最后浏览器根据渲染树渲染至页面。</p><h1 id="所以CSS不会阻塞DOM的解析，因为两者是并行解析的。"><a href="#所以CSS不会阻塞DOM的解析，因为两者是并行解析的。" class="headerlink" title="所以CSS不会阻塞DOM的解析，因为两者是并行解析的。"></a>所以CSS不会阻塞DOM的解析，因为两者是并行解析的。</h1><p>但是由于render tree的生成是依赖DOM Tree和CSSOM Tree的，因此CSS必然会阻塞DOM的渲染。<br>最终生成页面依赖的渲染数 是由DOM Tree和CSSOM Tree组成的，如果CSSOM Tree阻塞了，那么DOM的渲染也就没那么快完成</p><h1 id="JS-会阻塞-DOM-解析"><a href="#JS-会阻塞-DOM-解析" class="headerlink" title="JS 会阻塞 DOM 解析"></a>JS 会阻塞 DOM 解析</h1><p>首先浏览器无法知晓JS的具体内容，倘若先解析DOM，万一JS内部全部删除掉DOM，那么浏览器就白忙活了，所以就干脆暂停解析DOM，等到JS执行完成再继续解析。<br>开发者可以优先考虑使用defer的方式，其次是async方式让页面的JS进行异步执行，</p><ul><li>defer 异步加载， 加载完后会等待Html标签全部解析完才去执行<br>比如第三方sdk 不影响页面形式的js 都可以延时解析</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> CSS JS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>浏览器缓存机制</title>
+      <link href="/2019/04/10/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/"/>
+      <url>/2019/04/10/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</url>
+      
+        <content type="html"><![CDATA[<h1 id="浏览器缓存机制"><a href="#浏览器缓存机制" class="headerlink" title="浏览器缓存机制"></a>浏览器缓存机制</h1><h3 id="浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下："><a href="#浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下：" class="headerlink" title="浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下："></a>浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下：</h3><ul><li>浏览器先根据这个资源的http头信息来判断是否命中强缓存。如果命中则直接加在缓存中的资源，并不会将请求发送到服务器。（强缓存）</li><li>如果未命中强缓存，则浏览器会将资源加载请求发送到服务器。服务器来判断浏览器本地缓存是否失效。若可以使用，则服务器并不会返回资源信息，浏览器继续从缓存加载资源。（协商缓存）</li><li>如果未命中协商缓存，则服务器会将完整的资源返回给浏览器，浏览器加载新资源，并更新缓存。（新的请求）</li></ul><h3 id="命中强缓存时，浏览器并不会将请求发送给服务器。code-200-Size：from-cache"><a href="#命中强缓存时，浏览器并不会将请求发送给服务器。code-200-Size：from-cache" class="headerlink" title="命中强缓存时，浏览器并不会将请求发送给服务器。code: 200 Size：from cache"></a>命中强缓存时，浏览器并不会将请求发送给服务器。code: 200 Size：from cache</h3><h3 id="利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间"><a href="#利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间" class="headerlink" title="利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间"></a>利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间</h3><h3 id="若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify-x2F-If-Modify-Since或Etag-x2F-If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。"><a href="#若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify-x2F-If-Modify-Since或Etag-x2F-If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。" class="headerlink" title="若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify&#x2F;If-Modify-Since或Etag&#x2F;If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。"></a>若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify&#x2F;If-Modify-Since或Etag&#x2F;If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。</h3>]]></content>
+      
+      
+      <categories>
+          
+          <category> 浏览器 </category>
+          
+          <category> 缓存 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 强缓存 协商缓存 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Vue 开发一个按钮组件</title>
+      <link href="/2019/02/13/Vue-%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E6%8C%89%E9%92%AE%E7%BB%84%E4%BB%B6/"/>
+      <url>/2019/02/13/Vue-%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E6%8C%89%E9%92%AE%E7%BB%84%E4%BB%B6/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Vue-开发一个按钮组件"><a href="#Vue-开发一个按钮组件" class="headerlink" title="Vue 开发一个按钮组件"></a>Vue 开发一个按钮组件</h1><p>解决思路：<br>通过父子组件通讯（$refs 和 props）<br>props接受参数, $refs调用子组件的方法<br>来达到点击提交改变按钮状态，如果不成功则取消按钮状态</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">&lt;!-- use plane  --&gt;</span><br><span class="line">&lt;!-- 传入bgColor改变按钮背景色 --&gt;</span><br><span class="line">&lt;!-- state切换button的状态 调用cancel()可以切换 --&gt;</span><br><span class="line">&lt;!-- text为按钮文字 --&gt;</span><br><span class="line">  &lt;div class=<span class="string">&quot;container&quot;</span>&gt;</span><br><span class="line">    &lt;button  </span><br><span class="line">      @click=<span class="string">&quot;confirm&quot;</span></span><br><span class="line">      :disabled=<span class="string">&quot;state&quot;</span> </span><br><span class="line">      class=<span class="string">&quot;confirm&quot;</span> </span><br><span class="line">      :style=<span class="string">&quot;&#123;background: btnData.bgColor&#125;&quot;</span></span><br><span class="line">    &gt;&#123;&#123;text&#125;&#125;&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="built_in">export</span> default &#123;</span><br><span class="line">  <span class="function"><span class="title">data</span></span>()&#123;</span><br><span class="line">    <span class="built_in">return</span> &#123;</span><br><span class="line">      text: this.btnData.text,</span><br><span class="line">      state: <span class="literal">false</span>,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    btnData: &#123;</span><br><span class="line">      types: Array,</span><br><span class="line">      <span class="function"><span class="title">default</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> &#123;</span><br><span class="line">          text: <span class="string">&#x27;确认&#x27;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="function"><span class="title">confirm</span></span>()&#123;</span><br><span class="line">      this.text += <span class="string">&#x27;...&#x27;</span></span><br><span class="line">      this.state = <span class="literal">true</span></span><br><span class="line">      //这里是激活父组件的事件，因为子组件是不会冒泡到父组件上的，必须手动调用<span class="variable">$emit</span></span><br><span class="line">      //相对应父组件要在调用该组件的时候，将其挂载到上面</span><br><span class="line">      this.<span class="variable">$emit</span>(<span class="string">&quot;confirm&quot;</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="title">cancel</span></span>()&#123;</span><br><span class="line">      this.text = this.btnData.text</span><br><span class="line">      this.state = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style lang=<span class="string">&quot;less&quot;</span> scoped&gt;</span><br><span class="line">.confirm &#123;</span><br><span class="line">  border: none;</span><br><span class="line">  color: <span class="comment">#fff;</span></span><br><span class="line">  width: 100%;</span><br><span class="line">  padding: 1rem 0;</span><br><span class="line">  border-radius: 4px;</span><br><span class="line">  font-size: 1.6rem;</span><br><span class="line">  background: <span class="comment">#5da1fd;</span></span><br><span class="line">  &amp;:focus &#123;</span><br><span class="line">    outline: none;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure><p>在页面中调用</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div class=<span class="string">&quot;btn-box&quot;</span>&gt;</span><br><span class="line">      &lt;Btn </span><br><span class="line">        :btnData=<span class="string">&quot;&#123;text: &#x27;确认注册&#x27;&#125;&quot;</span></span><br><span class="line">        &lt;!--这里就要挂载<span class="variable">$emit</span>调用的事件 @confirm=<span class="string">&quot;想要调用事件的名字&quot;</span>--&gt;</span><br><span class="line">        @confirm=<span class="string">&quot;confirm&quot;</span></span><br><span class="line">        ref=<span class="string">&quot;btn&quot;</span></span><br><span class="line">      &gt;&lt;/Btn&gt;</span><br><span class="line">    &lt;/div&gt; </span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Btn from <span class="string">&#x27;@/components/button&#x27;</span></span><br><span class="line"><span class="built_in">export</span> default &#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    Btn</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="function"><span class="title">confirm</span></span>()&#123;</span><br><span class="line">      <span class="keyword">if</span>(!this.companyName)&#123;</span><br><span class="line">        this.<span class="variable">$toast</span>(<span class="string">&quot;公司名不能为空&quot;</span>)  </span><br><span class="line">        this.<span class="variable">$refs</span>.btn.cancel()</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure><p>在这里，要注意一些细节：</p><ul><li><ol><li>button组件形成之后和其它div元素的间距，如果是在组件内定死是很难复用的。</li></ol></li><li><ol start="2"><li>在复用的时候，在父组件中是改变不了子组件的样式的，如果要强制更改，单独写一个并去掉scoped。</li></ol></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Vue button </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>移动端1px像素</title>
+      <link href="/2018/05/26/%E7%A7%BB%E5%8A%A8%E7%AB%AF1px%E5%83%8F%E7%B4%A0/"/>
+      <url>/2018/05/26/%E7%A7%BB%E5%8A%A8%E7%AB%AF1px%E5%83%8F%E7%B4%A0/</url>
+      
+        <content type="html"><![CDATA[<h1 id="移动端1px像素起源"><a href="#移动端1px像素起源" class="headerlink" title="移动端1px像素起源"></a>移动端1px像素起源</h1><p>在移动端，css中的1px并不等于移动设备的1px，因为手机屏幕有不同的像素密度。window中的devicePixelRatio就是反应css中像素与真实像素的比例，也就是设备物理像素和设备独立像素的比例，也就是 devicePixelRatio &#x3D; 物理像素 &#x2F; 独立像素。所以造成了通过css设置1px，在移动端屏幕上会变粗。</p><h1 id="解决方案一：使用伪类缩放"><a href="#解决方案一：使用伪类缩放" class="headerlink" title="解决方案一：使用伪类缩放"></a>解决方案一：使用伪类缩放</h1><p>使用伪类缩放需要主要的是：</p><ul><li>设置全边框的时候，box-sizing要设置为border-box，否则伪元素上下左右各会多1px</li><li>需要将父元素设置为relative</li><li>注意 transform 的起点，上边距要用左上角，下边距用左下角</li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/* 下边框 */</span><br><span class="line">.one-px-border2:after &#123;</span><br><span class="line">  content: <span class="string">&quot;&quot;</span>;</span><br><span class="line">  position: absolute;</span><br><span class="line">  bottom: 0;</span><br><span class="line">  left: 0;</span><br><span class="line">  right: 0;</span><br><span class="line">  border-bottom: 1px solid red;</span><br><span class="line">  transform: scaleY(.5);</span><br><span class="line">  transform-origin: left bottom;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 1px </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>rem em px详解</title>
+      <link href="/2018/05/25/rem-em-px%E8%AF%A6%E8%A7%A3/"/>
+      <url>/2018/05/25/rem-em-px%E8%AF%A6%E8%A7%A3/</url>
+      
+        <content type="html"><![CDATA[<h1 id="rem-em-px详解"><a href="#rem-em-px详解" class="headerlink" title="rem em px详解"></a>rem em px详解</h1><ul><li>px相对长度单位，相对于显示器屏幕分辨率来的</li><li>em相对长度单位，相对于当前对象内文本的字体尺寸来的，值不固定，会继承父级元素字体的大小，未经调整浏览器：16px &#x3D; 1em 假如父元素为2em，子元素为2em字体实际大小为4em</li><li>rem是css3新增的相对单位，使用rem为元素设置大小时，是相对大小，相对的是html根元素，修改根元素就可以调整所有字体大小，还可以避免字体大小逐层复合的连锁反应，未经调整浏览器：16px &#x3D; 1rem。</li></ul><h1 id="移动端适配-相关知识储备"><a href="#移动端适配-相关知识储备" class="headerlink" title="移动端适配 相关知识储备"></a>移动端适配 相关知识储备</h1><p>响应式 —— 在css中，针对不同大小的浏览器窗口，用不同的方式相应更新页面的样式。<br>1inch（英寸） &#x3D; 25.4mm（毫米） &#x3D; 6pc（pica，印刷术语，长度为12points） &#x3D; 72pt（点） &#x3D; 96px（像素）</p><p>em —— 基准是 当前元素的字号（font-size）大小，实际值取决于在哪个元素上应用。</p><ul><li>基准是当前元素的font-size</li><li>如果当前元素的字号用的是em，那么当前元素字号的基准是其父元素</li><li>先算出当前元素的font-size的像素值，再计算其他使用em作为单位的属性值大小</li></ul><p>rem —— 是根em的缩写，基准是根元素的字号大小**</p><p>视口viewport —— 浏览器窗口中用来渲染页面的可视区域，不包括浏览器的地址栏、工具栏、状态栏等。<br>相关单位</p><ul><li>vh ——视口高度的1&#x2F;100</li><li>vw——视口宽度的1&#x2F;100</li><li>vmin——视口宽度或者高度较小值的1&#x2F;100</li><li>vmax——视口官渡或者高度较大值的1&#x2F;100（横竖屏时可以用这两个值）</li></ul><p>flexible源码解读</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">// 立即执行函数，入参是window和document</span><br><span class="line">(<span class="keyword">function</span> flexible (window, document) &#123;</span><br><span class="line">  var docEl = document.documentElement</span><br><span class="line">  // 文档的root元素</span><br><span class="line">  var dpr = window.devicePixelRatio || 1</span><br><span class="line">  // 获取设备的dpr（返回当前显示设备的物理像素分辨率与css像素分辨率之比），它告诉浏览器应该使用多少屏幕实际像素来绘制单个css像素，</span><br><span class="line"></span><br><span class="line">  // adjust body font size</span><br><span class="line">  // 调整body标签的fontsize，fontsize = (12 * dpr) + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">  // 设置默认字体大小，默认的字体大小继承自body，如果子元素没有设置font-size就继承父元素设置的这个默认字号（这个地方有个疑问，为什么以12位基准，是因为浏览器的最小显示的字号是12吗？）</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">setBodyFontSize</span></span> () &#123;</span><br><span class="line">    <span class="keyword">if</span> (document.body) &#123;</span><br><span class="line">      document.body.style.fontSize = (12 * dpr) + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      document.addEventListener(<span class="string">&#x27;DOMContentLoaded&#x27;</span>, setBodyFontSize)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  setBodyFontSize();</span><br><span class="line"></span><br><span class="line">  // <span class="built_in">set</span> 1rem = viewWidth / 10</span><br><span class="line">  // 设置根元素的fontsize为clientwidth/10（除以10纯粹是为了计算方便）这个地方也可以直接写10vw（表示可视窗口的宽度的十分之一）</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">setRemUnit</span></span> () &#123;</span><br><span class="line">    var rem = docEl.clientWidth / 10</span><br><span class="line">    docEl.style.fontSize = rem + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setRemUnit()</span><br><span class="line"></span><br><span class="line">  // reset rem unit on page resize</span><br><span class="line">  // 当页面展示或重新设置大小的时候，重新对rem的px值进行计算</span><br><span class="line">  window.addEventListener(<span class="string">&#x27;resize&#x27;</span>, setRemUnit)</span><br><span class="line">  window.addEventListener(<span class="string">&#x27;pageshow&#x27;</span>, <span class="keyword">function</span> (e) &#123;</span><br><span class="line">    <span class="keyword">if</span> (e.persisted) &#123;</span><br><span class="line">      setRemUnit()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  // detect 0.5px supports</span><br><span class="line">  <span class="keyword">if</span> (dpr &gt;= 2) &#123;</span><br><span class="line">    var fakeBody = document.createElement(<span class="string">&#x27;body&#x27;</span>)</span><br><span class="line">    var testElement = document.createElement(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">    testElement.style.border = <span class="string">&#x27;.5px solid transparent&#x27;</span></span><br><span class="line">    fakeBody.appendChild(testElement)</span><br><span class="line">    docEl.appendChild(fakeBody)</span><br><span class="line">    <span class="keyword">if</span> (testElement.offsetHeight === 1) &#123;</span><br><span class="line">      docEl.classList.add(<span class="string">&#x27;hairlines&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    docEl.removeChild(fakeBody)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;(window, document))</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> rem em px </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>CSS3 新增常用特性</title>
+      <link href="/2018/05/23/CSS3-%E6%96%B0%E5%A2%9E%E5%B8%B8%E7%94%A8%E7%89%B9%E6%80%A7/"/>
+      <url>/2018/05/23/CSS3-%E6%96%B0%E5%A2%9E%E5%B8%B8%E7%94%A8%E7%89%B9%E6%80%A7/</url>
+      
+        <content type="html"><![CDATA[<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># border新增border-img, border-radius</span></span><br><span class="line">* border-image-source 用于指定要用于绘制边框的图像的位置</span><br><span class="line">* border-image-slice 图像边界向内偏移</span><br><span class="line">* border-image-width 图像边界的宽度</span><br><span class="line">* border-image-outset 用于指定在边框外部绘制 border-image-area 的量</span><br><span class="line">* border-image-repeat 用于设置图像边界是否应重复（repeat）、拉伸（stretch）或铺满（round）。</span><br><span class="line">border-image: <span class="built_in">source</span> slice width outset repeat|initial|inherit;</span><br><span class="line"></span><br><span class="line"><span class="comment"># box-shadow </span></span><br><span class="line">box-shadow:-10px -10px 20px 20px gold;</span><br><span class="line"><span class="comment"># text-shadow</span></span><br><span class="line">text-shadow: 0 0 5px <span class="comment">#fff;</span></span><br><span class="line"><span class="comment"># background 新增background-image，background-size background-repeat</span></span><br><span class="line"><span class="comment"># 媒体查询 制作响应式设计</span></span><br><span class="line">@media screen and (max-width: 300px) &#123;</span><br><span class="line">    body &#123;</span><br><span class="line">        background-color:lightblue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@media screen and (min-width: 300px) and (max-width: 500px)&#123;</span><br><span class="line">    <span class="comment">#wrap div&#123;</span></span><br><span class="line">        width: 20%;</span><br><span class="line">    &#125;            </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> CSS3 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>HTML5 新增语义化标签</title>
+      <link href="/2018/05/22/HTML5-%E6%96%B0%E5%A2%9E%E8%AF%AD%E4%B9%89%E5%8C%96%E6%A0%87%E7%AD%BE/"/>
+      <url>/2018/05/22/HTML5-%E6%96%B0%E5%A2%9E%E8%AF%AD%E4%B9%89%E5%8C%96%E6%A0%87%E7%AD%BE/</url>
+      
+        <content type="html"><![CDATA[<h1 id="HTML5-新增语义化标签"><a href="#HTML5-新增语义化标签" class="headerlink" title="HTML5 新增语义化标签"></a>HTML5 新增语义化标签</h1><p>这种语义化标签主要是针对搜索引擎的<br>这些新标签页面中可以使用多次</p><ul><li>header 头部标签</li><li>nav 导航标签</li><li>content 内容标签</li><li>section 定义文档某个区域</li><li>aside 侧边栏标签</li><li>footer 尾部标签</li><li>video 视频标签</li><li>audio 音频标签</li><li>user-select:none;禁止鼠标移动选择文字</li><li>background-image:liner-gradient(to right,red,green); 设置背景颜色渐变</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> HTML5 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>浏览器BOM和JS中的DOM</title>
       <link href="/2018/05/14/%E6%B5%8F%E8%A7%88%E5%99%A8BOM%E5%92%8CJS%E4%B8%AD%E7%9A%84DOM/"/>
       <url>/2018/05/14/%E6%B5%8F%E8%A7%88%E5%99%A8BOM%E5%92%8CJS%E4%B8%AD%E7%9A%84DOM/</url>
@@ -224,25 +460,6 @@
         <tags>
             
             <tag> Array </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>浏览器缓存机制</title>
-      <link href="/2018/04/10/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/"/>
-      <url>/2018/04/10/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/</url>
-      
-        <content type="html"><![CDATA[<h1 id="浏览器缓存机制"><a href="#浏览器缓存机制" class="headerlink" title="浏览器缓存机制"></a>浏览器缓存机制</h1><h3 id="浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下："><a href="#浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下：" class="headerlink" title="浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下："></a>浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下：</h3><ul><li>浏览器先根据这个资源的http头信息来判断是否命中强缓存。如果命中则直接加在缓存中的资源，并不会将请求发送到服务器。（强缓存）</li><li>如果未命中强缓存，则浏览器会将资源加载请求发送到服务器。服务器来判断浏览器本地缓存是否失效。若可以使用，则服务器并不会返回资源信息，浏览器继续从缓存加载资源。（协商缓存）</li><li>如果未命中协商缓存，则服务器会将完整的资源返回给浏览器，浏览器加载新资源，并更新缓存。（新的请求）</li></ul><h3 id="命中强缓存时，浏览器并不会将请求发送给服务器。code-200-Size：from-cache"><a href="#命中强缓存时，浏览器并不会将请求发送给服务器。code-200-Size：from-cache" class="headerlink" title="命中强缓存时，浏览器并不会将请求发送给服务器。code: 200 Size：from cache"></a>命中强缓存时，浏览器并不会将请求发送给服务器。code: 200 Size：from cache</h3><h3 id="利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间"><a href="#利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间" class="headerlink" title="利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间"></a>利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间</h3><h3 id="若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify-x2F-If-Modify-Since或Etag-x2F-If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。"><a href="#若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify-x2F-If-Modify-Since或Etag-x2F-If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。" class="headerlink" title="若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify&#x2F;If-Modify-Since或Etag&#x2F;If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。"></a>若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify&#x2F;If-Modify-Since或Etag&#x2F;If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。</h3>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> 强缓存 协商缓存 </tag>
             
         </tags>
       

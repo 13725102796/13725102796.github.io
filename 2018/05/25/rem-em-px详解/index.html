@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="rem em px详解 px相对长度单位，相对于显示器屏幕分辨率来的 em相对长度单位，相对于当前对象内文本的字体尺寸来的，值不固定，会继承父级元素字体的大小，未经调整浏览器：16px &#x3D; 1em 假如父元素为2em，子元素为2em字体实际大小为4em rem是css3新增的相对单位，使用rem为元素设置大小时，是相对大小，相对的是html根元素，修改根元素就可以调整所有字体大小，还可以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rem em px详解">
+<meta property="og:url" content="http://example.com/2018/05/25/rem-em-px%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="rem em px详解 px相对长度单位，相对于显示器屏幕分辨率来的 em相对长度单位，相对于当前对象内文本的字体尺寸来的，值不固定，会继承父级元素字体的大小，未经调整浏览器：16px &#x3D; 1em 假如父元素为2em，子元素为2em字体实际大小为4em rem是css3新增的相对单位，使用rem为元素设置大小时，是相对大小，相对的是html根元素，修改根元素就可以调整所有字体大小，还可以">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-05-25T03:40:04.000Z">
+<meta property="article:modified_time" content="2022-04-13T09:12:51.648Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="rem em px">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2018/05/25/rem-em-px%E8%AF%A6%E8%A7%A3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2018/05/25/rem-em-px%E8%AF%A6%E8%A7%A3/","path":"2018/05/25/rem-em-px详解/","title":"rem em px详解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>rem em px详解 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#rem-em-px%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">rem em px详解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D-%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%82%A8%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">移动端适配 相关知识储备</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/25/rem-em-px%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="rem em px详解 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          rem em px详解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-05-25 11:40:04" itemprop="dateCreated datePublished" datetime="2018-05-25T11:40:04+08:00">2018-05-25</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="rem-em-px详解"><a href="#rem-em-px详解" class="headerlink" title="rem em px详解"></a>rem em px详解</h1><ul>
+<li>px相对长度单位，相对于显示器屏幕分辨率来的</li>
+<li>em相对长度单位，相对于当前对象内文本的字体尺寸来的，值不固定，会继承父级元素字体的大小，未经调整浏览器：16px &#x3D; 1em 假如父元素为2em，子元素为2em字体实际大小为4em</li>
+<li>rem是css3新增的相对单位，使用rem为元素设置大小时，是相对大小，相对的是html根元素，修改根元素就可以调整所有字体大小，还可以避免字体大小逐层复合的连锁反应，未经调整浏览器：16px &#x3D; 1rem。</li>
+</ul>
+<h1 id="移动端适配-相关知识储备"><a href="#移动端适配-相关知识储备" class="headerlink" title="移动端适配 相关知识储备"></a>移动端适配 相关知识储备</h1><p>响应式 —— 在css中，针对不同大小的浏览器窗口，用不同的方式相应更新页面的样式。<br>1inch（英寸） &#x3D; 25.4mm（毫米） &#x3D; 6pc（pica，印刷术语，长度为12points） &#x3D; 72pt（点） &#x3D; 96px（像素）</p>
+<p>em —— 基准是 当前元素的字号（font-size）大小，实际值取决于在哪个元素上应用。</p>
+<ul>
+<li>基准是当前元素的font-size</li>
+<li>如果当前元素的字号用的是em，那么当前元素字号的基准是其父元素</li>
+<li>先算出当前元素的font-size的像素值，再计算其他使用em作为单位的属性值大小</li>
+</ul>
+<p>rem —— 是根em的缩写，基准是根元素的字号大小**</p>
+<p>视口viewport —— 浏览器窗口中用来渲染页面的可视区域，不包括浏览器的地址栏、工具栏、状态栏等。<br>相关单位</p>
+<ul>
+<li>vh ——视口高度的1&#x2F;100</li>
+<li>vw——视口宽度的1&#x2F;100</li>
+<li>vmin——视口宽度或者高度较小值的1&#x2F;100</li>
+<li>vmax——视口官渡或者高度较大值的1&#x2F;100（横竖屏时可以用这两个值）</li>
+</ul>
+<p>flexible源码解读</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">// 立即执行函数，入参是window和document</span><br><span class="line">(<span class="keyword">function</span> flexible (window, document) &#123;</span><br><span class="line">  var docEl = document.documentElement</span><br><span class="line">  // 文档的root元素</span><br><span class="line">  var dpr = window.devicePixelRatio || 1</span><br><span class="line">  // 获取设备的dpr（返回当前显示设备的物理像素分辨率与css像素分辨率之比），它告诉浏览器应该使用多少屏幕实际像素来绘制单个css像素，</span><br><span class="line"></span><br><span class="line">  // adjust body font size</span><br><span class="line">  // 调整body标签的fontsize，fontsize = (12 * dpr) + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">  // 设置默认字体大小，默认的字体大小继承自body，如果子元素没有设置font-size就继承父元素设置的这个默认字号（这个地方有个疑问，为什么以12位基准，是因为浏览器的最小显示的字号是12吗？）</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">setBodyFontSize</span></span> () &#123;</span><br><span class="line">    <span class="keyword">if</span> (document.body) &#123;</span><br><span class="line">      document.body.style.fontSize = (12 * dpr) + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      document.addEventListener(<span class="string">&#x27;DOMContentLoaded&#x27;</span>, setBodyFontSize)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  setBodyFontSize();</span><br><span class="line"></span><br><span class="line">  // <span class="built_in">set</span> 1rem = viewWidth / 10</span><br><span class="line">  // 设置根元素的fontsize为clientwidth/10（除以10纯粹是为了计算方便）这个地方也可以直接写10vw（表示可视窗口的宽度的十分之一）</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">setRemUnit</span></span> () &#123;</span><br><span class="line">    var rem = docEl.clientWidth / 10</span><br><span class="line">    docEl.style.fontSize = rem + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setRemUnit()</span><br><span class="line"></span><br><span class="line">  // reset rem unit on page resize</span><br><span class="line">  // 当页面展示或重新设置大小的时候，重新对rem的px值进行计算</span><br><span class="line">  window.addEventListener(<span class="string">&#x27;resize&#x27;</span>, setRemUnit)</span><br><span class="line">  window.addEventListener(<span class="string">&#x27;pageshow&#x27;</span>, <span class="keyword">function</span> (e) &#123;</span><br><span class="line">    <span class="keyword">if</span> (e.persisted) &#123;</span><br><span class="line">      setRemUnit()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  // detect 0.5px supports</span><br><span class="line">  <span class="keyword">if</span> (dpr &gt;= 2) &#123;</span><br><span class="line">    var fakeBody = document.createElement(<span class="string">&#x27;body&#x27;</span>)</span><br><span class="line">    var testElement = document.createElement(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">    testElement.style.border = <span class="string">&#x27;.5px solid transparent&#x27;</span></span><br><span class="line">    fakeBody.appendChild(testElement)</span><br><span class="line">    docEl.appendChild(fakeBody)</span><br><span class="line">    <span class="keyword">if</span> (testElement.offsetHeight === 1) &#123;</span><br><span class="line">      docEl.classList.add(<span class="string">&#x27;hairlines&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    docEl.removeChild(fakeBody)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;(window, document))</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/rem-em-px/" rel="tag"># rem em px</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/05/23/CSS3-%E6%96%B0%E5%A2%9E%E5%B8%B8%E7%94%A8%E7%89%B9%E6%80%A7/" rel="prev" title="CSS3 新增常用特性">
+                  <i class="fa fa-chevron-left"></i> CSS3 新增常用特性
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/05/26/%E7%A7%BB%E5%8A%A8%E7%AB%AF1px%E5%83%8F%E7%B4%A0/" rel="next" title="移动端1px像素">
+                  移动端1px像素 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

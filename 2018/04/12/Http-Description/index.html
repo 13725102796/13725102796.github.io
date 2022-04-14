@@ -1,38 +1,226 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="google-site-verification" content="TZE0rZyIqLl10trYu3BWBWa1Vmz6HFwhb2OcNEK4u-s" />
-     <link rel="shortcut icon" href= /img/favicon.ico >
-    <title>
-        Hexo
-    </title>
-    <meta name="description" content= 嘿，我是张业昌～这是我的网站，用于展示我的博客，欢迎访问！ >
-    <meta name="keywords" content= Blog,Theme,张业昌,YeChang Zhang >
-    
-<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
 
-    
-<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    
-<link rel="stylesheet" href="/css/style.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<meta name="generator" content="Hexo 6.1.0"></head>
-<body id="bodyx">
-    <div class="hd posts">
-    <a href="/index.html"><i class="fa fa-home
- replay-btn" aria-hidden="true"></i></a>
-    <div class="post-title">
-        <p>
-            Http版本区别与用户认证
-        </p>
-        <hr>
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Http版本区别与用户认证HTTP协议(HyperTextTransferProtocol超文本传输协议)基于TCP&#x2F;IP通信协议来传递数据 内容摘要： Http版本 Session Cookie Token 单点登陆 浏览器的缓存机制  Http版本HTTP&#x2F;1.0每次请求都会打开一个新的TCP链接，收到响应后立即断开HTTP&#x2F;1.1（增加了缓存控制策略）1.0主要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Http版本区别与用户认证">
+<meta property="og:url" content="http://example.com/2018/04/12/Http-Description/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="Http版本区别与用户认证HTTP协议(HyperTextTransferProtocol超文本传输协议)基于TCP&#x2F;IP通信协议来传递数据 内容摘要： Http版本 Session Cookie Token 单点登陆 浏览器的缓存机制  Http版本HTTP&#x2F;1.0每次请求都会打开一个新的TCP链接，收到响应后立即断开HTTP&#x2F;1.1（增加了缓存控制策略）1.0主要">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-04-12T05:49:53.000Z">
+<meta property="article:modified_time" content="2022-04-11T08:39:22.097Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="Http Https Session Cookie Token">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2018/04/12/Http-Description/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2018/04/12/Http-Description/","path":"2018/04/12/Http-Description/","title":"Http版本区别与用户认证"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Http版本区别与用户认证 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
-    <div class="post-content">
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Http%E7%89%88%E6%9C%AC%E5%8C%BA%E5%88%AB%E4%B8%8E%E7%94%A8%E6%88%B7%E8%AE%A4%E8%AF%81"><span class="nav-number">1.</span> <span class="nav-text">Http版本区别与用户认证</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E5%AE%B9%E6%91%98%E8%A6%81%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">内容摘要：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Http%E7%89%88%E6%9C%AC"><span class="nav-number">2.1.</span> <span class="nav-text">Http版本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-x2F-1-0"><span class="nav-number">2.1.1.</span> <span class="nav-text">HTTP&#x2F;1.0</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AF%8F%E6%AC%A1%E8%AF%B7%E6%B1%82%E9%83%BD%E4%BC%9A%E6%89%93%E5%BC%80%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84TCP%E9%93%BE%E6%8E%A5%EF%BC%8C%E6%94%B6%E5%88%B0%E5%93%8D%E5%BA%94%E5%90%8E%E7%AB%8B%E5%8D%B3%E6%96%AD%E5%BC%80"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">每次请求都会打开一个新的TCP链接，收到响应后立即断开</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP-x2F-1-1%EF%BC%88%E5%A2%9E%E5%8A%A0%E4%BA%86%E7%BC%93%E5%AD%98%E6%8E%A7%E5%88%B6%E7%AD%96%E7%95%A5%EF%BC%89"><span class="nav-number">2.1.2.</span> <span class="nav-text">HTTP&#x2F;1.1（增加了缓存控制策略）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-0%E4%B8%BB%E8%A6%81%E7%94%A8Last-Modified%E5%92%8CExpires%E5%81%9A%E7%BC%93%E5%AD%98%E5%88%A4%E6%96%AD%EF%BC%8C1-1%E5%BC%95%E5%85%A5%E4%BA%86%E6%9B%B4%E5%A4%9A%EF%BC%8C%E5%A6%82-Etag-Cache-Control-keep-alive"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">1.0主要用Last-Modified和Expires做缓存判断，1.1引入了更多，如:Etag Cache-Control keep-alive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1%E9%BB%98%E8%AE%A4%E5%BC%80%E5%90%AF%E6%8C%81%E4%B9%85%E8%BF%9E%E6%8E%A5%EF%BC%88%E5%90%8C%E4%B8%80%E4%B8%AATCP%E8%BF%9E%E6%8E%A5%E5%8F%91%E9%80%81%E5%92%8C%E6%8E%A5%E5%8F%97%E5%A4%9A%E4%B8%AAhttp%E8%AF%B7%E6%B1%82-x2F-%E5%BA%94%E7%AD%94%EF%BC%89%EF%BC%8C1-0%E9%9C%80%E8%A6%81%E6%89%8B%E5%8A%A8%E5%BC%80%E5%90%AFconnection-true"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">1.1默认开启持久连接（同一个TCP连接发送和接受多个http请求&#x2F;应答），1.0需要手动开启connection:true</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#http-pipeline-%E7%AE%A1%E9%81%93%E5%8C%96-%EF%BC%8C%E5%85%81%E8%AE%B8%E5%9C%A8%E6%8C%81%E4%B9%85%E8%BF%9E%E6%8E%A5%E4%B8%8A%E5%8F%AF%E9%80%89%E5%9C%B0%E4%BD%BF%E7%94%A8%E8%AF%B7%E6%B1%82%E7%AE%A1%E9%81%93%E3%80%82%E5%9C%A8%E5%93%8D%E5%BA%94%E5%88%B0%E8%BE%BE%E4%B9%8B%E5%89%8D%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%B0%86%E5%A4%9A%E6%9D%A1%E8%AF%B7%E6%B1%82%E6%94%BE%E5%85%A5%E9%98%9F%E5%88%97%E3%80%82%E5%BD%93%E7%AC%AC%E4%B8%80%E6%9D%A1%E8%AF%B7%E6%B1%82%E9%80%9A%E8%BF%87%E7%BD%91%E7%BB%9C%E6%B5%81%E5%90%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%97%B6%EF%BC%8C%E7%AC%AC%E4%BA%8C%E3%80%81%E7%AC%AC%E4%B8%89%E6%9D%A1%E8%AF%B7%E6%B1%82%E4%B9%9F%E5%8F%AF%E4%BB%A5%E5%BC%80%E5%A7%8B%E5%8F%91%E9%80%81%E3%80%82%E5%9C%A8%E9%AB%98%E6%97%B6%E5%BB%B6%E7%BD%91%E7%BB%9C%E6%9D%A1%E4%BB%B6%E4%B8%8B%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%87%8F%E4%BD%8E%E7%BD%91%E7%BB%9C%E7%9A%84%E7%8E%AF%E5%9B%9E%E6%97%B6%E9%97%B4%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD"><span class="nav-number">2.1.2.3.</span> <span class="nav-text">http pipeline(管道化)，允许在持久连接上可选地使用请求管道。在响应到达之前，可以将多条请求放入队列。当第一条请求通过网络流向服务器时，第二、第三条请求也可以开始发送。在高时延网络条件下，可以减低网络的环回时间提高性能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%B4%E5%91%BD%E7%BC%BA%E7%82%B9-%E7%9B%AE%E5%89%8D%E5%A4%A7%E9%83%A8%E5%88%86%E6%B5%8F%E8%A7%88%E5%99%A8%E5%92%8CWeb%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E9%83%BD%E5%85%B3%E9%97%AD%E4%BA%86%E7%AE%A1%E9%81%93%E5%8C%96%EF%BC%8C%E9%87%87%E7%94%A8%E9%9D%9E%E7%AE%A1%E9%81%93%E5%8C%96%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.1.2.4.</span> <span class="nav-text">致命缺点(目前大部分浏览器和Web服务器，都关闭了管道化，采用非管道化模式)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%A0%E6%88%90%E9%98%9F%E5%A4%B4%E9%98%BB%E5%A1%9E%EF%BC%8C%E5%89%8D%E4%B8%80%E4%B8%AA%E5%93%8D%E5%BA%94%E6%9C%AA%E5%8F%8A%E6%97%B6%E8%BF%94%E5%9B%9E%EF%BC%8C%E5%90%8E%E9%9D%A2%E7%9A%84%E5%93%8D%E5%BA%94%E4%BC%9A%E8%A2%AB%E9%98%BB%E5%A1%9E"><span class="nav-number">2.1.2.5.</span> <span class="nav-text">造成队头阻塞，前一个响应未及时返回，后面的响应会被阻塞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E7%AE%A1%E9%81%93%E5%8C%96-%E5%AE%8C%E5%85%A8%E4%B8%B2%E8%A1%8C%E6%89%A7%E8%A1%8C%EF%BC%8C%E5%90%8E%E4%B8%80%E4%B8%AA%E8%AF%B7%E6%B1%82%E5%BF%85%E9%A1%BB%E5%9C%A8%E5%89%8D%E4%B8%80%E4%B8%AA%E5%93%8D%E5%BA%94%E4%B9%8B%E5%90%8E%E5%8F%91%E9%80%81%EF%BC%8C%E9%98%BB%E5%A1%9E%E5%8F%91%E7%94%9F%E5%9C%A8%E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%8Chttp%E8%AF%B7%E6%B1%82%E9%98%BB%E5%A1%9E"><span class="nav-number">2.1.2.6.</span> <span class="nav-text">非管道化:完全串行执行，后一个请求必须在前一个响应之后发送，阻塞发生在客户端，http请求阻塞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%E5%8C%96-%E8%AF%B7%E6%B1%82%E5%8F%AF%E4%BB%A5%E5%B9%B6%E8%A1%8C%E5%8F%91%E5%87%BA%EF%BC%8C%E4%BD%86%E5%93%8D%E5%BA%94%E5%BF%85%E9%A1%BB%E4%B8%B2%E8%A1%8C%E8%BF%94%E5%9B%9E%E3%80%82%E5%90%8E%E4%B8%80%E4%B8%AA%E5%93%8D%E5%BA%94%E5%BF%85%E9%A1%BB%E5%9C%A8%E5%89%8D%E4%B8%80%E4%B8%AA%E5%93%8D%E5%BA%94%E4%B9%8B%E5%90%8E%E3%80%82%E5%9B%A0%E6%B2%A1%E6%9C%89%E5%BA%8F%E5%8F%B7%E8%A1%A8%E6%98%8E%E9%A1%BA%E5%BA%8F%EF%BC%8C%E5%8F%AA%E8%83%BD%E4%B8%B2%E8%A1%8C%E6%8E%A5%E5%8F%97%E3%80%82%E9%98%BB%E5%A1%9E%E5%8F%91%E7%94%9F%E5%9C%A8%E6%9C%8D%E5%8A%A1%E7%AB%AF%EF%BC%8Chttp%E5%93%8D%E5%BA%94%E9%98%BB%E5%A1%9E"><span class="nav-number">2.1.2.7.</span> <span class="nav-text">管道化:请求可以并行发出，但响应必须串行返回。后一个响应必须在前一个响应之后。因没有序号表明顺序，只能串行接受。阻塞发生在服务端，http响应阻塞</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%E5%8C%96%E7%9A%84%E9%99%90%E5%88%B6%E3%80%82%E5%8F%AA%E6%9C%89%E5%B9%82%E7%AD%89%E7%9A%84%E8%AF%B7%E6%B1%82%E6%AF%94%E5%A6%82-GET%E3%80%81HEAD-%E6%89%8D%E8%83%BD%E4%BD%BF%E7%94%A8-pipelining"><span class="nav-number">2.1.2.8.</span> <span class="nav-text">管道化的限制。只有幂等的请求比如 GET、HEAD 才能使用 pipelining</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3"><span class="nav-number">2.1.3.</span> <span class="nav-text">解决:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91TCP%E8%BF%9E%E6%8E%A5-%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%80%E4%B8%AA%E5%9F%9F%E5%90%8D%E9%87%87%E7%94%A86-8%E4%B8%AATCP%E9%93%BE%E6%8E%A5%EF%BC%8C%E5%B9%B6%E5%8F%91%E5%8D%9C%E8%AF%B7%E6%B1%82-%E4%B8%80%E8%88%AC%E4%B8%AD%E5%B0%8F%E5%9E%8B%E7%BD%91%E7%AB%99%E5%9F%BA%E6%9C%AC%E7%94%A8%E4%B8%8D%E4%B8%8A%EF%BC%8C%E4%B8%80%E4%B8%AA%E9%A1%B5%E9%9D%A2%E6%9C%80%E5%A4%9A%E5%B0%B12-3%E4%B8%AA%E6%8E%A5%E5%8F%A3"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">并发TCP连接(浏览器一个域名采用6-8个TCP链接，并发卜请求) 一般中小型网站基本用不上，一个页面最多就2-3个接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%9F%E5%90%8D%E5%88%86%E7%89%87-%E5%A4%9A%E4%B8%AA%E5%9F%9F%E5%90%8D%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%BB%BA%E7%AB%8B%E6%9B%B4%E5%A4%9A%E7%9A%84TCP%E9%93%BE%E6%8E%A5%EF%BC%8C%E4%BB%8E%E8%80%8C%E6%8F%90%E9%AB%98LTT%E8%AF%B7%E6%B1%82%E7%9A%84%E5%B9%B6%E5%8F%91"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">域名分片(多个域名，可以建立更多的TCP链接，从而提高LTT请求的并发)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Http2-0-%EF%BC%88%E5%BC%95%E5%85%A5%E5%B8%A7%E5%92%8C%E6%B5%81%EF%BC%89"><span class="nav-number">2.1.4.</span> <span class="nav-text">Http2.0 （引入帧和流）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%A0%BC%E5%BC%8F%E3%80%82-1-x%E5%9F%BA%E4%BA%8E%E6%96%87%E6%9C%AC"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">新的二进制格式。 1.x基于文本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-0%E6%96%B9%E5%BC%8F-%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E7%89%B9%E6%80%A7-%E5%B0%86%E5%A4%9A%E4%B8%AA%E8%AF%B7%E6%B1%82%E5%A4%8D%E7%94%A8%E5%90%8C%E4%B8%80%E4%B8%AAtcp%E9%80%9A%E9%81%93%E4%B8%AD%EF%BC%8C%E9%80%9A%E8%BF%87%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%88%86%E5%B8%A7%E5%B9%B6%E4%B8%94%E7%BB%99%E6%AF%8F%E4%B8%AA%E5%B8%A7%E6%89%93%E4%B8%8A%E6%B5%81%E7%9A%84-ID-%E5%8E%BB%E9%81%BF%E5%85%8D%E4%BE%9D%E6%AC%A1%E5%93%8D%E5%BA%94%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%8C%E5%AF%B9%E6%96%B9%E6%8E%A5%E6%94%B6%E5%88%B0%E5%B8%A7%E4%B9%8B%E5%90%8E%E6%A0%B9%E6%8D%AE-ID-%E6%8B%BC%E6%8E%A5%E5%87%BA%E6%B5%81%EF%BC%8C%E8%BF%99%E6%A0%B7%E5%B0%B1%E5%8F%AF%E4%BB%A5%E5%81%9A%E5%88%B0%E4%B9%B1%E5%BA%8F%E5%93%8D%E5%BA%94%E4%BB%8E%E8%80%8C%E9%81%BF%E5%85%8D%E8%AF%B7%E6%B1%82%E6%97%B6%E7%9A%84%E9%98%9F%E9%A6%96%E9%98%BB%E5%A1%9E%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">2.0方式(多路复用特性) 将多个请求复用同一个tcp通道中，通过二进制分帧并且给每个帧打上流的 ID 去避免依次响应的问题，对方接收到帧之后根据 ID 拼接出流，这样就可以做到乱序响应从而避免请求时的队首阻塞问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%B4%E9%83%A8%E5%8E%8B%E7%BC%A9-%E4%BD%BF%E7%94%A8encoder%E5%8E%8B%E7%BC%A9"><span class="nav-number">2.1.4.3.</span> <span class="nav-text">头部压缩 使用encoder压缩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A8%E9%80%81%EF%BC%8C%E6%8A%8A%E5%AE%A2%E6%88%B7%E7%AB%AFindex-html%E9%9C%80%E8%A6%81%E7%9A%84%E8%B5%84%E6%BA%90%E6%8E%A8%E9%80%81%E5%88%B0%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B9%B6%E5%AD%98%E5%9C%A8%E7%BC%93%E5%AD%98%E4%B8%AD%EF%BC%8C%E7%AD%89index%E5%8A%A0%E8%BD%BD%E6%97%B6%E7%9B%B4%E6%8E%A5%E4%BC%9A%E4%BC%98%E5%85%88%E8%AF%BB%E5%8F%96%E7%BC%93%E5%AD%98%EF%BC%8C%E8%80%8C%E4%B8%8D%E7%94%A8%E5%90%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%91%E8%B5%B7%E8%AF%B7%E6%B1%82%E4%BA%86"><span class="nav-number">2.1.4.4.</span> <span class="nav-text">服务端推送，把客户端index.html需要的资源推送到浏览器并存在缓存中，等index加载时直接会优先读取缓存，而不用向服务器发起请求了</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E9%99%B7%EF%BC%9A-%E4%B8%BA%E4%BA%86%E5%90%91%E4%B8%8B%E5%85%BC%E5%AE%B9%EF%BC%8C%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%9C%80%E8%A6%81%E7%A1%AE%E8%AE%A4%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%98%AFhttp1-x%E8%BF%98%E6%98%AF2-0%EF%BC%8C%E5%A4%9A%E5%81%9A%E4%BA%86%E4%B8%80%E6%AC%A1TLS%E9%93%BE%E6%8E%A5"><span class="nav-number">2.1.4.5.</span> <span class="nav-text">缺陷： 为了向下兼容，服务端需要确认客户端是http1.x还是2.0，多做了一次TLS链接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E4%B8%AA%E8%AF%B7%E6%B1%82%E6%98%AF%E5%9C%A8%E5%90%8C%E4%B8%80%E4%B8%AA-TCP-%E7%AE%A1%E9%81%93%E4%B8%AD%EF%BC%8C%E8%BF%99%E6%A0%B7%E5%BD%93-HTTP-2-0-%E5%87%BA%E7%8E%B0%E4%B8%A2%E5%8C%85%E6%97%B6%EF%BC%8C%E6%95%B4%E4%B8%AA-TCP-%E9%83%BD%E8%A6%81%E5%BC%80%E5%A7%8B%E7%AD%89%E5%BE%85%E9%87%8D%E4%BC%A0%EF%BC%8C%E9%82%A3%E4%B9%88%E5%B0%B1%E4%BC%9A%E9%98%BB%E5%A1%9E%E8%AF%A5-TCP%E3%80%82%E8%BF%9E%E6%8E%A5%E4%B8%AD%E7%9A%84%E6%89%80%E6%9C%89%E8%AF%B7%E6%B1%82%E3%80%82"><span class="nav-number">2.1.4.6.</span> <span class="nav-text">多个请求是在同一个 TCP 管道中，这样当 HTTP 2.0 出现丢包时，整个 TCP 都要开始等待重传，那么就会阻塞该 TCP。连接中的所有请求。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Session-Cookie"><span class="nav-number">2.2.</span> <span class="nav-text">Session Cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Session-%E6%98%AF%E5%AD%98%E5%82%A8%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%9A%84%E6%96%87%E4%BB%B6%E9%87%8C%E9%9D%A2%EF%BC%8C%E5%80%9F%E5%8A%A9%E8%AF%B7%E6%B1%82%E7%9A%84%E5%93%8D%E5%BA%94%E5%9C%A8cookie%E4%B8%8A%E6%90%BA%E5%B8%A6sessionId%EF%BC%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AD%98%E5%9C%A8%E6%9C%89%E4%B8%80%E4%B8%AAsessionId%E4%B8%8EuserId%E7%9A%84%E6%98%A0%E5%B0%84%E8%A1%A8"><span class="nav-number">2.2.0.1.</span> <span class="nav-text">Session 是存储在服务器端的文件里面，借助请求的响应在cookie上携带sessionId，服务器存在有一个sessionId与userId的映射表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E5%A4%9A%E6%9C%BA%E9%83%A8%E7%BD%B2%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%EF%BC%8C%E5%8F%AF%E7%94%A8redies%E5%81%9A%E4%B8%AD%E9%97%B4%E5%B1%82%EF%BC%8C%E7%BC%93%E5%AD%98session%EF%BC%8C%E7%BC%BA%E7%82%B9%E6%98%AF%E6%89%80%E6%9C%89%E8%AF%B7%E6%B1%82%E9%83%BD%E8%A6%81%E5%8E%BBredis%E8%8E%B7%E5%8F%96session%EF%BC%8C%E4%B8%BA%E4%BF%9D%E9%9A%9Credies%E9%AB%98%E5%8F%AF%E7%94%A8%E6%80%A7%EF%BC%8C%E5%BF%85%E9%A1%BB%E5%81%9A%E9%9B%86%E7%BE%A4"><span class="nav-number">2.2.0.2.</span> <span class="nav-text">在多机部署的情况下，可用redies做中间层，缓存session，缺点是所有请求都要去redis获取session，为保障redies高可用性，必须做集群</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie-%E5%9C%A8%E5%8F%91%E8%B5%B7%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94%E8%AF%B7%E6%B1%82%E9%83%BD%E4%BC%9A%E6%90%BA%E5%B8%A6%E5%B7%B2%E5%AD%98%E5%9C%A8%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BE%80%E8%BF%94"><span class="nav-number">2.2.0.3.</span> <span class="nav-text">Cookie 在发起请求和响应请求都会携带已存在的数据往返</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Token"><span class="nav-number">2.3.</span> <span class="nav-text">Token</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Token%E6%98%AF%E7%94%B1%E5%89%8D%E7%AB%AF%E7%BC%93%E5%AD%98%E5%9C%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%80%E6%AE%B5%E5%AF%86%E6%96%87%EF%BC%8C%E4%B8%80%E8%88%AC%E9%80%9A%E8%BF%87%E8%AE%BE%E7%BD%AE%E8%AF%B7%E6%B1%82%E5%A4%B4%E4%BC%A0%E9%80%92%E7%BB%99%E5%90%8E%E7%AB%AF%EF%BC%8C%E5%90%8E%E7%AB%AF%E7%BB%8F%E8%BF%87JWT%E5%8E%BB%E8%AE%A4%E8%AF%81"><span class="nav-number">2.3.0.1.</span> <span class="nav-text">Token是由前端缓存在浏览器一段密文，一般通过设置请求头传递给后端，后端经过JWT去认证</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E7%82%B9%E7%99%BB%E9%99%86"><span class="nav-number">2.4.</span> <span class="nav-text">单点登陆</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E7%A7%B0SSO%EF%BC%8C%E4%B8%80%E8%88%AC%E5%AE%9A%E4%B9%89%E5%9C%A8%E5%A4%9A%E4%B8%AA%E5%BA%94%E7%94%A8%E7%B3%BB%E7%BB%9F%E4%B8%AD%EF%BC%8C%E7%94%A8%E6%88%B7%E5%8F%AA%E9%9C%80%E7%99%BB%E9%99%86%E4%B8%80%E6%AC%A1%E5%B0%B1%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE%E6%89%80%E6%9C%89%E4%BA%92%E7%9B%B8%E4%BF%A1%E4%BB%BB%E7%9A%84%E5%BA%94%E7%94%A8%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.4.0.1.</span> <span class="nav-text">简称SSO，一般定义在多个应用系统中，用户只需登陆一次就可以访问所有互相信任的应用系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E6%98%AF%E7%94%B1%E7%99%BB%E9%99%86%E4%B8%AD%E9%97%B4%E5%B1%82%E5%BA%94%E7%94%A8%E5%8E%BB%E6%8E%A7%E5%88%B6%E7%94%A8%E6%88%B7%E7%9A%84%E7%99%BB%E9%99%86%EF%BC%8C%E4%B8%80%E6%97%A6%E7%99%BB%E9%99%86%E6%88%90%E5%8A%9F%EF%BC%8C%E4%BB%A5%E5%90%8E%E5%85%B6%E5%AE%83%E7%B3%BB%E7%BB%9F%E6%90%BA%E5%B8%A6%E8%AF%A5%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF%E8%AE%BF%E9%97%AE%E8%BF%9B%E6%9D%A5%E6%97%B6%E9%87%8D%E5%AE%9A%E5%90%91%E5%B9%B6%E6%90%BA%E5%B8%A6%E8%AF%A5%E7%94%A8%E6%88%B7%E7%9A%84token%E8%BF%94%E5%9B%9E%E5%8E%BB%EF%BC%8C%E5%86%8D%E7%94%A8%E5%BD%93%E5%89%8D%E5%BA%94%E7%94%A8%E7%B3%BB%E7%BB%9F%E9%AA%8C%E8%AF%81token%EF%BC%8C%E5%90%91%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%93%8D%E5%BA%94%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="nav-number">2.4.0.2.</span> <span class="nav-text">一般是由登陆中间层应用去控制用户的登陆，一旦登陆成功，以后其它系统携带该用户信息访问进来时重定向并携带该用户的token返回去，再用当前应用系统验证token，向客户端响应当前用户信息</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98"><span class="nav-number">2.5.</span> <span class="nav-text">浏览器缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Web-%E7%BC%93%E5%AD%98%E5%A4%A7%E8%87%B4%E5%8F%AF%E4%BB%A5%E5%88%86%E4%B8%BA%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BC%93%E5%AD%98%E3%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E7%BC%93%E5%AD%98%EF%BC%88%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%93%E5%AD%98%E3%80%81CDN-%E7%BC%93%E5%AD%98%EF%BC%89%E3%80%81%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E3%80%82"><span class="nav-number">2.5.0.1.</span> <span class="nav-text">Web 缓存大致可以分为：数据库缓存、服务器端缓存（代理服务器缓存、CDN 缓存）、浏览器缓存。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E4%B9%9F%E5%8C%85%E5%90%AB%E5%BE%88%E5%A4%9A%E5%86%85%E5%AE%B9%EF%BC%9A-HTTP-%E7%BC%93%E5%AD%98%E3%80%81indexDB%E3%80%81cookie%E3%80%81localstorage-%E7%AD%89%E7%AD%89%E3%80%82%E8%BF%99%E9%87%8C%E6%88%91%E4%BB%AC%E5%8F%AA%E8%AE%A8%E8%AE%BA-HTTP-%E7%BC%93%E5%AD%98%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9"><span class="nav-number">2.5.0.2.</span> <span class="nav-text">浏览器缓存也包含很多内容： HTTP 缓存、indexDB、cookie、localstorage 等等。这里我们只讨论 HTTP 缓存相关内容</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-%E7%BC%93%E5%AD%98%E6%9C%AF%E8%AF%AD%EF%BC%9A"><span class="nav-number">2.5.0.3.</span> <span class="nav-text">HTTP 缓存术语：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E5%91%BD%E4%B8%AD%E7%8E%87%EF%BC%9A%E4%BB%8E%E7%BC%93%E5%AD%98%E4%B8%AD%E5%BE%97%E5%88%B0%E6%95%B0%E6%8D%AE%E7%9A%84%E8%AF%B7%E6%B1%82%E6%95%B0%E4%B8%8E%E6%89%80%E6%9C%89%E8%AF%B7%E6%B1%82%E6%95%B0%E7%9A%84%E6%AF%94%E7%8E%87%E3%80%82%E7%90%86%E6%83%B3%E7%8A%B6%E6%80%81%E6%98%AF%E8%B6%8A%E9%AB%98%E8%B6%8A%E5%A5%BD%E3%80%82"><span class="nav-number">2.5.0.4.</span> <span class="nav-text">* 缓存命中率：从缓存中得到数据的请求数与所有请求数的比率。理想状态是越高越好。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E6%9C%9F%E5%86%85%E5%AE%B9%EF%BC%9A%E8%B6%85%E8%BF%87%E8%AE%BE%E7%BD%AE%E7%9A%84%E6%9C%89%E6%95%88%E6%97%B6%E9%97%B4%EF%BC%8C%E8%A2%AB%E6%A0%87%E8%AE%B0%E4%B8%BA%E2%80%9C%E9%99%88%E6%97%A7%E2%80%9D%E7%9A%84%E5%86%85%E5%AE%B9%E3%80%82%E9%80%9A%E5%B8%B8%E8%BF%87%E6%9C%9F%E5%86%85%E5%AE%B9%E4%B8%8D%E8%83%BD%E7%94%A8%E4%BA%8E%E5%9B%9E%E5%A4%8D%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%9A%84%E8%AF%B7%E6%B1%82%EF%BC%8C%E5%BF%85%E9%A1%BB%E9%87%8D%E6%96%B0%E5%90%91%E6%BA%90%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AF%B7%E6%B1%82%E6%96%B0%E7%9A%84%E5%86%85%E5%AE%B9%E6%88%96%E8%80%85%E9%AA%8C%E8%AF%81%E7%BC%93%E5%AD%98%E7%9A%84%E5%86%85%E5%AE%B9%E6%98%AF%E5%90%A6%E4%BB%8D%E7%84%B6%E5%87%86%E5%A4%87%E3%80%82"><span class="nav-number">2.5.0.5.</span> <span class="nav-text">* 过期内容：超过设置的有效时间，被标记为“陈旧”的内容。通常过期内容不能用于回复客户端的请求，必须重新向源服务器请求新的内容或者验证缓存的内容是否仍然准备。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%EF%BC%9A%E9%AA%8C%E8%AF%81%E7%BC%93%E5%AD%98%E4%B8%AD%E7%9A%84%E8%BF%87%E6%9C%9F%E5%86%85%E5%AE%B9%E6%98%AF%E5%90%A6%E4%BB%8D%E7%84%B6%E6%9C%89%E6%95%88%EF%BC%8C%E9%AA%8C%E8%AF%81%E9%80%9A%E8%BF%87%E7%9A%84%E8%AF%9D%E5%88%B7%E6%96%B0%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E3%80%82"><span class="nav-number">2.5.0.6.</span> <span class="nav-text">* 验证：验证缓存中的过期内容是否仍然有效，验证通过的话刷新过期时间。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%B1%E6%95%88%EF%BC%9A%E5%A4%B1%E6%95%88%E5%B0%B1%E6%98%AF%E6%8A%8A%E5%86%85%E5%AE%B9%E4%BB%8E%E7%BC%93%E5%AD%98%E4%B8%AD%E7%A7%BB%E9%99%A4%E3%80%82%E5%BD%93%E5%86%85%E5%AE%B9%E5%8F%91%E7%94%9F%E6%94%B9%E5%8F%98%E6%97%B6%E5%B0%B1%E5%BF%85%E9%A1%BB%E7%A7%BB%E9%99%A4%E5%A4%B1%E6%95%88%E7%9A%84%E5%86%85%E5%AE%B9%E3%80%82"><span class="nav-number">2.5.0.7.</span> <span class="nav-text">* 失效：失效就是把内容从缓存中移除。当内容发生改变时就必须移除失效的内容。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E4%B8%BB%E8%A6%81%E6%98%AF-HTTP-%E5%8D%8F%E8%AE%AE%E5%AE%9A%E4%B9%89%E7%9A%84%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E3%80%82HTML-meta-%E6%A0%87%E7%AD%BE%EF%BC%8C%E4%BE%8B%E5%A6%82"><span class="nav-number">2.5.0.8.</span> <span class="nav-text">浏览器缓存主要是 HTTP 协议定义的缓存机制。HTML meta 标签，例如</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AB%E4%B9%89%E6%98%AF%E8%AE%A9%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%8D%E7%BC%93%E5%AD%98%E5%BD%93%E5%89%8D%E9%A1%B5%E9%9D%A2%E3%80%82%E4%BD%86%E6%98%AF%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8D%E8%A7%A3%E6%9E%90-HTML-%E5%86%85%E5%AE%B9%EF%BC%8C%E4%B8%80%E8%88%AC%E5%BA%94%E7%94%A8%E5%B9%BF%E6%B3%9B%E7%9A%84%E6%98%AF%E7%94%A8-HTTP-%E5%A4%B4%E4%BF%A1%E6%81%AF%E6%8E%A7%E5%88%B6%E7%BC%93%E5%AD%98"><span class="nav-number">2.5.0.9.</span> <span class="nav-text">含义是让浏览器不缓存当前页面。但是代理服务器不解析 HTML 内容，一般应用广泛的是用 HTTP 头信息控制缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E5%88%86%E4%B8%BA%E5%BC%BA%E7%BC%93%E5%AD%98%E5%92%8C%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8A%A0%E8%BD%BD%E4%B8%80%E4%B8%AA%E9%A1%B5%E9%9D%A2%E7%9A%84%E7%AE%80%E5%8D%95%E6%B5%81%E7%A8%8B%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="nav-number">2.5.0.10.</span> <span class="nav-text">浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%88%E6%A0%B9%E6%8D%AE%E8%BF%99%E4%B8%AA%E8%B5%84%E6%BA%90%E7%9A%84http%E5%A4%B4%E4%BF%A1%E6%81%AF%E6%9D%A5%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E5%91%BD%E4%B8%AD%E5%BC%BA%E7%BC%93%E5%AD%98%E3%80%82%E5%A6%82%E6%9E%9C%E5%91%BD%E4%B8%AD%E5%88%99%E7%9B%B4%E6%8E%A5%E5%8A%A0%E5%9C%A8%E7%BC%93%E5%AD%98%E4%B8%AD%E7%9A%84%E8%B5%84%E6%BA%90%EF%BC%8C%E5%B9%B6%E4%B8%8D%E4%BC%9A%E5%B0%86%E8%AF%B7%E6%B1%82%E5%8F%91%E9%80%81%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E3%80%82%EF%BC%88%E5%BC%BA%E7%BC%93%E5%AD%98%EF%BC%89"><span class="nav-number">2.5.0.11.</span> <span class="nav-text">1. 浏览器先根据这个资源的http头信息来判断是否命中强缓存。如果命中则直接加在缓存中的资源，并不会将请求发送到服务器。（强缓存）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%A6%82%E6%9E%9C%E6%9C%AA%E5%91%BD%E4%B8%AD%E5%BC%BA%E7%BC%93%E5%AD%98%EF%BC%8C%E5%88%99%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BC%9A%E5%B0%86%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD%E8%AF%B7%E6%B1%82%E5%8F%91%E9%80%81%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E3%80%82%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9D%A5%E5%88%A4%E6%96%AD%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98%E6%98%AF%E5%90%A6%E5%A4%B1%E6%95%88%E3%80%82%E8%8B%A5%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%EF%BC%8C%E5%88%99%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B9%B6%E4%B8%8D%E4%BC%9A%E8%BF%94%E5%9B%9E%E8%B5%84%E6%BA%90%E4%BF%A1%E6%81%AF%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%A7%E7%BB%AD%E4%BB%8E%E7%BC%93%E5%AD%98%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90%E3%80%82%EF%BC%88%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98%EF%BC%89"><span class="nav-number">2.5.0.12.</span> <span class="nav-text">2. 如果未命中强缓存，则浏览器会将资源加载请求发送到服务器。服务器来判断浏览器本地缓存是否失效。若可以使用，则服务器并不会返回资源信息，浏览器继续从缓存加载资源。（协商缓存）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%A6%82%E6%9E%9C%E6%9C%AA%E5%91%BD%E4%B8%AD%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98%EF%BC%8C%E5%88%99%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BC%9A%E5%B0%86%E5%AE%8C%E6%95%B4%E7%9A%84%E8%B5%84%E6%BA%90%E8%BF%94%E5%9B%9E%E7%BB%99%E6%B5%8F%E8%A7%88%E5%99%A8%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8A%A0%E8%BD%BD%E6%96%B0%E8%B5%84%E6%BA%90%EF%BC%8C%E5%B9%B6%E6%9B%B4%E6%96%B0%E7%BC%93%E5%AD%98%E3%80%82%EF%BC%88%E6%96%B0%E7%9A%84%E8%AF%B7%E6%B1%82%EF%BC%89"><span class="nav-number">2.5.0.13.</span> <span class="nav-text">3. 如果未命中协商缓存，则服务器会将完整的资源返回给浏览器，浏览器加载新资源，并更新缓存。（新的请求）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%BD%E4%B8%AD%E5%BC%BA%E7%BC%93%E5%AD%98%E6%97%B6%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B9%B6%E4%B8%8D%E4%BC%9A%E5%B0%86%E8%AF%B7%E6%B1%82%E5%8F%91%E9%80%81%E7%BB%99%E6%9C%8D%E5%8A%A1%E5%99%A8%E3%80%82%E5%9C%A8Chrome%E7%9A%84%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7%E4%B8%AD%E7%9C%8B%E5%88%B0http%E7%9A%84%E8%BF%94%E5%9B%9E%E7%A0%81%E6%98%AF200%EF%BC%8C%E4%BD%86%E6%98%AF%E5%9C%A8Size%E5%88%97%E4%BC%9A%E6%98%BE%E7%A4%BA%E4%B8%BA-from-cache-%E3%80%82"><span class="nav-number">2.5.0.14.</span> <span class="nav-text">命中强缓存时，浏览器并不会将请求发送给服务器。在Chrome的开发者工具中看到http的返回码是200，但是在Size列会显示为(from cache)。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%96%91%E9%97%AE%E8%A7%A3%E7%AD%94"><span class="nav-number">2.5.0.15.</span> <span class="nav-text">疑问解答</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E6%9B%B4%E6%96%B0%E6%88%91%E6%9B%B4%E6%96%B0%E5%89%8D%E7%AB%AF%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6%EF%BC%8C%E4%BB%8E%E6%96%B0%E6%89%93%E5%BC%80%E9%93%BE%E6%8E%A5%E9%9C%80%E8%A6%81%E5%88%B7%E6%96%B0%E4%B8%80%E4%B8%8B%E6%89%8D%E8%83%BD%E7%94%9F%E6%95%88%E5%91%A2%EF%BC%9F"><span class="nav-number">2.5.0.16.</span> <span class="nav-text">为什么我更新我更新前端资源文件，从新打开链接需要刷新一下才能生效呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%A0%E4%B8%BA%E8%BF%99%E6%97%B6%E5%80%99%E7%94%B1%E4%BA%8E%E4%BD%A0%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%91%E6%9C%9F%E5%9C%A8%E4%BD%A0%E6%9B%B4%E6%96%B0%E4%B9%8B%E5%89%8D%E6%98%AF%E5%B7%B2%E7%BB%8F%E8%AE%BF%E9%97%AE%E8%BF%87%E8%AF%A5%E9%93%BE%E6%8E%A5%EF%BC%8C%E8%80%8C%E4%B8%94%E7%BC%93%E5%AD%98%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E8%BF%98%E6%B2%A1%E5%A4%B1%E6%95%88%EF%BC%8C%E8%BF%99%E6%97%B6%E5%80%99%E5%91%BD%E4%B8%AD%E7%9A%84%E6%98%AF%E5%BC%BA%E7%BC%93%E5%AD%98%EF%BC%8C%E5%BD%93%E5%88%B7%E6%96%B0%E7%BD%91%E9%A1%B5%E6%97%B6%EF%BC%8C%E8%B7%B3%E8%BF%87%E5%BC%BA%E7%BC%93%E5%AD%98%EF%BC%8C%E4%BD%86%E6%98%AF%E4%BC%9A%E6%A3%80%E6%9F%A5%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98%EF%BC%9B%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BC%9A%E5%B0%86%E8%B5%84%E6%BA%90%E5%8A%A0%E8%BD%BD%E8%AF%B7%E6%B1%82%E5%8F%91%E9%80%81%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%A3%80%E6%B5%8B%E5%88%B0%E5%BD%93%E5%89%8D%E5%8A%A0%E8%BD%BD%E8%B5%84%E6%BA%90%E5%B7%B2%E6%9B%B4%E6%96%B0%EF%BC%8C%E5%88%99%E5%B0%86%E5%AE%8C%E6%95%B4%E7%9A%84%E8%B5%84%E6%BA%90%E8%BF%94%E5%9B%9E%E7%BB%99%E6%B5%8F%E8%A7%88%E5%99%A8%E3%80%82"><span class="nav-number">2.5.0.17.</span> <span class="nav-text">因为这时候由于你客户端近期在你更新之前是已经访问过该链接，而且缓存过期时间还没失效，这时候命中的是强缓存，当刷新网页时，跳过强缓存，但是会检查协商缓存；浏览器会将资源加载请求发送到服务器，服务器检测到当前加载资源已更新，则将完整的资源返回给浏览器。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%BA%E5%88%B6%E5%88%B7%E6%96%B0%E9%A1%B5%E9%9D%A2%EF%BC%8C%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BC%9A%E7%9B%B4%E6%8E%A5%E5%BF%BD%E7%95%A5%E6%9C%AC%E5%9C%B0%E7%9A%84%E7%BC%93%E5%AD%98%EF%BC%88%E6%9C%89%E7%BC%93%E5%AD%98%E4%B9%9F%E4%BC%9A%E8%AE%A4%E4%B8%BA%E6%9C%AC%E5%9C%B0%E6%B2%A1%E6%9C%89%E7%BC%93%E5%AD%98%EF%BC%89%EF%BC%8C%E5%9C%A8%E8%AF%B7%E6%B1%82%E4%B8%AD%E5%8A%A0%E4%B8%8A%E5%AD%97%E6%AE%B5%EF%BC%9ACache-Control-no-cache%EF%BC%88%E6%88%96-Pragma-no-cache%EF%BC%89%EF%BC%8C%E5%8F%91%E5%8C%85%E5%90%91%E6%9C%8D%E5%8A%A1%E9%87%8D%E6%96%B0%E6%8B%89%E5%8F%96%E6%96%87%E4%BB%B6%E3%80%82"><span class="nav-number">2.5.0.18.</span> <span class="nav-text">强制刷新页面，浏览器会直接忽略本地的缓存（有缓存也会认为本地没有缓存），在请求中加上字段：Cache-Control:no-cache（或 Pragma:no-cache），发包向服务重新拉取文件。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dom-Storage-%E5%AD%98%E5%82%A8%E6%9C%BA%E5%88%B6"><span class="nav-number">2.5.0.19.</span> <span class="nav-text">Dom Storage 存储机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sessionStorage%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%EF%BC%88%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%B3%E9%97%AD%E5%88%99%E7%A7%BB%E9%99%A4%EF%BC%89-%E5%92%8C-localStorage%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8%EF%BC%88%E4%B8%8D%E6%B8%85%E6%A5%9A%E5%88%99%E6%B0%B8%E4%B9%85%E5%AD%98%E5%9C%A8%EF%BC%89%EF%BC%885M%EF%BC%89"><span class="nav-number">2.5.0.20.</span> <span class="nav-text">sessionStorage浏览器缓存（浏览器关闭则移除） 和 localStorage本地存储（不清楚则永久存在）（5M）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%EF%BC%9A-%E9%A1%B5%E9%9D%A2%E6%84%8F%E5%A4%96%E5%85%B3%E9%97%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E6%81%A2%E5%A4%8D"><span class="nav-number">2.5.0.21.</span> <span class="nav-text">应用场景： 页面意外关闭的数据恢复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Application-Cache-%E6%9C%BA%E5%88%B6"><span class="nav-number">2.5.0.22.</span> <span class="nav-text">Application Cache 机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%9C%A8%E9%A6%96%E6%AC%A1%E5%8A%A0%E8%BD%BD-HTML-%E6%96%87%E4%BB%B6%E6%97%B6%EF%BC%8C%E4%BC%9A%E8%A7%A3%E6%9E%90-manifest-%E5%B1%9E%E6%80%A7%EF%BC%8C-lt-html-manifest-quot-demo-html-appcache-quot-gt-%E5%B9%B6%E8%AF%BB%E5%8F%96-manifest-%E6%96%87%E4%BB%B6%EF%BC%8C%E8%8E%B7%E5%8F%96-Section%EF%BC%9ACACHE-MANIFEST-%E4%B8%8B%E8%A6%81%E7%BC%93%E5%AD%98%E7%9A%84%E6%96%87%E4%BB%B6%E5%88%97%E8%A1%A8%EF%BC%8C%E5%86%8D%E5%AF%B9%E6%96%87%E4%BB%B6%E7%BC%93%E5%AD%98%E3%80%82%EF%BC%88%E4%B8%80%E8%88%AC%E6%B8%B8%E6%88%8F%E7%9A%84%E5%BA%94%E7%94%A8%E7%9A%84%E6%AF%94%E8%BE%83%E5%A4%9A%EF%BC%89"><span class="nav-number">2.5.0.23.</span> <span class="nav-text">浏览器在首次加载 HTML 文件时，会解析 manifest 属性，&lt;html manifest&#x3D;&quot;demo_html.appcache&quot;&gt; 并读取 manifest 文件，获取 Section：CACHE MANIFEST 下要缓存的文件列表，再对文件缓存。（一般游戏的应用的比较多）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AppCache-%E5%9C%A8%E9%A6%96%E6%AC%A1%E5%8A%A0%E8%BD%BD%E7%94%9F%E6%88%90%E5%90%8E%EF%BC%8C%E4%B9%9F%E6%9C%89%E6%9B%B4%E6%96%B0%E6%9C%BA%E5%88%B6%E3%80%82%E8%A2%AB%E7%BC%93%E5%AD%98%E7%9A%84%E6%96%87%E4%BB%B6%E5%A6%82%E6%9E%9C%E8%A6%81%E6%9B%B4%E6%96%B0%EF%BC%8C%E9%9C%80%E8%A6%81%E6%9B%B4%E6%96%B0-manifest-%E6%96%87%E4%BB%B6%E3%80%82%E5%9B%A0%E4%B8%BA%E6%B5%8F%E8%A7%88%E5%99%A8%E5%9C%A8%E4%B8%8B%E6%AC%A1%E5%8A%A0%E8%BD%BD%E6%97%B6%EF%BC%8C%E9%99%A4%E4%BA%86%E4%BC%9A%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8%E7%BC%93%E5%AD%98%E5%A4%96%EF%BC%8C%E8%BF%98%E4%BC%9A%E5%9C%A8%E5%90%8E%E5%8F%B0%E6%A3%80%E6%9F%A5-manifest-%E6%96%87%E4%BB%B6%E6%9C%89%E6%B2%A1%E6%9C%89%E4%BF%AE%E6%94%B9%EF%BC%88byte-by-byte-%E3%80%82%E5%8F%91%E7%8E%B0%E6%9C%89%E4%BF%AE%E6%94%B9%EF%BC%8C%E5%B0%B1%E4%BC%9A%E9%87%8D%E6%96%B0%E8%8E%B7%E5%8F%96-manifest-%E6%96%87%E4%BB%B6%EF%BC%8C%E5%AF%B9-Section%EF%BC%9ACACHE-MANIFEST-%E4%B8%8B%E6%96%87%E4%BB%B6%E5%88%97%E8%A1%A8%E6%A3%80%E6%9F%A5%E6%9B%B4%E6%96%B0%E3%80%82manifest-%E6%96%87%E4%BB%B6%E4%B8%8E%E7%BC%93%E5%AD%98%E6%96%87%E4%BB%B6%E7%9A%84%E6%A3%80%E6%9F%A5%E6%9B%B4%E6%96%B0%E4%B9%9F%E9%81%B5%E5%AE%88%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E3%80%82"><span class="nav-number">2.5.0.24.</span> <span class="nav-text">AppCache 在首次加载生成后，也有更新机制。被缓存的文件如果要更新，需要更新 manifest 文件。因为浏览器在下次加载时，除了会默认使用缓存外，还会在后台检查 manifest 文件有没有修改（byte by byte)。发现有修改，就会重新获取 manifest 文件，对 Section：CACHE MANIFEST 下文件列表检查更新。manifest 文件与缓存文件的检查更新也遵守浏览器缓存机制。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF-Web-%E5%8A%A0%E8%BD%BD%E6%80%A7%E8%83%BD%EF%BC%88%E7%BC%93%E5%AD%98%EF%BC%89%E4%BC%98%E5%8C%96"><span class="nav-number">2.5.1.</span> <span class="nav-text">移动端 Web 加载性能（缓存）优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%AF%B9%E4%B8%80%E4%BA%9B-H5%E9%A1%B5%E9%9D%A2%E8%BF%9B%E8%A1%8C%E8%B0%83%E8%AF%95%E5%8F%8A%E6%8A%93%E5%8C%85%E5%8F%91%E7%8E%B0%EF%BC%8C%E6%AF%8F%E6%AC%A1%E5%8A%A0%E8%BD%BD%E4%B8%80%E4%B8%AA-H5%E9%A1%B5%E9%9D%A2%EF%BC%8C%E9%83%BD%E4%BC%9A%E6%9C%89%E8%BE%83%E5%A4%9A%E7%9A%84%E8%AF%B7%E6%B1%82%E3%80%82%E9%99%A4%E4%BA%86-HTML-%E4%B8%BB-URL-%E8%87%AA%E8%BA%AB%E7%9A%84%E8%AF%B7%E6%B1%82%E5%A4%96%EF%BC%8CHTML%E5%A4%96%E9%83%A8%E5%BC%95%E7%94%A8%E7%9A%84-JS%E3%80%81CSS%E3%80%81%E5%AD%97%E4%BD%93%E6%96%87%E4%BB%B6%E3%80%81%E5%9B%BE%E7%89%87%E9%83%BD%E6%98%AF%E4%B8%80%E4%B8%AA%E7%8B%AC%E7%AB%8B%E7%9A%84-HTTP-%E8%AF%B7%E6%B1%82%EF%BC%8C%E6%AF%8F%E4%B8%80%E4%B8%AA%E8%AF%B7%E6%B1%82%E9%83%BD%E4%B8%B2%E8%A1%8C%E7%9A%84%EF%BC%88%E5%8F%AF%E8%83%BD%E6%9C%89%E8%BF%9E%E6%8E%A5%E5%A4%8D%E7%94%A8%EF%BC%89%E3%80%82%E8%BF%99%E4%B9%88%E5%A4%9A%E8%AF%B7%E6%B1%82%E4%B8%B2%E8%B5%B7%E6%9D%A5%EF%BC%8C%E5%86%8D%E5%8A%A0%E4%B8%8A%E6%B5%8F%E8%A7%88%E5%99%A8%E8%A7%A3%E6%9E%90%E3%80%81%E6%B8%B2%E6%9F%93%E7%9A%84%E6%97%B6%E9%97%B4%EF%BC%8CWeb-%E6%95%B4%E4%BD%93%E7%9A%84%E5%8A%A0%E8%BD%BD%E6%97%B6%E9%97%B4%E5%8F%98%E5%BE%97%E8%BE%83%E9%95%BF%EF%BC%9B%E8%AF%B7%E6%B1%82%E6%96%87%E4%BB%B6%E8%B6%8A%E5%A4%9A%EF%BC%8C%E6%B6%88%E8%80%97%E7%9A%84%E6%B5%81%E9%87%8F%E4%B9%9F%E4%BC%9A%E8%B6%8A%E5%A4%9A%E3%80%82%E6%88%91%E4%BB%AC%E5%8F%AF%E7%BB%BC%E5%90%88%E4%BD%BF%E7%94%A8%E4%B8%8A%E9%9D%A2%E8%AF%B4%E5%88%B0%E5%87%A0%E7%A7%8D%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%EF%BC%8C%E6%9D%A5%E5%B8%AE%E5%8A%A9%E6%88%91%E4%BB%AC%E4%BC%98%E5%8C%96-Web-%E7%9A%84%E5%8A%A0%E8%BD%BD%E6%80%A7%E8%83%BD%E3%80%82"><span class="nav-number">2.5.1.1.</span> <span class="nav-text">通过对一些 H5页面进行调试及抓包发现，每次加载一个 H5页面，都会有较多的请求。除了 HTML 主 URL 自身的请求外，HTML外部引用的 JS、CSS、字体文件、图片都是一个独立的 HTTP 请求，每一个请求都串行的（可能有连接复用）。这么多请求串起来，再加上浏览器解析、渲染的时间，Web 整体的加载时间变得较长；请求文件越多，消耗的流量也会越多。我们可综合使用上面说到几种缓存机制，来帮助我们优化 Web 的加载性能。</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/12/Http-Description/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Http版本区别与用户认证 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Http版本区别与用户认证
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-04-12 13:49:53" itemprop="dateCreated datePublished" datetime="2018-04-12T13:49:53+08:00">2018-04-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
         <h1 id="Http版本区别与用户认证"><a href="#Http版本区别与用户认证" class="headerlink" title="Http版本区别与用户认证"></a><a href="">Http版本区别与用户认证</a></h1><p>HTTP协议(HyperTextTransferProtocol超文本传输协议)基于TCP&#x2F;IP通信协议来传递数据</p>
 <h1 id="内容摘要："><a href="#内容摘要：" class="headerlink" title="内容摘要："></a>内容摘要：</h1><ul>
 <li>Http版本</li>
@@ -47,65 +235,73 @@
     </div>
 
     
-        <hr class="fhr">
-        <div id="vcomments"></div>
     
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Http-Https-Session-Cookie-Token/" rel="tag"># Http Https Session Cookie Token</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/04/11/JS%E5%AF%B9%E8%B1%A1%E5%B8%B8%E7%94%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95/" rel="prev" title="JS对象常用的操作方法">
+                  <i class="fa fa-chevron-left"></i> JS对象常用的操作方法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/04/13/JS%E6%95%B0%E7%BB%84%E5%B8%B8%E7%94%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95/" rel="next" title="JS数组常用的操作方法">
+                  JS数组常用的操作方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
 </div>
-    <div class="footer" id="footer">
-    <p><h4>Copyright © 2020 | 作者: YeChang Zhang | 主题 By <a class="theme-author" target="_blank" rel="noopener" href="https://github.com/Xunzhuo/hexo-theme-coder" style="font-size:14px; color: #969696">Coder</a></h4>
-    
-        <script>
-            var bszCaller,bszTag;!function(){var c,d,e,a=!1,b=[];ready=function(c){return a||"interactive"===document.readyState||"complete"===document.readyState?c.call(document):b.push(function(){return c.call(this)}),this},d=function(){for(var a=0,c=b.length;c>a;a++)b[a].apply(document);b=[]},e=function(){a||(a=!0,d.call(window),document.removeEventListener?document.removeEventListener("DOMContentLoaded",e,!1):document.attachEvent&&(document.detachEvent("onreadystatechange",e),window==window.top&&(clearInterval(c),c=null)))},document.addEventListener?document.addEventListener("DOMContentLoaded",e,!1):document.attachEvent&&(document.attachEvent("onreadystatechange",function(){/loaded|complete/.test(document.readyState)&&e()}),window==window.top&&(c=setInterval(function(){try{a||document.documentElement.doScroll("left")}catch(b){return}e()},5)))}(),bszCaller={fetch:function(a,b){var c="BusuanziCallback_"+Math.floor(1099511627776*Math.random());window[c]=this.evalCall(b),a=a.replace("=BusuanziCallback","="+c),scriptTag=document.createElement("SCRIPT"),scriptTag.type="text/javascript",scriptTag.defer=!0,scriptTag.src=a,scriptTag.referrerPolicy="no-referrer-when-downgrade",document.getElementsByTagName("HEAD")[0].appendChild(scriptTag)},evalCall:function(a){return function(b){ready(function(){try{a(b),scriptTag.parentElement.removeChild(scriptTag)}catch(c){bszTag.hides()}})}}},bszCaller.fetch("//busuanzi.ibruce.info/busuanzi?jsonpCallback=BusuanziCallback",function(a){bszTag.texts(a),bszTag.shows()}),bszTag={bszs:["site_pv","page_pv","site_uv"],texts:function(a){this.bszs.map(function(b){var c=document.getElementById("busuanzi_value_"+b);c&&(c.innerHTML=a[b])})},hides:function(){this.bszs.map(function(a){var b=document.getElementById("busuanzi_container_"+a);b&&(b.style.display="none")})},shows:function(){this.bszs.map(function(a){var b=document.getElementById("busuanzi_container_"+a);b&&(b.style.display="inline")})}};
-        </script>
-        <span id="busuanzi_container_site_pv">本站浏览总访问量: <span id="busuanzi_value_site_pv"></span></span>
-        <span class="post-meta-divider">|</span>
-        <span id="busuanzi_container_site_uv">本站访问人数: <span id="busuanzi_value_site_uv"></span></span>
-    
-    <label class="el-switch el-switch-blue el-switch-sm" style="vertical-align: sub;">
-        <input type="checkbox" name="switch" id="update_style">
-        <span class="el-switch-style"></span>
-    </label>
 
-    <!--         <script type="text/javascript">
-    var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
-    document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
-    </script> -->
-</p>
+
+
+
+
+
 </div>
+  </main>
 
-<input type="hidden" id="web_style" value="black">
-<input type="hidden" id="valine_appid" value="">
-<input type="hidden" id="valine_appKey" value="">
-
-<script src="/libs/jquery.min.js"></script>
+  <footer class="footer">
+    <div class="footer-inner">
 
 
-<script src="/libs/highlight/highlight.pack.js"></script>
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
 
-<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+    </div>
+  </footer>
 
-<script src="/js/js.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
-<style type="text/css">
-.v * {
-color: #698fca;
-}
-.v .vlist .vcard .vhead .vsys {
-color: #3a3e4a;
-}
-.v .vlist .vcard .vh .vmeta .vat {
-color: #638fd5;
-}
-.v .vlist .vcard .vhead .vnick {
-color: #6ba1ff;
-}
-.v a {
-color: #8696b1;
-}
-.v .vlist .vcard .vhead .vnick:hover {
-color: #669bfc;
-}
-</style>
-    <script type="text/javascript" color="173,174,173" opacity='1' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+
+
+
+
+
+  
+
+
+
+
+
 </body>
 </html>
