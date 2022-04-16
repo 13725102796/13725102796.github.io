@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -166,6 +166,86 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/13/JS%E6%95%B0%E7%BB%84%E5%B8%B8%E7%94%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/04/13/JS%E6%95%B0%E7%BB%84%E5%B8%B8%E7%94%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">JS数组常用的操作方法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-04-13 11:38:05" itemprop="dateCreated datePublished" datetime="2018-04-13T11:38:05+08:00">2018-04-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="JS数组常用的操作方法"><a href="#JS数组常用的操作方法" class="headerlink" title="JS数组常用的操作方法"></a>JS数组常用的操作方法</h2><ul>
+<li>Array.length 获取数组长度</li>
+<li>Array.shift() Array.unshift()  Array.push() Array.pop()</li>
+<li>Array.concat(a1,a2….) 数组合并</li>
+<li>Array.reverse() 数组元素颠倒</li>
+<li>Array.join(‘拼接字符’) 数组转字符串</li>
+<li>Array.indexOf(item) ||  Array.includes(item) 判断Item 是否存在数组里面 </li>
+<li>Array.fill(填充val，下标1，下标2) 数组填充</li>
+<li>[…new Set(arr)]数组去重 || Array.from(new Set(arr))</li>
+<li>Array.slice(begin,end) 这一对象是一个由 begin 和 end 决定的原数组的浅拷贝</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line">// Array.length 获取数组长度</span><br><span class="line">const clothing = [<span class="string">&#x27;shoes&#x27;</span>, <span class="string">&#x27;shirts&#x27;</span>, <span class="string">&#x27;socks&#x27;</span>, <span class="string">&#x27;sweaters&#x27;</span>];</span><br><span class="line">console.log(clothing.length); // 4</span><br><span class="line"></span><br><span class="line">// ---------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.<span class="built_in">shift</span>() Array.unshift()  Array.push() Array.pop()</span><br><span class="line">const array1 = [1, 2, 3];</span><br><span class="line">// 往头部插入</span><br><span class="line">array1.unshift(4, 5); </span><br><span class="line">// array1: [4,5,1,2,3] </span><br><span class="line">// 往头部删除</span><br><span class="line">array1.shift() </span><br><span class="line">// array1: [5,1,2,3] </span><br><span class="line">// 往尾部插入</span><br><span class="line">array1.push(4)</span><br><span class="line">//  array1: [5,1,2,3,4] </span><br><span class="line">// 往尾部删除</span><br><span class="line">array1.pop()</span><br><span class="line">// array1: [5,1,2,3]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">//Array.reverse() 数组元素颠倒</span><br><span class="line">const array1 = [<span class="string">&#x27;one&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;three&#x27;</span>];</span><br><span class="line">array1.reverse() // [<span class="string">&quot;three&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;one&quot;</span>]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.<span class="built_in">join</span>(<span class="string">&#x27;拼接字符&#x27;</span>) 数组转字符串</span><br><span class="line">const elements = [<span class="string">&#x27;Fire&#x27;</span>, <span class="string">&#x27;Air&#x27;</span>, <span class="string">&#x27;Water&#x27;</span>];</span><br><span class="line">console.log(elements.join());</span><br><span class="line">// expected output: <span class="string">&quot;Fire,Air,Water&quot;</span></span><br><span class="line"></span><br><span class="line">console.log(elements.join(<span class="string">&#x27;&#x27;</span>));</span><br><span class="line">// expected output: <span class="string">&quot;FireAirWater&quot;</span></span><br><span class="line"></span><br><span class="line">console.log(elements.join(<span class="string">&#x27;-&#x27;</span>));</span><br><span class="line">// expected output: <span class="string">&quot;Fire-Air-Water&quot;</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.indexOf(item) ||  Array.includes(item) 判断Item 是否存在数组里面</span><br><span class="line">const beasts = [<span class="string">&#x27;ant&#x27;</span>, <span class="string">&#x27;bison&#x27;</span>, <span class="string">&#x27;camel&#x27;</span>, <span class="string">&#x27;duck&#x27;</span>, <span class="string">&#x27;bison&#x27;</span>];</span><br><span class="line"></span><br><span class="line">console.log(beasts.indexOf(<span class="string">&#x27;bison&#x27;</span>));// expected output: 1</span><br><span class="line">console.log(beasts.includes(<span class="string">&#x27;bison&#x27;</span>));// expected output: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.concat(a1,a2....) 数组合并</span><br><span class="line">const array1 = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">const array2 = [<span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>];</span><br><span class="line">const array3 = array1.concat(array2);</span><br><span class="line"></span><br><span class="line">console.log(array3);// [<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>, <span class="string">&quot;d&quot;</span>, <span class="string">&quot;e&quot;</span>, <span class="string">&quot;f&quot;</span>]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.fill(填充val，下标1，下标2) 数组填充</span><br><span class="line">const array1 = [1, 2, 3, 4];</span><br><span class="line">console.log(array1.fill(0, 2, 4)); // [1, 2, 0, 0]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">//*[...new Set(arr)]数组去重 || Array.from(new Set(arr))</span><br><span class="line"><span class="keyword">function</span> unique (arr) &#123;</span><br><span class="line">  <span class="built_in">return</span> Array.from(new Set(arr))</span><br><span class="line">&#125;</span><br><span class="line">var arr = [1,1,<span class="string">&#x27;true&#x27;</span>,<span class="string">&#x27;true&#x27;</span>,<span class="literal">true</span>,<span class="literal">true</span>,15,15,<span class="literal">false</span>,<span class="literal">false</span>, undefined,undefined, null,null, NaN, NaN,<span class="string">&#x27;NaN&#x27;</span>, 0, 0, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;a&#x27;</span>,&#123;&#125;,&#123;&#125;];</span><br><span class="line">console.log(unique(arr)) //[1, <span class="string">&quot;true&quot;</span>, <span class="literal">true</span>, 15, <span class="literal">false</span>, undefined, null, NaN, <span class="string">&quot;NaN&quot;</span>, 0, <span class="string">&quot;a&quot;</span>, &#123;&#125;, &#123;&#125;]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.slice(begin,end) 这一对象是一个由 begin 和 end 决定的原数组的浅拷贝</span><br><span class="line">const animals = [<span class="string">&#x27;ant&#x27;</span>, <span class="string">&#x27;bison&#x27;</span>, <span class="string">&#x27;camel&#x27;</span>, <span class="string">&#x27;duck&#x27;</span>, <span class="string">&#x27;elephant&#x27;</span>];</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(2));</span><br><span class="line">// expected output: Array [<span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>, <span class="string">&quot;elephant&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(2, 4));</span><br><span class="line">// expected output: Array [<span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(1, 5));</span><br><span class="line">// expected output: Array [<span class="string">&quot;bison&quot;</span>, <span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>, <span class="string">&quot;elephant&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(-2));</span><br><span class="line">// expected output: Array [<span class="string">&quot;duck&quot;</span>, <span class="string">&quot;elephant&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(2, -1));</span><br><span class="line">// expected output: Array [<span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice());</span><br><span class="line">// expected output: Array [<span class="string">&quot;ant&quot;</span>, <span class="string">&quot;bison&quot;</span>, <span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>, <span class="string">&quot;elephant&quot;</span>]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 

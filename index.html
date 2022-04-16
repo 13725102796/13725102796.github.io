@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -231,6 +231,82 @@
 <h2 id="parent-x2F-childen，访问父-x2F-子实例-和-ref获取组件实例"><a href="#parent-x2F-childen，访问父-x2F-子实例-和-ref获取组件实例" class="headerlink" title="$parent&#x2F;$childen，访问父&#x2F;子实例 和 ref获取组件实例"></a>$parent&#x2F;$childen，访问父&#x2F;子实例 和 ref获取组件实例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在组件上绑定 ref</span></span><br><span class="line">&lt;Child ref=<span class="string">&quot;child&quot;</span> /&gt;</span><br><span class="line"><span class="comment"># 通过 this.$refs.child 获取子组件的实例</span></span><br><span class="line">this.<span class="variable">$refs</span>.child</span><br><span class="line"></span><br><span class="line"><span class="comment"># 子组件通过 $parent 获取父组件的实例</span></span><br><span class="line">this.<span class="variable">$parent</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="Vuex"><a href="#Vuex" class="headerlink" title="Vuex"></a>Vuex</h2><p>通过 this.$store.dispatch(‘actionName’,params) 触发Action去通知Mutation更新State的值。所有引用改State的值的组件都会更新</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/14/Redux-%E6%89%8B%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/04/14/Redux-%E6%89%8B%E8%AE%B0/" class="post-title-link" itemprop="url">Redux 手记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-14 15:35:45" itemprop="dateCreated datePublished" datetime="2020-04-14T15:35:45+08:00">2020-04-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="什么是Redux"><a href="#什么是Redux" class="headerlink" title="什么是Redux"></a>什么是Redux</h1><p>Redux 是 JavaScript 状态容器，提供可预测化的状态管理<br>可以让你构建一致化的应用，运行于不同的环境（客户端、服务器、原生应用），并且易于测试。</p>
+<h1 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先用一个普通的对象来描述 state</span></span><br><span class="line">&#123;</span><br><span class="line">  visibilityFilter: <span class="string">&#x27;SHOW_COMPLETED&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 想要更新state中的数据，你需要发起一个action（Action 就是一个普通 JavaScript 对象）</span></span><br><span class="line">&#123; <span class="built_in">type</span>: <span class="string">&#x27;SET_VISIBILITY_FILTER&#x27;</span>, filter: <span class="string">&#x27;SHOW_ALL&#x27;</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此刻的action 和 state 并没有任何关联。reducer 可以一个接收 state 和 action，并返回新的 state 的函数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> visibilityFilter(state = <span class="string">&#x27;SHOW_ALL&#x27;</span>, action) &#123;</span><br><span class="line">  <span class="keyword">if</span> (action.type === <span class="string">&#x27;SET_VISIBILITY_FILTER&#x27;</span>) &#123;</span><br><span class="line">    <span class="built_in">return</span> action.filter;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="三大原则"><a href="#三大原则" class="headerlink" title="三大原则"></a>三大原则</h1><ul>
+<li>单一数据源 整个应用的 state 被储存在一棵 object tree 中，并且这个 object tree 只存在于唯一一个 store 中。</li>
+<li>State 是只读的。 唯一改变 state 的方法就是触发 action，action 是一个用于描述已发生事件的普通对象。</li>
+<li>使用纯函数来执行修改。 为了描述 action 如何改变 state tree ，你需要编写reducers。</li>
+</ul>
 
       
     </div>
@@ -899,99 +975,6 @@
 <li>注意 transform 的起点，上边距要用左上角，下边距用左下角</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/* 下边框 */</span><br><span class="line">.one-px-border2:after &#123;</span><br><span class="line">  content: <span class="string">&quot;&quot;</span>;</span><br><span class="line">  position: absolute;</span><br><span class="line">  bottom: 0;</span><br><span class="line">  left: 0;</span><br><span class="line">  right: 0;</span><br><span class="line">  border-bottom: 1px solid red;</span><br><span class="line">  transform: scaleY(.5);</span><br><span class="line">  transform-origin: left bottom;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/25/rem-em-px%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/05/25/rem-em-px%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">rem em px详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-05-25 11:40:04" itemprop="dateCreated datePublished" datetime="2018-05-25T11:40:04+08:00">2018-05-25</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="rem-em-px详解"><a href="#rem-em-px详解" class="headerlink" title="rem em px详解"></a>rem em px详解</h1><ul>
-<li>px相对长度单位，相对于显示器屏幕分辨率来的</li>
-<li>em相对长度单位，相对于当前对象内文本的字体尺寸来的，值不固定，会继承父级元素字体的大小，未经调整浏览器：16px &#x3D; 1em 假如父元素为2em，子元素为2em字体实际大小为4em</li>
-<li>rem是css3新增的相对单位，使用rem为元素设置大小时，是相对大小，相对的是html根元素，修改根元素就可以调整所有字体大小，还可以避免字体大小逐层复合的连锁反应，未经调整浏览器：16px &#x3D; 1rem。</li>
-</ul>
-<h1 id="移动端适配-相关知识储备"><a href="#移动端适配-相关知识储备" class="headerlink" title="移动端适配 相关知识储备"></a>移动端适配 相关知识储备</h1><p>响应式 —— 在css中，针对不同大小的浏览器窗口，用不同的方式相应更新页面的样式。<br>1inch（英寸） &#x3D; 25.4mm（毫米） &#x3D; 6pc（pica，印刷术语，长度为12points） &#x3D; 72pt（点） &#x3D; 96px（像素）</p>
-<p>em —— 基准是 当前元素的字号（font-size）大小，实际值取决于在哪个元素上应用。</p>
-<ul>
-<li>基准是当前元素的font-size</li>
-<li>如果当前元素的字号用的是em，那么当前元素字号的基准是其父元素</li>
-<li>先算出当前元素的font-size的像素值，再计算其他使用em作为单位的属性值大小</li>
-</ul>
-<p>rem —— 是根em的缩写，基准是根元素的字号大小**</p>
-<p>视口viewport —— 浏览器窗口中用来渲染页面的可视区域，不包括浏览器的地址栏、工具栏、状态栏等。<br>相关单位</p>
-<ul>
-<li>vh ——视口高度的1&#x2F;100</li>
-<li>vw——视口宽度的1&#x2F;100</li>
-<li>vmin——视口宽度或者高度较小值的1&#x2F;100</li>
-<li>vmax——视口官渡或者高度较大值的1&#x2F;100（横竖屏时可以用这两个值）</li>
-</ul>
-<p>flexible源码解读</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">// 立即执行函数，入参是window和document</span><br><span class="line">(<span class="keyword">function</span> flexible (window, document) &#123;</span><br><span class="line">  var docEl = document.documentElement</span><br><span class="line">  // 文档的root元素</span><br><span class="line">  var dpr = window.devicePixelRatio || 1</span><br><span class="line">  // 获取设备的dpr（返回当前显示设备的物理像素分辨率与css像素分辨率之比），它告诉浏览器应该使用多少屏幕实际像素来绘制单个css像素，</span><br><span class="line"></span><br><span class="line">  // adjust body font size</span><br><span class="line">  // 调整body标签的fontsize，fontsize = (12 * dpr) + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">  // 设置默认字体大小，默认的字体大小继承自body，如果子元素没有设置font-size就继承父元素设置的这个默认字号（这个地方有个疑问，为什么以12位基准，是因为浏览器的最小显示的字号是12吗？）</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">setBodyFontSize</span></span> () &#123;</span><br><span class="line">    <span class="keyword">if</span> (document.body) &#123;</span><br><span class="line">      document.body.style.fontSize = (12 * dpr) + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      document.addEventListener(<span class="string">&#x27;DOMContentLoaded&#x27;</span>, setBodyFontSize)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  setBodyFontSize();</span><br><span class="line"></span><br><span class="line">  // <span class="built_in">set</span> 1rem = viewWidth / 10</span><br><span class="line">  // 设置根元素的fontsize为clientwidth/10（除以10纯粹是为了计算方便）这个地方也可以直接写10vw（表示可视窗口的宽度的十分之一）</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">setRemUnit</span></span> () &#123;</span><br><span class="line">    var rem = docEl.clientWidth / 10</span><br><span class="line">    docEl.style.fontSize = rem + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setRemUnit()</span><br><span class="line"></span><br><span class="line">  // reset rem unit on page resize</span><br><span class="line">  // 当页面展示或重新设置大小的时候，重新对rem的px值进行计算</span><br><span class="line">  window.addEventListener(<span class="string">&#x27;resize&#x27;</span>, setRemUnit)</span><br><span class="line">  window.addEventListener(<span class="string">&#x27;pageshow&#x27;</span>, <span class="keyword">function</span> (e) &#123;</span><br><span class="line">    <span class="keyword">if</span> (e.persisted) &#123;</span><br><span class="line">      setRemUnit()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  // detect 0.5px supports</span><br><span class="line">  <span class="keyword">if</span> (dpr &gt;= 2) &#123;</span><br><span class="line">    var fakeBody = document.createElement(<span class="string">&#x27;body&#x27;</span>)</span><br><span class="line">    var testElement = document.createElement(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">    testElement.style.border = <span class="string">&#x27;.5px solid transparent&#x27;</span></span><br><span class="line">    fakeBody.appendChild(testElement)</span><br><span class="line">    docEl.appendChild(fakeBody)</span><br><span class="line">    <span class="keyword">if</span> (testElement.offsetHeight === 1) &#123;</span><br><span class="line">      docEl.classList.add(<span class="string">&#x27;hairlines&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    docEl.removeChild(fakeBody)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;(window, document))</span><br></pre></td></tr></table></figure>
-
-
-
 
       
     </div>

@@ -23,6 +23,25 @@
     
     
     <entry>
+      <title>Redux 手记</title>
+      <link href="/2020/04/14/Redux-%E6%89%8B%E8%AE%B0/"/>
+      <url>/2020/04/14/Redux-%E6%89%8B%E8%AE%B0/</url>
+      
+        <content type="html"><![CDATA[<h1 id="什么是Redux"><a href="#什么是Redux" class="headerlink" title="什么是Redux"></a>什么是Redux</h1><p>Redux 是 JavaScript 状态容器，提供可预测化的状态管理<br>可以让你构建一致化的应用，运行于不同的环境（客户端、服务器、原生应用），并且易于测试。</p><h1 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先用一个普通的对象来描述 state</span></span><br><span class="line">&#123;</span><br><span class="line">  visibilityFilter: <span class="string">&#x27;SHOW_COMPLETED&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 想要更新state中的数据，你需要发起一个action（Action 就是一个普通 JavaScript 对象）</span></span><br><span class="line">&#123; <span class="built_in">type</span>: <span class="string">&#x27;SET_VISIBILITY_FILTER&#x27;</span>, filter: <span class="string">&#x27;SHOW_ALL&#x27;</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此刻的action 和 state 并没有任何关联。reducer 可以一个接收 state 和 action，并返回新的 state 的函数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> visibilityFilter(state = <span class="string">&#x27;SHOW_ALL&#x27;</span>, action) &#123;</span><br><span class="line">  <span class="keyword">if</span> (action.type === <span class="string">&#x27;SET_VISIBILITY_FILTER&#x27;</span>) &#123;</span><br><span class="line">    <span class="built_in">return</span> action.filter;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><h1 id="三大原则"><a href="#三大原则" class="headerlink" title="三大原则"></a>三大原则</h1><ul><li>单一数据源 整个应用的 state 被储存在一棵 object tree 中，并且这个 object tree 只存在于唯一一个 store 中。</li><li>State 是只读的。 唯一改变 state 的方法就是触发 action，action 是一个用于描述已发生事件的普通对象。</li><li>使用纯函数来执行修改。 为了描述 action 如何改变 state tree ，你需要编写reducers。</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Redux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>TCP/IP 详解</title>
       <link href="/2020/04/14/TCP-IP-%E8%AF%A6%E8%A7%A3/"/>
       <url>/2020/04/14/TCP-IP-%E8%AF%A6%E8%A7%A3/</url>
