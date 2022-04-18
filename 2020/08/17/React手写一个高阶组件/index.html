@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="高级组件是为了让数据和视图分离，这里以Clock为例123456789101112131415161718192021222324252627282930# 获取当前运动的时间点class Clock extends React.Components &amp;#123;  constructor()&amp;#123;    super()    this.state &#x3D; &amp;#123;      date: n">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React手写一个高阶组件">
+<meta property="og:url" content="http://example.com/2020/08/17/React%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="高级组件是为了让数据和视图分离，这里以Clock为例123456789101112131415161718192021222324252627282930# 获取当前运动的时间点class Clock extends React.Components &amp;#123;  constructor()&amp;#123;    super()    this.state &#x3D; &amp;#123;      date: n">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-17T08:04:50.000Z">
+<meta property="article:modified_time" content="2022-04-18T15:59:47.900Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="React HOC">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/08/17/React%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/08/17/React%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/","path":"2020/08/17/React手写一个高阶组件/","title":"React手写一个高阶组件"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React手写一个高阶组件 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E7%BB%84%E4%BB%B6%E6%98%AF%E4%B8%BA%E4%BA%86%E8%AE%A9%E6%95%B0%E6%8D%AE%E5%92%8C%E8%A7%86%E5%9B%BE%E5%88%86%E7%A6%BB%EF%BC%8C%E8%BF%99%E9%87%8C%E4%BB%A5Clock%E4%B8%BA%E4%BE%8B"><span class="nav-number">1.</span> <span class="nav-text">高级组件是为了让数据和视图分离，这里以Clock为例</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/17/React%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="React手写一个高阶组件 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React手写一个高阶组件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-17 16:04:50" itemprop="dateCreated datePublished" datetime="2020-08-17T16:04:50+08:00">2020-08-17</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="高级组件是为了让数据和视图分离，这里以Clock为例"><a href="#高级组件是为了让数据和视图分离，这里以Clock为例" class="headerlink" title="高级组件是为了让数据和视图分离，这里以Clock为例"></a>高级组件是为了让数据和视图分离，这里以Clock为例</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取当前运动的时间点</span></span><br><span class="line">class Clock extends React.Components &#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span></span>()&#123;</span><br><span class="line">    super()</span><br><span class="line">    this.state = &#123;</span><br><span class="line">      <span class="built_in">date</span>: new Date().toLocaleTimeString()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">componentDidMount</span></span>()&#123;</span><br><span class="line">    this.timerId = setInterval(()=&gt;&#123;</span><br><span class="line">      this.tick()</span><br><span class="line">    &#125;,1000)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">componentWillUnmount</span></span>()&#123;</span><br><span class="line">    clearInterval(this.timerId)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">tick</span></span>()&#123;</span><br><span class="line">    this.setState(&#123;</span><br><span class="line">      <span class="built_in">date</span>: new Date().toLocaleTimeString()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>()&#123;</span><br><span class="line">    <span class="built_in">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;This is Clock&lt;/h1&gt;</span><br><span class="line">        &lt;h2&gt;&#123;this.state.date&#125;&lt;/h2&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面一个普通的时钟组件就写好了，但是我想要很多个不同外观的时钟。<br>这个时候我不可能去一个个的复制这个Clock-》Clock1-》Clock2… 然后去修改里面的render里面html的外观。</p>
+<p>首先要明确一点，这里的获取和生成数据的逻辑都是一样的，是可以复用<br>这时候，就可以使用高阶组件去包装，把数据操作层和UI层分离出来<br>通过向高阶组件传递UI的组件去复用数据的逻辑</p>
+<p>实现代码如下： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="keyword">function</span> HightClock(UIComponents)&#123;</span><br><span class="line">  <span class="built_in">return</span> class extends React.Component &#123;</span><br><span class="line">    constructor(props)&#123;</span><br><span class="line">      super(props)</span><br><span class="line">      this.state = &#123;</span><br><span class="line">        <span class="built_in">date</span>: new Date().toLocaleTimeString()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">componentDidMount</span></span>()&#123;</span><br><span class="line">      this.timerId = setInterval(()=&gt;&#123;</span><br><span class="line">        this.tick()</span><br><span class="line">      &#125;,1000)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">componentWillUnmount</span></span>()&#123;</span><br><span class="line">      clearInterval(this.timerId)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">tick</span></span>()&#123;</span><br><span class="line">      this.setState(&#123;</span><br><span class="line">        <span class="built_in">date</span>: new Date().toLocaleTimeString()</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">render</span></span>()&#123;</span><br><span class="line">      <span class="built_in">return</span> (</span><br><span class="line">        &lt;UIComponents <span class="built_in">date</span>=&#123;this.state.date&#125; &#123;...this.props&#125; /&gt;</span><br><span class="line">      )</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> Clock1 (props)&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h1&gt;Clock1&lt;/h1&gt;</span><br><span class="line">      &lt;h2&gt;&#123;props.date&#125;&lt;/h2&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> Clock2 (props)&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div style=&#123;&#123;color: <span class="string">&#x27;red&#x27;</span>&#125;&#125; &gt;</span><br><span class="line">      &lt;h1&gt;Clock2&lt;/h1&gt;</span><br><span class="line">      &lt;h2&gt;&#123;props.date&#125;&lt;/h2&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line">const Clock1Componetns = HightClock(Clock1)</span><br><span class="line">const Clock2Componetns = HightClock(Clock12)</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Clock</span></span> ()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;Clock1Componetns /&gt;</span><br><span class="line">      &lt;Clock2Componetns /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default Clock</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/React-HOC/" rel="tag"># React HOC</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/07/17/react%E7%BB%84%E4%BB%B6%E4%BB%B6%E7%9A%84%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%94%A8%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%B8%BA%E4%BD%95%E5%BC%83%E7%94%A8mixins%E7%9A%84%E6%80%9D%E8%80%83/" rel="prev" title="react组件件的代码复用，以及为何弃用mixins的思考">
+                  <i class="fa fa-chevron-left"></i> react组件件的代码复用，以及为何弃用mixins的思考
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/13/Vue-%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF%E7%9A%84%E6%96%B9%E6%B3%95/" rel="next" title="Vue 组件通讯的方法">
+                  Vue 组件通讯的方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

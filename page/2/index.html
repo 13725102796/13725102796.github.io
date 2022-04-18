@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -166,6 +166,567 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/07/reactAPI%E5%85%A8%E5%B1%80props/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/04/07/reactAPI%E5%85%A8%E5%B1%80props/" class="post-title-link" itemprop="url">reactAPI全局props</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-07 15:00:19" itemprop="dateCreated datePublished" datetime="2020-04-07T15:00:19+08:00">2020-04-07</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="createContext"><a href="#createContext" class="headerlink" title="createContext"></a>createContext</h1><p>Context 提供了一个无需为每层组件手动添加 props，就能在组件树间进行数据传递的方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用传统props蹈入props</span></span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> &lt;Toolbar theme=<span class="string">&quot;dark&quot;</span> /&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> Toolbar(props) &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;ThemedButton theme=&#123;props.theme&#125; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ThemedButton extends React.Component &#123;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> &lt;Button theme=&#123;this.props.theme&#125; /&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># ---------------------------------------------------</span></span><br><span class="line"><span class="comment"># 使用 context, 我们可以避免通过中间元素传递 props：</span></span><br><span class="line"><span class="comment"># 为当前的 theme 创建一个 context（“light”为默认值）。</span></span><br><span class="line">const ThemeContext = React.createContext(<span class="string">&#x27;light&#x27;</span>);</span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    // 使用一个 Provider 来将当前的 theme 传递给以下的组件树。</span><br><span class="line">    // 无论多深，任何组件都能读取这个值。</span><br><span class="line">    // 在这个例子中，我们将 “dark” 作为当前的值传递下去。</span><br><span class="line">    <span class="built_in">return</span> (</span><br><span class="line">      &lt;ThemeContext.Provider value=<span class="string">&quot;dark&quot;</span>&gt;</span><br><span class="line">        &lt;Toolbar /&gt;</span><br><span class="line">      &lt;/ThemeContext.Provider&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 中间的组件再也不必指明往下传递 theme 了。</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Toolbar</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;ThemedButton /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line">class ThemedButton extends React.Component &#123;</span><br><span class="line">  // 指定 contextType 读取当前的 theme context。</span><br><span class="line">  // React 会往上找到最近的 theme Provider，然后使用它的值。</span><br><span class="line">  // 在这个例子中，当前的 theme 值为 “dark”。</span><br><span class="line">  static contextType = ThemeContext;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> &lt;Button theme=&#123;this.context&#125; /&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/06/14/JS%E5%BE%AE%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%AE%8F%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/06/14/JS%E5%BE%AE%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%AE%8F%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/" class="post-title-link" itemprop="url">JS微任务和宏任务的执行顺序</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-06-14 11:03:11" itemprop="dateCreated datePublished" datetime="2019-06-14T11:03:11+08:00">2019-06-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>浏览器是多线程的，JS是单线程的（浏览器只分配一个线程来执行JS）意味着js每次只能执行一个任务，那么，遇到异步任务首先会放到任务队列中（执行栈），先执行主线程中的任务，当主线程中的任务被执行完后，在回过来依次将执行任务队列中任务放入主线程去执行。</p>
+<p>js中的任务分为：同步任务和异步任务，而异步任务又可以分为微任务和宏任务</p>
+<p>宏任务：macro task</p>
+<ul>
+<li>定时器(setTimeout,setInterval,setImmediate)</li>
+<li>事件绑定(onClick)</li>
+<li>ajax</li>
+<li>回调函数    </li>
+<li>nodejs中的fs I&#x2F;O操作</li>
+</ul>
+<p>微任务: micro task</p>
+<ul>
+<li>Promsie(async&#x2F;await)</li>
+<li>process.nextTick</li>
+<li>MutationObserver</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">async <span class="keyword">function</span> <span class="function"><span class="title">asy1</span></span>()&#123;</span><br><span class="line">  await console.log(<span class="string">&#x27;asy1&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line">console.log(<span class="string">&#x27;script start&#x27;</span>)</span><br><span class="line">setTimeout(()=&gt;&#123;</span><br><span class="line">  console.log(<span class="string">&#x27;time out&#x27;</span>)</span><br><span class="line">&#125;,0)</span><br><span class="line">setTimeout(()=&gt;&#123;</span><br><span class="line">  setTimeout(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;宏任务中的宏任务&#x27;</span>)</span><br><span class="line">  &#125;,0)</span><br><span class="line">  Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;timeOut+promise1&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  console.log(<span class="string">&#x27;timeOut+promise1之前还是之后&#x27;</span>)</span><br><span class="line">&#125;,0)</span><br><span class="line"></span><br><span class="line">asy1()</span><br><span class="line">Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">  console.log(<span class="string">&#x27;promise1&#x27;</span>)</span><br><span class="line">&#125;).<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">  Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;promise1+promise1&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  setTimeout(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;promise time out&#x27;</span>)</span><br><span class="line">  &#125;,0)</span><br><span class="line">  console.log(<span class="string">&#x27;promise2&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">console.log(<span class="string">&#x27;script end&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># script start</span></span><br><span class="line"><span class="comment"># asy1</span></span><br><span class="line"><span class="comment"># script end</span></span><br><span class="line"><span class="comment"># promise1</span></span><br><span class="line"><span class="comment"># promise2</span></span><br><span class="line"><span class="comment"># promise1+promise1</span></span><br><span class="line"><span class="comment"># time out</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>先执行微任务，执行完所有微任务之后（微任务中产生的微任务也要执行完），再执行宏任务，（宏任务中产生的微任务要优先执行）</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/05/28/%E6%B5%8F%E8%A7%88%E5%99%A8%E9%87%8D%E6%8E%92%E5%92%8C%E9%87%8D%E7%BB%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/05/28/%E6%B5%8F%E8%A7%88%E5%99%A8%E9%87%8D%E6%8E%92%E5%92%8C%E9%87%8D%E7%BB%98/" class="post-title-link" itemprop="url">浏览器重排和重绘</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-05-28 19:37:52" itemprop="dateCreated datePublished" datetime="2019-05-28T19:37:52+08:00">2019-05-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="重排和重绘区别"><a href="#重排和重绘区别" class="headerlink" title="重排和重绘区别"></a>重排和重绘区别</h1><p>重排顾名思义就是重新排列，意味着重新计算文档中元素的位置和几何信息（元素的位置、大小），会影响部分或整个页面的布局。元素的重排将导致DOM中所有子元素和其他兄弟元素重新排列。<br>重绘是更改元素的可见性，但是不影响元素的布局。例如可见性、背景色、轮廓等。</p>
+<h1 id="什么会触发重排和重绘？"><a href="#什么会触发重排和重绘？" class="headerlink" title="什么会触发重排和重绘？"></a>什么会触发重排和重绘？</h1><ul>
+<li>添加、删除、更新DOM节点都会触发重排</li>
+<li>使用 display: none 隐藏元素会触发重排和重绘</li>
+<li>使用 visibility:hidden 只会引起重绘，因为没有布局和位置的变更</li>
+<li>移动节点、添加动画都会触发重排和重绘</li>
+<li>改变浏览器窗口大小会触发重排</li>
+<li>更改元素字体大小会触发重排</li>
+<li>添加或者删除样式会触发重排和重绘</li>
+<li>操作 DOM 脚本是昂贵的操作，因为每次 document 或者 document的部分改变时，它们都会重新计算</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var bodyStyle = document.body.style; // cache</span><br><span class="line"></span><br><span class="line">bodyStyle.padding = <span class="string">&quot;20px&quot;</span>; // reflow, repaint</span><br><span class="line">bodyStyle.border = <span class="string">&quot;10px solid red&quot;</span>; // reflow, repaint</span><br><span class="line"></span><br><span class="line">bodyStyle.color = <span class="string">&quot;blue&quot;</span>; // repaint only, no dimensions changed</span><br><span class="line">bstyle.backgroundColor = <span class="string">&quot;#cc0000&quot;</span>; // repaint</span><br><span class="line"></span><br><span class="line">bodyStyle.fontSize = <span class="string">&quot;2em&quot;</span>; // reflow, repaint</span><br><span class="line"></span><br><span class="line">// new DOM element - reflow, repaint</span><br><span class="line">document.body.appendChild(document.createTextNode(<span class="string">&#x27;Hello!&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+<h1 id="重排一定触发重绘，重绘不一定触发重排"><a href="#重排一定触发重绘，重绘不一定触发重排" class="headerlink" title="重排一定触发重绘，重绘不一定触发重排"></a>重排一定触发重绘，重绘不一定触发重排</h1><h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><ul>
+<li>尽量批次改变元素css属性</li>
+<li>将动画的元素设置position属性为absolute或fixed，这样使元素脱离文本流，不会影响渲染树。</li>
+<li>当多个添加DOM元素时，使用文本碎片fragment（隐藏的元素不再渲染树中，）只触发一次重排重绘</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/04/14/JS-%E4%B8%8E-CSS-%E6%98%AF%E5%90%A6%E9%98%BB%E5%A1%9E-DOM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/04/14/JS-%E4%B8%8E-CSS-%E6%98%AF%E5%90%A6%E9%98%BB%E5%A1%9E-DOM/" class="post-title-link" itemprop="url">JS 与 CSS 是否阻塞 DOM</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-04-14 11:06:45" itemprop="dateCreated datePublished" datetime="2019-04-14T11:06:45+08:00">2019-04-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>浏览器的解析渲染过程，解析DOM生成DOM Tree，解析CSS生成CSSOM Tree，两者结合生成render tree渲染树，最后浏览器根据渲染树渲染至页面。</p>
+<h1 id="所以CSS不会阻塞DOM的解析，因为两者是并行解析的。"><a href="#所以CSS不会阻塞DOM的解析，因为两者是并行解析的。" class="headerlink" title="所以CSS不会阻塞DOM的解析，因为两者是并行解析的。"></a>所以CSS不会阻塞DOM的解析，因为两者是并行解析的。</h1><p>但是由于render tree的生成是依赖DOM Tree和CSSOM Tree的，因此CSS必然会阻塞DOM的渲染。<br>最终生成页面依赖的渲染数 是由DOM Tree和CSSOM Tree组成的，如果CSSOM Tree阻塞了，那么DOM的渲染也就没那么快完成</p>
+<h1 id="JS-会阻塞-DOM-解析"><a href="#JS-会阻塞-DOM-解析" class="headerlink" title="JS 会阻塞 DOM 解析"></a>JS 会阻塞 DOM 解析</h1><p>首先浏览器无法知晓JS的具体内容，倘若先解析DOM，万一JS内部全部删除掉DOM，那么浏览器就白忙活了，所以就干脆暂停解析DOM，等到JS执行完成再继续解析。<br>开发者可以优先考虑使用defer的方式，其次是async方式让页面的JS进行异步执行，</p>
+<ul>
+<li>defer 异步加载， 加载完后会等待Html标签全部解析完才去执行<br>比如第三方sdk 不影响页面形式的js 都可以延时解析</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/04/10/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/04/10/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">浏览器缓存机制</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-04-10 17:02:52" itemprop="dateCreated datePublished" datetime="2019-04-10T17:02:52+08:00">2019-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">浏览器</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/%E7%BC%93%E5%AD%98/" itemprop="url" rel="index"><span itemprop="name">缓存</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="浏览器缓存机制"><a href="#浏览器缓存机制" class="headerlink" title="浏览器缓存机制"></a>浏览器缓存机制</h1><h3 id="浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下："><a href="#浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下：" class="headerlink" title="浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下："></a>浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下：</h3><ul>
+<li>浏览器先根据这个资源的http头信息来判断是否命中强缓存。如果命中则直接加在缓存中的资源，并不会将请求发送到服务器。（强缓存）</li>
+<li>如果未命中强缓存，则浏览器会将资源加载请求发送到服务器。服务器来判断浏览器本地缓存是否失效。若可以使用，则服务器并不会返回资源信息，浏览器继续从缓存加载资源。（协商缓存）</li>
+<li>如果未命中协商缓存，则服务器会将完整的资源返回给浏览器，浏览器加载新资源，并更新缓存。（新的请求）</li>
+</ul>
+<h3 id="命中强缓存时，浏览器并不会将请求发送给服务器。code-200-Size：from-cache"><a href="#命中强缓存时，浏览器并不会将请求发送给服务器。code-200-Size：from-cache" class="headerlink" title="命中强缓存时，浏览器并不会将请求发送给服务器。code: 200 Size：from cache"></a>命中强缓存时，浏览器并不会将请求发送给服务器。code: 200 Size：from cache</h3><h3 id="利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间"><a href="#利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间" class="headerlink" title="利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间"></a>利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间</h3><h3 id="若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify-x2F-If-Modify-Since或Etag-x2F-If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。"><a href="#若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify-x2F-If-Modify-Since或Etag-x2F-If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。" class="headerlink" title="若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify&#x2F;If-Modify-Since或Etag&#x2F;If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。"></a>若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify&#x2F;If-Modify-Since或Etag&#x2F;If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。</h3>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/02/13/Vue-%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E6%8C%89%E9%92%AE%E7%BB%84%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/02/13/Vue-%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E6%8C%89%E9%92%AE%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">Vue 开发一个按钮组件</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-13 22:56:17" itemprop="dateCreated datePublished" datetime="2019-02-13T22:56:17+08:00">2019-02-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Vue-开发一个按钮组件"><a href="#Vue-开发一个按钮组件" class="headerlink" title="Vue 开发一个按钮组件"></a>Vue 开发一个按钮组件</h1><p>解决思路：<br>通过父子组件通讯（$refs 和 props）<br>props接受参数, $refs调用子组件的方法<br>来达到点击提交改变按钮状态，如果不成功则取消按钮状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">&lt;!-- use plane  --&gt;</span><br><span class="line">&lt;!-- 传入bgColor改变按钮背景色 --&gt;</span><br><span class="line">&lt;!-- state切换button的状态 调用cancel()可以切换 --&gt;</span><br><span class="line">&lt;!-- text为按钮文字 --&gt;</span><br><span class="line">  &lt;div class=<span class="string">&quot;container&quot;</span>&gt;</span><br><span class="line">    &lt;button  </span><br><span class="line">      @click=<span class="string">&quot;confirm&quot;</span></span><br><span class="line">      :disabled=<span class="string">&quot;state&quot;</span> </span><br><span class="line">      class=<span class="string">&quot;confirm&quot;</span> </span><br><span class="line">      :style=<span class="string">&quot;&#123;background: btnData.bgColor&#125;&quot;</span></span><br><span class="line">    &gt;&#123;&#123;text&#125;&#125;&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="built_in">export</span> default &#123;</span><br><span class="line">  <span class="function"><span class="title">data</span></span>()&#123;</span><br><span class="line">    <span class="built_in">return</span> &#123;</span><br><span class="line">      text: this.btnData.text,</span><br><span class="line">      state: <span class="literal">false</span>,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    btnData: &#123;</span><br><span class="line">      types: Array,</span><br><span class="line">      <span class="function"><span class="title">default</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> &#123;</span><br><span class="line">          text: <span class="string">&#x27;确认&#x27;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="function"><span class="title">confirm</span></span>()&#123;</span><br><span class="line">      this.text += <span class="string">&#x27;...&#x27;</span></span><br><span class="line">      this.state = <span class="literal">true</span></span><br><span class="line">      //这里是激活父组件的事件，因为子组件是不会冒泡到父组件上的，必须手动调用<span class="variable">$emit</span></span><br><span class="line">      //相对应父组件要在调用该组件的时候，将其挂载到上面</span><br><span class="line">      this.<span class="variable">$emit</span>(<span class="string">&quot;confirm&quot;</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="title">cancel</span></span>()&#123;</span><br><span class="line">      this.text = this.btnData.text</span><br><span class="line">      this.state = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style lang=<span class="string">&quot;less&quot;</span> scoped&gt;</span><br><span class="line">.confirm &#123;</span><br><span class="line">  border: none;</span><br><span class="line">  color: <span class="comment">#fff;</span></span><br><span class="line">  width: 100%;</span><br><span class="line">  padding: 1rem 0;</span><br><span class="line">  border-radius: 4px;</span><br><span class="line">  font-size: 1.6rem;</span><br><span class="line">  background: <span class="comment">#5da1fd;</span></span><br><span class="line">  &amp;:focus &#123;</span><br><span class="line">    outline: none;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在页面中调用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div class=<span class="string">&quot;btn-box&quot;</span>&gt;</span><br><span class="line">      &lt;Btn </span><br><span class="line">        :btnData=<span class="string">&quot;&#123;text: &#x27;确认注册&#x27;&#125;&quot;</span></span><br><span class="line">        &lt;!--这里就要挂载<span class="variable">$emit</span>调用的事件 @confirm=<span class="string">&quot;想要调用事件的名字&quot;</span>--&gt;</span><br><span class="line">        @confirm=<span class="string">&quot;confirm&quot;</span></span><br><span class="line">        ref=<span class="string">&quot;btn&quot;</span></span><br><span class="line">      &gt;&lt;/Btn&gt;</span><br><span class="line">    &lt;/div&gt; </span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Btn from <span class="string">&#x27;@/components/button&#x27;</span></span><br><span class="line"><span class="built_in">export</span> default &#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    Btn</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="function"><span class="title">confirm</span></span>()&#123;</span><br><span class="line">      <span class="keyword">if</span>(!this.companyName)&#123;</span><br><span class="line">        this.<span class="variable">$toast</span>(<span class="string">&quot;公司名不能为空&quot;</span>)  </span><br><span class="line">        this.<span class="variable">$refs</span>.btn.cancel()</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>在这里，要注意一些细节：</p>
+<ul>
+<li><ol>
+<li>button组件形成之后和其它div元素的间距，如果是在组件内定死是很难复用的。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>在复用的时候，在父组件中是改变不了子组件的样式的，如果要强制更改，单独写一个并去掉scoped。</li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/26/%E7%A7%BB%E5%8A%A8%E7%AB%AF1px%E5%83%8F%E7%B4%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/05/26/%E7%A7%BB%E5%8A%A8%E7%AB%AF1px%E5%83%8F%E7%B4%A0/" class="post-title-link" itemprop="url">移动端1px像素</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-05-26 19:33:47" itemprop="dateCreated datePublished" datetime="2018-05-26T19:33:47+08:00">2018-05-26</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="移动端1px像素起源"><a href="#移动端1px像素起源" class="headerlink" title="移动端1px像素起源"></a>移动端1px像素起源</h1><p>在移动端，css中的1px并不等于移动设备的1px，因为手机屏幕有不同的像素密度。window中的devicePixelRatio就是反应css中像素与真实像素的比例，也就是设备物理像素和设备独立像素的比例，也就是 devicePixelRatio &#x3D; 物理像素 &#x2F; 独立像素。所以造成了通过css设置1px，在移动端屏幕上会变粗。</p>
+<h1 id="解决方案一：使用伪类缩放"><a href="#解决方案一：使用伪类缩放" class="headerlink" title="解决方案一：使用伪类缩放"></a>解决方案一：使用伪类缩放</h1><p>使用伪类缩放需要主要的是：</p>
+<ul>
+<li>设置全边框的时候，box-sizing要设置为border-box，否则伪元素上下左右各会多1px</li>
+<li>需要将父元素设置为relative</li>
+<li>注意 transform 的起点，上边距要用左上角，下边距用左下角</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/* 下边框 */</span><br><span class="line">.one-px-border2:after &#123;</span><br><span class="line">  content: <span class="string">&quot;&quot;</span>;</span><br><span class="line">  position: absolute;</span><br><span class="line">  bottom: 0;</span><br><span class="line">  left: 0;</span><br><span class="line">  right: 0;</span><br><span class="line">  border-bottom: 1px solid red;</span><br><span class="line">  transform: scaleY(.5);</span><br><span class="line">  transform-origin: left bottom;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -410,612 +971,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/14/%E6%B5%8F%E8%A7%88%E5%99%A8BOM%E5%92%8CJS%E4%B8%AD%E7%9A%84DOM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/05/14/%E6%B5%8F%E8%A7%88%E5%99%A8BOM%E5%92%8CJS%E4%B8%AD%E7%9A%84DOM/" class="post-title-link" itemprop="url">浏览器BOM和JS中的DOM</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-05-14 10:09:35" itemprop="dateCreated datePublished" datetime="2018-05-14T10:09:35+08:00">2018-05-14</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>JavaScript是一种运行在客户端的脚本语言 （Script 是脚本的意思）,它有三部分组成 ：ECMAScript 语法 ， DOM(页面文档对象模型) ，BOM(浏览器对象模型)而Web API则包含了DOM和BOM</p>
-<h1 id="什么是BOM"><a href="#什么是BOM" class="headerlink" title="什么是BOM"></a>什么是BOM</h1><p>BOM（Browser Object Model）即浏览器对象模型，它提供了独立于内容而与浏览器窗口进行交互的对象，其核心对象是 window。</p>
-<p>BOM 由一系列相关的对象构成，并且每个对象都提供了很多方法与属性 ，但是BOM 缺乏标准，JavaScript 语法的标准化组织是 ECMA，DOM 的标准化组织是 W3C，BOM 最初是Netscape 浏览器标准的一部分。</p>
-<h1 id="BOM的构成部分"><a href="#BOM的构成部分" class="headerlink" title="BOM的构成部分"></a>BOM的构成部分</h1><p>是window顶级对象 ，也是JS访问浏览器窗口的一个接口。<br>其中包含： document location navigator screen history</p>
-<h1 id="window对象的常见的事件"><a href="#window对象的常见的事件" class="headerlink" title="window对象的常见的事件"></a>window对象的常见的事件</h1><ul>
-<li>窗口加载事件 window.onload 当文档内容完全加载完成会触发该事件(包括图像、脚本文件、CSS 文件等), 就调用的处理函数。(JS代码都写在加载事件里面)</li>
-<li>调整窗口大小的事件 window.onresize window.innerWidth 获取当前屏幕的宽度</li>
-<li>window.setTimeout(调用函数， [延迟的毫秒数]) window.clearTimeout(timeoutID) setInterval clearInterval</li>
-</ul>
-<h1 id="什么是-DOM"><a href="#什么是-DOM" class="headerlink" title="什么是 DOM"></a>什么是 DOM</h1><p>DOM 英文全称“Document Object Model”，译为“文档对象模型”。<br>DOM 是一个与平台和编程语言无关的接口，通过这个接口程序和脚本可以动态的访问和修改文档的内容、结构和样式。</p>
-<h1 id="DOM-的组成"><a href="#DOM-的组成" class="headerlink" title="DOM 的组成"></a>DOM 的组成</h1><p>核心DOM - 针对任何结构化文档的标准模型。<br>XML DOM - 针对 XML 文档的标准模型。<br>HTML DOM - 针对 HTML 文档的标准模型。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/12/JS%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/05/12/JS%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">JS浏览器事件循环机制</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-05-12 09:48:14" itemprop="dateCreated datePublished" datetime="2018-05-12T09:48:14+08:00">2018-05-12</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="JavaScript-单线程-非阻塞"><a href="#JavaScript-单线程-非阻塞" class="headerlink" title="JavaScript 单线程 非阻塞"></a>JavaScript 单线程 非阻塞</h1><p>定义：单线程（代码执行时只有一个主线程来处理所有任务），非阻塞（当代码需要进行一项异步任务时不会等待，主线程会挂起这个任务，在异步任务返回结果时再执行相应的回调）的脚本语言<br>用途：与浏览器交互</p>
-<h1 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h1><p>用途：js引擎（网页浏览器中专门处理js脚本的虚拟机）实现非阻塞</p>
-<h1 id="浏览器环境下js引擎的事件循环机制"><a href="#浏览器环境下js引擎的事件循环机制" class="headerlink" title="浏览器环境下js引擎的事件循环机制"></a>浏览器环境下js引擎的事件循环机制</h1><p>js代码执行时将不同变量存于内存中的不同位置<br>堆：放对象 栈：基础类型变量，对象指针</p>
-<h1 id="执行栈：存放执行环境并依次调用执行的地方"><a href="#执行栈：存放执行环境并依次调用执行的地方" class="headerlink" title="执行栈：存放执行环境并依次调用执行的地方"></a>执行栈：存放执行环境并依次调用执行的地方</h1><p>当调用一个方法时，js会生成一个与这个方法对应的执行环境（也叫执行上下文，存放这个方法的私有作用域，上层作用域指向，参数，变量，this对象）。这些方法都被存放在执行栈中，依次调用</p>
-<h1 id="执行栈执行同步代码"><a href="#执行栈执行同步代码" class="headerlink" title="执行栈执行同步代码"></a>执行栈执行同步代码</h1><p>按照执行顺序将执行环境依次加入执行栈中并进入环境执行代码，若有调用，在执行栈中再添加一个执行环境（往上垒），执行环境中的代码执行完毕并返回结果后，js会退出这个执行环境并将其销毁，回到上一个方法的执行环境。反复进行，直到代码全部执行完毕</p>
-<h3 id="执行栈执行异步代码（如发送ajax请求数据）事件队列–实现非阻塞"><a href="#执行栈执行异步代码（如发送ajax请求数据）事件队列–实现非阻塞" class="headerlink" title="执行栈执行异步代码（如发送ajax请求数据）事件队列–实现非阻塞"></a>执行栈执行异步代码（如发送ajax请求数据）事件队列–实现非阻塞</h3><h3 id="js引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕，-主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码…，如此反复，这样就形成了一个无限的循环"><a href="#js引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕，-主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码…，如此反复，这样就形成了一个无限的循环" class="headerlink" title="js引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕， 主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码…，如此反复，这样就形成了一个无限的循环"></a>js引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕， 主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码…，如此反复，这样就形成了一个无限的循环</h3><h3 id="因为形成了无限循环，所以这个过程被叫做事件循环"><a href="#因为形成了无限循环，所以这个过程被叫做事件循环" class="headerlink" title="因为形成了无限循环，所以这个过程被叫做事件循环"></a>因为形成了无限循环，所以这个过程被叫做<code>事件循环</code></h3><h3 id="不同的异步任务依据执行优先级被分为两类：微任务（micro-task）和宏任务（macro-task）"><a href="#不同的异步任务依据执行优先级被分为两类：微任务（micro-task）和宏任务（macro-task）" class="headerlink" title="不同的异步任务依据执行优先级被分为两类：微任务（micro task）和宏任务（macro task）"></a>不同的异步任务依据执行优先级被分为两类：微任务（micro task）和宏任务（macro task）</h3><ul>
-<li>宏任务：setInterval() setTimeout()</li>
-<li>微任务：new Promise() new MutaionObserver()</li>
-</ul>
-<h3 id="当前执行栈执行完毕时会立刻先处理所有微任务队列中的事件，然后再去宏任务队列中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行（先微再宏）"><a href="#当前执行栈执行完毕时会立刻先处理所有微任务队列中的事件，然后再去宏任务队列中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行（先微再宏）" class="headerlink" title="当前执行栈执行完毕时会立刻先处理所有微任务队列中的事件，然后再去宏任务队列中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行（先微再宏）"></a>当前执行栈执行完毕时会立刻先处理所有微任务队列中的事件，然后再去宏任务队列中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行（先微再宏）</h3>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/20/JS%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6%E4%B8%8E%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/20/JS%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6%E4%B8%8E%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">JS事件机制与相关问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-04-20 22:45:27" itemprop="dateCreated datePublished" datetime="2018-04-20T22:45:27+08:00">2018-04-20</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="什么是事件代理-x2F-事件委托？"><a href="#什么是事件代理-x2F-事件委托？" class="headerlink" title="什么是事件代理&#x2F;事件委托？"></a>什么是事件代理&#x2F;事件委托？</h2><h4 id="事件代理-x2F-事件委托是利用事件冒泡的特性，将本应该绑定在多个元素上的事件绑定在他们的祖先元素上，尤其在动态添加子元素的时候，可以非常方便的提高程序性能，减小内存空间。"><a href="#事件代理-x2F-事件委托是利用事件冒泡的特性，将本应该绑定在多个元素上的事件绑定在他们的祖先元素上，尤其在动态添加子元素的时候，可以非常方便的提高程序性能，减小内存空间。" class="headerlink" title="事件代理&#x2F;事件委托是利用事件冒泡的特性，将本应该绑定在多个元素上的事件绑定在他们的祖先元素上，尤其在动态添加子元素的时候，可以非常方便的提高程序性能，减小内存空间。"></a>事件代理&#x2F;事件委托是利用事件冒泡的特性，将本应该绑定在多个元素上的事件绑定在他们的祖先元素上，尤其在动态添加子元素的时候，可以非常方便的提高程序性能，减小内存空间。</h4><h2 id="什么是事件冒泡？什么是事件捕获？"><a href="#什么是事件冒泡？什么是事件捕获？" class="headerlink" title="什么是事件冒泡？什么是事件捕获？"></a>什么是事件冒泡？什么是事件捕获？</h2><ul>
-<li>冒泡型事件：事件按照从最特定的事件目标到最不特定的事件目标(document对象)的顺序触发。</li>
-<li>捕获型事件：事件从最不精确的对象(document 对象)开始触发，然后到最精确(也可以在窗口级别捕获事件，不过必须由开发人员特别指定)。</li>
-</ul>
-<h4 id="在添加事件时用addEventListener-event-fn-useCapture-方法，基中第3个参数useCapture是一个Boolean值，用来设置事件是在事件捕获时执行，还是事件冒泡时执行-Vue-中-click默认是冒泡的"><a href="#在添加事件时用addEventListener-event-fn-useCapture-方法，基中第3个参数useCapture是一个Boolean值，用来设置事件是在事件捕获时执行，还是事件冒泡时执行-Vue-中-click默认是冒泡的" class="headerlink" title="在添加事件时用addEventListener(event,fn,useCapture)方法，基中第3个参数useCapture是一个Boolean值，用来设置事件是在事件捕获时执行，还是事件冒泡时执行 Vue 中 @click默认是冒泡的"></a>在添加事件时用addEventListener(event,fn,useCapture)方法，基中第3个参数useCapture是一个Boolean值，用来设置事件是在事件捕获时执行，还是事件冒泡时执行 Vue 中 @click默认是冒泡的</h4><h4 id="e-stopPropagation-阻止事件冒泡"><a href="#e-stopPropagation-阻止事件冒泡" class="headerlink" title="e.stopPropagation() 阻止事件冒泡"></a>e.stopPropagation() 阻止事件冒泡</h4><h2 id="DOM-事件有哪些阶段？谈谈对事件代理的理解"><a href="#DOM-事件有哪些阶段？谈谈对事件代理的理解" class="headerlink" title="DOM 事件有哪些阶段？谈谈对事件代理的理解"></a>DOM 事件有哪些阶段？谈谈对事件代理的理解</h2><h4 id="分为三大阶段：捕获阶段–目标阶段–冒泡阶段"><a href="#分为三大阶段：捕获阶段–目标阶段–冒泡阶段" class="headerlink" title="分为三大阶段：捕获阶段–目标阶段–冒泡阶段"></a>分为三大阶段：捕获阶段–目标阶段–冒泡阶段</h4><h4 id="事件代理简单说就是：事件不直接绑定到某元素上，而是绑定到该元素的父元素上，进行触发事件操作时-例如’click’-，再通过条件判断，执行事件触发后的语句-例如’alert-e-target-innerhtml-’"><a href="#事件代理简单说就是：事件不直接绑定到某元素上，而是绑定到该元素的父元素上，进行触发事件操作时-例如’click’-，再通过条件判断，执行事件触发后的语句-例如’alert-e-target-innerhtml-’" class="headerlink" title="事件代理简单说就是：事件不直接绑定到某元素上，而是绑定到该元素的父元素上，进行触发事件操作时(例如’click’)，再通过条件判断，执行事件触发后的语句(例如’alert(e.target.innerhtml)’)"></a>事件代理简单说就是：事件不直接绑定到某元素上，而是绑定到该元素的父元素上，进行触发事件操作时(例如’click’)，再通过条件判断，执行事件触发后的语句(例如’alert(e.target.innerhtml)’)</h4><h2 id="闭包的概念？优缺点？使用场景？"><a href="#闭包的概念？优缺点？使用场景？" class="headerlink" title="闭包的概念？优缺点？使用场景？"></a>闭包的概念？优缺点？使用场景？</h2><h4 id="闭包的概念：闭包就是能读取其他函数内部变量的函数。"><a href="#闭包的概念：闭包就是能读取其他函数内部变量的函数。" class="headerlink" title="闭包的概念：闭包就是能读取其他函数内部变量的函数。"></a>闭包的概念：闭包就是能读取其他函数内部变量的函数。</h4><h4 id="优点：-避免全局变量的污染，希望一个变量长期存储在内存中（缓存变量）"><a href="#优点：-避免全局变量的污染，希望一个变量长期存储在内存中（缓存变量）" class="headerlink" title="优点： 避免全局变量的污染，希望一个变量长期存储在内存中（缓存变量）"></a>优点： 避免全局变量的污染，希望一个变量长期存储在内存中（缓存变量）</h4><h4 id="缺点：-内存泄露（消耗），常驻内存，增加内存使用量"><a href="#缺点：-内存泄露（消耗），常驻内存，增加内存使用量" class="headerlink" title="缺点： 内存泄露（消耗），常驻内存，增加内存使用量"></a>缺点： 内存泄露（消耗），常驻内存，增加内存使用量</h4><h4 id="使用场景：封装功能时-需要使用私有的属性和方法-，函数防抖、函数节流、函数柯里化、给元素伪数组添加事件需要使用元素的索引值。"><a href="#使用场景：封装功能时-需要使用私有的属性和方法-，函数防抖、函数节流、函数柯里化、给元素伪数组添加事件需要使用元素的索引值。" class="headerlink" title="使用场景：封装功能时(需要使用私有的属性和方法)，函数防抖、函数节流、函数柯里化、给元素伪数组添加事件需要使用元素的索引值。"></a>使用场景：封装功能时(需要使用私有的属性和方法)，函数防抖、函数节流、函数柯里化、给元素伪数组添加事件需要使用元素的索引值。</h4><h2 id="new操作符具体干了什么呢"><a href="#new操作符具体干了什么呢" class="headerlink" title="new操作符具体干了什么呢?"></a>new操作符具体干了什么呢?</h2><ul>
-<li>1.创建一个空对象，并且 this 变量引用该对象，同时还继承了该函数的原型。</li>
-<li>2.属性和方法被加入到 this 引用的对象中。</li>
-<li>3.新创建的对象由 this 所引用，并且最后隐式的返回 this 。</li>
-</ul>
-<h2 id="javascript中this的指向"><a href="#javascript中this的指向" class="headerlink" title="javascript中this的指向"></a>javascript中this的指向</h2><h4 id="this永远指向函数运行时所在的对象，而不是函数被创建时所在的对象。"><a href="#this永远指向函数运行时所在的对象，而不是函数被创建时所在的对象。" class="headerlink" title="this永远指向函数运行时所在的对象，而不是函数被创建时所在的对象。"></a>this永远指向函数运行时所在的对象，而不是函数被创建时所在的对象。</h4><h4 id="普通的函数调用，函数被谁调用，this就是谁"><a href="#普通的函数调用，函数被谁调用，this就是谁" class="headerlink" title="普通的函数调用，函数被谁调用，this就是谁"></a>普通的函数调用，函数被谁调用，this就是谁</h4><h4 id="构造函数的话，如果不用new操作符而直接调用，那即this指向window。用new操作符生成对象实例后，this就指向了新生成的对象。"><a href="#构造函数的话，如果不用new操作符而直接调用，那即this指向window。用new操作符生成对象实例后，this就指向了新生成的对象。" class="headerlink" title="构造函数的话，如果不用new操作符而直接调用，那即this指向window。用new操作符生成对象实例后，this就指向了新生成的对象。"></a>构造函数的话，如果不用new操作符而直接调用，那即this指向window。用new操作符生成对象实例后，this就指向了新生成的对象。</h4><h4 id="匿名函数或不处于任何对象中的函数指向window"><a href="#匿名函数或不处于任何对象中的函数指向window" class="headerlink" title="匿名函数或不处于任何对象中的函数指向window"></a>匿名函数或不处于任何对象中的函数指向window</h4><h4 id="如果是call，apply等，指定的this是谁，就是谁。"><a href="#如果是call，apply等，指定的this是谁，就是谁。" class="headerlink" title="如果是call，apply等，指定的this是谁，就是谁。"></a>如果是call，apply等，指定的this是谁，就是谁。</h4><h2 id="Javascript作用链域"><a href="#Javascript作用链域" class="headerlink" title="Javascript作用链域"></a>Javascript作用链域</h2><h4 id="作用域链的原理和原型链很类似，如果这个变量在自己的作用域中没有，那么它会寻找父级的，直到最顶层。"><a href="#作用域链的原理和原型链很类似，如果这个变量在自己的作用域中没有，那么它会寻找父级的，直到最顶层。" class="headerlink" title="作用域链的原理和原型链很类似，如果这个变量在自己的作用域中没有，那么它会寻找父级的，直到最顶层。"></a>作用域链的原理和原型链很类似，如果这个变量在自己的作用域中没有，那么它会寻找父级的，直到最顶层。</h4><h2 id="js如何处理防抖和节流"><a href="#js如何处理防抖和节流" class="headerlink" title="js如何处理防抖和节流"></a>js如何处理防抖和节流</h2><h4 id="在进行窗口的resize、scroll，输入框内容校验等操作时，如果事件处理函数调用的频率无限制，会加重浏览器的负担，导致用户体验非常糟糕。此时我们可以采用debounce（防抖）和throttle（节流）的方式来减少调用频率，同时又不影响实际效果。"><a href="#在进行窗口的resize、scroll，输入框内容校验等操作时，如果事件处理函数调用的频率无限制，会加重浏览器的负担，导致用户体验非常糟糕。此时我们可以采用debounce（防抖）和throttle（节流）的方式来减少调用频率，同时又不影响实际效果。" class="headerlink" title="在进行窗口的resize、scroll，输入框内容校验等操作时，如果事件处理函数调用的频率无限制，会加重浏览器的负担，导致用户体验非常糟糕。此时我们可以采用debounce（防抖）和throttle（节流）的方式来减少调用频率，同时又不影响实际效果。"></a>在进行窗口的resize、scroll，输入框内容校验等操作时，如果事件处理函数调用的频率无限制，会加重浏览器的负担，导致用户体验非常糟糕。此时我们可以采用debounce（防抖）和throttle（节流）的方式来减少调用频率，同时又不影响实际效果。</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 函数防抖（debounce）：</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 当持续触发事件时，一定时间段内没有再触发事件，事件处理函数才会执行一次，如果设定的时间到来之前，又一次触发了事件，就重新开始延时。如下，持续触发scroll事件时，并不执行handle函数，当1000毫秒内没有触发scroll事件时，才会延时触发scroll事件。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> debounce(fn, <span class="built_in">wait</span>) &#123; </span><br><span class="line">  var <span class="built_in">timeout</span> = null; </span><br><span class="line">  <span class="built_in">return</span> <span class="function"><span class="title">function</span></span>() &#123; </span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">timeout</span> !== null) clearTimeout(<span class="built_in">timeout</span>);</span><br><span class="line">    <span class="built_in">timeout</span> = setTimeout(fn, <span class="built_in">wait</span>); </span><br><span class="line">  &#125; </span><br><span class="line">&#125; </span><br><span class="line">// 处理函数 </span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">handle</span></span>() &#123; console.log(Math.random()); &#125; // 滚动事件</span><br><span class="line">window.addEventListener(<span class="string">&#x27;scroll&#x27;</span>, debounce(handle, 1000)); 函数节流函数节流（throttle）：</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当持续触发事件时，保证一定时间段内只调用一次事件处理函数。节流通俗解释就比如我们水龙头放水，阀门一打开，水哗哗的往下流，秉着勤俭节约的优良传统美德，我们要把水龙头关小点，最好是如我们心意按照一定规律在某个时间间隔内一滴一滴的往下滴。如下，持续触发scroll事件时，并不立即执行handle函数，每隔1000毫秒才会执行一次handle函数。</span></span><br><span class="line">var throttle = <span class="keyword">function</span>(func, delay) &#123; </span><br><span class="line">  var prev = Date.now(); </span><br><span class="line">  <span class="built_in">return</span> <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">    var context = this;</span><br><span class="line">    var args = arguments; </span><br><span class="line">    var now = Date.now(); </span><br><span class="line">    <span class="keyword">if</span> (now - prev &gt;= delay) &#123; </span><br><span class="line">      func.apply(context, args);</span><br><span class="line">      prev = Date.now(); </span><br><span class="line">    &#125; </span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">handle</span></span>() &#123; console.log(Math.random()); &#125; </span><br><span class="line">window.addEventListener(<span class="string">&#x27;scroll&#x27;</span>, throttle(handle, 1000));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="JS里垃圾回收机制是什么，常用的是哪种，怎么处理的？"><a href="#JS里垃圾回收机制是什么，常用的是哪种，怎么处理的？" class="headerlink" title="JS里垃圾回收机制是什么，常用的是哪种，怎么处理的？"></a>JS里垃圾回收机制是什么，常用的是哪种，怎么处理的？</h2><h4 id="JS的垃圾回收机制是为了以防内存泄漏，内存泄漏的含义就是当已经不需要某块内存时这块内存还存在着，垃圾回收机制就是间歇的不定期的寻找到不再使用的变量，并释放掉它们所指向的内存。JS中最常见的垃圾回收方式是标记清除。工作原理：是当变量进入环境时，将这个变量标记为“进入环境”。当变量离开环境时，则将其标记为“离开环境”。标记“离开环境”的就回收内存。"><a href="#JS的垃圾回收机制是为了以防内存泄漏，内存泄漏的含义就是当已经不需要某块内存时这块内存还存在着，垃圾回收机制就是间歇的不定期的寻找到不再使用的变量，并释放掉它们所指向的内存。JS中最常见的垃圾回收方式是标记清除。工作原理：是当变量进入环境时，将这个变量标记为“进入环境”。当变量离开环境时，则将其标记为“离开环境”。标记“离开环境”的就回收内存。" class="headerlink" title="JS的垃圾回收机制是为了以防内存泄漏，内存泄漏的含义就是当已经不需要某块内存时这块内存还存在着，垃圾回收机制就是间歇的不定期的寻找到不再使用的变量，并释放掉它们所指向的内存。JS中最常见的垃圾回收方式是标记清除。工作原理：是当变量进入环境时，将这个变量标记为“进入环境”。当变量离开环境时，则将其标记为“离开环境”。标记“离开环境”的就回收内存。"></a>JS的垃圾回收机制是为了以防内存泄漏，内存泄漏的含义就是当已经不需要某块内存时这块内存还存在着，垃圾回收机制就是间歇的不定期的寻找到不再使用的变量，并释放掉它们所指向的内存。JS中最常见的垃圾回收方式是标记清除。工作原理：是当变量进入环境时，将这个变量标记为“进入环境”。当变量离开环境时，则将其标记为“离开环境”。标记“离开环境”的就回收内存。</h4><h4 id="那些操作会造成内存泄漏"><a href="#那些操作会造成内存泄漏" class="headerlink" title="那些操作会造成内存泄漏"></a>那些操作会造成内存泄漏</h4><h4 id="全局变量、闭包、DOM清空或删除时，事件未清除、子元素存在引用"><a href="#全局变量、闭包、DOM清空或删除时，事件未清除、子元素存在引用" class="headerlink" title="全局变量、闭包、DOM清空或删除时，事件未清除、子元素存在引用"></a>全局变量、闭包、DOM清空或删除时，事件未清除、子元素存在引用</h4><h2 id="什么是虚拟DOM"><a href="#什么是虚拟DOM" class="headerlink" title="什么是虚拟DOM"></a>什么是虚拟DOM</h2><h4 id="文档对象模型或-DOM-定义了一个接口，该接口允许-JavaScript-之类的语言访问和操作-HTML-文档。元素由树中的节点表示，并且接口允许我们操纵它们。但是此接口需要付出代价，大量非常频繁的-DOM-操作会使页面速度变慢。为了减少重排和重绘，虚拟dom应运而生。"><a href="#文档对象模型或-DOM-定义了一个接口，该接口允许-JavaScript-之类的语言访问和操作-HTML-文档。元素由树中的节点表示，并且接口允许我们操纵它们。但是此接口需要付出代价，大量非常频繁的-DOM-操作会使页面速度变慢。为了减少重排和重绘，虚拟dom应运而生。" class="headerlink" title="文档对象模型或 DOM 定义了一个接口，该接口允许 JavaScript 之类的语言访问和操作 HTML 文档。元素由树中的节点表示，并且接口允许我们操纵它们。但是此接口需要付出代价，大量非常频繁的 DOM 操作会使页面速度变慢。为了减少重排和重绘，虚拟dom应运而生。"></a>文档对象模型或 DOM 定义了一个接口，该接口允许 JavaScript 之类的语言访问和操作 HTML 文档。元素由树中的节点表示，并且接口允许我们操纵它们。但是此接口需要付出代价，大量非常频繁的 DOM 操作会使页面速度变慢。为了减少重排和重绘，虚拟dom应运而生。</h4><h3 id="JS延迟加载的方式有哪些？"><a href="#JS延迟加载的方式有哪些？" class="headerlink" title="JS延迟加载的方式有哪些？"></a>JS延迟加载的方式有哪些？</h3><h4 id="defer和async、动态创建DOM方式（用得最多）、按需异步载入JS"><a href="#defer和async、动态创建DOM方式（用得最多）、按需异步载入JS" class="headerlink" title="defer和async、动态创建DOM方式（用得最多）、按需异步载入JS"></a>defer和async、动态创建DOM方式（用得最多）、按需异步载入JS</h4><ul>
-<li>defer：延迟脚本。立即下载，但延迟执行（延迟到整个页面都解析完毕后再运行），按照脚本出现的先后顺序执行。</li>
-<li>async：异步脚本。下载完立即执行，但不保证按照脚本出现的先后顺序执行。</li>
-</ul>
-<h2 id="JS为什么要区分微任务和宏任务"><a href="#JS为什么要区分微任务和宏任务" class="headerlink" title="JS为什么要区分微任务和宏任务"></a>JS为什么要区分微任务和宏任务</h2><ul>
-<li>（1）js是单线程的，但是分同步异步</li>
-<li>（2）微任务和宏任务皆为异步任务，它们都属于一个队列</li>
-<li>（3）宏任务一般是：script，setTimeout，setInterval、setImmediate</li>
-<li>（4）微任务：原生Promise</li>
-<li>（5）遇到微任务，先执行微任务，执行完后如果没有微任务，就执行下一个宏任务，如果有微任务，就按顺序一个一个执行微任务</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/18/JS%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98%E6%8C%87%E5%8D%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/18/JS%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98%E6%8C%87%E5%8D%97/" class="post-title-link" itemprop="url">JS经典问题指南</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-04-18 22:09:19" itemprop="dateCreated datePublished" datetime="2018-04-18T22:09:19+08:00">2018-04-18</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="JavaScript的数据类型"><a href="#JavaScript的数据类型" class="headerlink" title="JavaScript的数据类型"></a>JavaScript的数据类型</h2><ul>
-<li>值类型(基本类型)：字符串（String）、数字(Number)、布尔(Boolean)、对空（Null）、未定义（Undefined）、Symbol（独一无二的值</li>
-<li>引用数据类型：对象(Object)、数组(Array)、函数(Function)。</li>
-</ul>
-<h2 id="基本数据类型与引用类型在存储上有什么区别"><a href="#基本数据类型与引用类型在存储上有什么区别" class="headerlink" title="基本数据类型与引用类型在存储上有什么区别?"></a>基本数据类型与引用类型在存储上有什么区别?</h2><h3 id="1-存储位置不同"><a href="#1-存储位置不同" class="headerlink" title="1.存储位置不同:"></a>1.存储位置不同:</h3><ul>
-<li>基本数据类型：以栈的形式存储, 保存与赋值指向数据本身, 用typeof 来判断类型</li>
-<li>引用类型：以堆的形式存储, 保存于赋值指向对象的一个指针, 用instanceof 来判断类型</li>
-</ul>
-<h3 id="2-传值方式不同："><a href="#2-传值方式不同：" class="headerlink" title="2.传值方式不同："></a>2.传值方式不同：</h3><ul>
-<li>基本数据类型按值传递，无法改变一个基本数据类型的值</li>
-<li>引用类型按引用传递，应用类型值可以改变</li>
-</ul>
-<h2 id="判断-js-类型的方式"><a href="#判断-js-类型的方式" class="headerlink" title="判断 js 类型的方式"></a>判断 js 类型的方式</h2><ul>
-<li><ol>
-<li>typeof<h3 id="可以判断出’string’-’number’-’boolean’-’undefined’-’symbol’但判断-typeof-null-时值为-‘object’-判断数组和对象时值均为-‘object’"><a href="#可以判断出’string’-’number’-’boolean’-’undefined’-’symbol’但判断-typeof-null-时值为-‘object’-判断数组和对象时值均为-‘object’" class="headerlink" title="可以判断出’string’,’number’,’boolean’,’undefined’,’symbol’但判断 typeof(null) 时值为 ‘object’; 判断数组和对象时值均为 ‘object’"></a>可以判断出’string’,’number’,’boolean’,’undefined’,’symbol’但判断 typeof(null) 时值为 ‘object’; 判断数组和对象时值均为 ‘object’</h3></li>
-</ol>
-</li>
-<li><ol start="2">
-<li>instanceof<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">functionA</span></span>() &#123;&#125;</span><br><span class="line"><span class="built_in">let</span> a = new A();</span><br><span class="line">a instanceof A //true</span><br><span class="line">// 因为 Object.getPrototypeOf(a) === A.prototype;</span><br></pre></td></tr></table></figure></li>
-</ol>
-</li>
-<li><ol start="3">
-<li>Object.prototype.toString.call() 可以判断所有类型<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Object.prototype.toString.call(null)//<span class="string">&quot;[object Null]&quot;</span></span><br><span class="line">Object.prototype.toString.call(undefined)//<span class="string">&quot;[object Undefined]&quot;</span></span><br><span class="line">Object.prototype.toString.call(Object)//<span class="string">&quot;[object Function]&quot;</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-</li>
-</ul>
-<h2 id="描述以下变量的区别：null，undefined或undeclared"><a href="#描述以下变量的区别：null，undefined或undeclared" class="headerlink" title="描述以下变量的区别：null，undefined或undeclared"></a>描述以下变量的区别：null，undefined或undeclared</h2><ul>
-<li>null 表示”没有对象”</li>
-<li>undefined 表示”缺少值”，就是此处应该有一个值，但是还没有定义</li>
-</ul>
-<h4 id="变量被声明了，但没有赋值时，就等于undefined。"><a href="#变量被声明了，但没有赋值时，就等于undefined。" class="headerlink" title="变量被声明了，但没有赋值时，就等于undefined。"></a>变量被声明了，但没有赋值时，就等于undefined。</h4><h4 id="调用函数时，应该提供的参数没有提供，该参数等于undefined。"><a href="#调用函数时，应该提供的参数没有提供，该参数等于undefined。" class="headerlink" title="调用函数时，应该提供的参数没有提供，该参数等于undefined。"></a>调用函数时，应该提供的参数没有提供，该参数等于undefined。</h4><h4 id="对象没有赋值的属性，该属性的值为undefined。"><a href="#对象没有赋值的属性，该属性的值为undefined。" class="headerlink" title="对象没有赋值的属性，该属性的值为undefined。"></a>对象没有赋值的属性，该属性的值为undefined。</h4><h4 id="函数没有返回值时，默认返回undefined。"><a href="#函数没有返回值时，默认返回undefined。" class="headerlink" title="函数没有返回值时，默认返回undefined。"></a>函数没有返回值时，默认返回undefined。</h4><ul>
-<li>undeclared :js语法错误，没有申明直接使用，js无法找到对应的上下文。</li>
-</ul>
-<h2 id="for-in-和-object-keys的区别"><a href="#for-in-和-object-keys的区别" class="headerlink" title="for..in 和 object.keys的区别"></a>for..in 和 object.keys的区别</h2><ul>
-<li>Object.keys不会遍历继承的原型属性</li>
-<li>for…in 会遍历继承的原型属性</li>
-</ul>
-<h2 id="JS-中的函数提升"><a href="#JS-中的函数提升" class="headerlink" title="JS 中的函数提升"></a>JS 中的函数提升</h2><h4 id="JS允许将声明移动到顶部的默认行为称为提升。JS中创建函数的两种方法是函数声明和函数表达式。"><a href="#JS允许将声明移动到顶部的默认行为称为提升。JS中创建函数的两种方法是函数声明和函数表达式。" class="headerlink" title="JS允许将声明移动到顶部的默认行为称为提升。JS中创建函数的两种方法是函数声明和函数表达式。"></a>JS允许将声明移动到顶部的默认行为称为提升。JS中创建函数的两种方法是函数声明和函数表达式。</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 函数声明</span></span><br><span class="line">hoisted();</span><br><span class="line">// logs <span class="string">&quot;foo&quot;</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">hoisted</span></span>() &#123;console.log(<span class="string">&#x27;foo&#x27;</span>);&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 函数表达式</span></span><br><span class="line">notHoisted(); </span><br><span class="line"><span class="comment">#TypeError: notHoisted is not a function</span></span><br><span class="line">var notHoisted = <span class="function"><span class="title">function</span></span>() &#123;console.log(<span class="string">&#x27;bar&#x27;</span>);&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="Js隐式转换"><a href="#Js隐式转换" class="headerlink" title="Js隐式转换"></a>Js隐式转换</h2><h4 id="在js中，当运算符在运算时，如果两边数据不统一，CPU就无法计算，这时我们编译器会自动将运算符两边的数据做一个数据类型转换，转成一样的数据类型再计算"><a href="#在js中，当运算符在运算时，如果两边数据不统一，CPU就无法计算，这时我们编译器会自动将运算符两边的数据做一个数据类型转换，转成一样的数据类型再计算" class="headerlink" title="在js中，当运算符在运算时，如果两边数据不统一，CPU就无法计算，这时我们编译器会自动将运算符两边的数据做一个数据类型转换，转成一样的数据类型再计算"></a>在js中，当运算符在运算时，如果两边数据不统一，CPU就无法计算，这时我们编译器会自动将运算符两边的数据做一个数据类型转换，转成一样的数据类型再计算</h4><h4 id="这种无需程序员手动转换，而由编译器自动转换的方式就称为隐式转换"><a href="#这种无需程序员手动转换，而由编译器自动转换的方式就称为隐式转换" class="headerlink" title="这种无需程序员手动转换，而由编译器自动转换的方式就称为隐式转换"></a>这种无需程序员手动转换，而由编译器自动转换的方式就称为隐式转换</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 隐式转换规则：</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 转成string类型： +（字符串连接符） 2..转成number类型：++/--(自增自减运算符) + - * / %(算术运算符) &gt; &lt; &gt;= &lt;= == != === !=== (关系运算符)</span></span><br><span class="line"><span class="comment"># 2. 转成boolean类型：!（逻辑非运算符）</span></span><br><span class="line">console.log([] == []) // <span class="literal">false</span> </span><br><span class="line">console.log([] == ![]) // <span class="literal">true</span></span><br><span class="line">console.log([] !== []) // <span class="literal">true</span></span><br><span class="line">console.log(NaN != NaN) // <span class="literal">true</span></span><br><span class="line">console.log(null == undefined) // <span class="literal">true</span></span><br><span class="line">console.log(null === undefined) // <span class="literal">false</span></span><br><span class="line">console.log(1 == <span class="literal">true</span>) // <span class="literal">true</span></span><br><span class="line">console.log(null &gt; 0) // <span class="literal">false</span></span><br><span class="line">console.log(<span class="literal">true</span> + 1) // 2</span><br><span class="line">console.log(undefined + 1) // NaN</span><br><span class="line">console.log(&#123;&#125; + 1) // [object Object]1</span><br><span class="line">console.log([] + &#123;&#125;) // [object Object]</span><br><span class="line">console.log([2,3] + [1,2]) // 2,31,2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="JS-中-x3D-x3D-和-x3D-x3D-x3D-区别是什么？"><a href="#JS-中-x3D-x3D-和-x3D-x3D-x3D-区别是什么？" class="headerlink" title="JS 中 &#x3D;&#x3D; 和 &#x3D;&#x3D;&#x3D; 区别是什么？"></a>JS 中 &#x3D;&#x3D; 和 &#x3D;&#x3D;&#x3D; 区别是什么？</h2><ul>
-<li>两等号判等，会在比较时进行类型转换；</li>
-<li>三等号判等(判断严格)，比较时不进行隐式类型转换，(类 型不同则会返回false)；</li>
-</ul>
-<h2 id="ES5-和-ES6-分别几种方式声明变量"><a href="#ES5-和-ES6-分别几种方式声明变量" class="headerlink" title="ES5 和 ES6 分别几种方式声明变量"></a>ES5 和 ES6 分别几种方式声明变量</h2><ul>
-<li>ES5 有俩种：var 和 function</li>
-<li>ES6 有六种：增加四种，let、const、class 和 import</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/16/CSS%E7%BB%8F%E5%85%B8%E8%A7%84%E5%88%99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/16/CSS%E7%BB%8F%E5%85%B8%E8%A7%84%E5%88%99/" class="post-title-link" itemprop="url">CSS经典规则</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-04-16 21:13:34" itemprop="dateCreated datePublished" datetime="2018-04-16T21:13:34+08:00">2018-04-16</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="CSS经典规则"><a href="#CSS经典规则" class="headerlink" title="CSS经典规则"></a>CSS经典规则</h1><h3 id="使用方式-及-权重"><a href="#使用方式-及-权重" class="headerlink" title="使用方式 及 权重"></a>使用方式 及 权重</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1.内联：直接在HTML元素上使用</span><br><span class="line">&lt;p style=<span class="string">&quot;color: red&quot;</span>&gt;&lt;/p&gt;</span><br><span class="line">2.外部:在工作空间中创建单独的CSS文件，然后在创建的每个web页面中链接它们</span><br><span class="line">&lt;<span class="built_in">head</span>&gt;</span><br><span class="line">&lt;<span class="built_in">link</span> rel=<span class="string">&quot;text/css&quot;</span> href=<span class="string">&quot;url&quot;</span>&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">3. web 页面的 <span class="built_in">head</span> 元素在其中实现了内部 CSS。</span><br><span class="line">&lt;<span class="built_in">head</span>&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">p&#123;</span><br><span class="line">  color: red;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 权重优先级 !important -&gt; 内联 -&gt; 最后读取的</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="伪类和伪元素是什么？如何区分？"><a href="#伪类和伪元素是什么？如何区分？" class="headerlink" title="伪类和伪元素是什么？如何区分？"></a>伪类和伪元素是什么？如何区分？</h3><ul>
-<li>伪类是用来定义元素特殊状态的，他可以用来设置鼠标悬停样式、元素获取焦点样式、设置链接样式等。如常见的 hover、active、link 等都是伪类</li>
-<li>伪元素也称为伪对象，它不存在于 DOM 文档中、是一个虚拟的元素。它可以用来代表某个元素的子元素，但是这个子元素并不存在于文档树中。</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 伪类和伪元素的根本区别在于：是否创造了新的元素。</span></span><br><span class="line"><span class="comment"># html </span></span><br><span class="line">&lt;div&gt;</span><br><span class="line">    &lt;p class=<span class="string">&quot;one&quot;</span>&gt;红色&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;黑色&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"><span class="comment">#css 伪类</span></span><br><span class="line">p:first-child&#123;</span><br><span class="line">  color:red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># css 伪元素</span></span><br><span class="line">.one &#123;</span><br><span class="line">  color:red;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="BFC-规范（块级格式化上下文：block-formatting-context）"><a href="#BFC-规范（块级格式化上下文：block-formatting-context）" class="headerlink" title="BFC 规范（块级格式化上下文：block formatting context）"></a>BFC 规范（块级格式化上下文：block formatting context）</h3><h4 id="BFC指的是块级格式化上下文，一个元素形成了BFC之后，那么它内部元素产生的布局不会影响到外部元素，外部元素的布局也不会影响到BFC中的内部元素。一个BFC就像是一个隔离区域，和其他区域互不影响。"><a href="#BFC指的是块级格式化上下文，一个元素形成了BFC之后，那么它内部元素产生的布局不会影响到外部元素，外部元素的布局也不会影响到BFC中的内部元素。一个BFC就像是一个隔离区域，和其他区域互不影响。" class="headerlink" title="BFC指的是块级格式化上下文，一个元素形成了BFC之后，那么它内部元素产生的布局不会影响到外部元素，外部元素的布局也不会影响到BFC中的内部元素。一个BFC就像是一个隔离区域，和其他区域互不影响。"></a>BFC指的是块级格式化上下文，一个元素形成了BFC之后，那么它内部元素产生的布局不会影响到外部元素，外部元素的布局也不会影响到BFC中的内部元素。一个BFC就像是一个隔离区域，和其他区域互不影响。</h4><h4 id="使得当前bfc区域内的元素都变为行内元素（块级格式化上下文）"><a href="#使得当前bfc区域内的元素都变为行内元素（块级格式化上下文）" class="headerlink" title="使得当前bfc区域内的元素都变为行内元素（块级格式化上下文）"></a>使得当前bfc区域内的元素都变为行内元素（块级格式化上下文）</h4><ul>
-<li>1.浮动元素不为none；</li>
-<li>2.position不为static；</li>
-<li>3.display:inline-block；display:table-cell；display:table-caption；</li>
-<li>4.overflow 计算值(Computed)不为 visible 的块元素</li>
-<li>5.display:inline-flex;</li>
-</ul>
-<h3 id="IFC指的是行级格式化上下文，它有这样的一些布局规则："><a href="#IFC指的是行级格式化上下文，它有这样的一些布局规则：" class="headerlink" title="IFC指的是行级格式化上下文，它有这样的一些布局规则："></a>IFC指的是行级格式化上下文，它有这样的一些布局规则：</h3><ul>
-<li>（1）行级上下文内部的盒子会在水平方向，一个接一个地放置。</li>
-<li>（2）当一行不够的时候会自动切换到下一行。</li>
-<li>（3）行级上下文的高度由内部最高的内联盒子的高度决定。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/15/CSS%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD%E5%B8%83%E5%B1%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/15/CSS%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD%E5%B8%83%E5%B1%80/" class="post-title-link" itemprop="url">CSS常用垂直居中布局</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-04-15 20:59:07" itemprop="dateCreated datePublished" datetime="2018-04-15T20:59:07+08:00">2018-04-15</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="CSS垂直居中布局"><a href="#CSS垂直居中布局" class="headerlink" title="CSS垂直居中布局"></a>CSS垂直居中布局</h1><h3 id="line-height-text-align-文字垂直居中"><a href="#line-height-text-align-文字垂直居中" class="headerlink" title="line-height + text-align 文字垂直居中"></a>line-height + text-align 文字垂直居中</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># html</span></span><br><span class="line">&lt;div class=<span class="string">&quot;example&quot;</span>&gt;Lorem ipsam.&lt;/div&gt;</span><br><span class="line"><span class="comment">#css</span></span><br><span class="line">.example&#123;</span><br><span class="line">  width: 400px;</span><br><span class="line">  background: <span class="comment">#afddf3;</span></span><br><span class="line">  line-height: 50px;</span><br><span class="line">  text-align: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="absolute-margin"><a href="#absolute-margin" class="headerlink" title="absolute + margin"></a>absolute + margin</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># html</span></span><br><span class="line">&lt;div class=<span class="string">&quot;parant&quot;</span>&gt;</span><br><span class="line">  &lt;div class=<span class="string">&quot;child&quot;</span>&gt;&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"><span class="comment">#css</span></span><br><span class="line">.parant &#123;</span><br><span class="line">  position: relative;</span><br><span class="line">&#125;</span><br><span class="line">.child &#123;</span><br><span class="line">  position: absolute;</span><br><span class="line">  top: 0;</span><br><span class="line">  bottom: 0;</span><br><span class="line">  left: 0;</span><br><span class="line">  right: 0;</span><br><span class="line">  margin: auto;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">#  原理：当元素设置为绝对定位后，假设它是抓不到整体可运用的空间范围，所以margin: auto会失效，但当你设置了top:0;bottom:0;时，绝对定位元素就抓到了可运用的空间了，这时你的margin:auto就生效了。</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="absolute-translate"><a href="#absolute-translate" class="headerlink" title="absolute + translate"></a>absolute + translate</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># html</span></span><br><span class="line">&lt;div class=<span class="string">&quot;parant&quot;</span>&gt;</span><br><span class="line">  &lt;div class=<span class="string">&quot;child&quot;</span>&gt;&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"><span class="comment">#css</span></span><br><span class="line">.parant &#123;</span><br><span class="line">  position: relative;</span><br><span class="line">&#125;</span><br><span class="line">.child &#123;</span><br><span class="line">  position: absolute;</span><br><span class="line">  left: 50%;</span><br><span class="line">  top: 50%;</span><br><span class="line">  transform: translate(-50%, -50%);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 原理：利用绝对定位时的top 与right设置元素的上方跟左方各为50%，再利用transform: translate(-50%, -50%);位移居中元素自身宽与高的50%就能达成居中的目的了。</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="Flex-align-items"><a href="#Flex-align-items" class="headerlink" title="Flex + align-items"></a>Flex + align-items</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># html</span></span><br><span class="line">&lt;div class=<span class="string">&quot;parant&quot;</span>&gt;</span><br><span class="line">  &lt;div class=<span class="string">&quot;child&quot;</span>&gt;&lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"><span class="comment">#css</span></span><br><span class="line">.parant &#123;</span><br><span class="line">  display: flex;</span><br><span class="line">  justify-content: center;</span><br><span class="line">  align-item: center</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/14/JS%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E7%94%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/14/JS%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E7%94%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">JS字符串常用的操作方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-04-14 16:04:43" itemprop="dateCreated datePublished" datetime="2018-04-14T16:04:43+08:00">2018-04-14</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="JS字符串常用的操作方法"><a href="#JS字符串常用的操作方法" class="headerlink" title="JS字符串常用的操作方法"></a>JS字符串常用的操作方法</h1><ul>
-<li>str.charAt(index) 返回指定index下标的字符 下标从0开始</li>
-<li>str.includes(str1) 方法用于判断str1是否包含在str中，根据情况返回 true 或 false。</li>
-<li>str.indexOf(str1) 方法用于判断str1是否包含在str中，返回存在的下标，无则-1</li>
-<li>str.replace(regx,str) 按照regx的规则，将符合的替换成str</li>
-<li>str.split(‘分隔符’) 将str按照分隔符转化成数组</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">var anyString = <span class="string">&quot;Brave new world&quot;</span>;</span><br><span class="line">console.log(<span class="string">&quot;The character at index 0   is &#x27;&quot;</span> + anyString.charAt(0)   + <span class="string">&quot;&#x27;&quot;</span>);</span><br><span class="line">// The character at index 0 is <span class="string">&#x27;B&#x27;</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// str.includes(str1) 方法用于判断str1是否包含在str中，根据情况返回 <span class="literal">true</span> 或 <span class="literal">false</span>。 区分大小写</span><br><span class="line"><span class="string">&#x27;Blue Whale&#x27;</span>.includes(<span class="string">&#x27;blue&#x27;</span>); // returns <span class="literal">false</span></span><br><span class="line"><span class="string">&#x27;Blue Whale&#x27;</span>.includes(<span class="string">&#x27;Blue&#x27;</span>); // returns <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">//str.indexOf(str1) 方法用于判断str1是否包含在str中，返回存在的下标，无则-1</span><br><span class="line">const paragraph = <span class="string">&#x27;The quick brown fox jumps over the lazy dog. If the dog barked, was it really lazy?&#x27;</span>;</span><br><span class="line"></span><br><span class="line">const searchTerm = <span class="string">&#x27;dog&#x27;</span>;</span><br><span class="line">const indexOfFirst = paragraph.indexOf(searchTerm);</span><br><span class="line">console.log(indexOfFirst); // expected output: <span class="string">&quot;40&quot;</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// str.replace(regx,str) 按照regx的规则，将符合的替换成str</span><br><span class="line">const p = <span class="string">&#x27;The quick brown fox jumps over the lazy dog. If the dog reacted, was it really lazy?&#x27;</span>;</span><br><span class="line"></span><br><span class="line">console.log(p.replace(<span class="string">&#x27;dog&#x27;</span>, <span class="string">&#x27;monkey&#x27;</span>));</span><br><span class="line">// expected output: <span class="string">&quot;The quick brown fox jumps over the lazy monkey. If the dog reacted, was it really lazy?&quot;</span></span><br><span class="line">const regex = /Dog/i;</span><br><span class="line">console.log(p.replace(regex, <span class="string">&#x27;ferret&#x27;</span>));</span><br><span class="line">// expected output: <span class="string">&quot;The quick brown fox jumps over the lazy ferret. If the dog reacted, was it really lazy?&quot;</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">//str.split(<span class="string">&#x27;分隔符&#x27;</span>) 将str按照分隔符转化成数组</span><br><span class="line">const str = <span class="string">&#x27;The quick brown fox jumps over the lazy dog.&#x27;</span>;</span><br><span class="line">const words = str.split(<span class="string">&#x27; &#x27;</span>);</span><br><span class="line">console.log(words[3]);// expected output: <span class="string">&quot;fox&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>

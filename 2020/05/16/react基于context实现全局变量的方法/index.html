@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="先生成一个context.js12345678import React from &amp;#x27;react&amp;#x27;export const fontSize &#x3D; &amp;#123;  small: &amp;#x27;12px&amp;#x27;,  big: &amp;#x27;36px&amp;#x27;&amp;#125;export const ThemeContext &#x3D; React.createContext(&amp;#123;  f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="react基于content实现全局变量的方法">
+<meta property="og:url" content="http://example.com/2020/05/16/react%E5%9F%BA%E4%BA%8Econtext%E5%AE%9E%E7%8E%B0%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="先生成一个context.js12345678import React from &amp;#x27;react&amp;#x27;export const fontSize &#x3D; &amp;#123;  small: &amp;#x27;12px&amp;#x27;,  big: &amp;#x27;36px&amp;#x27;&amp;#125;export const ThemeContext &#x3D; React.createContext(&amp;#123;  f">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-16T14:41:24.000Z">
+<meta property="article:modified_time" content="2022-04-16T15:11:27.333Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="react">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/05/16/react%E5%9F%BA%E4%BA%8Econtext%E5%AE%9E%E7%8E%B0%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E6%96%B9%E6%B3%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/05/16/react%E5%9F%BA%E4%BA%8Econtext%E5%AE%9E%E7%8E%B0%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E6%96%B9%E6%B3%95/","path":"2020/05/16/react基于context实现全局变量的方法/","title":"react基于content实现全局变量的方法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>react基于content实现全局变量的方法 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%88%E7%94%9F%E6%88%90%E4%B8%80%E4%B8%AAcontext-js"><span class="nav-number">1.</span> <span class="nav-text">先生成一个context.js</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BB%84%E4%BB%B6-App-js-%E5%B9%B6%E5%AF%BC%E5%85%A5context"><span class="nav-number">2.</span> <span class="nav-text">创建一个组件 App.js,并导入context</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/05/16/react%E5%9F%BA%E4%BA%8Econtext%E5%AE%9E%E7%8E%B0%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="react基于content实现全局变量的方法 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          react基于content实现全局变量的方法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-16 22:41:24" itemprop="dateCreated datePublished" datetime="2020-05-16T22:41:24+08:00">2020-05-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="先生成一个context-js"><a href="#先生成一个context-js" class="headerlink" title="先生成一个context.js"></a>先生成一个context.js</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="built_in">export</span> const fontSize = &#123;</span><br><span class="line">  small: <span class="string">&#x27;12px&#x27;</span>,</span><br><span class="line">  big: <span class="string">&#x27;36px&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">export</span> const ThemeContext = React.createContext(&#123;</span><br><span class="line">  fontSize: fontSize.small,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h1 id="创建一个组件-App-js-并导入context"><a href="#创建一个组件-App-js-并导入context" class="headerlink" title="创建一个组件 App.js,并导入context"></a>创建一个组件 App.js,并导入context</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line">import &#123; ThemeContext,fontSize&#125; from <span class="string">&#x27;./context&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个顶级组件,将context的变量同步到state，通过修改state去更新子组件的视图</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line">  constructor(props)&#123;</span><br><span class="line">    super(props)</span><br><span class="line">    // 该方法可以封装在fontSize对象里面，通过<span class="built_in">bind</span>(this)挂载到state上面</span><br><span class="line">    this.handleFontSize = () =&gt; &#123;</span><br><span class="line">      this.setState(state =&gt; (&#123;</span><br><span class="line">        fontSize: state.fontSize === fontSize.small</span><br><span class="line">            ? fontSize.big</span><br><span class="line">            : fontSize.small,</span><br><span class="line">      &#125;));</span><br><span class="line">    &#125;</span><br><span class="line">    // State 也包含了更新函数，因此它会被传递进 context provider。</span><br><span class="line">    this.state = &#123;</span><br><span class="line">      fontSize: fontSize.small,</span><br><span class="line">      handleFontSize: this.handleFontSize,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment"># 通过 ThemeContext.Provider 将该state往里面的组件传递</span></span><br><span class="line">  <span class="function"><span class="title">render</span></span>()&#123;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">       &lt;ThemeContext.Provider value=&#123;this.state&#125;&gt;</span><br><span class="line">          &lt;div&gt;</span><br><span class="line">            &lt;ChangeFontSizeBtn /&gt;</span><br><span class="line">          &lt;/div&gt;</span><br><span class="line">        &lt;/ThemeContext.Provider&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义使用该全局变量的组件 ChangeFontSizeBtn</span></span><br><span class="line"><span class="comment"># 通过 &lt;ThemeContext.Consumer&gt; &#123;(state)=&gt;()&#125;&lt;/ThemeContext.Consumer&gt;组件获取该state</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">ChangeFontSizeBtn</span></span>()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;ThemeContext.Consumer&gt;</span><br><span class="line">      &#123;(&#123;fontSize,handleFontSize&#125;)=&gt;(</span><br><span class="line">        &lt;button</span><br><span class="line">          onClick=&#123;handleFontSize&#125;</span><br><span class="line">          style=&#123;&#123;fontSize: fontSize&#125;&#125;  </span><br><span class="line">        &gt;</span><br><span class="line">          change</span><br><span class="line">        &lt;/button&gt;</span><br><span class="line">      )&#125;</span><br><span class="line">    &lt;/ThemeContext.Consumer&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>最终完成某层子组件修改全局变量的方法</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>定义一个context对象，通过React.creatContext({fontSize: ‘12px’})暴露出来</li>
+<li>在全局组件中引入该context，用state去同步context对象的数据，并创建一个修改数据的方法</li>
+<li>定义一个ThemeContext.Provider组件可以，并将state作为value的值传递进去 &lt;ThemeContext.Provider value&#x3D;{this.state}&gt;&lt;&#x2F;ThemeContext.Provider&gt;</li>
+<li>在某个需要修改该数据的组件中，通过ThemeContext.Consumer去获取state的数据 &lt;ThemeContext.Consumer&gt; {(state)&#x3D;&gt;()}&lt;&#x2F;ThemeContext.Consumer&gt;</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/react/" rel="tag"># react</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/04/14/Redux-%E6%89%8B%E8%AE%B0/" rel="prev" title="Redux 手记">
+                  <i class="fa fa-chevron-left"></i> Redux 手记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/07/17/react%E7%BB%84%E4%BB%B6%E4%BB%B6%E7%9A%84%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%94%A8%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%B8%BA%E4%BD%95%E5%BC%83%E7%94%A8mixins%E7%9A%84%E6%80%9D%E8%80%83/" rel="next" title="react组件件的代码复用，以及为何弃用mixins的思考">
+                  react组件件的代码复用，以及为何弃用mixins的思考 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="为何弃用mixins，故事背景“我如何在几个组件之间共享代码？” 是人们在学习 React 时首先提出的问题之一。我们的答案一直是使用组件组合来进行代码重用。您可以定义一个组件并在其他几个组件中使用它。如何通过组合来解决某种模式并不总是很明显。React 受到函数式编程的影响，但它进入了由面向对象库主导的领域。mixin 系统就是其中之一，它的目标是当你不确定如何用组合解决同样的问题时，它的目标是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="react组件件的代码复用，以及为何弃用mixins的思考">
+<meta property="og:url" content="http://example.com/2020/07/17/react%E7%BB%84%E4%BB%B6%E4%BB%B6%E7%9A%84%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%94%A8%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%B8%BA%E4%BD%95%E5%BC%83%E7%94%A8mixins%E7%9A%84%E6%80%9D%E8%80%83/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="为何弃用mixins，故事背景“我如何在几个组件之间共享代码？” 是人们在学习 React 时首先提出的问题之一。我们的答案一直是使用组件组合来进行代码重用。您可以定义一个组件并在其他几个组件中使用它。如何通过组合来解决某种模式并不总是很明显。React 受到函数式编程的影响，但它进入了由面向对象库主导的领域。mixin 系统就是其中之一，它的目标是当你不确定如何用组合解决同样的问题时，它的目标是">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-17T00:49:37.000Z">
+<meta property="article:modified_time" content="2022-04-17T08:03:49.883Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="mixins react">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/07/17/react%E7%BB%84%E4%BB%B6%E4%BB%B6%E7%9A%84%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%94%A8%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%B8%BA%E4%BD%95%E5%BC%83%E7%94%A8mixins%E7%9A%84%E6%80%9D%E8%80%83/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/07/17/react%E7%BB%84%E4%BB%B6%E4%BB%B6%E7%9A%84%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%94%A8%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%B8%BA%E4%BD%95%E5%BC%83%E7%94%A8mixins%E7%9A%84%E6%80%9D%E8%80%83/","path":"2020/07/17/react组件件的代码复用，以及为何弃用mixins的思考/","title":"react组件件的代码复用，以及为何弃用mixins的思考"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>react组件件的代码复用，以及为何弃用mixins的思考 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BA%E4%BD%95%E5%BC%83%E7%94%A8mixins%EF%BC%8C%E6%95%85%E4%BA%8B%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">为何弃用mixins，故事背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-%E4%B9%8B-%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">解决方案 之 高阶组件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HOC-%E7%BA%A6%E5%AE%9A%EF%BC%9A%E5%B0%86%E4%B8%8D%E7%9B%B8%E5%85%B3%E7%9A%84-props-%E4%BC%A0%E9%80%92%E7%BB%99%E8%A2%AB%E5%8C%85%E8%A3%B9%E7%9A%84%E7%BB%84%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">HOC 约定：将不相关的 props 传递给被包裹的组件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HOC%E7%BA%A6%E5%AE%9A%EF%BC%9A%E6%9C%80%E5%A4%A7%E5%8C%96%E5%8F%AF%E7%BB%84%E5%90%88%E6%80%A7"><span class="nav-number">4.</span> <span class="nav-text">HOC约定：最大化可组合性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">5.</span> <span class="nav-text">注意事项</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/17/react%E7%BB%84%E4%BB%B6%E4%BB%B6%E7%9A%84%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%94%A8%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%B8%BA%E4%BD%95%E5%BC%83%E7%94%A8mixins%E7%9A%84%E6%80%9D%E8%80%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="react组件件的代码复用，以及为何弃用mixins的思考 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          react组件件的代码复用，以及为何弃用mixins的思考
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-07-17 08:49:37" itemprop="dateCreated datePublished" datetime="2020-07-17T08:49:37+08:00">2020-07-17</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="为何弃用mixins，故事背景"><a href="#为何弃用mixins，故事背景" class="headerlink" title="为何弃用mixins，故事背景"></a>为何弃用mixins，故事背景</h1><p>“我如何在几个组件之间共享代码？” 是人们在学习 React 时首先提出的问题之一。我们的答案一直是使用组件组合来进行代码重用。您可以定义一个组件并在其他几个组件中使用它。<br>如何通过组合来解决某种模式并不总是很明显。React 受到函数式编程的影响，但它进入了由面向对象库主导的领域。<br>mixin 系统就是其中之一，它的目标是当你不确定如何用组合解决同样的问题时，它的目标是为你提供一种在组件之间重用代码的方法。<br>随着组件数量越来越多，使用 React 的一些代码逐渐变得难以理解。<br>这些组件太容易被意外破坏，让新开发人员感到困惑，最终也让最初编写它们的人感到困惑。这种混乱大部分是由 mixins 引起的。</p>
+<p>Mixins 打破了常见且通常安全的假设，即您可以通过在组件文件中搜索其出现来重命名状态键或方法。您可能会编写一个有状态的组件，然后您的同事可能会添加一个读取此状态的 mixin。几个月后，您可能希望将该状态移至父组件，以便与兄弟姐妹共享。你会记得更新 mixin 来读取道具吗？如果现在其他组件也使用这个 mixin 怎么办？</p>
+<p>有时候可能要修改mixin的部分功能，但是不知道在哪个地方哪个角落调用了这个方法。你不得不复制一份出来单独维护。<br>这就是mixin为何被弃用的主要原因。<br>当数量上来了，复用的功效就没那么明显，还可能是一种累赘。</p>
+<p>每一个新的需求都会让 mixins 更难理解。随着时间的推移，使用相同 mixin 的组件变得越来越耦合。任何新功能都会被添加到使用该 mixin 的所有组件中。如果不复制代码或在 mixin 之间引入更多的依赖关系和间接性，就无法拆分 mixin 的“更简单”部分。逐渐地，封装边界被侵蚀，并且由于很难更改或删除现有的 mixin，它们变得越来越抽象，直到没有人了解它们是如何工作的。</p>
+<h1 id="解决方案-之-高阶组件"><a href="#解决方案-之-高阶组件" class="headerlink" title="解决方案 之 高阶组件"></a>解决方案 之 高阶组件</h1><p>高阶组件（HOC）是 React 中用于复用组件逻辑的一种高级技巧。HOC 自身不是 React API 的一部分，它是一种基于 React 的组合特性而形成的设计模式</p>
+<p>具体而言，高阶组件是参数为组件，返回值为新组件的函数。</p>
+<p>目的是为了数据与视图分离，所有操作数据的方法都封装在高阶组件的函数内部，视图的展示，通过传递的组件参数去表达</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">// 此函数接收一个组件...</span><br><span class="line"><span class="keyword">function</span> withSubscription(WrappedComponent, selectData) &#123;</span><br><span class="line">  // ...并返回另一个组件...</span><br><span class="line">  <span class="built_in">return</span> class extends React.Component &#123;</span><br><span class="line">    constructor(props) &#123;</span><br><span class="line">      super(props);</span><br><span class="line">      this.handleChange = this.handleChange.<span class="built_in">bind</span>(this);</span><br><span class="line">      this.state = &#123;</span><br><span class="line">        data: selectData(DataSource, props)</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">componentDidMount</span></span>() &#123;</span><br><span class="line">      // ...负责订阅相关的操作...</span><br><span class="line">      DataSource.addChangeListener(this.handleChange);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">componentWillUnmount</span></span>() &#123;</span><br><span class="line">      DataSource.removeChangeListener(this.handleChange);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">handleChange</span></span>() &#123;</span><br><span class="line">      this.setState(&#123;</span><br><span class="line">        data: selectData(DataSource, this.props)</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">      // ... 并使用新数据渲染被包装的组件!</span><br><span class="line">      // 请注意，我们可能还会传递其他属性</span><br><span class="line">      <span class="built_in">return</span> &lt;WrappedComponent data=&#123;this.state.data&#125; &#123;...this.props&#125; /&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>HOC 不会修改传入的组件，也不会使用继承来复制其行为。相反，HOC 通过将组件包装在容器组件中来组成新组件。HOC 是纯函数，没有副作用</p>
+<h1 id="HOC-约定：将不相关的-props-传递给被包裹的组件"><a href="#HOC-约定：将不相关的-props-传递给被包裹的组件" class="headerlink" title="HOC 约定：将不相关的 props 传递给被包裹的组件"></a>HOC 约定：将不相关的 props 传递给被包裹的组件</h1><p>HOC 为组件添加特性。自身不应该大幅改变约定。HOC 返回的组件与原组件应保持类似的接口。<br>HOC 应该透传与自身无关的 props。大多数 HOC 都应该包含一个类似于下面的 render 方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">  // 过滤掉非此 HOC 额外的 props，且不要进行透传</span><br><span class="line">  const &#123; extraProp, ...passThroughProps &#125; = this.props;</span><br><span class="line"></span><br><span class="line">  // 将 props 注入到被包装的组件中。</span><br><span class="line">  // 通常为 state 的值或者实例方法。</span><br><span class="line">  const injectedProp = someStateOrInstanceMethod;</span><br><span class="line"></span><br><span class="line">  // 将 props 传递给被包装组件</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;WrappedComponent</span><br><span class="line">      injectedProp=&#123;injectedProp&#125;</span><br><span class="line">      &#123;...passThroughProps&#125;</span><br><span class="line">    /&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="HOC约定：最大化可组合性"><a href="#HOC约定：最大化可组合性" class="headerlink" title="HOC约定：最大化可组合性"></a>HOC约定：最大化可组合性</h1><p>并不是所有的 HOC 都一样。有时候它仅接受一个参数，也就是被包裹的组件：<br>const NavbarWithRouter &#x3D; withRouter(Navbar);</p>
+<p>HOC 通常可以接收多个参数。比如在 Relay 中，HOC 额外接收了一个配置对象用于指定组件的数据依赖：<br>const CommentWithRelay &#x3D; Relay.createContainer(Comment, config);</p>
+<p>甚至可能是返回高阶组件的高阶函数！！！<br>&#x2F;&#x2F; React Redux 的 <code>connect</code> 函数<br>const ConnectedComment &#x3D; connect(commentSelector, commentActions)(CommentList);</p>
+<p>类似于函数柯里化<br>把函数的参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> createCurry = (fn,...params)=&gt;&#123;</span><br><span class="line">  <span class="built_in">let</span> args = params || []</span><br><span class="line">  <span class="built_in">let</span> fnLen = fn.length</span><br><span class="line">  <span class="built_in">return</span> (...res)=&gt;&#123;</span><br><span class="line">    <span class="built_in">let</span> allArgs = args.slice(0)</span><br><span class="line">    allArgs.push(...res)</span><br><span class="line">    <span class="keyword">if</span>(allArgs.length &lt; fnLen&gt;)&#123;</span><br><span class="line">      <span class="built_in">return</span> createCurry.call(this,fn,...allArgs);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">return</span> fn.apply(this,allArgs);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ul>
+<li><p>不要在 render 方法中使用 HOC<br>React 的 diff 算法使用组件标识来确定它是应该更新现有子树还是将其丢弃并挂载新子树。 如果从 render 返回的组件与前一个渲染中的组件相同（&#x3D;&#x3D;&#x3D;），则 React 通过将子树与新子树进行区分来递归更新子树。 如果它们不相等，则完全卸载前一个子树。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">  // 每次调用 render 函数都会创建一个新的 EnhancedComponent</span><br><span class="line">  // EnhancedComponent1 !== EnhancedComponent2</span><br><span class="line">  const EnhancedComponent = enhance(MyComponent);</span><br><span class="line">  // 这将导致子树每次渲染都会进行卸载，和重新挂载的操作！</span><br><span class="line">  <span class="built_in">return</span> &lt;EnhancedComponent /&gt;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在每次render时都会重新创建，重新挂载组件会导致该组件及其所有子组件的状态丢失。<br>如果在组件之外创建 HOC，这样一来组件只会创建一次。因此，每次 render 时都会是同一个组件。<br>在极少数情况下，你需要动态调用 HOC。你可以在组件的生命周期方法或其构造函数中进行调用。</p>
+</li>
+<li><p>务必复制静态方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// 定义静态函数</span><br><span class="line">WrappedComponent.staticMethod = <span class="function"><span class="title">function</span></span>() &#123;/*...*/&#125;</span><br><span class="line">// 现在使用 HOC</span><br><span class="line">const EnhancedComponent = enhance(WrappedComponent);</span><br><span class="line"></span><br><span class="line">// 增强组件没有 staticMethod</span><br><span class="line">typeof EnhancedComponent.staticMethod === <span class="string">&#x27;undefined&#x27;</span> // <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 传入组件的静态方法会随着被高阶组件聚合而丢失</span></span><br><span class="line"><span class="comment"># 可以通过在高阶组件内部复制一份</span></span><br><span class="line"><span class="keyword">function</span> enhance(WrappedComponent) &#123;</span><br><span class="line">  class Enhance extends React.Component &#123;/*...*/&#125;</span><br><span class="line">  // 必须准确知道应该拷贝哪些方法 :(</span><br><span class="line">  Enhance.staticMethod = WrappedComponent.staticMethod;</span><br><span class="line">  <span class="built_in">return</span> Enhance;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 借用第三方库，无感拷贝 hoist-non-react-statics 自动拷贝所有非 React 静态方法:</span></span><br><span class="line"></span><br><span class="line">import hoistNonReactStatic from <span class="string">&#x27;hoist-non-react-statics&#x27;</span>;</span><br><span class="line"><span class="keyword">function</span> enhance(WrappedComponent) &#123;</span><br><span class="line">  class Enhance extends React.Component &#123;/*...*/&#125;</span><br><span class="line"></span><br><span class="line">  hoistNonReactStatic(Enhance, WrappedComponent);</span><br><span class="line">  <span class="built_in">return</span> Enhance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Refs 不会被传递<br>那是因为 ref 实际上并不是一个 prop，它就像 key 一样，是由 React 专门处理的。如果将 ref 添加到 HOC 的返回组件中，则 ref 引用指向容器组件，而不是被包装组件。</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mixins-react/" rel="tag"># mixins react</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/05/16/react%E5%9F%BA%E4%BA%8Econtext%E5%AE%9E%E7%8E%B0%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E6%96%B9%E6%B3%95/" rel="prev" title="react基于content实现全局变量的方法">
+                  <i class="fa fa-chevron-left"></i> react基于content实现全局变量的方法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/08/17/React%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" rel="next" title="React手写一个高阶组件">
+                  React手写一个高阶组件 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
