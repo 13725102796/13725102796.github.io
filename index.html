@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -166,6 +166,85 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/19/React-Router-%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/19/React-Router-%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">React-Router 主要功能详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-19 10:18:43" itemprop="dateCreated datePublished" datetime="2022-04-19T10:18:43+08:00">2022-04-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p><code> $ npm install react-router-dom@6</code></p>
+<h1 id="使用-（使用组件注册路由）"><a href="#使用-（使用组件注册路由）" class="headerlink" title="使用 （使用组件注册路由）"></a>使用 （使用组件注册路由）</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&quot;react&quot;</span>;</span><br><span class="line">import &#123; Routes, Route, Link,BrowserRouter &#125; from <span class="string">&quot;react-router-dom&quot;</span>;</span><br><span class="line">import ReactDOM from <span class="string">&quot;react-dom&quot;</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div &gt;</span><br><span class="line">      &lt;h1&gt;Welcome to React Router!&lt;/h1&gt;</span><br><span class="line">      &lt;Routes&gt;</span><br><span class="line">        &lt;Route path=<span class="string">&quot;/&quot;</span> element=&#123;&lt;Home /&gt;&#125; /&gt;</span><br><span class="line">        &lt;Route path=<span class="string">&quot;about&quot;</span> element=&#123;&lt;About /&gt;&#125; /&gt;</span><br><span class="line">      &lt;/Routes&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Home</span></span>()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      Home</span><br><span class="line">      &lt;Link to=<span class="string">&quot;/about&quot;</span>&gt;About&lt;/Link&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">About</span></span>()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;About&lt;Link to=<span class="string">&quot;/&quot;</span>&gt;About&lt;/Link&gt;&lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;BrowserRouter&gt;</span><br><span class="line">    &lt;App /&gt;</span><br><span class="line">  &lt;/BrowserRouter&gt;,</span><br><span class="line">  document.getElementById(<span class="string">&quot;root&quot;</span>)</span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="使用useRoutes注册路由"><a href="#使用useRoutes注册路由" class="headerlink" title="使用useRoutes注册路由"></a>使用useRoutes注册路由</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">//路由表配置：src/routes/index.js</span><br><span class="line">import About from <span class="string">&#x27;../pages/About&#x27;</span></span><br><span class="line">import Home from <span class="string">&#x27;../pages/Home&#x27;</span></span><br><span class="line">import &#123;Navigate&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default [</span><br><span class="line">	&#123;</span><br><span class="line">		path:<span class="string">&#x27;/about&#x27;</span>,</span><br><span class="line">		element:&lt;About/&gt;,</span><br><span class="line">    children: [&#123;</span><br><span class="line">      path:<span class="string">&#x27;aboutChild1&#x27;</span>,</span><br><span class="line">		  element:&lt;AboutChild1 /&gt;,</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">      path:<span class="string">&#x27;aboutChild2&#x27;</span>,</span><br><span class="line">		  element:&lt;AboutChild2 /&gt;,</span><br><span class="line">    &#125;</span><br><span class="line">    ]</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		path:<span class="string">&#x27;/home&#x27;</span>,</span><br><span class="line">		element:&lt;Home/&gt;</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		path:<span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">		element:&lt;Navigate to=<span class="string">&quot;/about&quot;</span>/&gt;</span><br><span class="line">	&#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">//App.jsx</span><br><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line">import &#123;NavLink,useRoutes&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import routes from <span class="string">&#x27;./routes&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default <span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">	//根据路由表生成对应的路由规则</span><br><span class="line">	const element = useRoutes(routes)</span><br><span class="line">	<span class="built_in">return</span> (</span><br><span class="line">		&lt;div&gt;</span><br><span class="line">			......</span><br><span class="line">      &#123;/* 注册路由 */&#125;</span><br><span class="line">      &#123;element&#125;</span><br><span class="line">		  ......</span><br><span class="line">		&lt;/div&gt;</span><br><span class="line">	)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="子路由渲染位置"><a href="#子路由渲染位置" class="headerlink" title=" 子路由渲染位置"></a><Outlet> 子路由渲染位置</h1><h1 id="useNavigate-返回一个函数用来实现编程式导航。"><a href="#useNavigate-返回一个函数用来实现编程式导航。" class="headerlink" title="useNavigate 返回一个函数用来实现编程式导航。"></a>useNavigate 返回一个函数用来实现编程式导航。</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import &#123;useNavigate&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line">import &#123;useNavigate&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default <span class="keyword">function</span> <span class="function"><span class="title">Demo</span></span>() &#123;</span><br><span class="line">  const navigate = useNavigate()</span><br><span class="line">  const handle = () =&gt; &#123;</span><br><span class="line">    //第一种使用方式：指定具体的路径</span><br><span class="line">    navigate(<span class="string">&#x27;/login&#x27;</span>, &#123;</span><br><span class="line">      replace: <span class="literal">false</span>,</span><br><span class="line">      state: &#123;a:1, b:2&#125;</span><br><span class="line">    &#125;) </span><br><span class="line">    //第二种使用方式：传入数值进行前进或后退，类似于5.x中的 history.go()方法</span><br><span class="line">    navigate(-1)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;button onClick=&#123;handle&#125;&gt;按钮&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="useParams-返回当前匹配路由的params参数-useSearchParams-用于读取和修改当前位置的-URL-中的查询字符串。-useLocation-获取当前-location-信息"><a href="#useParams-返回当前匹配路由的params参数-useSearchParams-用于读取和修改当前位置的-URL-中的查询字符串。-useLocation-获取当前-location-信息" class="headerlink" title="useParams 返回当前匹配路由的params参数 | useSearchParams 用于读取和修改当前位置的 URL 中的查询字符串。 | useLocation 获取当前 location 信息"></a>useParams 返回当前匹配路由的params参数 | useSearchParams 用于读取和修改当前位置的 URL 中的查询字符串。 | useLocation 获取当前 location 信息</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># useParams</span></span><br><span class="line">import &#123; Routes, Route, useParams,useSearchParams,useLocation &#125; from <span class="string">&#x27;react-router-dom&#x27;</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">ProfilePage</span></span>() &#123;</span><br><span class="line">  // 获取URL中携带过来的params参数</span><br><span class="line">  <span class="built_in">let</span> &#123; <span class="built_in">id</span> &#125; = useParams();</span><br><span class="line">  // 返回一个包含两个值的数组，内容分别为：当前的seaech参数、更新search的函数。</span><br><span class="line">  const [search,setSearch] = useSearchParams()</span><br><span class="line">  // update</span><br><span class="line">  const <span class="built_in">id</span> = search.get(<span class="string">&#x27;id&#x27;</span>)</span><br><span class="line">  setSearch(<span class="string">&#x27;id=12123123&#x27;</span>) </span><br><span class="line">  // 获取当前 location 信息</span><br><span class="line">  const x = useLocation()</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;Routes&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;users/:id&quot;</span> element=&#123;&lt;User /&gt;&#125;/&gt;</span><br><span class="line">    &lt;/Routes&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="路由钩子-routerWillLeave"><a href="#路由钩子-routerWillLeave" class="headerlink" title="路由钩子 routerWillLeave"></a>路由钩子 routerWillLeave</h1><p>可以拦截正在发生的跳转，或在离开 route 前提示用户。<br>routerWillLeave 返回值有以下两种：</p>
+<ul>
+<li>return false 取消此次跳转</li>
+<li>return 返回提示信息，在离开 route 前提示用户进行确认。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -913,78 +992,6 @@
 </ul>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>三次握手，为了测试双方能够正常发送，接收<br>第一次握手： 客户端发送SYN服务器 ，服务器正常接受   客户端发送正常 服务器接收正常<br>第二次握手： 服务器发送ACK到客户端，客户端正常接受  服务器发送正常 客户端接收正常<br>第三次握手： 客户端向服务器发送正式链接，至此，双方建立起了 TCP 连接</p>
 <p>四次挥手，因为TCP半关闭的特性<br>TCP 提供了连接的一端在结束它的发送后还能接收来自另一端数据的能力。<br>A 和 B 打电话，通话即将结束后，A 说 “我没啥要说的了”，B 回答 “我知道了”，于是 A 向 B 的连接释放了。但是 B 可能还会有要说的话，于是 B 可能又巴拉巴拉说了一通，最后 B 说“我说完了”，A 回答“知道了”，于是 B 向 A 的连接释放了，</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/13/Vue-v-model%E7%9A%84%E5%AE%9E%E8%B7%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/04/13/Vue-v-model%E7%9A%84%E5%AE%9E%E8%B7%B5/" class="post-title-link" itemprop="url">Vue v-model的实践</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-04-13 23:00:42" itemprop="dateCreated datePublished" datetime="2020-04-13T23:00:42+08:00">2020-04-13</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Vue-v-model的实践"><a href="#Vue-v-model的实践" class="headerlink" title="Vue v-model的实践"></a>Vue v-model的实践</h1><p>v-model 只是语法糖，主要是通过input事件来触发input标签value值来实现我们说的“双向数据绑定”,其实它还是单向数据流。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> v-model=<span class="string">&quot;value&quot;</span> /&gt;</span><br><span class="line"><span class="comment">#等价于</span></span><br><span class="line">&lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> :value=<span class="string">&quot;value&quot;</span> @input=v=&gt;<span class="variable">$emit</span>(<span class="string">&#x27;input&#x27;</span>, v)/&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义组件实现v-model</span></span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> :value=<span class="string">&quot;value&quot;</span> @input=<span class="string">&quot;handleInput&quot;</span> :placeholder=<span class="string">&quot;placehodler&quot;</span> /&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="built_in">export</span> default &#123;</span><br><span class="line">    name: <span class="string">&#x27;kInput&#x27;</span>,</span><br><span class="line">    props: &#123;</span><br><span class="line">        value: [<span class="string">&#x27;String&#x27;</span>, <span class="string">&#x27;Number&#x27;</span>],</span><br><span class="line">        placeholder: String</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        handleInput(<span class="variable">$event</span>) &#123;</span><br><span class="line">            // 通过input标签的原生事件input将值emit出去，以达到值得改变实现双向绑定</span><br><span class="line">            this.<span class="variable">$emit</span>(<span class="string">&#x27;input&#x27;</span>, <span class="variable">$event</span>.target.value)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
 
       
     </div>

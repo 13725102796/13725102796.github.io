@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -166,6 +166,78 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/13/Vue-v-model%E7%9A%84%E5%AE%9E%E8%B7%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/04/13/Vue-v-model%E7%9A%84%E5%AE%9E%E8%B7%B5/" class="post-title-link" itemprop="url">Vue v-model的实践</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-13 23:00:42" itemprop="dateCreated datePublished" datetime="2020-04-13T23:00:42+08:00">2020-04-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Vue-v-model的实践"><a href="#Vue-v-model的实践" class="headerlink" title="Vue v-model的实践"></a>Vue v-model的实践</h1><p>v-model 只是语法糖，主要是通过input事件来触发input标签value值来实现我们说的“双向数据绑定”,其实它还是单向数据流。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> v-model=<span class="string">&quot;value&quot;</span> /&gt;</span><br><span class="line"><span class="comment">#等价于</span></span><br><span class="line">&lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> :value=<span class="string">&quot;value&quot;</span> @input=v=&gt;<span class="variable">$emit</span>(<span class="string">&#x27;input&#x27;</span>, v)/&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义组件实现v-model</span></span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> :value=<span class="string">&quot;value&quot;</span> @input=<span class="string">&quot;handleInput&quot;</span> :placeholder=<span class="string">&quot;placehodler&quot;</span> /&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="built_in">export</span> default &#123;</span><br><span class="line">    name: <span class="string">&#x27;kInput&#x27;</span>,</span><br><span class="line">    props: &#123;</span><br><span class="line">        value: [<span class="string">&#x27;String&#x27;</span>, <span class="string">&#x27;Number&#x27;</span>],</span><br><span class="line">        placeholder: String</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        handleInput(<span class="variable">$event</span>) &#123;</span><br><span class="line">            // 通过input标签的原生事件input将值emit出去，以达到值得改变实现双向绑定</span><br><span class="line">            this.<span class="variable">$emit</span>(<span class="string">&#x27;input&#x27;</span>, <span class="variable">$event</span>.target.value)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -872,87 +944,6 @@
     
     <div class="post-body" itemprop="articleBody">
           <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># border新增border-img, border-radius</span></span><br><span class="line">* border-image-source 	用于指定要用于绘制边框的图像的位置</span><br><span class="line">* border-image-slice 图像边界向内偏移</span><br><span class="line">* border-image-width 	图像边界的宽度</span><br><span class="line">* border-image-outset 用于指定在边框外部绘制 border-image-area 的量</span><br><span class="line">* border-image-repeat 用于设置图像边界是否应重复（repeat）、拉伸（stretch）或铺满（round）。</span><br><span class="line">border-image: <span class="built_in">source</span> slice width outset repeat|initial|inherit;</span><br><span class="line"></span><br><span class="line"><span class="comment"># box-shadow </span></span><br><span class="line">box-shadow:-10px -10px 20px 20px gold;</span><br><span class="line"><span class="comment"># text-shadow</span></span><br><span class="line">text-shadow: 0 0 5px <span class="comment">#fff;</span></span><br><span class="line"><span class="comment"># background 新增background-image，background-size background-repeat</span></span><br><span class="line"><span class="comment"># 媒体查询 制作响应式设计</span></span><br><span class="line">@media screen and (max-width: 300px) &#123;</span><br><span class="line">    body &#123;</span><br><span class="line">        background-color:lightblue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@media screen and (min-width: 300px) and (max-width: 500px)&#123;</span><br><span class="line">    <span class="comment">#wrap div&#123;</span></span><br><span class="line">        width: 20%;</span><br><span class="line">    &#125;            </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/22/HTML5-%E6%96%B0%E5%A2%9E%E8%AF%AD%E4%B9%89%E5%8C%96%E6%A0%87%E7%AD%BE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/05/22/HTML5-%E6%96%B0%E5%A2%9E%E8%AF%AD%E4%B9%89%E5%8C%96%E6%A0%87%E7%AD%BE/" class="post-title-link" itemprop="url">HTML5 新增语义化标签</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-05-22 11:16:00" itemprop="dateCreated datePublished" datetime="2018-05-22T11:16:00+08:00">2018-05-22</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="HTML5-新增语义化标签"><a href="#HTML5-新增语义化标签" class="headerlink" title="HTML5 新增语义化标签"></a>HTML5 新增语义化标签</h1><p>这种语义化标签主要是针对搜索引擎的<br>这些新标签页面中可以使用多次</p>
-<ul>
-<li>header 头部标签</li>
-<li>nav 导航标签</li>
-<li>content 内容标签</li>
-<li>section 定义文档某个区域</li>
-<li>aside 侧边栏标签</li>
-<li>footer 尾部标签</li>
-<li>video 视频标签</li>
-<li>audio 音频标签</li>
-<li>user-select:none;禁止鼠标移动选择文字</li>
-<li>background-image:liner-gradient(to right,red,green); 设置背景颜色渐变</li>
-</ul>
 
       
     </div>
