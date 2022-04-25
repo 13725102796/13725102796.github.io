@@ -28,7 +28,7 @@
 <meta property="og:description" content="Thunks 中间件Thunks 内部可能有异步逻辑，例如setTimeout、Promises 和async&#x2F;await. 这使它们成为将 AJAX 调用放入服务器 API 的好地方。Redux 的数据获取逻辑通常遵循可预测的模式：  在请求之前调度“开始”操作，以指示请求正在进行中。这可用于跟踪加载状态以允许跳过重复请求或在 UI 中显示加载指示符。 发出异步请求 根据请求结果，异步">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-21T00:14:14.000Z">
-<meta property="article:modified_time" content="2022-04-21T00:22:04.255Z">
+<meta property="article:modified_time" content="2022-04-23T03:29:15.602Z">
 <meta property="article:author" content="YeChang Zhang">
 <meta property="article:tag" content="React Redux Toolkit">
 <meta name="twitter:card" content="summary">
@@ -116,7 +116,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Thunks-%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">Thunks 中间件</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Thunks-%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">Thunks 中间件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E7%9A%84%E5%8A%A0%E8%BD%BD%E7%8A%B6%E6%80%81"><span class="nav-number">2.</span> <span class="nav-text">请求的加载状态</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -140,7 +140,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">43</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -229,6 +229,12 @@
 </ul>
 <p>这些步骤不是必需的，但很常用。（如果您只关心一个成功的结果，您可以在请求完成时分派一个“成功”操作，并跳过“开始”和“失败”操作。）</p>
 <p>Redux Toolkit 提供了一个createAsyncThunk API 来实现这些操作的创建和分派</p>
+<h1 id="请求的加载状态"><a href="#请求的加载状态" class="headerlink" title="请求的加载状态"></a>请求的加载状态</h1><ul>
+<li>请求尚未开始</li>
+<li>请求正在进行中</li>
+<li>请求成功，我们现在有了我们需要的数据</li>
+<li>请求失败，可能有错误消息<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> &#123;</span><br><span class="line">  // Multiple possible status enum values</span><br><span class="line">  status: <span class="string">&#x27;idle&#x27;</span> | <span class="string">&#x27;loading&#x27;</span> | <span class="string">&#x27;succeeded&#x27;</span> | <span class="string">&#x27;failed&#x27;</span>,</span><br><span class="line">  error: string | null</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
 
     </div>
 
@@ -245,8 +251,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/04/21/%E8%8B%B1%E6%96%87%E7%89%88%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/" rel="prev" title="英文版自我介绍">
-                  <i class="fa fa-chevron-left"></i> 英文版自我介绍
+                <a href="/2022/04/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E8%AF%A6%E8%A7%A3/" rel="prev" title="内存泄漏详解">
+                  <i class="fa fa-chevron-left"></i> 内存泄漏详解
                 </a>
             </div>
             <div class="post-nav-item">

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Computd计算属性的结果会被缓存，除非依赖的响应式 property 变化才会重新计算。注意，如果某个依赖 (比如非响应式 property) 在该实例范畴之外，则计算属性是不会被更新的。computed 就是一个带了缓存的执行函数，只有依赖的数据发生的变化才会重新求值 当计算属性依赖的响应式属性发生修改会做两件事是将计算属性的watcher 中的dirty属性更新为true ，表示要重新求值">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue Computd与watch">
+<meta property="og:url" content="http://example.com/2022/04/24/Vue-Computd%E4%B8%8Ewatch/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="Computd计算属性的结果会被缓存，除非依赖的响应式 property 变化才会重新计算。注意，如果某个依赖 (比如非响应式 property) 在该实例范畴之外，则计算属性是不会被更新的。computed 就是一个带了缓存的执行函数，只有依赖的数据发生的变化才会重新求值 当计算属性依赖的响应式属性发生修改会做两件事是将计算属性的watcher 中的dirty属性更新为true ，表示要重新求值">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-24T08:21:34.000Z">
+<meta property="article:modified_time" content="2022-04-25T00:27:02.718Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/04/24/Vue-Computd%E4%B8%8Ewatch/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/04/24/Vue-Computd%E4%B8%8Ewatch/","path":"2022/04/24/Vue-Computd与watch/","title":"Vue Computd与watch"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Vue Computd与watch | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Computd"><span class="nav-number">1.</span> <span class="nav-text">Computd</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#watch"><span class="nav-number">2.</span> <span class="nav-text">watch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Vue-%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E6%97%B6%E5%80%99"><span class="nav-number">3.</span> <span class="nav-text">Vue 初始化的时候</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/24/Vue-Computd%E4%B8%8Ewatch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Vue Computd与watch | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vue Computd与watch
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-24 16:21:34" itemprop="dateCreated datePublished" datetime="2022-04-24T16:21:34+08:00">2022-04-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Computd"><a href="#Computd" class="headerlink" title="Computd"></a>Computd</h1><p>计算属性的结果会被缓存，除非依赖的响应式 property 变化才会重新计算。注意，如果某个依赖 (比如非响应式 property) 在该实例范畴之外，则计算属性是不会被更新的。<br>computed 就是一个带了缓存的执行函数，只有依赖的数据发生的变化才会重新求值</p>
+<p>当计算属性依赖的响应式属性发生修改会做两件事<br>是将计算属性的watcher 中的dirty属性更新为true ，表示要重新求值<br>是将渲染函数的watcher 加入任务队列。当渲染函数重新执行的时候就会触发计算属性的getter 并重新计算，这样就达到的缓存计算结果的目的。</p>
+<h1 id="watch"><a href="#watch" class="headerlink" title="watch"></a>watch</h1><p>一个对象，键是需要观察的表达式，值是对应回调函数。值也可以是方法名，或者包含选项的对象。Vue 实例将会在实例化时调用$watch()，遍历 watch 对象的每一个 property。<br>watch 更像是一个观察者，只要监测到数据变动就会重新执行回调<br>首先Vue 会根据用户传入的参数类型做格式处理，按处理后的参数调用 $<br>watch 生成观察器</p>
+<h1 id="Vue-初始化的时候"><a href="#Vue-初始化的时候" class="headerlink" title="Vue 初始化的时候"></a>Vue 初始化的时候</h1><p>vue 在init 阶段会根据传入的options 进行初始化，如果传入的options 中包含有computed , 会执行initComputed<br>vue 会为每个computed 属性生成一个watcher 实例，并将其中的lazy 属性设置为true (这个状态是用来标识 watcher 做惰性求值， 配合watcher 实例中的dirty 属性来实现)。并调用 createComputedGetter 重写计算属性的getter</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> createComputedGetter (key) &#123;</span><br><span class="line">  // 重写计算属性的 getter, </span><br><span class="line">  <span class="built_in">return</span> <span class="keyword">function</span> <span class="function"><span class="title">computedGetter</span></span> () &#123;</span><br><span class="line">    const watcher = this._computedWatchers &amp;&amp; this._computedWatchers[key]</span><br><span class="line">    <span class="keyword">if</span> (watcher) &#123;</span><br><span class="line">      // 初始化的时候会根据 lazy 来初始化dirty属性； </span><br><span class="line">      // 只有当依赖的响应属性变化，才会重新将计算属性的watcher.dirty 更新为 <span class="literal">true</span></span><br><span class="line">      // 表示在下次重新渲染的时候要重新求值。</span><br><span class="line">      <span class="keyword">if</span> (watcher.dirty) &#123;</span><br><span class="line">        watcher.evaluate()</span><br><span class="line">      &#125;</span><br><span class="line">      // 当前watcher 中收集了依赖的响应属性的dep</span><br><span class="line">      // 在这个阶段把计算属性依赖的渲染函数的watcher 收集到相同的dep中。</span><br><span class="line">      <span class="keyword">if</span> (Dep.target) &#123;</span><br><span class="line">        watcher.depend()</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">return</span> watcher.value</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// watcher 内定义的方法。  </span><br><span class="line"><span class="function"><span class="title">update</span></span> () &#123;</span><br><span class="line">    /* istanbul ignore <span class="keyword">else</span> */</span><br><span class="line">    // 计算属性</span><br><span class="line">    <span class="keyword">if</span> (this.lazy) &#123;</span><br><span class="line">      this.dirty = <span class="literal">true</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (this.sync) &#123;</span><br><span class="line">      this.run()</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      // 其他异步 watcher 加入任务队列等待执行</span><br><span class="line">      queueWatcher(this)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>重写后的 getter 做了两件事:</p>
+<ul>
+<li>是判断watcher 的dirty 属性，如果为true表示要重新执行watcher 实例的get 函数（重新求值的函数）</li>
+<li>将计算属性依赖的渲染函数的 watcher 收集到自己依赖的响应属性的Dep 实例中。经过这样的一个初始化后在响应式数据的 dep 中将收集了两个watcher 一个是计算属性的 watcher , 另一个是计算属性关联的渲染函数的watcher</li>
+</ul>
+<p>当计算属性关联的渲染函数的watcher收到来自更新的通知后，就会执行其 update 方法，要求重新求值。判断计算后的值是否相等，不等就通知计算属性的 watcher更新</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>computed 、watch 的底层都是通过生成一个Watcher 对响应数据进行观察，并在需要的时候重新执行求值，他们的不同点主要在于：</p>
+<ul>
+<li>计算属性的依赖收集并能实现在依赖的数据变化的时候能触发视图的更新，也就要求这个属性必须在组件的 render 函数中有引用到，这样他才能收集渲染函数的watcher 。当在依赖的数据变化后进行重新求值并通知渲染函数重新渲染。</li>
+<li>虽然watch 要求监听的也是响应式数据，但用户对监听的数据做了修改，用户定义的回调就会被执行。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Vue/" rel="tag"># Vue</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/24/Redux-saga-%E8%AF%A6%E8%A7%A3/" rel="prev" title="Redux-saga 详解">
+                  <i class="fa fa-chevron-left"></i> Redux-saga 详解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E8%AF%A6%E8%A7%A3/" rel="next" title="内存泄漏详解">
+                  内存泄漏详解 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
