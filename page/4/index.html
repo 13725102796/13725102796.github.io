@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-count">45</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -166,6 +166,180 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/06/25/%E9%A6%96%E5%B1%8F%E7%99%BD%E5%B1%8F%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/06/25/%E9%A6%96%E5%B1%8F%E7%99%BD%E5%B1%8F%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">首屏白屏问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-06-25 10:26:22" itemprop="dateCreated datePublished" datetime="2019-06-25T10:26:22+08:00">2019-06-25</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="白屏原因"><a href="#白屏原因" class="headerlink" title="白屏原因"></a>白屏原因</h1><ul>
+<li>js&#x2F;css依赖包过于庞大，导致spa应用首次进入页面白屏</li>
+<li>浏览器兼容问题，vue代码在ie中显示白屏</li>
+<li>URL 网址无效或者含有中文字符</li>
+<li>缓存导致 vue项目打包后，在非首次线上替换dist文件时，某些手机&#x2F;浏览器在之后首次打开页面，可能出现白屏情况</li>
+</ul>
+<h1 id="js-x2F-css依赖包过于庞大，导致spa应用首次进入页面白屏"><a href="#js-x2F-css依赖包过于庞大，导致spa应用首次进入页面白屏" class="headerlink" title="js&#x2F;css依赖包过于庞大，导致spa应用首次进入页面白屏"></a>js&#x2F;css依赖包过于庞大，导致spa应用首次进入页面白屏</h1><p>这个就是要做首屏优化 请求优化</p>
+<ul>
+<li>js，css分包加载</li>
+<li>大型插件依赖用cdn链接的方式</li>
+<li>请求gzip压缩</li>
+</ul>
+<p>代码层优化</p>
+<ul>
+<li>路由按需加载 </li>
+<li>webpack 启用摇树优化</li>
+<li>图片懒加载 lazy<br>…</li>
+</ul>
+<h1 id="缓存导致-vue项目打包后，在非首次线上替换dist文件时，某些手机-x2F-浏览器在之后首次打开页面，可能出现白屏情况"><a href="#缓存导致-vue项目打包后，在非首次线上替换dist文件时，某些手机-x2F-浏览器在之后首次打开页面，可能出现白屏情况" class="headerlink" title="缓存导致 vue项目打包后，在非首次线上替换dist文件时，某些手机&#x2F;浏览器在之后首次打开页面，可能出现白屏情况"></a>缓存导致 vue项目打包后，在非首次线上替换dist文件时，某些手机&#x2F;浏览器在之后首次打开页面，可能出现白屏情况</h1><p>客户端: 解决方案一般是强制刷新页面或者清除缓存重新加载。<br>服务端：直接在网站后台清除缓存。或者链接服务器，去清理缓存文件</p>
+<p>原因：在用户端会默认缓存index.html入口文件，而由于vue打包生成的css&#x2F;js都是哈希值，跟上次的文件名都不同，因此会出现找不到css&#x2F;js的情况，导致白屏的产生。在服务端更新包之后，由于旧的文件被删除，而index.html所链接的路径依然是旧文件路径，因此会找不到文件，从而白屏。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/06/14/JS%E5%BE%AE%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%AE%8F%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/06/14/JS%E5%BE%AE%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%AE%8F%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/" class="post-title-link" itemprop="url">JS微任务和宏任务的执行顺序</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-06-14 11:03:11" itemprop="dateCreated datePublished" datetime="2019-06-14T11:03:11+08:00">2019-06-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>浏览器是多线程的，JS是单线程的（浏览器只分配一个线程来执行JS）意味着js每次只能执行一个任务，那么，遇到异步任务首先会放到任务队列中（执行栈），先执行主线程中的任务，当主线程中的任务被执行完后，在回过来依次将执行任务队列中任务放入主线程去执行。</p>
+<p>js中的任务分为：同步任务和异步任务，而异步任务又可以分为微任务和宏任务</p>
+<p>宏任务：macro task</p>
+<ul>
+<li>定时器(setTimeout,setInterval,setImmediate)</li>
+<li>事件绑定(onClick)</li>
+<li>ajax</li>
+<li>回调函数    </li>
+<li>nodejs中的fs I&#x2F;O操作</li>
+</ul>
+<p>微任务: micro task</p>
+<ul>
+<li>Promsie(async&#x2F;await)</li>
+<li>process.nextTick</li>
+<li>MutationObserver</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">async <span class="keyword">function</span> <span class="function"><span class="title">asy1</span></span>()&#123;</span><br><span class="line">  await console.log(<span class="string">&#x27;asy1&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line">console.log(<span class="string">&#x27;script start&#x27;</span>)</span><br><span class="line">setTimeout(()=&gt;&#123;</span><br><span class="line">  console.log(<span class="string">&#x27;time out&#x27;</span>)</span><br><span class="line">&#125;,0)</span><br><span class="line">setTimeout(()=&gt;&#123;</span><br><span class="line">  setTimeout(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;宏任务中的宏任务&#x27;</span>)</span><br><span class="line">  &#125;,0)</span><br><span class="line">  Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;timeOut+promise1&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  console.log(<span class="string">&#x27;timeOut+promise1之前还是之后&#x27;</span>)</span><br><span class="line">&#125;,0)</span><br><span class="line"></span><br><span class="line">asy1()</span><br><span class="line">Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">  console.log(<span class="string">&#x27;promise1&#x27;</span>)</span><br><span class="line">&#125;).<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">  Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;promise1+promise1&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  setTimeout(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;promise time out&#x27;</span>)</span><br><span class="line">  &#125;,0)</span><br><span class="line">  console.log(<span class="string">&#x27;promise2&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">console.log(<span class="string">&#x27;script end&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># script start</span></span><br><span class="line"><span class="comment"># asy1</span></span><br><span class="line"><span class="comment"># script end</span></span><br><span class="line"><span class="comment"># promise1</span></span><br><span class="line"><span class="comment"># promise2</span></span><br><span class="line"><span class="comment"># promise1+promise1</span></span><br><span class="line"><span class="comment"># time out</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>先执行微任务，执行完所有微任务之后（微任务中产生的微任务也要执行完），再执行宏任务，（宏任务中产生的微任务要优先执行）</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -800,156 +974,6 @@
 
 
 
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/23/CSS3-%E6%96%B0%E5%A2%9E%E5%B8%B8%E7%94%A8%E7%89%B9%E6%80%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/05/23/CSS3-%E6%96%B0%E5%A2%9E%E5%B8%B8%E7%94%A8%E7%89%B9%E6%80%A7/" class="post-title-link" itemprop="url">CSS3 新增常用特性</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-05-23 11:30:25" itemprop="dateCreated datePublished" datetime="2018-05-23T11:30:25+08:00">2018-05-23</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># border新增border-img, border-radius</span></span><br><span class="line">* border-image-source 	用于指定要用于绘制边框的图像的位置</span><br><span class="line">* border-image-slice 图像边界向内偏移</span><br><span class="line">* border-image-width 	图像边界的宽度</span><br><span class="line">* border-image-outset 用于指定在边框外部绘制 border-image-area 的量</span><br><span class="line">* border-image-repeat 用于设置图像边界是否应重复（repeat）、拉伸（stretch）或铺满（round）。</span><br><span class="line">border-image: <span class="built_in">source</span> slice width outset repeat|initial|inherit;</span><br><span class="line"></span><br><span class="line"><span class="comment"># box-shadow </span></span><br><span class="line">box-shadow:-10px -10px 20px 20px gold;</span><br><span class="line"><span class="comment"># text-shadow</span></span><br><span class="line">text-shadow: 0 0 5px <span class="comment">#fff;</span></span><br><span class="line"><span class="comment"># background 新增background-image，background-size background-repeat</span></span><br><span class="line"><span class="comment"># 媒体查询 制作响应式设计</span></span><br><span class="line">@media screen and (max-width: 300px) &#123;</span><br><span class="line">    body &#123;</span><br><span class="line">        background-color:lightblue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@media screen and (min-width: 300px) and (max-width: 500px)&#123;</span><br><span class="line">    <span class="comment">#wrap div&#123;</span></span><br><span class="line">        width: 20%;</span><br><span class="line">    &#125;            </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/22/HTML5-%E6%96%B0%E5%A2%9E%E8%AF%AD%E4%B9%89%E5%8C%96%E6%A0%87%E7%AD%BE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/05/22/HTML5-%E6%96%B0%E5%A2%9E%E8%AF%AD%E4%B9%89%E5%8C%96%E6%A0%87%E7%AD%BE/" class="post-title-link" itemprop="url">HTML5 新增语义化标签</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-05-22 11:16:00" itemprop="dateCreated datePublished" datetime="2018-05-22T11:16:00+08:00">2018-05-22</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="HTML5-新增语义化标签"><a href="#HTML5-新增语义化标签" class="headerlink" title="HTML5 新增语义化标签"></a>HTML5 新增语义化标签</h1><p>这种语义化标签主要是针对搜索引擎的<br>这些新标签页面中可以使用多次</p>
-<ul>
-<li>header 头部标签</li>
-<li>nav 导航标签</li>
-<li>content 内容标签</li>
-<li>section 定义文档某个区域</li>
-<li>aside 侧边栏标签</li>
-<li>footer 尾部标签</li>
-<li>video 视频标签</li>
-<li>audio 音频标签</li>
-<li>user-select:none;禁止鼠标移动选择文字</li>
-<li>background-image:liner-gradient(to right,red,green); 设置背景颜色渐变</li>
-</ul>
 
       
     </div>

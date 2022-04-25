@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="state是异步的在控制台中，我们可以看到，打印的num并不是页面上显示的结果，这是因为react中state的更新是异步的。当我们setState后，react并不会立即将值做出改变，而是将其暂时放入pedding队列中。react会合并多个state，然后只render 一次。 state改变却没有重新初始化页面在首次渲染时会 render 渲染  函数组件，其实际上是调用 App() 方法，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="useState原理">
+<meta property="og:url" content="http://example.com/2021/06/25/useState%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="state是异步的在控制台中，我们可以看到，打印的num并不是页面上显示的结果，这是因为react中state的更新是异步的。当我们setState后，react并不会立即将值做出改变，而是将其暂时放入pedding队列中。react会合并多个state，然后只render 一次。 state改变却没有重新初始化页面在首次渲染时会 render 渲染  函数组件，其实际上是调用 App() 方法，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-06-25T13:35:06.000Z">
+<meta property="article:modified_time" content="2022-04-25T14:29:29.503Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="useState">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2021/06/25/useState%E5%8E%9F%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/06/25/useState%E5%8E%9F%E7%90%86/","path":"2021/06/25/useState原理/","title":"useState原理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>useState原理 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#state%E6%98%AF%E5%BC%82%E6%AD%A5%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">state是异步的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#state%E6%94%B9%E5%8F%98%E5%8D%B4%E6%B2%A1%E6%9C%89%E9%87%8D%E6%96%B0%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">state改变却没有重新初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%99%E7%A7%8D%E4%BD%BF%E7%94%A8-useState%E7%9A%84%E6%96%B9%E5%BC%8F%E5%9C%A8-React-%E4%B8%AD%E6%98%AF%E4%B8%8D%E8%A2%AB%E5%85%81%E8%AE%B8-useEffect%E5%90%8C%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">这种使用 useState的方式在 React 中是不被允许 useEffect同理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/25/useState%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="useState原理 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          useState原理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-25 21:35:06" itemprop="dateCreated datePublished" datetime="2021-06-25T21:35:06+08:00">2021-06-25</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="state是异步的"><a href="#state是异步的" class="headerlink" title="state是异步的"></a>state是异步的</h1><p>在控制台中，我们可以看到，打印的num并不是页面上显示的结果，这是因为react中state的更新是异步的。当我们setState后，react并不会立即将值做出改变，而是将其暂时放入pedding队列中。react会合并多个state，然后只render 一次。</p>
+<h1 id="state改变却没有重新初始化"><a href="#state改变却没有重新初始化" class="headerlink" title="state改变却没有重新初始化"></a>state改变却没有重新初始化</h1><p>页面在首次渲染时会 render 渲染 <App /> 函数组件，其实际上是调用 App() 方法，得到虚拟 DOM 元素，并将其渲染到浏览器页面上。当用户点击 button 按钮时会调用 setN(n+1) 方法，然后再进行一次 render 渲染 <App /> 函数组件，其实际上还是调用了 App() 方法，得到一个新的虚拟 DOM 元素，然后 React 会执行 DOM diff 算法，将改变的部分更新到浏览器的页面上。</p>
+<p>页面首次渲染和进行 +1 操作，都会调用 App() 函数去执行 const [n, setN] &#x3D; React.useState(0); 这行代码，那它是怎么做到在 +1 操作后，第二次渲染时执行同样的代码，却不对变量 n 进行初始化的，而是拿到 n 的最新值的呢 </p>
+<p>let _state; &#x2F;&#x2F; 把 state 存储在外面</p>
+<p>function useState(initialValue) {<br>  _state &#x3D; _state || initialValue; &#x2F;&#x2F; 如果没有 _state，说明是第一次执行，把 initialValue 复制给它<br>  function setState(newState) {<br>    _state &#x3D; newState;    &#x2F;&#x2F;实际修改的是_state，重新渲染也会去拿_state<br>    render();<br>  }<br>  return [_state, setState];<br>}</p>
+<h1 id="这种使用-useState的方式在-React-中是不被允许-useEffect同理"><a href="#这种使用-useState的方式在-React-中是不被允许-useEffect同理" class="headerlink" title="这种使用 useState的方式在 React 中是不被允许 useEffect同理"></a>这种使用 useState的方式在 React 中是不被允许 useEffect同理</h1><p>if (n % 2 &#x3D;&#x3D;&#x3D; 1) {    的<br>    [m, setM] &#x3D; React.useState(0);<br>}<br>应对多个变量的问题，React 引用了数组对其进行解决，但是这中改进方式有一个缺点，由于数组不像对象，有对应的键，数组只能依靠顺序找到对应的变量，所以在 React 中不允许将 useState() hook 放到 if 判断语句中，这样就会导致变量在数组中的顺序混乱</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>useState是通过将变量抽离到函数体外形成闭包，在函数体内部判断而形成的缓存<br>因为允许组件多次调用的问题，useState只接受一个参数，所以采用数组的方式进行缓存。<br>不能在顶层做条件执行就是怕数组乱序</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/useState/" rel="tag"># useState</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/20/Redux-React-Redux-Reduxjs-toolkit%E7%BB%84%E5%90%88%E6%8B%B3%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="prev" title="Redux React-Redux @Reduxjs/toolkit组合拳的使用">
+                  <i class="fa fa-chevron-left"></i> Redux React-Redux @Reduxjs/toolkit组合拳的使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/22/React%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" rel="next" title="React开发使用总结">
+                  React开发使用总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
