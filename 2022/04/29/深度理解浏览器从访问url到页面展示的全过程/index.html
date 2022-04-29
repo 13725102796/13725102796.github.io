@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="浏览器的多进程架构因为js是单线程的，一个线程可以有多个进程浏览器的三大主要进程：  浏览器进程主要负责用户交互、子进程管理和文件存储等功能 网络进程面向渲染进程和浏览器进程等提供网路下载功能 渲染进程把从网络下载的资源文件解析为可以显示和交互的页面。因为渲染进程里面所有的内容都是通过网络获取的，会存在一些恶意代码利用浏览器漏洞对操作系统进行攻击，所以运行在渲染进程里面的代码是被不信任的。这也是为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度理解浏览器从访问url到页面展示的全过程">
+<meta property="og:url" content="http://example.com/2022/04/29/%E6%B7%B1%E5%BA%A6%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%8E%E8%AE%BF%E9%97%AEurl%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="浏览器的多进程架构因为js是单线程的，一个线程可以有多个进程浏览器的三大主要进程：  浏览器进程主要负责用户交互、子进程管理和文件存储等功能 网络进程面向渲染进程和浏览器进程等提供网路下载功能 渲染进程把从网络下载的资源文件解析为可以显示和交互的页面。因为渲染进程里面所有的内容都是通过网络获取的，会存在一些恶意代码利用浏览器漏洞对操作系统进行攻击，所以运行在渲染进程里面的代码是被不信任的。这也是为">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-29T06:48:13.000Z">
+<meta property="article:modified_time" content="2022-04-29T12:57:30.247Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="浏览器">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/04/29/%E6%B7%B1%E5%BA%A6%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%8E%E8%AE%BF%E9%97%AEurl%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/04/29/%E6%B7%B1%E5%BA%A6%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%8E%E8%AE%BF%E9%97%AEurl%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/","path":"2022/04/29/深度理解浏览器从访问url到页面展示的全过程/","title":"深度理解浏览器从访问url到页面展示的全过程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>深度理解浏览器从访问url到页面展示的全过程 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">浏览器的多进程架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B4%E4%B8%AA%E8%BF%87%E7%A8%8B%E7%9A%84%E5%A4%A7%E4%BD%93%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">整个过程的大体描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8E%E8%BE%93%E5%85%A5-URL-%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%B7%E4%BD%93%E7%BB%86%E8%8A%82"><span class="nav-number">3.</span> <span class="nav-text">从输入 URL 到页面展示的具体细节</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E5%93%8D%E5%BA%94%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BF%9B%E8%A1%8C%E5%A4%84%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">根据响应的数据类型进行处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E9%98%B6%E6%AE%B5"><span class="nav-number">5.</span> <span class="nav-text">渲染阶段</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA-DOM-%E6%A0%91"><span class="nav-number">6.</span> <span class="nav-text">构建 DOM 树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90-CSS"><span class="nav-number">7.</span> <span class="nav-text">解析 CSS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%B8%B2%E6%9F%93%E6%A0%91"><span class="nav-number">8.</span> <span class="nav-text">构建渲染树</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E6%A0%91%E5%B8%83%E5%B1%80"><span class="nav-number">9.</span> <span class="nav-text">渲染树布局</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B8%B2%E6%9F%93%E6%A0%91%E7%9A%84%E7%BB%98%E5%88%B6"><span class="nav-number">10.</span> <span class="nav-text">渲染树的绘制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E8%BF%87%E7%A8%8B%E5%8F%AF%E8%83%BD%E5%87%BA%E7%8E%B0%E7%9A%84%E4%BA%8B%E6%83%85"><span class="nav-number">11.</span> <span class="nav-text">浏览器渲染过程可能出现的事情</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E6%B8%B2%E6%9F%93%E6%95%88%E7%8E%87%E5%BB%BA%E8%AE%AE"><span class="nav-number">12.</span> <span class="nav-text">优化渲染效率建议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">13.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/29/%E6%B7%B1%E5%BA%A6%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%8E%E8%AE%BF%E9%97%AEurl%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="深度理解浏览器从访问url到页面展示的全过程 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          深度理解浏览器从访问url到页面展示的全过程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-29 14:48:13" itemprop="dateCreated datePublished" datetime="2022-04-29T14:48:13+08:00">2022-04-29</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="浏览器的多进程架构"><a href="#浏览器的多进程架构" class="headerlink" title="浏览器的多进程架构"></a>浏览器的多进程架构</h1><p>因为js是单线程的，一个线程可以有多个进程<br>浏览器的三大主要进程：</p>
+<ol>
+<li>浏览器进程<br>主要负责用户交互、子进程管理和文件存储等功能</li>
+<li>网络进程<br>面向渲染进程和浏览器进程等提供网路下载功能</li>
+<li>渲染进程<br>把从网络下载的资源文件解析为可以显示和交互的页面。因为渲染进程里面所有的内容都是通过网络获取的，会存在一些恶意代码利用浏览器漏洞对操作系统进行攻击，所以运行在渲染进程里面的代码是被不信任的。这也是为什么 Chrome 会让渲染进程运行在安全沙箱里，为了保证系统的安全。</li>
+</ol>
+<h1 id="整个过程的大体描述"><a href="#整个过程的大体描述" class="headerlink" title="整个过程的大体描述"></a>整个过程的大体描述</h1><ul>
+<li>首先用户从浏览器进程里输入请求信息</li>
+<li>然后网络进程向服务器发起 URL 请求</li>
+<li>服务器响应 URL 请求后，浏览器进程开始准备渲染进程</li>
+<li>渲染进程准备好之后，需要向渲染进程提交待渲染的资源文档，提交文段阶段</li>
+<li>渲染进程接收到文档后，便开始解析页面和加载子资源，完成页面的渲染</li>
+<li>完成页面的渲染后，将渲染的图片交给浏览器进程，浏览器进程负责展示</li>
+</ul>
+<h1 id="从输入-URL-到页面展示的具体细节"><a href="#从输入-URL-到页面展示的具体细节" class="headerlink" title="从输入 URL 到页面展示的具体细节"></a>从输入 URL 到页面展示的具体细节</h1><ol>
+<li>URL请求过程<br>浏览器进程会通过进程间通信（IPC）把 URL 请求发送至网络进程，网络进程接收到 URL 请求后，会在这里发起真正的 URL 请求流程<br>首先，网络进程基于http缓存协议去执行该Url的请求<br>如果已经存在该资源且资源没有过期，则直接返回（命中强缓存）<br>如果没有或者已过期，则发起网络请求：</li>
+</ol>
+<ul>
+<li>已过期，服务器发现该请求资源没有更新，则返回304，浏览器则取本地资源并更新</li>
+<li>已过期，服务器发现该请求资源已经更新，则返回200，携带最新资源给浏览器</li>
+<li>没有 则直接请求<br>浏览器缓存控制三种方式（Expires、Last-Modified、Etag）</li>
+<li>第一次请求http响应头会有Last-Modified标记文件在服务器端最后被修改的时间。</li>
+<li>浏览器第二次请求上次请求过的url时，浏览器会在HTTP请求头添加一个If-Modified-Since的标记，用来询问服务器该时间之后文件是否被修改过</li>
+</ul>
+<p>Etag 主要为了解决 Last-Modified 无法解决的一些问题:</p>
+<ul>
+<li>一些文件也许会周期性的更改，但是他的内容并不改变(仅仅改变的修改时间)，这个时候我们并不希望客户端认为这个文件被修改了，而重新GET;</li>
+<li>某些文件修改非常频繁，比如在秒以下的时间内进行修改，(比方说1s内修改了N次)，If-Modified-Since能检查到的粒度是s级的，这种修改无法判断(或者说UNIX记录MTIME只能精确到秒)</li>
+<li>某些服务器不能精确的得到文件的最后修改时间；</li>
+</ul>
+<p>浏览器是通过last-Modified Expires Etag控制缓存</p>
+<p>第二次请求相同的资源的时候</p>
+<ul>
+<li>有缓存，过期了， 则判断Etag ？ 带If-None-Match ：判断last-Modified<br>判断 last-Modified ？ 带If-Modified-Since ： 发请求<br>根据服务器判断资源更新返回304或者200</li>
+<li>缓存没有过期，则直接使用</li>
+</ul>
+<h1 id="根据响应的数据类型进行处理"><a href="#根据响应的数据类型进行处理" class="headerlink" title="根据响应的数据类型进行处理"></a>根据响应的数据类型进行处理</h1><p>浏览器会根据响应头中的 Content-Type 字段，来决定如何显示响应体的内容。</p>
+<ul>
+<li>如果是HTML，那么浏览器会继续进行页面渲染，需要准备渲染进程<br>默认情况下，Chrome 会为每个页面分配一个渲染进程，即每打开一个新页面，Chrome就会创建分配一个新的渲染进程，在某些情况下，浏览器会让多个页面直接运行在同一个渲染进程中。Chrome 的默认策略是，每个标签对应一个渲染进程，但如果从一个页面打开了另一个新页面，而新页面和当前页面属于同一站点的化，那么新页面会复用父页面的渲染进程。process-per-site-instance</li>
+</ul>
+<h1 id="渲染阶段"><a href="#渲染阶段" class="headerlink" title="渲染阶段"></a>渲染阶段</h1><p>浏览器的渲染过程主要分为五个步骤：</p>
+<ol>
+<li>浏览器将获取的 HTML 文档解析成 DOM 树；</li>
+<li>处理 CSS 标记，构成层叠样式表模型（CSSOM）；</li>
+<li>将 DOM 和 CSSOM 合并为渲染树（rendering tree）；</li>
+<li>根据渲染树上的元素布局 layout</li>
+<li>将渲染树上的各个节点绘制到屏幕上，称之为 绘制painting；</li>
+</ol>
+<h1 id="构建-DOM-树"><a href="#构建-DOM-树" class="headerlink" title="构建 DOM 树"></a>构建 DOM 树</h1><ul>
+<li>DOM 树的构建可能会被 CSS 和 JS 的加载而阻塞；</li>
+<li>display: none 的元素也会在 DOM 树中；</li>
+<li>注释也会在 DOM 树中；</li>
+<li>script 标签也会在 DOM 树中；</li>
+</ul>
+<h1 id="解析-CSS"><a href="#解析-CSS" class="headerlink" title="解析 CSS"></a>解析 CSS</h1><p>浏览器会解析 CSS 文件并生成 CSS 规则树，每个 CSS 文件都会被解析成 StyleSheet 对象，每个对象都包括 CSS 规则，CSS规则对象包括对应的选择器和声明对象以及其他对象；</p>
+<ul>
+<li>CSS 的解析可以与 DOM 的解析同步进行（因为渲染树需要Dom和CSSOM一起合成，所以无论哪个都会阻塞dom的渲染）</li>
+<li>CSS 的解析与 script 的执行互斥</li>
+<li>在 Webkit 内核中进行了 script 执行优化，只有在 JS 访问 CSS 时才会发生互斥</li>
+</ul>
+<h1 id="构建渲染树"><a href="#构建渲染树" class="headerlink" title="构建渲染树"></a>构建渲染树</h1><p>根据 DOM 树和 CSS 规则树，浏览器就可以构建渲染树了。浏览器首先遍历 DOM 树上的每一个可见节点，然后对每个可见节点找到匹配的 CSS 样式规则并应用</p>
+<ol>
+<li>渲染树和 DOM 树不完全对对应；</li>
+<li>display: none 的元素不在渲染树中；</li>
+<li>visiblity: none 的元素在渲染树中；</li>
+</ol>
+<h1 id="渲染树布局"><a href="#渲染树布局" class="headerlink" title="渲染树布局"></a>渲染树布局</h1><p>布局阶段浏览器会遍历渲染树的所有节点，由于每个节点都是一个render对象，都包含宽高、位置、背景等样式信息，所以浏览器就能根据这写信息来确定元素在页面中的所在位置，及其样式；</p>
+<ol>
+<li>float 元素、absolute 元素、fixed 元素会发生位置偏移；</li>
+<li>脱离标准文档流就是脱离渲染树（render tree）；所以一些动画元素可以让其脱离渲染树，通过absolute等方式</li>
+</ol>
+<h1 id="渲染树的绘制"><a href="#渲染树的绘制" class="headerlink" title="渲染树的绘制"></a>渲染树的绘制</h1><p>绘制阶段，浏览器遍历所有的渲染树节点，调用 paint() 方法，将其渲染在屏幕上。渲染树的绘制工作是由浏览器的UI后端组件完成的。</p>
+<h1 id="浏览器渲染过程可能出现的事情"><a href="#浏览器渲染过程可能出现的事情" class="headerlink" title="浏览器渲染过程可能出现的事情"></a>浏览器渲染过程可能出现的事情</h1><ul>
+<li>阻塞渲染<br>浏览器会延迟 JavaScript 的执行和 DOM 的构建，</li>
+</ul>
+<ol>
+<li>CSS 被默认为阻塞渲染的资源，所以在 CSSOM 构建完成之前不会处理任何已处理的内容；</li>
+<li>JavaScript 可以读取和修改 DOM 属性，还可读取和修改 CSSOM 属性，所以 CSS 解析和 script 的执行互斥<br>因此，script标签的位置很重要我们在实际开发中应该尽量坚持以下两个原则： </li>
+<li>在引入顺序上，CSS 资源先于 JavaScript 资源；</li>
+<li>JavaScript 尽量少去影响 DOM 的构建；</li>
+</ol>
+<ul>
+<li>回流和重绘（ reflow 和 repaint ）<br>display:none 会触发 reflow；<br>visibility: hidden 不会触发 reflow，只会触发 repaint；</li>
+</ul>
+<h1 id="优化渲染效率建议"><a href="#优化渲染效率建议" class="headerlink" title="优化渲染效率建议"></a>优化渲染效率建议</h1><ol>
+<li>合法地去书写 HTML 和 CSS ，且不要忘了文档编码类型；</li>
+<li>样式文档应该在 head 标签中，而脚本文档应该在 body 结束之前，防阻塞；</li>
+<li>优化 CSS 选择器，尽量少嵌套；</li>
+<li>减少 JavaScript 对 DOM 的操作；</li>
+<li>修改元素的样式时，修改 class 是性能最高的方法；</li>
+<li>尽量用 transform 来做形变和位移</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>从输入Url -》 dns解析 -》http请求，响应-》页面渲染<br>这里最主要就是http请求响应与页面渲染<br>http请求响应又分3次握手4次挥手协议，与http请求缓存<br>页面渲染 -》多个进程一起工作 -》事件循环机制 -》 回流重绘 -》<br>多个进程： </p>
+<ul>
+<li>浏览器主进程</li>
+<li>GPU进程</li>
+<li>渲染进程<br>事件循环机制：（又分宏任物和微任务）<br>同步任务在JS线程上优先执行，形成一个执行栈<br>JS的异步是通过回调函数来实现的，JS只有一个执行线程。 通过把回调函数添加到任务队列中来实现<br>执行步骤：</li>
+</ul>
+<ol>
+<li>先执行执行栈中的同步任务</li>
+<li>异步任务放入任务队列</li>
+<li>同步任务执行完毕，从任务队列中读取异步任务，进入执行栈，开始执行<br>异步任务的主要类型：（又分宏任物和微任务） 微任务优先执行<br>1、普通事件 如click resize 等<br>2、资源加载 如load error 等<br>3、定时器 setInterval 等<br>这些都是宏任物<br>ajax async属于微任务</li>
+</ol>
+<p>渲染进程的组成： </p>
+<ol>
+<li>GUI渲染线程，构建DOM树，构建CSSOM，两者合成渲染树，然后绘制在页面上。</li>
+<li>JS引擎线程（V8引擎）由于js是单线程，依靠任务队列来进行js代码的执行，所以js引擎会一直等待着任务队列中任务的到来，然后加以处理。</li>
+<li>事件触发线程，定时器触发线程，异步HTTP请求线程</li>
+</ol>
+<p>GUI渲染线程与JS引擎线程互斥 JS阻塞页面加载<br>JavaScript是可操纵DOM的，如果在修改这些元素属性同时渲染界面（即JS线程和UI线程同时运行），那么渲染线程前后获得的元素数据就可能不一致了。<br>因此为了防止渲染出现不可预期的结果，浏览器设置GUI渲染线程与JS引擎为互斥的关系。<br>当JS引擎执行时GUI线程会被挂起，GUI更新则会被保存在一个队列中等到JS引擎线程空闲时立即被执行。</p>
+<p>浏览器渲染的图层一般包含两大类：普通图层以及复合图层<br>可以通过硬件加速的方式，声明一个新的复合图层，它会单独分配资源<br>translate3d、translateZ， z-index 都可以加速</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag"># 浏览器</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/27/%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AAloader/" rel="prev" title="手写一个loader">
+                  <i class="fa fa-chevron-left"></i> 手写一个loader
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/07/21/React-Toolkit-%E5%BC%82%E6%AD%A5%E5%92%8C%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96%E7%9A%84%E6%96%B9%E6%B3%95/" rel="next" title="React-Toolkit 异步和数据获取的方法">
+                  React-Toolkit 异步和数据获取的方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

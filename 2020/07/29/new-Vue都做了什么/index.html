@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="new Vue初始化流程12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989">
+<meta property="og:type" content="article">
+<meta property="og:title" content="new Vue都做了什么">
+<meta property="og:url" content="http://example.com/2020/07/29/new-Vue%E9%83%BD%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="new Vue初始化流程12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697989">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-29T01:06:43.000Z">
+<meta property="article:modified_time" content="2022-04-29T05:55:56.314Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/07/29/new-Vue%E9%83%BD%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/07/29/new-Vue%E9%83%BD%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/","path":"2020/07/29/new-Vue都做了什么/","title":"new Vue都做了什么"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>new Vue都做了什么 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#new-Vue%E5%88%9D%E5%A7%8B%E5%8C%96%E6%B5%81%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">new Vue初始化流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/29/new-Vue%E9%83%BD%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="new Vue都做了什么 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          new Vue都做了什么
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-07-29 09:06:43" itemprop="dateCreated datePublished" datetime="2020-07-29T09:06:43+08:00">2020-07-29</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="new-Vue初始化流程"><a href="#new-Vue初始化流程" class="headerlink" title="new Vue初始化流程"></a>new Vue初始化流程</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line">new Vue(&#123;</span><br><span class="line">  el:<span class="string">&#x27;#app&#x27;</span>,</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment"># src/core/instance/index.js</span></span><br><span class="line">import &#123; initMixin &#125; from <span class="string">&#x27;./init&#x27;</span></span><br><span class="line">import &#123; stateMixin &#125; from <span class="string">&#x27;./state&#x27;</span></span><br><span class="line">import &#123; renderMixin &#125; from <span class="string">&#x27;./render&#x27;</span></span><br><span class="line">import &#123; eventsMixin &#125; from <span class="string">&#x27;./events&#x27;</span></span><br><span class="line">import &#123; lifecycleMixin &#125; from <span class="string">&#x27;./lifecycle&#x27;</span></span><br><span class="line">import &#123; warn &#125; from <span class="string">&#x27;../util/index&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> Vue(options) &#123;</span><br><span class="line">  <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">&#x27;production&#x27;</span> &amp;&amp;</span><br><span class="line">    !(this instanceof Vue)</span><br><span class="line">  ) &#123;</span><br><span class="line">    warn(<span class="string">&#x27;Vue is a constructor and should be called with the `new` keyword&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  // new Vue的时候就执行到了这个_init函数</span><br><span class="line">  this._init(options)</span><br><span class="line">&#125;</span><br><span class="line">initMixin(Vue) // 其他的不看，先看这个函数</span><br><span class="line">stateMixin(Vue)</span><br><span class="line">eventsMixin(Vue)</span><br><span class="line">lifecycleMixin(Vue)</span><br><span class="line">renderMixin(Vue)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default Vue</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># _init 主要做了什么</span></span><br><span class="line">initLifecycle(vm)</span><br><span class="line">initEvents(vm) <span class="variable">$on</span> 、<span class="variable">$emit</span> :like @click</span><br><span class="line">initRender(vm) 用于初始化<span class="variable">$slots</span> 、<span class="variable">$attrs</span> 、<span class="variable">$listeners</span></span><br><span class="line">callHook(vm, <span class="string">&#x27;beforeCreate&#x27;</span>)</span><br><span class="line">initInjections(vm) // resolve injections before data/props</span><br><span class="line">initState(vm)</span><br><span class="line">initProvide(vm) // resolve provide after data/props</span><br><span class="line">callHook(vm, <span class="string">&#x27;created&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># mount阶段做了什么</span></span><br><span class="line">/**</span><br><span class="line">* 编译权重：</span><br><span class="line">* 优先看有没有render函数，如果有直接用</span><br><span class="line">* 如果没有render函数就看有没有template模板</span><br><span class="line">* 如果都没有就直接获取el的outerHTML作为渲染模板</span><br><span class="line">*/</span><br><span class="line"><span class="keyword">if</span> (!options.render) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!options.template) &#123;</span><br><span class="line">        template = el.outerHTML</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        template = vm.<span class="variable">$options</span>.template</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (template) &#123;</span><br><span class="line">    //用 template 生成 render 函数</span><br><span class="line">    <span class="built_in">let</span> render = compileToFunctions(template)</span><br><span class="line">    options.render = render</span><br><span class="line">&#125;</span><br><span class="line">//调用 mount 方法开始渲染页面。</span><br><span class="line"><span class="built_in">return</span> mount(this, el)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> <span class="keyword">function</span> mountComponent(vm, el) &#123;</span><br><span class="line">	//渲染之前调用 beforeMount 生命周期</span><br><span class="line">    callHook(vm, <span class="string">&#x27;beforeMount&#x27;</span>)</span><br><span class="line">    //创建一个更新渲染函数 （ 用来得到 Vnode 渲染真实 dom ）</span><br><span class="line">    <span class="built_in">let</span> updateComponent = () =&gt; &#123;</span><br><span class="line">        vm.update(vm._render())</span><br><span class="line">    &#125;</span><br><span class="line">    //生成一个渲染 watcher 每次页面依赖的数据更新后会调用 updateComponent 进行渲染</span><br><span class="line">    new Watcher(vm, updateComponent, () =&gt; &#123;&#125;,&#123;</span><br><span class="line">        <span class="function"><span class="title">before</span></span> () &#123;</span><br><span class="line">            callHook(vm, <span class="string">&#x27;beforeUpdate&#x27;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,<span class="literal">true</span>)</span><br><span class="line">    //渲染真实 dom 结束后调用 mounted 生命周期</span><br><span class="line">    callHook(vm, <span class="string">&#x27;mounted&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 创建了一个更新的渲染函数update，以及一个Watcher</span></span><br><span class="line"><span class="built_in">export</span> class Watcher &#123;</span><br><span class="line">    constructor(vm,expOrFn,cb,options) &#123;</span><br><span class="line">        <span class="keyword">if</span> (typeof expOrFn === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">        	// 保留 updateComponent 方法</span><br><span class="line">            this.getters = expOrFn</span><br><span class="line">        &#125;</span><br><span class="line">        this.get();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">get</span></span>() &#123;</span><br><span class="line">        pushTarget(this)</span><br><span class="line">        <span class="built_in">let</span> value</span><br><span class="line">        // 这里调用了 updateComponent 方法</span><br><span class="line">        value = this.getters.call(this.vm, this.vm);</span><br><span class="line">        popTarget()</span><br><span class="line">        <span class="built_in">return</span> value</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># watcher 主要监听 页面数据的变动，变动后调用updateComponent去更新视图</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 而update则基于diff算法去对比节点，与上一次的节点进行对比，diff主要基于递归和双指针去对比。然后patch到真实的节点上去更新视图</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+<li>new Vue()主要做了 创建一个空对象，把Vue构造函数的原型指向该对象，通过apply继承的方式去执行该构造函数，并返回该执行结果</li>
+<li>执行该构造函数的过程，主要是Vue初始化的过程</li>
+</ol>
+<ul>
+<li>初始化生命周期 initLifecycle </li>
+<li>初始化事件以及特殊操作符 $on,$attr…</li>
+<li>执行beforeCreat钩子函数</li>
+<li>依赖注入，初始化state，注入provider（props）</li>
+<li>执行Created</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Vue/" rel="tag"># Vue</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/07/27/Vue2-%E5%8F%8C%E5%90%91%E7%BB%91%E5%AE%9A%E5%8E%9F%E7%90%86/" rel="prev" title="Vue2 双向绑定原理">
+                  <i class="fa fa-chevron-left"></i> Vue2 双向绑定原理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/08/17/React%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" rel="next" title="React手写一个高阶组件">
+                  React手写一个高阶组件 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
