@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -348,6 +348,84 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/04/npm%E5%8C%85classNames%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/02/04/npm%E5%8C%85classNames%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">npm包classNames详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-02-04 10:51:38" itemprop="dateCreated datePublished" datetime="2021-02-04T10:51:38+08:00">2021-02-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="classnames-快速组合CSS类"><a href="#classnames-快速组合CSS类" class="headerlink" title="classnames 快速组合CSS类"></a>classnames 快速组合CSS类</h1><p>在前端开发中，我们经常需要JS来判断生成DOM节点CSS类，比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> className=<span class="string">&#x27;btn-primary&#x27;</span>;</span><br><span class="line"><span class="keyword">if</span>(active)&#123;</span><br><span class="line">  className+=<span class="string">&#x27; active&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">return</span> &lt;div className=&#123;className&#125;&gt;Save&lt;/div&gt;;</span><br></pre></td></tr></table></figure>
+<p>在上述代码中，我们需要判断active变量来控制生成的按钮的CSS样式是否是激活状态，在实际开发中，可能会有更多的类似这样的样式控制逻辑，从而干扰阅读业务逻辑代码，使得代码变得很“脏”。</p>
+<p>classnames 库对CSS样式类操作进行了封装，方便我们快速使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const classNames = require(<span class="string">&#x27;classnames&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">return</span> &lt;div className=&#123;classNames(<span class="string">&#x27;btn-primary&#x27;</span>,&#123; active &#125;)&#125;&gt;Save&lt;/div&gt;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更多用法</span></span><br><span class="line">classNames(<span class="string">&#x27;foo&#x27;</span>, <span class="string">&#x27;bar&#x27;</span>); // =&gt; <span class="string">&#x27;foo bar&#x27;</span> </span><br><span class="line">classNames(<span class="string">&#x27;foo&#x27;</span>, &#123; bar: <span class="literal">true</span> &#125;); // =&gt; <span class="string">&#x27;foo bar&#x27;</span> </span><br><span class="line">classNames(&#123; <span class="string">&#x27;foo-bar&#x27;</span>: <span class="literal">true</span> &#125;); // =&gt; <span class="string">&#x27;foo-bar&#x27;</span> </span><br><span class="line">classNames(&#123; <span class="string">&#x27;foo-bar&#x27;</span>: <span class="literal">false</span> &#125;); // =&gt; <span class="string">&#x27;&#x27;</span> </span><br><span class="line">classNames(&#123; foo: <span class="literal">true</span> &#125;, &#123; bar: <span class="literal">true</span> &#125;); // =&gt; <span class="string">&#x27;foo bar&#x27;</span> </span><br><span class="line">classNames(&#123; foo: <span class="literal">true</span>, bar: <span class="literal">true</span> &#125;); // =&gt; <span class="string">&#x27;foo bar&#x27;</span> </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/01/git-%E5%A4%9A%E8%B4%A6%E5%8F%B7%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -397,10 +475,10 @@
 <h1 id="生成两个账号私钥在本地"><a href="#生成两个账号私钥在本地" class="headerlink" title="生成两个账号私钥在本地"></a>生成两个账号私钥在本地</h1><p>生成默认的 id_rsa 和id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱1”<br>在创建第二个的时候必须要重命名 比如 137_id_ras,这样会生成另外两个文件137_id_rsa 和 137_id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱2”</p>
 <h1 id="在-ssh下面创建config文件"><a href="#在-ssh下面创建config文件" class="headerlink" title="在.ssh下面创建config文件"></a>在.ssh下面创建config文件</h1><p>执行 touch config 创建<br>执行 vim config 编辑</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Default 第一个账号(123456@xxxx.com)</span></span><br><span class="line"></span><br><span class="line">Host default</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/137_id_rsa</span><br><span class="line"><span class="comment">#second 第二个账号（38894403@xxxx.com）    </span></span><br><span class="line">Host zc</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
-<p>只需要修改 IdentityFile 即可<br>ssh -T <a href="mailto:&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#x74;&#104;&#117;&#x62;&#46;&#99;&#x6f;&#x6d;">&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#x74;&#104;&#117;&#x62;&#46;&#99;&#x6f;&#x6d;</a> 可以测试是否配置成功<br><code>配置成功会显示当前用户名</code> 这个很重要，因为当你想切换用户的时候没有这个不行<br>通过设置<br>git config –global user.name “13725102796”<br>git config –global user.email “<a href="mailto:&#x31;&#52;&#x33;&#x39;&#54;&#53;&#x35;&#55;&#x36;&#x34;&#x40;&#113;&#113;&#x2e;&#x63;&#111;&#x6d;">&#x31;&#52;&#x33;&#x39;&#54;&#53;&#x35;&#55;&#x36;&#x34;&#x40;&#113;&#113;&#x2e;&#x63;&#111;&#x6d;</a>“<br>还没有生效，因为ssh-add的代理始终指向默认的</p>
+<p>只需要修改 IdentityFile 即可<br>ssh -T <a href="mailto:&#x67;&#x69;&#116;&#64;&#x67;&#105;&#116;&#x68;&#x75;&#x62;&#x2e;&#99;&#x6f;&#x6d;">&#x67;&#x69;&#116;&#64;&#x67;&#105;&#116;&#x68;&#x75;&#x62;&#x2e;&#99;&#x6f;&#x6d;</a> 可以测试是否配置成功<br><code>配置成功会显示当前用户名</code> 这个很重要，因为当你想切换用户的时候没有这个不行<br>通过设置<br>git config –global user.name “13725102796”<br>git config –global user.email “<a href="mailto:&#49;&#52;&#x33;&#x39;&#54;&#53;&#x35;&#x37;&#x36;&#x34;&#64;&#113;&#x71;&#x2e;&#x63;&#x6f;&#x6d;">&#49;&#52;&#x33;&#x39;&#54;&#53;&#x35;&#x37;&#x36;&#x34;&#64;&#113;&#x71;&#x2e;&#x63;&#x6f;&#x6d;</a>“<br>还没有生效，因为ssh-add的代理始终指向默认的</p>
 <h1 id="通过ssh-add删除代理"><a href="#通过ssh-add删除代理" class="headerlink" title="通过ssh-add删除代理"></a>通过ssh-add删除代理</h1><p>查看 ssh-add -l<br>删除 ssh-add -D<br>添加<br>ssh-add ~&#x2F;.ssh&#x2F;id_rsa<br>ssh-add ~&#x2F;.ssh&#x2F;137_id_rsa </p>
 <h1 id="添加代理后还不可以，需要修改提交的git-clone-ssh链接"><a href="#添加代理后还不可以，需要修改提交的git-clone-ssh链接" class="headerlink" title="添加代理后还不可以，需要修改提交的git clone ssh链接"></a>添加代理后还不可以，需要修改提交的git clone ssh链接</h1><ul>
-<li><p>还没clone的可以通过 来拉取项目，这样可以让ssh-add正确代理<br>git clone zy@:18820677498&#x2F;Blog.git<br>原来是 <a href="mailto:&#x67;&#105;&#116;&#64;&#103;&#x69;&#116;&#x68;&#117;&#98;&#46;&#99;&#x6f;&#109;">&#x67;&#105;&#116;&#64;&#103;&#x69;&#116;&#x68;&#117;&#98;&#46;&#99;&#x6f;&#109;</a>:18820677498&#x2F;Blog.git</p>
+<li><p>还没clone的可以通过 来拉取项目，这样可以让ssh-add正确代理<br>git clone zy@:18820677498&#x2F;Blog.git<br>原来是 <a href="mailto:&#x67;&#x69;&#116;&#64;&#x67;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#x63;&#x6f;&#x6d;">&#x67;&#x69;&#116;&#64;&#x67;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#x63;&#x6f;&#x6d;</a>:18820677498&#x2F;Blog.git</p>
 </li>
 <li><p>已经clone的 可以切换到当前项目下，命令行执行<br><code>vim .git/config</code><br>打开config文件 按i去修改，按esc退出修改，再按 <code>:qw!</code> 保存修改</p>
 </li>
@@ -865,103 +943,6 @@
 <p>首先要明确一点，这里的获取和生成数据的逻辑都是一样的，是可以复用<br>这时候，就可以使用高阶组件去包装，把数据操作层和UI层分离出来<br>通过向高阶组件传递UI的组件去复用数据的逻辑</p>
 <p>实现代码如下： </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="keyword">function</span> HightClock(UIComponents)&#123;</span><br><span class="line">  <span class="built_in">return</span> class extends React.Component &#123;</span><br><span class="line">    constructor(props)&#123;</span><br><span class="line">      super(props)</span><br><span class="line">      this.state = &#123;</span><br><span class="line">        <span class="built_in">date</span>: new Date().toLocaleTimeString()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">componentDidMount</span></span>()&#123;</span><br><span class="line">      this.timerId = setInterval(()=&gt;&#123;</span><br><span class="line">        this.tick()</span><br><span class="line">      &#125;,1000)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">componentWillUnmount</span></span>()&#123;</span><br><span class="line">      clearInterval(this.timerId)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">tick</span></span>()&#123;</span><br><span class="line">      this.setState(&#123;</span><br><span class="line">        <span class="built_in">date</span>: new Date().toLocaleTimeString()</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">render</span></span>()&#123;</span><br><span class="line">      <span class="built_in">return</span> (</span><br><span class="line">        &lt;UIComponents <span class="built_in">date</span>=&#123;this.state.date&#125; &#123;...this.props&#125; /&gt;</span><br><span class="line">      )</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> Clock1 (props)&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h1&gt;Clock1&lt;/h1&gt;</span><br><span class="line">      &lt;h2&gt;&#123;props.date&#125;&lt;/h2&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> Clock2 (props)&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div style=&#123;&#123;color: <span class="string">&#x27;red&#x27;</span>&#125;&#125; &gt;</span><br><span class="line">      &lt;h1&gt;Clock2&lt;/h1&gt;</span><br><span class="line">      &lt;h2&gt;&#123;props.date&#125;&lt;/h2&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line">const Clock1Componetns = HightClock(Clock1)</span><br><span class="line">const Clock2Componetns = HightClock(Clock12)</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Clock</span></span> ()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;Clock1Componetns /&gt;</span><br><span class="line">      &lt;Clock2Componetns /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default Clock</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/01/TS-%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/08/01/TS-%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">TS 详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-08-01 15:13:07" itemprop="dateCreated datePublished" datetime="2020-08-01T15:13:07+08:00">2020-08-01</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="参数类型注解"><a href="#参数类型注解" class="headerlink" title="参数类型注解"></a>参数类型注解</h1><p>function greeter(person: string) {<br>  return “Hello, “ + person;<br>}<br>此刻表明 只能接受 greeter(“字符串类型”) 否则会报错</p>
-<h1 id="接口方式定义注解"><a href="#接口方式定义注解" class="headerlink" title="接口方式定义注解"></a>接口方式定义注解</h1><ul>
-<li>我们想要描述一个参数是一个对象且拥有两个属性 firstName &amp;&amp; lastName<br>interface Person {<br>firstName: string;<br>lastName: string;<br>}<br>function greeter(person: Person) {<br>  return “Hello, “ + person.firstName + “ “ + person.lastName;<br>}<br>greeter({ firstName: “Jane”, lastName: “User” });</li>
-</ul>
-<h1 id="类型基础"><a href="#类型基础" class="headerlink" title="类型基础"></a>类型基础</h1><ul>
-<li><p>布尔值 boolean </p>
-</li>
-<li><p>数字 number</p>
-</li>
-<li><p>字符串 string</p>
-</li>
-<li><p>对象 object</p>
-</li>
-<li><p>数组 number[] || Array<number>  都是表示数组里面值为数字</p>
-</li>
-<li><p>元组 Tuple 可以定义数组顺序项的类型 [string, number]<br>(arr[0] is string, arr[1] is number) 当访问arr[3] 则会判断是否是string｜number</p>
-</li>
-<li><p>枚举 这是一个功能索引的方法<br>enum Color {Red &#x3D; 1,Green,Blue}<br>let c: Color &#x3D; Color.Green<br>let colorName: string &#x3D; Color[2];<br>console.log(colorName); &#x2F;&#x2F; Green</p>
-</li>
-<li><p>Any let notSure: any &#x3D; 4; 任意类型</p>
-</li>
-<li><p>Void 表示没有任何类型。一般用来定义一个函数没有任何返回值</p>
-</li>
-<li><p>Null 和 Undefined</p>
-</li>
-<li><p>Never never的函数必须存在无法达到的终点<br>function error(message: string): never {<br>  throw new Error(message);<br>}<br>function infiniteLoop(): never {<br>  while (true) {<br>  }<br>}</p>
-</li>
-</ul>
-<h1 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h1><p>namespace Shapes {<br>  export namespace Polygons {<br>        export class Triangle { }<br>        export class Square { }<br>  }<br>}<br>import otherName &#x3D;  Shapes.Polygons<br>let sq &#x3D; new polygons.Square(); &#x2F;&#x2F; Same as “new Shapes.Polygons.Square()”</p>
 
       
     </div>

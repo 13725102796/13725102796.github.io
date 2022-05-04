@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -166,6 +166,103 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/01/TS-%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/08/01/TS-%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">TS 详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-01 15:13:07" itemprop="dateCreated datePublished" datetime="2020-08-01T15:13:07+08:00">2020-08-01</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="参数类型注解"><a href="#参数类型注解" class="headerlink" title="参数类型注解"></a>参数类型注解</h1><p>function greeter(person: string) {<br>  return “Hello, “ + person;<br>}<br>此刻表明 只能接受 greeter(“字符串类型”) 否则会报错</p>
+<h1 id="接口方式定义注解"><a href="#接口方式定义注解" class="headerlink" title="接口方式定义注解"></a>接口方式定义注解</h1><ul>
+<li>我们想要描述一个参数是一个对象且拥有两个属性 firstName &amp;&amp; lastName<br>interface Person {<br>firstName: string;<br>lastName: string;<br>}<br>function greeter(person: Person) {<br>  return “Hello, “ + person.firstName + “ “ + person.lastName;<br>}<br>greeter({ firstName: “Jane”, lastName: “User” });</li>
+</ul>
+<h1 id="类型基础"><a href="#类型基础" class="headerlink" title="类型基础"></a>类型基础</h1><ul>
+<li><p>布尔值 boolean </p>
+</li>
+<li><p>数字 number</p>
+</li>
+<li><p>字符串 string</p>
+</li>
+<li><p>对象 object</p>
+</li>
+<li><p>数组 number[] || Array<number>  都是表示数组里面值为数字</p>
+</li>
+<li><p>元组 Tuple 可以定义数组顺序项的类型 [string, number]<br>(arr[0] is string, arr[1] is number) 当访问arr[3] 则会判断是否是string｜number</p>
+</li>
+<li><p>枚举 这是一个功能索引的方法<br>enum Color {Red &#x3D; 1,Green,Blue}<br>let c: Color &#x3D; Color.Green<br>let colorName: string &#x3D; Color[2];<br>console.log(colorName); &#x2F;&#x2F; Green</p>
+</li>
+<li><p>Any let notSure: any &#x3D; 4; 任意类型</p>
+</li>
+<li><p>Void 表示没有任何类型。一般用来定义一个函数没有任何返回值</p>
+</li>
+<li><p>Null 和 Undefined</p>
+</li>
+<li><p>Never never的函数必须存在无法达到的终点<br>function error(message: string): never {<br>  throw new Error(message);<br>}<br>function infiniteLoop(): never {<br>  while (true) {<br>  }<br>}</p>
+</li>
+</ul>
+<h1 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h1><p>namespace Shapes {<br>  export namespace Polygons {<br>        export class Triangle { }<br>        export class Square { }<br>  }<br>}<br>import otherName &#x3D;  Shapes.Polygons<br>let sq &#x3D; new polygons.Square(); &#x2F;&#x2F; Same as “new Shapes.Polygons.Square()”</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -913,75 +1010,6 @@
 
 
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/07/reactAPI%E5%85%A8%E5%B1%80props/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/04/07/reactAPI%E5%85%A8%E5%B1%80props/" class="post-title-link" itemprop="url">reactAPI全局props</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-04-07 15:00:19" itemprop="dateCreated datePublished" datetime="2020-04-07T15:00:19+08:00">2020-04-07</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="createContext"><a href="#createContext" class="headerlink" title="createContext"></a>createContext</h1><p>Context 提供了一个无需为每层组件手动添加 props，就能在组件树间进行数据传递的方法</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用传统props蹈入props</span></span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> &lt;Toolbar theme=<span class="string">&quot;dark&quot;</span> /&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> Toolbar(props) &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;ThemedButton theme=&#123;props.theme&#125; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ThemedButton extends React.Component &#123;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> &lt;Button theme=&#123;this.props.theme&#125; /&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># ---------------------------------------------------</span></span><br><span class="line"><span class="comment"># 使用 context, 我们可以避免通过中间元素传递 props：</span></span><br><span class="line"><span class="comment"># 为当前的 theme 创建一个 context（“light”为默认值）。</span></span><br><span class="line">const ThemeContext = React.createContext(<span class="string">&#x27;light&#x27;</span>);</span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    // 使用一个 Provider 来将当前的 theme 传递给以下的组件树。</span><br><span class="line">    // 无论多深，任何组件都能读取这个值。</span><br><span class="line">    // 在这个例子中，我们将 “dark” 作为当前的值传递下去。</span><br><span class="line">    <span class="built_in">return</span> (</span><br><span class="line">      &lt;ThemeContext.Provider value=<span class="string">&quot;dark&quot;</span>&gt;</span><br><span class="line">        &lt;Toolbar /&gt;</span><br><span class="line">      &lt;/ThemeContext.Provider&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 中间的组件再也不必指明往下传递 theme 了。</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Toolbar</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;ThemedButton /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line">class ThemedButton extends React.Component &#123;</span><br><span class="line">  // 指定 contextType 读取当前的 theme context。</span><br><span class="line">  // React 会往上找到最近的 theme Provider，然后使用它的值。</span><br><span class="line">  // 在这个例子中，当前的 theme 值为 “dark”。</span><br><span class="line">  static contextType = ThemeContext;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> &lt;Button theme=&#123;this.context&#125; /&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
       
     </div>
 
