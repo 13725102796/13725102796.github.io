@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="参数类型注解function greeter(person: string) {  return “Hello, “ + person;}此刻表明 只能接受 greeter(“字符串类型”) 否则会报错 接口方式定义注解 我们想要描述一个参数是一个对象且拥有两个属性 firstName &amp;&amp; lastNameinterface Person {firstName: string;l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TS 详解">
+<meta property="og:url" content="http://example.com/2020/08/01/TS-%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="参数类型注解function greeter(person: string) {  return “Hello, “ + person;}此刻表明 只能接受 greeter(“字符串类型”) 否则会报错 接口方式定义注解 我们想要描述一个参数是一个对象且拥有两个属性 firstName &amp;&amp; lastNameinterface Person {firstName: string;l">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-01T07:13:07.000Z">
+<meta property="article:modified_time" content="2022-05-02T04:32:06.142Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="TS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2020/08/01/TS-%E8%AF%A6%E8%A7%A3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2020/08/01/TS-%E8%AF%A6%E8%A7%A3/","path":"2020/08/01/TS-详解/","title":"TS 详解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>TS 详解 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E7%B1%BB%E5%9E%8B%E6%B3%A8%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">参数类型注解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E6%96%B9%E5%BC%8F%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">接口方式定义注解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E5%9F%BA%E7%A1%80"><span class="nav-number">3.</span> <span class="nav-text">类型基础</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="nav-number">4.</span> <span class="nav-text">命名空间</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/01/TS-%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="TS 详解 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TS 详解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-01 15:13:07" itemprop="dateCreated datePublished" datetime="2020-08-01T15:13:07+08:00">2020-08-01</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="参数类型注解"><a href="#参数类型注解" class="headerlink" title="参数类型注解"></a>参数类型注解</h1><p>function greeter(person: string) {<br>  return “Hello, “ + person;<br>}<br>此刻表明 只能接受 greeter(“字符串类型”) 否则会报错</p>
+<h1 id="接口方式定义注解"><a href="#接口方式定义注解" class="headerlink" title="接口方式定义注解"></a>接口方式定义注解</h1><ul>
+<li>我们想要描述一个参数是一个对象且拥有两个属性 firstName &amp;&amp; lastName<br>interface Person {<br>firstName: string;<br>lastName: string;<br>}<br>function greeter(person: Person) {<br>  return “Hello, “ + person.firstName + “ “ + person.lastName;<br>}<br>greeter({ firstName: “Jane”, lastName: “User” });</li>
+</ul>
+<h1 id="类型基础"><a href="#类型基础" class="headerlink" title="类型基础"></a>类型基础</h1><ul>
+<li><p>布尔值 boolean </p>
+</li>
+<li><p>数字 number</p>
+</li>
+<li><p>字符串 string</p>
+</li>
+<li><p>对象 object</p>
+</li>
+<li><p>数组 number[] || Array<number>  都是表示数组里面值为数字</p>
+</li>
+<li><p>元组 Tuple 可以定义数组顺序项的类型 [string, number]<br>(arr[0] is string, arr[1] is number) 当访问arr[3] 则会判断是否是string｜number</p>
+</li>
+<li><p>枚举 这是一个功能索引的方法<br>enum Color {Red &#x3D; 1,Green,Blue}<br>let c: Color &#x3D; Color.Green<br>let colorName: string &#x3D; Color[2];<br>console.log(colorName); &#x2F;&#x2F; Green</p>
+</li>
+<li><p>Any let notSure: any &#x3D; 4; 任意类型</p>
+</li>
+<li><p>Void 表示没有任何类型。一般用来定义一个函数没有任何返回值</p>
+</li>
+<li><p>Null 和 Undefined</p>
+</li>
+<li><p>Never never的函数必须存在无法达到的终点<br>function error(message: string): never {<br>  throw new Error(message);<br>}<br>function infiniteLoop(): never {<br>  while (true) {<br>  }<br>}</p>
+</li>
+</ul>
+<h1 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h1><p>namespace Shapes {<br>  export namespace Polygons {<br>        export class Triangle { }<br>        export class Square { }<br>  }<br>}<br>import otherName &#x3D;  Shapes.Polygons<br>let sq &#x3D; new polygons.Square(); &#x2F;&#x2F; Same as “new Shapes.Polygons.Square()”</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/TS/" rel="tag"># TS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/07/29/new-Vue%E9%83%BD%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/" rel="prev" title="new Vue都做了什么">
+                  <i class="fa fa-chevron-left"></i> new Vue都做了什么
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/08/17/React%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" rel="next" title="React手写一个高阶组件">
+                  React手写一个高阶组件 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -23,6 +23,44 @@
     
     
     <entry>
+      <title>三元运算符转二元的的妙用</title>
+      <link href="/2022/05/04/%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E8%BD%AC%E4%BA%8C%E5%85%83%E7%9A%84%E7%9A%84%E5%A6%99%E7%94%A8/"/>
+      <url>/2022/05/04/%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E8%BD%AC%E4%BA%8C%E5%85%83%E7%9A%84%E7%9A%84%E5%A6%99%E7%94%A8/</url>
+      
+        <content type="html"><![CDATA[<h1 id="三元运算符"><a href="#三元运算符" class="headerlink" title="三元运算符"></a>三元运算符</h1><p>var obj &#x3D; {a: 1}</p><p>var a &#x3D; obj.a ? obj.a : undefined</p><h1 id="的妙用"><a href="#的妙用" class="headerlink" title="?.的妙用"></a>?.的妙用</h1><p>var obj &#x3D; {a: 1}</p><p>var a &#x3D; obj?.a </p><h1 id="在jsx的语法中，经常需要模版语法根据条件渲染，此时可以缩减写法"><a href="#在jsx的语法中，经常需要模版语法根据条件渲染，此时可以缩减写法" class="headerlink" title="在jsx的语法中，经常需要模版语法根据条件渲染，此时可以缩减写法"></a>在jsx的语法中，经常需要模版语法根据条件渲染，此时可以缩减写法</h1><p>const obj &#x3D; {arr: [1,2,3], }<br>obj?.arr.map((item)&#x3D;&gt;{<br>  return (<br>    <div>{item}</div><br>  )<br>})</p><h1 id="因为obj-arr1不存在所以不会执行"><a href="#因为obj-arr1不存在所以不会执行" class="headerlink" title="因为obj.arr1不存在所以不会执行"></a>因为obj.arr1不存在所以不会执行</h1><p>obj.arr1?.arr1.map((item)&#x3D;&gt;{<br>  return (<br>    <div>{item}</div><br>  )<br>})</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> ?. </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>提交PR完整流程</title>
+      <link href="/2022/04/30/%E6%8F%90%E4%BA%A4PR%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B/"/>
+      <url>/2022/04/30/%E6%8F%90%E4%BA%A4PR%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<h1 id="首先，fork项目到本地"><a href="#首先，fork项目到本地" class="headerlink" title="首先，fork项目到本地"></a>首先，fork项目到本地</h1><ol><li>访问想要PR的github项目</li><li>点击Start旁边的Fork，fork到自己的仓库</li><li>通过git clone xxx 下载到本地</li></ol><h1 id="创建Issues"><a href="#创建Issues" class="headerlink" title="创建Issues"></a>创建Issues</h1><ol><li><p>Issues标题格式规范<br><code>[标签] 标题 </code> 的格式: “[bug] 点击获取验证码的时候有问题”</p></li><li><p>内容规范</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 背景</span></span><br><span class="line"></span><br><span class="line">- 描述你希望解决的问题的现状</span><br><span class="line">- 附上相关的 issue 地址</span><br><span class="line"></span><br><span class="line"><span class="comment">## 思路</span></span><br><span class="line"></span><br><span class="line">描述大概的解决思路，可以包含 API 设计和伪代码等</span><br><span class="line"></span><br><span class="line"><span class="comment">## 跟进</span></span><br><span class="line"></span><br><span class="line">后续编辑，附上对应的 Pull Request 地址，可以用 `- [ ] some task` 的方式。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 案例</span></span><br><span class="line">标题：[RFC] 框架统一错误码</span><br><span class="line"><span class="comment"># 背景</span></span><br><span class="line">Egg 生态插件众多，研发流程可能会抛出各种框架、插件异常，开发者难以自行定位和解决</span><br><span class="line"></span><br><span class="line">* 没有统一的错误引导文档，目前的文档分散在官网、语雀各个空间里；错误和文档之间没有建立联系</span><br><span class="line">* 一些底层 sdk 的抛错已经丢失了链路信息，定位很困难。例如：mysql 客户端抛 ACCESS_DENIED_ERROR，已经在最后环节，但是问题可能是在上层 SDK 的使用上</span><br><span class="line"><span class="comment"># 目标</span></span><br><span class="line">* 所有框架、中间件抛出的异常信息，带上对应的 FAQ 自查文档；向下兼容对非统一 Error 的错误展示</span><br><span class="line">* 覆盖研发流程的所有阶段：CLI 命令、应用启动、运行时</span><br><span class="line">* 逐步对框架和中间件使用统一的 Error 改造，补充 FAQ 文档</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案</span></span><br><span class="line">具体实现的大致思路...</span><br><span class="line"></span><br></pre></td></tr></table></figure></li><li><p>拓展词汇缩写<br>WIP：work in progress 进展中，比如 The next major version of Vue (WIP)<br>RFC：request for comments 请求意见稿，<br>PR：pull request 请求合并<br>CR：code review 代码审查<br>BTW： By the way 顺便说一下<br>FYI：For your information 供您参考<br>ASAP：As soon as possible马上，尽快<br>LGTM：Look good to me 看起来不错，代码已review，可以合并</p></li></ol><h1 id="认领Issues-对Issues打标签，指派给某个开发者"><a href="#认领Issues-对Issues打标签，指派给某个开发者" class="headerlink" title="认领Issues,对Issues打标签，指派给某个开发者"></a>认领Issues,对Issues打标签，指派给某个开发者</h1><p>该仓库的维护者可以对这个Issues做一些事情：</p><ul><li>指派开发者去修复这个Issues</li><li>打标签 Labels Assignees </li><li>创建指定分支去维护</li></ul><h1 id="在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR"><a href="#在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR" class="headerlink" title="在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR"></a>在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR</h1><p>在远程仓库项目主页可以看到提交记录旁边存在两个按钮Contribute和Fetch-upstream<br>点击Contribut -》 点击 Open pull request -》 Create pull request<br>输入本次提交的标题和描述 -》 点击Create pull request</p><p>此时 已经完成了PR的提交了<br>原项目的管理者可以到项目的Pull request 去合并完成整个Issues的修复</p><h1 id="测试git切换账号提交"><a href="#测试git切换账号提交" class="headerlink" title="测试git切换账号提交"></a>测试git切换账号提交</h1>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> PR </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>深度理解浏览器从访问url到页面展示的全过程</title>
       <link href="/2022/04/29/%E6%B7%B1%E5%BA%A6%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%8E%E8%AE%BF%E9%97%AEurl%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/"/>
       <url>/2022/04/29/%E6%B7%B1%E5%BA%A6%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%8E%E8%AE%BF%E9%97%AEurl%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/</url>
@@ -360,6 +398,25 @@
     
     
     <entry>
+      <title>git 多账号配置</title>
+      <link href="/2021/02/01/git-%E5%A4%9A%E8%B4%A6%E5%8F%B7%E9%85%8D%E7%BD%AE/"/>
+      <url>/2021/02/01/git-%E5%A4%9A%E8%B4%A6%E5%8F%B7%E9%85%8D%E7%BD%AE/</url>
+      
+        <content type="html"><![CDATA[<h1 id="git-多账号账号切换使用"><a href="#git-多账号账号切换使用" class="headerlink" title="git 多账号账号切换使用"></a>git 多账号账号切换使用</h1><ul><li>解决密钥问题。默认只有一个密钥，二次创建会覆盖</li><li>使用哪个账号提交的</li></ul><h1 id="生成两个账号私钥在本地"><a href="#生成两个账号私钥在本地" class="headerlink" title="生成两个账号私钥在本地"></a>生成两个账号私钥在本地</h1><p>生成默认的 id_rsa 和id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱1”<br>在创建第二个的时候必须要重命名 比如 137_id_ras,这样会生成另外两个文件137_id_rsa 和 137_id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱2”</p><h1 id="在-ssh下面创建config文件"><a href="#在-ssh下面创建config文件" class="headerlink" title="在.ssh下面创建config文件"></a>在.ssh下面创建config文件</h1><p>执行 touch config 创建<br>执行 vim config 编辑</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Default 第一个账号(123456@xxxx.com)</span></span><br><span class="line"></span><br><span class="line">Host default</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/137_id_rsa</span><br><span class="line"><span class="comment">#second 第二个账号（38894403@xxxx.com）    </span></span><br><span class="line">Host zc</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure><p>只需要修改 IdentityFile 即可<br>ssh -T <a href="mailto:&#x67;&#x69;&#116;&#x40;&#103;&#x69;&#x74;&#x68;&#117;&#98;&#46;&#x63;&#x6f;&#109;">&#x67;&#x69;&#116;&#x40;&#103;&#x69;&#x74;&#x68;&#117;&#98;&#46;&#x63;&#x6f;&#109;</a> 可以测试是否配置成功<br><code>配置成功会显示当前用户名</code> 这个很重要，因为当你想切换用户的时候没有这个不行<br>通过设置<br>git config –global user.name “13725102796”<br>git config –global user.email “<a href="mailto:&#x31;&#52;&#x33;&#x39;&#54;&#53;&#x35;&#55;&#x36;&#x34;&#x40;&#x71;&#x71;&#x2e;&#99;&#x6f;&#109;">&#x31;&#52;&#x33;&#x39;&#54;&#53;&#x35;&#55;&#x36;&#x34;&#x40;&#x71;&#x71;&#x2e;&#99;&#x6f;&#109;</a>“<br>还没有生效，因为ssh-add的代理始终指向默认的</p><h1 id="通过ssh-add删除代理"><a href="#通过ssh-add删除代理" class="headerlink" title="通过ssh-add删除代理"></a>通过ssh-add删除代理</h1><p>查看 ssh-add -l<br>删除 ssh-add -D<br>添加<br>ssh-add ~&#x2F;.ssh&#x2F;id_rsa<br>ssh-add ~&#x2F;.ssh&#x2F;137_id_rsa </p><h1 id="添加代理后还不可以，需要修改提交的git-clone-ssh链接"><a href="#添加代理后还不可以，需要修改提交的git-clone-ssh链接" class="headerlink" title="添加代理后还不可以，需要修改提交的git clone ssh链接"></a>添加代理后还不可以，需要修改提交的git clone ssh链接</h1><ul><li><p>还没clone的可以通过 来拉取项目，这样可以让ssh-add正确代理<br>git clone zy@:18820677498&#x2F;Blog.git<br>原来是 <a href="mailto:&#x67;&#x69;&#116;&#64;&#x67;&#x69;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#x6f;&#x6d;">&#x67;&#x69;&#116;&#64;&#x67;&#x69;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#x6f;&#x6d;</a>:18820677498&#x2F;Blog.git</p></li><li><p>已经clone的 可以切换到当前项目下，命令行执行<br><code>vim .git/config</code><br>打开config文件 按i去修改，按esc退出修改，再按 <code>:qw!</code> 保存修改</p></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Vue与React Diff算法比较</title>
       <link href="/2020/10/29/Vue%E4%B8%8EReact-Diff%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/"/>
       <url>/2020/10/29/Vue%E4%B8%8EReact-Diff%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/</url>
@@ -466,6 +523,25 @@
         <tags>
             
             <tag> React HOC </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>TS 详解</title>
+      <link href="/2020/08/01/TS-%E8%AF%A6%E8%A7%A3/"/>
+      <url>/2020/08/01/TS-%E8%AF%A6%E8%A7%A3/</url>
+      
+        <content type="html"><![CDATA[<h1 id="参数类型注解"><a href="#参数类型注解" class="headerlink" title="参数类型注解"></a>参数类型注解</h1><p>function greeter(person: string) {<br>  return “Hello, “ + person;<br>}<br>此刻表明 只能接受 greeter(“字符串类型”) 否则会报错</p><h1 id="接口方式定义注解"><a href="#接口方式定义注解" class="headerlink" title="接口方式定义注解"></a>接口方式定义注解</h1><ul><li>我们想要描述一个参数是一个对象且拥有两个属性 firstName &amp;&amp; lastName<br>interface Person {<br>firstName: string;<br>lastName: string;<br>}<br>function greeter(person: Person) {<br>  return “Hello, “ + person.firstName + “ “ + person.lastName;<br>}<br>greeter({ firstName: “Jane”, lastName: “User” });</li></ul><h1 id="类型基础"><a href="#类型基础" class="headerlink" title="类型基础"></a>类型基础</h1><ul><li><p>布尔值 boolean </p></li><li><p>数字 number</p></li><li><p>字符串 string</p></li><li><p>对象 object</p></li><li><p>数组 number[] || Array<number>  都是表示数组里面值为数字</p></li><li><p>元组 Tuple 可以定义数组顺序项的类型 [string, number]<br>(arr[0] is string, arr[1] is number) 当访问arr[3] 则会判断是否是string｜number</p></li><li><p>枚举 这是一个功能索引的方法<br>enum Color {Red &#x3D; 1,Green,Blue}<br>let c: Color &#x3D; Color.Green<br>let colorName: string &#x3D; Color[2];<br>console.log(colorName); &#x2F;&#x2F; Green</p></li><li><p>Any let notSure: any &#x3D; 4; 任意类型</p></li><li><p>Void 表示没有任何类型。一般用来定义一个函数没有任何返回值</p></li><li><p>Null 和 Undefined</p></li><li><p>Never never的函数必须存在无法达到的终点<br>function error(message: string): never {<br>  throw new Error(message);<br>}<br>function infiniteLoop(): never {<br>  while (true) {<br>  }<br>}</p></li></ul><h1 id="命名空间"><a href="#命名空间" class="headerlink" title="命名空间"></a>命名空间</h1><p>namespace Shapes {<br>  export namespace Polygons {<br>        export class Triangle { }<br>        export class Square { }<br>  }<br>}<br>import otherName &#x3D;  Shapes.Polygons<br>let sq &#x3D; new polygons.Square(); &#x2F;&#x2F; Same as “new Shapes.Polygons.Square()”</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> TS </tag>
             
         </tags>
       

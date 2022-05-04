@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">64</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-count">53</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -232,6 +232,170 @@
 <li>请求失败，可能有错误消息<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> &#123;</span><br><span class="line">  // Multiple possible status enum values</span><br><span class="line">  status: <span class="string">&#x27;idle&#x27;</span> | <span class="string">&#x27;loading&#x27;</span> | <span class="string">&#x27;succeeded&#x27;</span> | <span class="string">&#x27;failed&#x27;</span>,</span><br><span class="line">  error: string | null</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/04/%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E8%BD%AC%E4%BA%8C%E5%85%83%E7%9A%84%E7%9A%84%E5%A6%99%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/04/%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E8%BD%AC%E4%BA%8C%E5%85%83%E7%9A%84%E7%9A%84%E5%A6%99%E7%94%A8/" class="post-title-link" itemprop="url">三元运算符转二元的的妙用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-04 10:03:31" itemprop="dateCreated datePublished" datetime="2022-05-04T10:03:31+08:00">2022-05-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="三元运算符"><a href="#三元运算符" class="headerlink" title="三元运算符"></a>三元运算符</h1><p>var obj &#x3D; {a: 1}</p>
+<p>var a &#x3D; obj.a ? obj.a : undefined</p>
+<h1 id="的妙用"><a href="#的妙用" class="headerlink" title="?.的妙用"></a>?.的妙用</h1><p>var obj &#x3D; {a: 1}</p>
+<p>var a &#x3D; obj?.a </p>
+<h1 id="在jsx的语法中，经常需要模版语法根据条件渲染，此时可以缩减写法"><a href="#在jsx的语法中，经常需要模版语法根据条件渲染，此时可以缩减写法" class="headerlink" title="在jsx的语法中，经常需要模版语法根据条件渲染，此时可以缩减写法"></a>在jsx的语法中，经常需要模版语法根据条件渲染，此时可以缩减写法</h1><p>const obj &#x3D; {arr: [1,2,3], }<br>obj?.arr.map((item)&#x3D;&gt;{<br>  return (<br>    <div>{item}</div><br>  )<br>})</p>
+<h1 id="因为obj-arr1不存在所以不会执行"><a href="#因为obj-arr1不存在所以不会执行" class="headerlink" title="因为obj.arr1不存在所以不会执行"></a>因为obj.arr1不存在所以不会执行</h1><p>obj.arr1?.arr1.map((item)&#x3D;&gt;{<br>  return (<br>    <div>{item}</div><br>  )<br>})</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/30/%E6%8F%90%E4%BA%A4PR%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/30/%E6%8F%90%E4%BA%A4PR%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B/" class="post-title-link" itemprop="url">提交PR完整流程</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-30 13:39:11" itemprop="dateCreated datePublished" datetime="2022-04-30T13:39:11+08:00">2022-04-30</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="首先，fork项目到本地"><a href="#首先，fork项目到本地" class="headerlink" title="首先，fork项目到本地"></a>首先，fork项目到本地</h1><ol>
+<li>访问想要PR的github项目</li>
+<li>点击Start旁边的Fork，fork到自己的仓库</li>
+<li>通过git clone xxx 下载到本地</li>
+</ol>
+<h1 id="创建Issues"><a href="#创建Issues" class="headerlink" title="创建Issues"></a>创建Issues</h1><ol>
+<li><p>Issues标题格式规范<br><code>[标签] 标题 </code> 的格式: “[bug] 点击获取验证码的时候有问题”</p>
+</li>
+<li><p>内容规范</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 背景</span></span><br><span class="line"></span><br><span class="line">- 描述你希望解决的问题的现状</span><br><span class="line">- 附上相关的 issue 地址</span><br><span class="line"></span><br><span class="line"><span class="comment">## 思路</span></span><br><span class="line"></span><br><span class="line">描述大概的解决思路，可以包含 API 设计和伪代码等</span><br><span class="line"></span><br><span class="line"><span class="comment">## 跟进</span></span><br><span class="line"></span><br><span class="line">后续编辑，附上对应的 Pull Request 地址，可以用 `- [ ] some task` 的方式。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 案例</span></span><br><span class="line">标题：[RFC] 框架统一错误码</span><br><span class="line"><span class="comment"># 背景</span></span><br><span class="line">Egg 生态插件众多，研发流程可能会抛出各种框架、插件异常，开发者难以自行定位和解决</span><br><span class="line"></span><br><span class="line">* 没有统一的错误引导文档，目前的文档分散在官网、语雀各个空间里；错误和文档之间没有建立联系</span><br><span class="line">* 一些底层 sdk 的抛错已经丢失了链路信息，定位很困难。例如：mysql 客户端抛 ACCESS_DENIED_ERROR，已经在最后环节，但是问题可能是在上层 SDK 的使用上</span><br><span class="line"><span class="comment"># 目标</span></span><br><span class="line">* 所有框架、中间件抛出的异常信息，带上对应的 FAQ 自查文档；向下兼容对非统一 Error 的错误展示</span><br><span class="line">* 覆盖研发流程的所有阶段：CLI 命令、应用启动、运行时</span><br><span class="line">* 逐步对框架和中间件使用统一的 Error 改造，补充 FAQ 文档</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案</span></span><br><span class="line">具体实现的大致思路...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拓展词汇缩写<br>WIP：work in progress 进展中，比如 The next major version of Vue (WIP)<br>RFC：request for comments 请求意见稿，<br>PR：pull request 请求合并<br>CR：code review 代码审查<br>BTW： By the way 顺便说一下<br>FYI：For your information 供您参考<br>ASAP：As soon as possible马上，尽快<br>LGTM：Look good to me 看起来不错，代码已review，可以合并</p>
+</li>
+</ol>
+<h1 id="认领Issues-对Issues打标签，指派给某个开发者"><a href="#认领Issues-对Issues打标签，指派给某个开发者" class="headerlink" title="认领Issues,对Issues打标签，指派给某个开发者"></a>认领Issues,对Issues打标签，指派给某个开发者</h1><p>该仓库的维护者可以对这个Issues做一些事情：</p>
+<ul>
+<li>指派开发者去修复这个Issues</li>
+<li>打标签 Labels Assignees </li>
+<li>创建指定分支去维护</li>
+</ul>
+<h1 id="在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR"><a href="#在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR" class="headerlink" title="在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR"></a>在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR</h1><p>在远程仓库项目主页可以看到提交记录旁边存在两个按钮Contribute和Fetch-upstream<br>点击Contribut -》 点击 Open pull request -》 Create pull request<br>输入本次提交的标题和描述 -》 点击Create pull request</p>
+<p>此时 已经完成了PR的提交了<br>原项目的管理者可以到项目的Pull request 去合并完成整个Issues的修复</p>
+<h1 id="测试git切换账号提交"><a href="#测试git切换账号提交" class="headerlink" title="测试git切换账号提交"></a>测试git切换账号提交</h1>
       
     </div>
 
@@ -884,159 +1048,6 @@ return &lt;div&gt;
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="依赖包版本"><a href="#依赖包版本" class="headerlink" title="依赖包版本"></a>依赖包版本</h1><p>“antd”: “3.26.16”<br>“dva”: “^2.4.0”<br>“react-router-dom”: “^4.3.1”,</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/21/%E8%8B%B1%E6%96%87%E7%89%88%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/21/%E8%8B%B1%E6%96%87%E7%89%88%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">英文版自我介绍</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-21 15:37:25" itemprop="dateCreated datePublished" datetime="2022-04-21T15:37:25+08:00">2022-04-21</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="自我介绍"><a href="#自我介绍" class="headerlink" title="自我介绍"></a>自我介绍</h1><p>  Hello!<br>  My name is Zhang YeChang. twenty-six years old.<br>  I’m very glad to join in the interview.<br>  First, I come from GuangDong ZhangJiang. Graduated from Panyu University of Technology. majoring in marketing<br>  I have about four point five years of front-end development experience.<br>  I’m mainly good at Vue React and Uni-app.<br>  Lead the construction of too many large projects.<br>  Like: people X,PinPin Bear Shop<br>  I like to communicate with others, discuss problems and share new learning technologies.<br>  In my free time.I will Continue to focus on front-end technology updates, like: mobx six version, Redux Toolkit.<br>  now, End of introduction.<br>  thank you very much.</p>
-<h1 id="最近的项目-people-X"><a href="#最近的项目-people-X" class="headerlink" title="最近的项目 people X"></a>最近的项目 people X</h1><p>  Recently, In my led projects is people-x.<br>  People-x is P &amp; G’s enterprise wechat multi tenant  platform.<br>  The old version is based on PHP + angular1 Developed by X.</p>
-<p>  Why should we refactor it.</p>
-<p>  The response of the old system is too slow, the experience is very poor, and the request link is too long, resulting in easy disconnection. The most important thing is that one set of code for one tenant is inconvenient for future maintenance.<br>  The new system architecture scheme is as follows</p>
-<p>● front end: enterprise wechat is based on Vue + vant . The background management system is based on react + ant-design-pro</p>
-<p>● back end: Based on spring boot </p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/19/React-Router-%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/19/React-Router-%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">React-Router 主要功能详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-19 10:18:43" itemprop="dateCreated datePublished" datetime="2022-04-19T10:18:43+08:00">2022-04-19</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p><code> $ npm install react-router-dom@6</code></p>
-<h1 id="使用-（使用组件注册路由）"><a href="#使用-（使用组件注册路由）" class="headerlink" title="使用 （使用组件注册路由）"></a>使用 （使用组件注册路由）</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&quot;react&quot;</span>;</span><br><span class="line">import &#123; Routes, Route, Link,BrowserRouter &#125; from <span class="string">&quot;react-router-dom&quot;</span>;</span><br><span class="line">import ReactDOM from <span class="string">&quot;react-dom&quot;</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div &gt;</span><br><span class="line">      &lt;h1&gt;Welcome to React Router!&lt;/h1&gt;</span><br><span class="line">      &lt;Routes&gt;</span><br><span class="line">        &lt;Route path=<span class="string">&quot;/&quot;</span> element=&#123;&lt;Home /&gt;&#125; /&gt;</span><br><span class="line">        &lt;Route path=<span class="string">&quot;about&quot;</span> element=&#123;&lt;About /&gt;&#125; /&gt;</span><br><span class="line">      &lt;/Routes&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Home</span></span>()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      Home</span><br><span class="line">      &lt;Link to=<span class="string">&quot;/about&quot;</span>&gt;About&lt;/Link&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">About</span></span>()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;About&lt;Link to=<span class="string">&quot;/&quot;</span>&gt;About&lt;/Link&gt;&lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;BrowserRouter&gt;</span><br><span class="line">    &lt;App /&gt;</span><br><span class="line">  &lt;/BrowserRouter&gt;,</span><br><span class="line">  document.getElementById(<span class="string">&quot;root&quot;</span>)</span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="使用useRoutes注册路由"><a href="#使用useRoutes注册路由" class="headerlink" title="使用useRoutes注册路由"></a>使用useRoutes注册路由</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">//路由表配置：src/routes/index.js</span><br><span class="line">import About from <span class="string">&#x27;../pages/About&#x27;</span></span><br><span class="line">import Home from <span class="string">&#x27;../pages/Home&#x27;</span></span><br><span class="line">import &#123;Navigate&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default [</span><br><span class="line">	&#123;</span><br><span class="line">		path:<span class="string">&#x27;/about&#x27;</span>,</span><br><span class="line">		element:&lt;About/&gt;,</span><br><span class="line">    children: [&#123;</span><br><span class="line">      path:<span class="string">&#x27;aboutChild1&#x27;</span>,</span><br><span class="line">		  element:&lt;AboutChild1 /&gt;,</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">      path:<span class="string">&#x27;aboutChild2&#x27;</span>,</span><br><span class="line">		  element:&lt;AboutChild2 /&gt;,</span><br><span class="line">    &#125;</span><br><span class="line">    ]</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		path:<span class="string">&#x27;/home&#x27;</span>,</span><br><span class="line">		element:&lt;Home/&gt;</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		path:<span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">		element:&lt;Navigate to=<span class="string">&quot;/about&quot;</span>/&gt;</span><br><span class="line">	&#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">//App.jsx</span><br><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line">import &#123;NavLink,useRoutes&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import routes from <span class="string">&#x27;./routes&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default <span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">	//根据路由表生成对应的路由规则</span><br><span class="line">	const element = useRoutes(routes)</span><br><span class="line">	<span class="built_in">return</span> (</span><br><span class="line">		&lt;div&gt;</span><br><span class="line">			......</span><br><span class="line">      &#123;/* 注册路由 */&#125;</span><br><span class="line">      &#123;element&#125;</span><br><span class="line">		  ......</span><br><span class="line">		&lt;/div&gt;</span><br><span class="line">	)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="子路由渲染位置"><a href="#子路由渲染位置" class="headerlink" title=" 子路由渲染位置"></a><Outlet> 子路由渲染位置</h1><h1 id="useNavigate-返回一个函数用来实现编程式导航。"><a href="#useNavigate-返回一个函数用来实现编程式导航。" class="headerlink" title="useNavigate 返回一个函数用来实现编程式导航。"></a>useNavigate 返回一个函数用来实现编程式导航。</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import &#123;useNavigate&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line">import &#123;useNavigate&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default <span class="keyword">function</span> <span class="function"><span class="title">Demo</span></span>() &#123;</span><br><span class="line">  const navigate = useNavigate()</span><br><span class="line">  const handle = () =&gt; &#123;</span><br><span class="line">    //第一种使用方式：指定具体的路径</span><br><span class="line">    navigate(<span class="string">&#x27;/login&#x27;</span>, &#123;</span><br><span class="line">      replace: <span class="literal">false</span>,</span><br><span class="line">      state: &#123;a:1, b:2&#125;</span><br><span class="line">    &#125;) </span><br><span class="line">    //第二种使用方式：传入数值进行前进或后退，类似于5.x中的 history.go()方法</span><br><span class="line">    navigate(-1)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;button onClick=&#123;handle&#125;&gt;按钮&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="useParams-返回当前匹配路由的params参数-useSearchParams-用于读取和修改当前位置的-URL-中的查询字符串。-useLocation-获取当前-location-信息"><a href="#useParams-返回当前匹配路由的params参数-useSearchParams-用于读取和修改当前位置的-URL-中的查询字符串。-useLocation-获取当前-location-信息" class="headerlink" title="useParams 返回当前匹配路由的params参数 | useSearchParams 用于读取和修改当前位置的 URL 中的查询字符串。 | useLocation 获取当前 location 信息"></a>useParams 返回当前匹配路由的params参数 | useSearchParams 用于读取和修改当前位置的 URL 中的查询字符串。 | useLocation 获取当前 location 信息</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># useParams</span></span><br><span class="line">import &#123; Routes, Route, useParams,useSearchParams,useLocation &#125; from <span class="string">&#x27;react-router-dom&#x27;</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">ProfilePage</span></span>() &#123;</span><br><span class="line">  // 获取URL中携带过来的params参数</span><br><span class="line">  <span class="built_in">let</span> &#123; <span class="built_in">id</span> &#125; = useParams();</span><br><span class="line">  // 返回一个包含两个值的数组，内容分别为：当前的seaech参数、更新search的函数。</span><br><span class="line">  const [search,setSearch] = useSearchParams()</span><br><span class="line">  // update</span><br><span class="line">  const <span class="built_in">id</span> = search.get(<span class="string">&#x27;id&#x27;</span>)</span><br><span class="line">  setSearch(<span class="string">&#x27;id=12123123&#x27;</span>) </span><br><span class="line">  // 获取当前 location 信息</span><br><span class="line">  const x = useLocation()</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;Routes&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;users/:id&quot;</span> element=&#123;&lt;User /&gt;&#125;/&gt;</span><br><span class="line">    &lt;/Routes&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="路由钩子-routerWillLeave"><a href="#路由钩子-routerWillLeave" class="headerlink" title="路由钩子 routerWillLeave"></a>路由钩子 routerWillLeave</h1><p>可以拦截正在发生的跳转，或在离开 route 前提示用户。<br>routerWillLeave 返回值有以下两种：</p>
-<ul>
-<li>return false 取消此次跳转</li>
-<li>return 返回提示信息，在离开 route 前提示用户进行确认。</li>
-</ul>
 
       
     </div>
