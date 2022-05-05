@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="问题：antd-mobile Swiper 在滑动切换的时候，触发点击事件，会导致Swiper卡住开始调研相关swiper插件，发现都有这样的问题，如vant等只能进入源码层研究 fork ant-design-mobile 关联到自己仓库 git clone ant-design-mobile 下载到本地运行 yarn install &amp;&amp; yarn start 安装依赖并本地运">
+<meta property="og:type" content="article">
+<meta property="og:title" content="试图处理antd-mobile Issue的新路">
+<meta property="og:url" content="http://example.com/2022/05/05/%E8%AF%95%E5%9B%BE%E5%A4%84%E7%90%86antd-mobile-Issue%E7%9A%84%E6%96%B0%E8%B7%AF/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="问题：antd-mobile Swiper 在滑动切换的时候，触发点击事件，会导致Swiper卡住开始调研相关swiper插件，发现都有这样的问题，如vant等只能进入源码层研究 fork ant-design-mobile 关联到自己仓库 git clone ant-design-mobile 下载到本地运行 yarn install &amp;&amp; yarn start 安装依赖并本地运">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-05T03:00:18.000Z">
+<meta property="article:modified_time" content="2022-05-05T03:31:02.574Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="Issue">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/05/05/%E8%AF%95%E5%9B%BE%E5%A4%84%E7%90%86antd-mobile-Issue%E7%9A%84%E6%96%B0%E8%B7%AF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/05/05/%E8%AF%95%E5%9B%BE%E5%A4%84%E7%90%86antd-mobile-Issue%E7%9A%84%E6%96%B0%E8%B7%AF/","path":"2022/05/05/试图处理antd-mobile-Issue的新路/","title":"试图处理antd-mobile Issue的新路"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>试图处理antd-mobile Issue的新路 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%EF%BC%9Aantd-mobile-Swiper-%E5%9C%A8%E6%BB%91%E5%8A%A8%E5%88%87%E6%8D%A2%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E8%A7%A6%E5%8F%91%E7%82%B9%E5%87%BB%E4%BA%8B%E4%BB%B6%EF%BC%8C%E4%BC%9A%E5%AF%BC%E8%87%B4Swiper%E5%8D%A1%E4%BD%8F"><span class="nav-number">1.</span> <span class="nav-text">问题：antd-mobile Swiper 在滑动切换的时候，触发点击事件，会导致Swiper卡住</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E8%B0%83%E7%A0%94%E7%9B%B8%E5%85%B3swiper%E6%8F%92%E4%BB%B6%EF%BC%8C%E5%8F%91%E7%8E%B0%E9%83%BD%E6%9C%89%E8%BF%99%E6%A0%B7%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%8C%E5%A6%82vant%E7%AD%89"><span class="nav-number">2.</span> <span class="nav-text">开始调研相关swiper插件，发现都有这样的问题，如vant等</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%AA%E8%83%BD%E8%BF%9B%E5%85%A5%E6%BA%90%E7%A0%81%E5%B1%82%E7%A0%94%E7%A9%B6"><span class="nav-number">3.</span> <span class="nav-text">只能进入源码层研究</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E5%88%86%E6%9E%90-swiper-%E6%9E%84%E6%88%90"><span class="nav-number">4.</span> <span class="nav-text">开始分析 swiper 构成</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/05/%E8%AF%95%E5%9B%BE%E5%A4%84%E7%90%86antd-mobile-Issue%E7%9A%84%E6%96%B0%E8%B7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="试图处理antd-mobile Issue的新路 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          试图处理antd-mobile Issue的新路
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-05 11:00:18" itemprop="dateCreated datePublished" datetime="2022-05-05T11:00:18+08:00">2022-05-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="问题：antd-mobile-Swiper-在滑动切换的时候，触发点击事件，会导致Swiper卡住"><a href="#问题：antd-mobile-Swiper-在滑动切换的时候，触发点击事件，会导致Swiper卡住" class="headerlink" title="问题：antd-mobile Swiper 在滑动切换的时候，触发点击事件，会导致Swiper卡住"></a>问题：antd-mobile Swiper 在滑动切换的时候，触发点击事件，会导致Swiper卡住</h1><h1 id="开始调研相关swiper插件，发现都有这样的问题，如vant等"><a href="#开始调研相关swiper插件，发现都有这样的问题，如vant等" class="headerlink" title="开始调研相关swiper插件，发现都有这样的问题，如vant等"></a>开始调研相关swiper插件，发现都有这样的问题，如vant等</h1><h1 id="只能进入源码层研究"><a href="#只能进入源码层研究" class="headerlink" title="只能进入源码层研究"></a>只能进入源码层研究</h1><ul>
+<li>fork ant-design-mobile 关联到自己仓库</li>
+<li>git clone ant-design-mobile 下载到本地运行</li>
+<li>yarn install &amp;&amp; yarn start 安装依赖并本地运行调试</li>
+<li>切换到 <code>./src/components/swiper/swiper.tsx</code></li>
+</ul>
+<h1 id="开始分析-swiper-构成"><a href="#开始分析-swiper-构成" class="headerlink" title="开始分析 swiper 构成"></a>开始分析 swiper 构成</h1><ul>
+<li><p>主要依赖两个库 @react-spring&#x2F;web &amp;&amp; @use-gesture&#x2F;react<br><code>@react-spring/web</code> 主要是对动画的优化<br><code>@use-gesture/react</code> 是对手势的操作处理<br>很明显该bug产生的原因是因为滑动即拖拽手势，而产生的</p>
+</li>
+<li><p>分析<code>@use-gesture/react</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">import &#123; useDrag &#125; from <span class="string">&#x27;@use-gesture/react&#x27;</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">const <span class="built_in">bind</span> = useDrag(</span><br><span class="line">  state =&gt; &#123;</span><br><span class="line">    const slidePixels = getSlidePixels()</span><br><span class="line">    <span class="keyword">if</span> (!slidePixels) <span class="built_in">return</span></span><br><span class="line">    const paramIndex = isVertical ? 1 : 0</span><br><span class="line">    const offset = state.offset[paramIndex]</span><br><span class="line">    const direction = state.direction[paramIndex]</span><br><span class="line">    const velocity = state.velocity[paramIndex]</span><br><span class="line">    setDragging(<span class="literal">true</span>)</span><br><span class="line">    <span class="keyword">if</span> (!state.last) &#123;</span><br><span class="line">      api.start(&#123;</span><br><span class="line">        position: (offset * 100) / slidePixels,</span><br><span class="line">        immediate: <span class="literal">true</span>,</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      const minIndex = Math.floor(offset / slidePixels)</span><br><span class="line">      const maxIndex = minIndex + 1</span><br><span class="line">      const index = Math.round(</span><br><span class="line">        (offset + velocity * 2000 * direction) / slidePixels</span><br><span class="line">      )</span><br><span class="line">      swipeTo(bound(index, minIndex, maxIndex))</span><br><span class="line">      window.setTimeout(() =&gt; &#123;</span><br><span class="line">        setDragging(<span class="literal">false</span>)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    transform: ([x, y]) =&gt; [-x, -y],</span><br><span class="line">    from: () =&gt; &#123;</span><br><span class="line">      const slidePixels = getSlidePixels()</span><br><span class="line">      <span class="built_in">return</span> [</span><br><span class="line">        (position.get() / 100) * slidePixels,</span><br><span class="line">        (position.get() / 100) * slidePixels,</span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    bounds: () =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (loop) <span class="built_in">return</span> &#123;&#125;</span><br><span class="line">      const slidePixels = getSlidePixels()</span><br><span class="line">      const lowerBound = boundIndex(0) * slidePixels</span><br><span class="line">      const upperBound = boundIndex(count - 1) * slidePixels</span><br><span class="line">      <span class="built_in">return</span> isVertical</span><br><span class="line">        ? &#123;</span><br><span class="line">            top: lowerBound,</span><br><span class="line">            bottom: upperBound,</span><br><span class="line">          &#125;</span><br><span class="line">        : &#123;</span><br><span class="line">            left: lowerBound,</span><br><span class="line">            right: upperBound,</span><br><span class="line">          &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    rubberband: props.rubberband,</span><br><span class="line">    axis: isVertical ? <span class="string">&#x27;y&#x27;</span> : <span class="string">&#x27;x&#x27;</span>,</span><br><span class="line">    preventScroll: <span class="literal">true</span>,</span><br><span class="line">    pointer: &#123;</span><br><span class="line">      <span class="built_in">touch</span>: <span class="literal">true</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>发现将 preventScroll 设置为 false 则bug消失了。<br>产生新的问题： 在拖拽的时候会存在纵向滚动的问题</p>
+</li>
+<li><p>查看 use-gesture 文档，发现 该属性是个实验性的属性，建议使用 axis 配合 touchAction 达到同等效果。修改源码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">const touchMero: object = useMemo(()=&gt;&#123;</span><br><span class="line">  console.log(dragging)</span><br><span class="line">  <span class="built_in">return</span> dragging ? &#123;touchAction: <span class="string">&#x27;pan-x&#x27;</span>&#125; : &#123;&#125;</span><br><span class="line">&#125;,[dragging])</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">&lt;animated.div</span><br><span class="line">  className=<span class="string">&#x27;adm-swiper-track-inner&#x27;</span></span><br><span class="line">  style=&#123;&#123;</span><br><span class="line">    [isVertical ? <span class="string">&#x27;y&#x27;</span> : <span class="string">&#x27;x&#x27;</span>]: position.to(</span><br><span class="line">      position =&gt; `<span class="variable">$&#123;-position&#125;</span>%`</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">  &#125;&#125;</span><br><span class="line">&gt;</span><br><span class="line">  &#123;React.Children.map(validChildren, child =&gt; &#123;</span><br><span class="line">    <span class="built_in">return</span> &lt;div className=<span class="string">&#x27;adm-swiper-slide&#x27;</span> style=&#123;touchMero&#125;&gt;&#123;child&#125;&lt;/div&gt;</span><br><span class="line">  &#125;)&#125;</span><br><span class="line">&lt;/animated.div&gt;</span><br></pre></td></tr></table></figure>
+<p>在微信环境，功能一切正常了。<br>在Safair环境，依旧存在纵向滚动的问题</p>
+</li>
+<li><p>查看 use-gesture github<br>发现该属性确实在Safair存在bug，<a target="_blank" rel="noopener" href="https://github.com/pmndrs/use-gesture/issues/486#issue-1212399919">Issue</a></p>
+</li>
+<li><p>最后只能不了了之，等待第三方插件的维护人员修复这个bug</p>
+</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>该bug是由antd-mobile依赖的第三方插件引起的。所以一时半会也处理不了。<br>终于明白为什么antd-pro要自己封装完整的工具链，继承到umi，dva里面。<br>如果什么都要等他们修复，不知道要等到什么时候。<br>最终的结果可能是，该框架存在很多无法解决的bug，大多来源于第三方插件。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Issue/" rel="tag"># Issue</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/04/%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E8%BD%AC%E4%BA%8C%E5%85%83%E7%9A%84%E7%9A%84%E5%A6%99%E7%94%A8/" rel="prev" title="三元运算符转二元的的妙用">
+                  <i class="fa fa-chevron-left"></i> 三元运算符转二元的的妙用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/07/21/React-Toolkit-%E5%BC%82%E6%AD%A5%E5%92%8C%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96%E7%9A%84%E6%96%B9%E6%B3%95/" rel="next" title="React-Toolkit 异步和数据获取的方法">
+                  React-Toolkit 异步和数据获取的方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

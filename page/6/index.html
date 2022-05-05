@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">55</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -166,6 +166,90 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/02/13/Vue-%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E6%8C%89%E9%92%AE%E7%BB%84%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/02/13/Vue-%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E6%8C%89%E9%92%AE%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">Vue 开发一个按钮组件</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-13 22:56:17" itemprop="dateCreated datePublished" datetime="2019-02-13T22:56:17+08:00">2019-02-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Vue-开发一个按钮组件"><a href="#Vue-开发一个按钮组件" class="headerlink" title="Vue 开发一个按钮组件"></a>Vue 开发一个按钮组件</h1><p>解决思路：<br>通过父子组件通讯（$refs 和 props）<br>props接受参数, $refs调用子组件的方法<br>来达到点击提交改变按钮状态，如果不成功则取消按钮状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">&lt;!-- use plane  --&gt;</span><br><span class="line">&lt;!-- 传入bgColor改变按钮背景色 --&gt;</span><br><span class="line">&lt;!-- state切换button的状态 调用cancel()可以切换 --&gt;</span><br><span class="line">&lt;!-- text为按钮文字 --&gt;</span><br><span class="line">  &lt;div class=<span class="string">&quot;container&quot;</span>&gt;</span><br><span class="line">    &lt;button  </span><br><span class="line">      @click=<span class="string">&quot;confirm&quot;</span></span><br><span class="line">      :disabled=<span class="string">&quot;state&quot;</span> </span><br><span class="line">      class=<span class="string">&quot;confirm&quot;</span> </span><br><span class="line">      :style=<span class="string">&quot;&#123;background: btnData.bgColor&#125;&quot;</span></span><br><span class="line">    &gt;&#123;&#123;text&#125;&#125;&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="built_in">export</span> default &#123;</span><br><span class="line">  <span class="function"><span class="title">data</span></span>()&#123;</span><br><span class="line">    <span class="built_in">return</span> &#123;</span><br><span class="line">      text: this.btnData.text,</span><br><span class="line">      state: <span class="literal">false</span>,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    btnData: &#123;</span><br><span class="line">      types: Array,</span><br><span class="line">      <span class="function"><span class="title">default</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> &#123;</span><br><span class="line">          text: <span class="string">&#x27;确认&#x27;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="function"><span class="title">confirm</span></span>()&#123;</span><br><span class="line">      this.text += <span class="string">&#x27;...&#x27;</span></span><br><span class="line">      this.state = <span class="literal">true</span></span><br><span class="line">      //这里是激活父组件的事件，因为子组件是不会冒泡到父组件上的，必须手动调用<span class="variable">$emit</span></span><br><span class="line">      //相对应父组件要在调用该组件的时候，将其挂载到上面</span><br><span class="line">      this.<span class="variable">$emit</span>(<span class="string">&quot;confirm&quot;</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="title">cancel</span></span>()&#123;</span><br><span class="line">      this.text = this.btnData.text</span><br><span class="line">      this.state = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style lang=<span class="string">&quot;less&quot;</span> scoped&gt;</span><br><span class="line">.confirm &#123;</span><br><span class="line">  border: none;</span><br><span class="line">  color: <span class="comment">#fff;</span></span><br><span class="line">  width: 100%;</span><br><span class="line">  padding: 1rem 0;</span><br><span class="line">  border-radius: 4px;</span><br><span class="line">  font-size: 1.6rem;</span><br><span class="line">  background: <span class="comment">#5da1fd;</span></span><br><span class="line">  &amp;:focus &#123;</span><br><span class="line">    outline: none;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在页面中调用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div class=<span class="string">&quot;btn-box&quot;</span>&gt;</span><br><span class="line">      &lt;Btn </span><br><span class="line">        :btnData=<span class="string">&quot;&#123;text: &#x27;确认注册&#x27;&#125;&quot;</span></span><br><span class="line">        &lt;!--这里就要挂载<span class="variable">$emit</span>调用的事件 @confirm=<span class="string">&quot;想要调用事件的名字&quot;</span>--&gt;</span><br><span class="line">        @confirm=<span class="string">&quot;confirm&quot;</span></span><br><span class="line">        ref=<span class="string">&quot;btn&quot;</span></span><br><span class="line">      &gt;&lt;/Btn&gt;</span><br><span class="line">    &lt;/div&gt; </span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Btn from <span class="string">&#x27;@/components/button&#x27;</span></span><br><span class="line"><span class="built_in">export</span> default &#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    Btn</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="function"><span class="title">confirm</span></span>()&#123;</span><br><span class="line">      <span class="keyword">if</span>(!this.companyName)&#123;</span><br><span class="line">        this.<span class="variable">$toast</span>(<span class="string">&quot;公司名不能为空&quot;</span>)  </span><br><span class="line">        this.<span class="variable">$refs</span>.btn.cancel()</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>在这里，要注意一些细节：</p>
+<ul>
+<li><ol>
+<li>button组件形成之后和其它div元素的间距，如果是在组件内定死是很难复用的。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>在复用的时候，在父组件中是改变不了子组件的样式的，如果要强制更改，单独写一个并去掉scoped。</li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -905,93 +989,6 @@
 <h2 id="ES5-和-ES6-分别几种方式声明变量"><a href="#ES5-和-ES6-分别几种方式声明变量" class="headerlink" title="ES5 和 ES6 分别几种方式声明变量"></a>ES5 和 ES6 分别几种方式声明变量</h2><ul>
 <li>ES5 有俩种：var 和 function</li>
 <li>ES6 有六种：增加四种，let、const、class 和 import</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/16/CSS%E7%BB%8F%E5%85%B8%E8%A7%84%E5%88%99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/16/CSS%E7%BB%8F%E5%85%B8%E8%A7%84%E5%88%99/" class="post-title-link" itemprop="url">CSS经典规则</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-04-16 21:13:34" itemprop="dateCreated datePublished" datetime="2018-04-16T21:13:34+08:00">2018-04-16</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="CSS经典规则"><a href="#CSS经典规则" class="headerlink" title="CSS经典规则"></a>CSS经典规则</h1><h3 id="使用方式-及-权重"><a href="#使用方式-及-权重" class="headerlink" title="使用方式 及 权重"></a>使用方式 及 权重</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1.内联：直接在HTML元素上使用</span><br><span class="line">&lt;p style=<span class="string">&quot;color: red&quot;</span>&gt;&lt;/p&gt;</span><br><span class="line">2.外部:在工作空间中创建单独的CSS文件，然后在创建的每个web页面中链接它们</span><br><span class="line">&lt;<span class="built_in">head</span>&gt;</span><br><span class="line">&lt;<span class="built_in">link</span> rel=<span class="string">&quot;text/css&quot;</span> href=<span class="string">&quot;url&quot;</span>&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">3. web 页面的 <span class="built_in">head</span> 元素在其中实现了内部 CSS。</span><br><span class="line">&lt;<span class="built_in">head</span>&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">p&#123;</span><br><span class="line">  color: red;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 权重优先级 !important -&gt; 内联 -&gt; 最后读取的</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="伪类和伪元素是什么？如何区分？"><a href="#伪类和伪元素是什么？如何区分？" class="headerlink" title="伪类和伪元素是什么？如何区分？"></a>伪类和伪元素是什么？如何区分？</h3><ul>
-<li>伪类是用来定义元素特殊状态的，他可以用来设置鼠标悬停样式、元素获取焦点样式、设置链接样式等。如常见的 hover、active、link 等都是伪类</li>
-<li>伪元素也称为伪对象，它不存在于 DOM 文档中、是一个虚拟的元素。它可以用来代表某个元素的子元素，但是这个子元素并不存在于文档树中。</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 伪类和伪元素的根本区别在于：是否创造了新的元素。</span></span><br><span class="line"><span class="comment"># html </span></span><br><span class="line">&lt;div&gt;</span><br><span class="line">    &lt;p class=<span class="string">&quot;one&quot;</span>&gt;红色&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;黑色&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"><span class="comment">#css 伪类</span></span><br><span class="line">p:first-child&#123;</span><br><span class="line">  color:red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># css 伪元素</span></span><br><span class="line">.one &#123;</span><br><span class="line">  color:red;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="BFC-规范（块级格式化上下文：block-formatting-context）"><a href="#BFC-规范（块级格式化上下文：block-formatting-context）" class="headerlink" title="BFC 规范（块级格式化上下文：block formatting context）"></a>BFC 规范（块级格式化上下文：block formatting context）</h3><h4 id="BFC指的是块级格式化上下文，一个元素形成了BFC之后，那么它内部元素产生的布局不会影响到外部元素，外部元素的布局也不会影响到BFC中的内部元素。一个BFC就像是一个隔离区域，和其他区域互不影响。"><a href="#BFC指的是块级格式化上下文，一个元素形成了BFC之后，那么它内部元素产生的布局不会影响到外部元素，外部元素的布局也不会影响到BFC中的内部元素。一个BFC就像是一个隔离区域，和其他区域互不影响。" class="headerlink" title="BFC指的是块级格式化上下文，一个元素形成了BFC之后，那么它内部元素产生的布局不会影响到外部元素，外部元素的布局也不会影响到BFC中的内部元素。一个BFC就像是一个隔离区域，和其他区域互不影响。"></a>BFC指的是块级格式化上下文，一个元素形成了BFC之后，那么它内部元素产生的布局不会影响到外部元素，外部元素的布局也不会影响到BFC中的内部元素。一个BFC就像是一个隔离区域，和其他区域互不影响。</h4><h4 id="使得当前bfc区域内的元素都变为行内元素（块级格式化上下文）"><a href="#使得当前bfc区域内的元素都变为行内元素（块级格式化上下文）" class="headerlink" title="使得当前bfc区域内的元素都变为行内元素（块级格式化上下文）"></a>使得当前bfc区域内的元素都变为行内元素（块级格式化上下文）</h4><ul>
-<li>1.浮动元素不为none；</li>
-<li>2.position不为static；</li>
-<li>3.display:inline-block；display:table-cell；display:table-caption；</li>
-<li>4.overflow 计算值(Computed)不为 visible 的块元素</li>
-<li>5.display:inline-flex;</li>
-</ul>
-<h3 id="IFC指的是行级格式化上下文，它有这样的一些布局规则："><a href="#IFC指的是行级格式化上下文，它有这样的一些布局规则：" class="headerlink" title="IFC指的是行级格式化上下文，它有这样的一些布局规则："></a>IFC指的是行级格式化上下文，它有这样的一些布局规则：</h3><ul>
-<li>（1）行级上下文内部的盒子会在水平方向，一个接一个地放置。</li>
-<li>（2）当一行不够的时候会自动切换到下一行。</li>
-<li>（3）行级上下文的高度由内部最高的内联盒子的高度决定。</li>
 </ul>
 
       

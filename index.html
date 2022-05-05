@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-count">55</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -231,6 +231,98 @@
 <li>请求成功，我们现在有了我们需要的数据</li>
 <li>请求失败，可能有错误消息<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> &#123;</span><br><span class="line">  // Multiple possible status enum values</span><br><span class="line">  status: <span class="string">&#x27;idle&#x27;</span> | <span class="string">&#x27;loading&#x27;</span> | <span class="string">&#x27;succeeded&#x27;</span> | <span class="string">&#x27;failed&#x27;</span>,</span><br><span class="line">  error: string | null</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/05/%E8%AF%95%E5%9B%BE%E5%A4%84%E7%90%86antd-mobile-Issue%E7%9A%84%E6%96%B0%E8%B7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/05/%E8%AF%95%E5%9B%BE%E5%A4%84%E7%90%86antd-mobile-Issue%E7%9A%84%E6%96%B0%E8%B7%AF/" class="post-title-link" itemprop="url">试图处理antd-mobile Issue的新路</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-05 11:00:18" itemprop="dateCreated datePublished" datetime="2022-05-05T11:00:18+08:00">2022-05-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="问题：antd-mobile-Swiper-在滑动切换的时候，触发点击事件，会导致Swiper卡住"><a href="#问题：antd-mobile-Swiper-在滑动切换的时候，触发点击事件，会导致Swiper卡住" class="headerlink" title="问题：antd-mobile Swiper 在滑动切换的时候，触发点击事件，会导致Swiper卡住"></a>问题：antd-mobile Swiper 在滑动切换的时候，触发点击事件，会导致Swiper卡住</h1><h1 id="开始调研相关swiper插件，发现都有这样的问题，如vant等"><a href="#开始调研相关swiper插件，发现都有这样的问题，如vant等" class="headerlink" title="开始调研相关swiper插件，发现都有这样的问题，如vant等"></a>开始调研相关swiper插件，发现都有这样的问题，如vant等</h1><h1 id="只能进入源码层研究"><a href="#只能进入源码层研究" class="headerlink" title="只能进入源码层研究"></a>只能进入源码层研究</h1><ul>
+<li>fork ant-design-mobile 关联到自己仓库</li>
+<li>git clone ant-design-mobile 下载到本地运行</li>
+<li>yarn install &amp;&amp; yarn start 安装依赖并本地运行调试</li>
+<li>切换到 <code>./src/components/swiper/swiper.tsx</code></li>
+</ul>
+<h1 id="开始分析-swiper-构成"><a href="#开始分析-swiper-构成" class="headerlink" title="开始分析 swiper 构成"></a>开始分析 swiper 构成</h1><ul>
+<li><p>主要依赖两个库 @react-spring&#x2F;web &amp;&amp; @use-gesture&#x2F;react<br><code>@react-spring/web</code> 主要是对动画的优化<br><code>@use-gesture/react</code> 是对手势的操作处理<br>很明显该bug产生的原因是因为滑动即拖拽手势，而产生的</p>
+</li>
+<li><p>分析<code>@use-gesture/react</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">import &#123; useDrag &#125; from <span class="string">&#x27;@use-gesture/react&#x27;</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">const <span class="built_in">bind</span> = useDrag(</span><br><span class="line">  state =&gt; &#123;</span><br><span class="line">    const slidePixels = getSlidePixels()</span><br><span class="line">    <span class="keyword">if</span> (!slidePixels) <span class="built_in">return</span></span><br><span class="line">    const paramIndex = isVertical ? 1 : 0</span><br><span class="line">    const offset = state.offset[paramIndex]</span><br><span class="line">    const direction = state.direction[paramIndex]</span><br><span class="line">    const velocity = state.velocity[paramIndex]</span><br><span class="line">    setDragging(<span class="literal">true</span>)</span><br><span class="line">    <span class="keyword">if</span> (!state.last) &#123;</span><br><span class="line">      api.start(&#123;</span><br><span class="line">        position: (offset * 100) / slidePixels,</span><br><span class="line">        immediate: <span class="literal">true</span>,</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      const minIndex = Math.floor(offset / slidePixels)</span><br><span class="line">      const maxIndex = minIndex + 1</span><br><span class="line">      const index = Math.round(</span><br><span class="line">        (offset + velocity * 2000 * direction) / slidePixels</span><br><span class="line">      )</span><br><span class="line">      swipeTo(bound(index, minIndex, maxIndex))</span><br><span class="line">      window.setTimeout(() =&gt; &#123;</span><br><span class="line">        setDragging(<span class="literal">false</span>)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    transform: ([x, y]) =&gt; [-x, -y],</span><br><span class="line">    from: () =&gt; &#123;</span><br><span class="line">      const slidePixels = getSlidePixels()</span><br><span class="line">      <span class="built_in">return</span> [</span><br><span class="line">        (position.get() / 100) * slidePixels,</span><br><span class="line">        (position.get() / 100) * slidePixels,</span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    bounds: () =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (loop) <span class="built_in">return</span> &#123;&#125;</span><br><span class="line">      const slidePixels = getSlidePixels()</span><br><span class="line">      const lowerBound = boundIndex(0) * slidePixels</span><br><span class="line">      const upperBound = boundIndex(count - 1) * slidePixels</span><br><span class="line">      <span class="built_in">return</span> isVertical</span><br><span class="line">        ? &#123;</span><br><span class="line">            top: lowerBound,</span><br><span class="line">            bottom: upperBound,</span><br><span class="line">          &#125;</span><br><span class="line">        : &#123;</span><br><span class="line">            left: lowerBound,</span><br><span class="line">            right: upperBound,</span><br><span class="line">          &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    rubberband: props.rubberband,</span><br><span class="line">    axis: isVertical ? <span class="string">&#x27;y&#x27;</span> : <span class="string">&#x27;x&#x27;</span>,</span><br><span class="line">    preventScroll: <span class="literal">true</span>,</span><br><span class="line">    pointer: &#123;</span><br><span class="line">      <span class="built_in">touch</span>: <span class="literal">true</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>发现将 preventScroll 设置为 false 则bug消失了。<br>产生新的问题： 在拖拽的时候会存在纵向滚动的问题</p>
+</li>
+<li><p>查看 use-gesture 文档，发现 该属性是个实验性的属性，建议使用 axis 配合 touchAction 达到同等效果。修改源码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">const touchMero: object = useMemo(()=&gt;&#123;</span><br><span class="line">  console.log(dragging)</span><br><span class="line">  <span class="built_in">return</span> dragging ? &#123;touchAction: <span class="string">&#x27;pan-x&#x27;</span>&#125; : &#123;&#125;</span><br><span class="line">&#125;,[dragging])</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">&lt;animated.div</span><br><span class="line">  className=<span class="string">&#x27;adm-swiper-track-inner&#x27;</span></span><br><span class="line">  style=&#123;&#123;</span><br><span class="line">    [isVertical ? <span class="string">&#x27;y&#x27;</span> : <span class="string">&#x27;x&#x27;</span>]: position.to(</span><br><span class="line">      position =&gt; `<span class="variable">$&#123;-position&#125;</span>%`</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">  &#125;&#125;</span><br><span class="line">&gt;</span><br><span class="line">  &#123;React.Children.map(validChildren, child =&gt; &#123;</span><br><span class="line">    <span class="built_in">return</span> &lt;div className=<span class="string">&#x27;adm-swiper-slide&#x27;</span> style=&#123;touchMero&#125;&gt;&#123;child&#125;&lt;/div&gt;</span><br><span class="line">  &#125;)&#125;</span><br><span class="line">&lt;/animated.div&gt;</span><br></pre></td></tr></table></figure>
+<p>在微信环境，功能一切正常了。<br>在Safair环境，依旧存在纵向滚动的问题</p>
+</li>
+<li><p>查看 use-gesture github<br>发现该属性确实在Safair存在bug，<a target="_blank" rel="noopener" href="https://github.com/pmndrs/use-gesture/issues/486#issue-1212399919">Issue</a></p>
+</li>
+<li><p>最后只能不了了之，等待第三方插件的维护人员修复这个bug</p>
+</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>该bug是由antd-mobile依赖的第三方插件引起的。所以一时半会也处理不了。<br>终于明白为什么antd-pro要自己封装完整的工具链，继承到umi，dva里面。<br>如果什么都要等他们修复，不知道要等到什么时候。<br>最终的结果可能是，该框架存在很多无法解决的bug，大多来源于第三方插件。</p>
 
       
     </div>
@@ -979,75 +1071,6 @@ return &lt;div&gt;
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="在与redux-toolkit-一起使用的-基础配置"><a href="#在与redux-toolkit-一起使用的-基础配置" class="headerlink" title="在与redux-toolkit 一起使用的 基础配置"></a>在与redux-toolkit 一起使用的 基础配置</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建一个saga.js</span></span><br><span class="line">import &#123; call, put, takeEvery &#125; from <span class="string">&#x27;redux-saga/effects&#x27;</span></span><br><span class="line">import axios from <span class="string">&#x27;axios&#x27;</span></span><br><span class="line">const testApi = <span class="string">&#x27;/public/page/getHomePageModules&#x27;</span></span><br><span class="line"></span><br><span class="line">// worker Saga : 将在 USER_FETCH_REQUESTED action 被 dispatch 时调用</span><br><span class="line"><span class="keyword">function</span>* fetchUser(action)&#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    const user = yield call(axios.get(testApi),action.payload.userId)</span><br><span class="line">    console.log(user)</span><br><span class="line">    yield put (&#123;<span class="built_in">type</span>:<span class="string">&quot;USER_FETCH_SUCCEEDED&quot;</span>,user:user&#125;)</span><br><span class="line">  &#125; catch (e)&#123;</span><br><span class="line">    yield put(&#123;<span class="built_in">type</span>: <span class="string">&quot;USER_FETCH_FAILED&quot;</span>,message:e.message&#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">  在每个 `USER_FETCH_REQUESTED` action 被 dispatch 时调用 fetchUser</span><br><span class="line">  允许并发（译注：即同时处理多个相同的 action）</span><br><span class="line">*/</span><br><span class="line"><span class="keyword">function</span>* <span class="function"><span class="title">mySaga</span></span>()&#123;</span><br><span class="line">  yield takeEvery(<span class="string">&quot;USER_FETCH_REQUESTED&quot;</span>,fetchUser)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">  也可以使用 takeLatest</span><br><span class="line"></span><br><span class="line">  不允许并发，dispatch 一个 `USER_FETCH_REQUESTED` action 时，</span><br><span class="line">  如果在这之前已经有一个 `USER_FETCH_REQUESTED` action 在处理中，</span><br><span class="line">  那么处理中的 action 会被取消，只会执行当前的</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default mySaga;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集中到store里面的写法</span></span><br><span class="line">import counterSlice from <span class="string">&quot;./test&quot;</span></span><br><span class="line">import &#123; configureStore &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">import thunksSlice from <span class="string">&quot;./thunks&quot;</span></span><br><span class="line">import createSagaMiddleware from <span class="string">&#x27;redux-saga&#x27;</span></span><br><span class="line">import mySaga from <span class="string">&#x27;./saga&#x27;</span></span><br><span class="line"></span><br><span class="line">// create the saga middleware</span><br><span class="line">const sagaMiddleware = createSagaMiddleware()</span><br><span class="line">const store = configureStore(&#123;</span><br><span class="line">  reducer:&#123;</span><br><span class="line">    counter: counterSlice,</span><br><span class="line">    thunks: thunksSlice,</span><br><span class="line">    </span><br><span class="line">  &#125;,</span><br><span class="line">  middleware: defaultMiddleware =&gt; defaultMiddleware().concat(sagaMiddleware)</span><br><span class="line"> </span><br><span class="line">&#125;)</span><br><span class="line">sagaMiddleware.run(mySaga)</span><br><span class="line"><span class="built_in">export</span> default store</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用与其他的一致，通过dispatch</span></span><br><span class="line">import HightClock from <span class="string">&#x27;../hightComponents/clock&#x27;</span></span><br><span class="line">import &#123; useSelector,useDispatch &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">import &#123; useEffect &#125; from <span class="string">&#x27;react&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default HightClock((props)=&gt;&#123;</span><br><span class="line">  const count = useSelector(state=&gt;state.counter.value)</span><br><span class="line">  const dispatch = useDispatch()</span><br><span class="line">  useEffect(()=&gt;&#123;</span><br><span class="line">    dispatch(&#123;<span class="built_in">type</span>: <span class="string">&#x27;USER_FETCH_REQUESTED&#x27;</span>, payload: &#123;&#125;&#125;)</span><br><span class="line">  &#125;,[])</span><br><span class="line">  // </span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &lt;h1&gt;Home Child1&lt;/h1&gt;</span><br><span class="line">      &lt;h2&gt;counterValue: &#123;count&#125;&lt;/h2&gt;</span><br><span class="line">      &lt;div&gt;&#123;props.date&#125;&lt;/div&gt;</span><br><span class="line">      &#123;/* &lt;Link to=<span class="string">&quot;/about&quot;</span>&gt;To About Clock&lt;/Link&gt; */&#125;</span><br><span class="line">    &lt;/&gt;</span><br><span class="line">)&#125;)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/22/people-X%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/22/people-X%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">people X后台管理项目介绍</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-22 11:11:10" itemprop="dateCreated datePublished" datetime="2022-04-22T11:11:10+08:00">2022-04-22</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="依赖包版本"><a href="#依赖包版本" class="headerlink" title="依赖包版本"></a>依赖包版本</h1><p>“antd”: “3.26.16”<br>“dva”: “^2.4.0”<br>“react-router-dom”: “^4.3.1”,</p>
 
       
     </div>
