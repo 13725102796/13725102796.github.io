@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-count">73</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -166,6 +166,317 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/12/JS%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/05/12/JS%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">JS浏览器事件循环机制</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-05-12 09:48:14" itemprop="dateCreated datePublished" datetime="2018-05-12T09:48:14+08:00">2018-05-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">浏览器</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="JavaScript-单线程-非阻塞"><a href="#JavaScript-单线程-非阻塞" class="headerlink" title="JavaScript 单线程 非阻塞"></a>JavaScript 单线程 非阻塞</h1><p>定义：单线程（代码执行时只有一个主线程来处理所有任务），非阻塞（当代码需要进行一项异步任务时不会等待，主线程会挂起这个任务，在异步任务返回结果时再执行相应的回调）的脚本语言<br>用途：与浏览器交互</p>
+<h1 id="事件循环"><a href="#事件循环" class="headerlink" title="事件循环"></a>事件循环</h1><p>用途：js引擎（网页浏览器中专门处理js脚本的虚拟机）实现非阻塞</p>
+<h1 id="浏览器环境下js引擎的事件循环机制"><a href="#浏览器环境下js引擎的事件循环机制" class="headerlink" title="浏览器环境下js引擎的事件循环机制"></a>浏览器环境下js引擎的事件循环机制</h1><p>js代码执行时将不同变量存于内存中的不同位置<br>堆：放对象 栈：基础类型变量，对象指针</p>
+<h1 id="执行栈：存放执行环境并依次调用执行的地方"><a href="#执行栈：存放执行环境并依次调用执行的地方" class="headerlink" title="执行栈：存放执行环境并依次调用执行的地方"></a>执行栈：存放执行环境并依次调用执行的地方</h1><p>当调用一个方法时，js会生成一个与这个方法对应的执行环境（也叫执行上下文，存放这个方法的私有作用域，上层作用域指向，参数，变量，this对象）。这些方法都被存放在执行栈中，依次调用</p>
+<h1 id="执行栈执行同步代码"><a href="#执行栈执行同步代码" class="headerlink" title="执行栈执行同步代码"></a>执行栈执行同步代码</h1><p>按照执行顺序将执行环境依次加入执行栈中并进入环境执行代码，若有调用，在执行栈中再添加一个执行环境（往上垒），执行环境中的代码执行完毕并返回结果后，js会退出这个执行环境并将其销毁，回到上一个方法的执行环境。反复进行，直到代码全部执行完毕</p>
+<h3 id="执行栈执行异步代码（如发送ajax请求数据）事件队列–实现非阻塞"><a href="#执行栈执行异步代码（如发送ajax请求数据）事件队列–实现非阻塞" class="headerlink" title="执行栈执行异步代码（如发送ajax请求数据）事件队列–实现非阻塞"></a>执行栈执行异步代码（如发送ajax请求数据）事件队列–实现非阻塞</h3><h3 id="js引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕，-主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码…，如此反复，这样就形成了一个无限的循环"><a href="#js引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕，-主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码…，如此反复，这样就形成了一个无限的循环" class="headerlink" title="js引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕， 主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码…，如此反复，这样就形成了一个无限的循环"></a>js引擎遇到一个异步事件后并不会一直等待其返回结果，而是会将这个事件挂起，继续执行执行栈中的其他任务。当一个异步事件返回结果后，js会将这个事件加入与当前执行栈不同的另一个队列，我们称之为事件队列。被放入事件队列不会立刻执行其回调，而是等待当前执行栈中的所有任务都执行完毕， 主线程处于闲置状态时，主线程会去查找事件队列是否有任务。如果有，那么主线程会从中取出排在第一位的事件，并把这个事件对应的回调放入执行栈中，然后执行其中的同步代码…，如此反复，这样就形成了一个无限的循环</h3><h3 id="因为形成了无限循环，所以这个过程被叫做事件循环"><a href="#因为形成了无限循环，所以这个过程被叫做事件循环" class="headerlink" title="因为形成了无限循环，所以这个过程被叫做事件循环"></a>因为形成了无限循环，所以这个过程被叫做<code>事件循环</code></h3><h3 id="不同的异步任务依据执行优先级被分为两类：微任务（micro-task）和宏任务（macro-task）"><a href="#不同的异步任务依据执行优先级被分为两类：微任务（micro-task）和宏任务（macro-task）" class="headerlink" title="不同的异步任务依据执行优先级被分为两类：微任务（micro task）和宏任务（macro task）"></a>不同的异步任务依据执行优先级被分为两类：微任务（micro task）和宏任务（macro task）</h3><ul>
+<li>宏任务：setInterval() setTimeout()</li>
+<li>微任务：new Promise() new MutaionObserver()</li>
+</ul>
+<h3 id="当前执行栈执行完毕时会立刻先处理所有微任务队列中的事件，然后再去宏任务队列中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行（先微再宏）"><a href="#当前执行栈执行完毕时会立刻先处理所有微任务队列中的事件，然后再去宏任务队列中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行（先微再宏）" class="headerlink" title="当前执行栈执行完毕时会立刻先处理所有微任务队列中的事件，然后再去宏任务队列中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行（先微再宏）"></a>当前执行栈执行完毕时会立刻先处理所有微任务队列中的事件，然后再去宏任务队列中取出一个事件。同一次事件循环中，微任务永远在宏任务之前执行（先微再宏）</h3>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/20/JS%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6%E4%B8%8E%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/04/20/JS%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6%E4%B8%8E%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">JS事件机制与相关问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-04-20 22:45:27" itemprop="dateCreated datePublished" datetime="2018-04-20T22:45:27+08:00">2018-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">浏览器</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="什么是事件代理-x2F-事件委托？"><a href="#什么是事件代理-x2F-事件委托？" class="headerlink" title="什么是事件代理&#x2F;事件委托？"></a>什么是事件代理&#x2F;事件委托？</h2><h4 id="事件代理-x2F-事件委托是利用事件冒泡的特性，将本应该绑定在多个元素上的事件绑定在他们的祖先元素上，尤其在动态添加子元素的时候，可以非常方便的提高程序性能，减小内存空间。"><a href="#事件代理-x2F-事件委托是利用事件冒泡的特性，将本应该绑定在多个元素上的事件绑定在他们的祖先元素上，尤其在动态添加子元素的时候，可以非常方便的提高程序性能，减小内存空间。" class="headerlink" title="事件代理&#x2F;事件委托是利用事件冒泡的特性，将本应该绑定在多个元素上的事件绑定在他们的祖先元素上，尤其在动态添加子元素的时候，可以非常方便的提高程序性能，减小内存空间。"></a>事件代理&#x2F;事件委托是利用事件冒泡的特性，将本应该绑定在多个元素上的事件绑定在他们的祖先元素上，尤其在动态添加子元素的时候，可以非常方便的提高程序性能，减小内存空间。</h4><h2 id="什么是事件冒泡？什么是事件捕获？"><a href="#什么是事件冒泡？什么是事件捕获？" class="headerlink" title="什么是事件冒泡？什么是事件捕获？"></a>什么是事件冒泡？什么是事件捕获？</h2><ul>
+<li>冒泡型事件：事件按照从最特定的事件目标到最不特定的事件目标(document对象)的顺序触发。</li>
+<li>捕获型事件：事件从最不精确的对象(document 对象)开始触发，然后到最精确(也可以在窗口级别捕获事件，不过必须由开发人员特别指定)。</li>
+</ul>
+<h4 id="在添加事件时用addEventListener-event-fn-useCapture-方法，基中第3个参数useCapture是一个Boolean值，用来设置事件是在事件捕获时执行，还是事件冒泡时执行-Vue-中-click默认是冒泡的"><a href="#在添加事件时用addEventListener-event-fn-useCapture-方法，基中第3个参数useCapture是一个Boolean值，用来设置事件是在事件捕获时执行，还是事件冒泡时执行-Vue-中-click默认是冒泡的" class="headerlink" title="在添加事件时用addEventListener(event,fn,useCapture)方法，基中第3个参数useCapture是一个Boolean值，用来设置事件是在事件捕获时执行，还是事件冒泡时执行 Vue 中 @click默认是冒泡的"></a>在添加事件时用addEventListener(event,fn,useCapture)方法，基中第3个参数useCapture是一个Boolean值，用来设置事件是在事件捕获时执行，还是事件冒泡时执行 Vue 中 @click默认是冒泡的</h4><h4 id="e-stopPropagation-阻止事件冒泡"><a href="#e-stopPropagation-阻止事件冒泡" class="headerlink" title="e.stopPropagation() 阻止事件冒泡"></a>e.stopPropagation() 阻止事件冒泡</h4><h2 id="DOM-事件有哪些阶段？谈谈对事件代理的理解"><a href="#DOM-事件有哪些阶段？谈谈对事件代理的理解" class="headerlink" title="DOM 事件有哪些阶段？谈谈对事件代理的理解"></a>DOM 事件有哪些阶段？谈谈对事件代理的理解</h2><h4 id="分为三大阶段：捕获阶段–目标阶段–冒泡阶段"><a href="#分为三大阶段：捕获阶段–目标阶段–冒泡阶段" class="headerlink" title="分为三大阶段：捕获阶段–目标阶段–冒泡阶段"></a>分为三大阶段：捕获阶段–目标阶段–冒泡阶段</h4><h4 id="事件代理简单说就是：事件不直接绑定到某元素上，而是绑定到该元素的父元素上，进行触发事件操作时-例如’click’-，再通过条件判断，执行事件触发后的语句-例如’alert-e-target-innerhtml-’"><a href="#事件代理简单说就是：事件不直接绑定到某元素上，而是绑定到该元素的父元素上，进行触发事件操作时-例如’click’-，再通过条件判断，执行事件触发后的语句-例如’alert-e-target-innerhtml-’" class="headerlink" title="事件代理简单说就是：事件不直接绑定到某元素上，而是绑定到该元素的父元素上，进行触发事件操作时(例如’click’)，再通过条件判断，执行事件触发后的语句(例如’alert(e.target.innerhtml)’)"></a>事件代理简单说就是：事件不直接绑定到某元素上，而是绑定到该元素的父元素上，进行触发事件操作时(例如’click’)，再通过条件判断，执行事件触发后的语句(例如’alert(e.target.innerhtml)’)</h4><h2 id="闭包的概念？优缺点？使用场景？"><a href="#闭包的概念？优缺点？使用场景？" class="headerlink" title="闭包的概念？优缺点？使用场景？"></a>闭包的概念？优缺点？使用场景？</h2><h4 id="闭包的概念：闭包就是能读取其他函数内部变量的函数。"><a href="#闭包的概念：闭包就是能读取其他函数内部变量的函数。" class="headerlink" title="闭包的概念：闭包就是能读取其他函数内部变量的函数。"></a>闭包的概念：闭包就是能读取其他函数内部变量的函数。</h4><h4 id="优点：-避免全局变量的污染，希望一个变量长期存储在内存中（缓存变量）"><a href="#优点：-避免全局变量的污染，希望一个变量长期存储在内存中（缓存变量）" class="headerlink" title="优点： 避免全局变量的污染，希望一个变量长期存储在内存中（缓存变量）"></a>优点： 避免全局变量的污染，希望一个变量长期存储在内存中（缓存变量）</h4><h4 id="缺点：-内存泄露（消耗），常驻内存，增加内存使用量"><a href="#缺点：-内存泄露（消耗），常驻内存，增加内存使用量" class="headerlink" title="缺点： 内存泄露（消耗），常驻内存，增加内存使用量"></a>缺点： 内存泄露（消耗），常驻内存，增加内存使用量</h4><h4 id="使用场景：封装功能时-需要使用私有的属性和方法-，函数防抖、函数节流、函数柯里化、给元素伪数组添加事件需要使用元素的索引值。"><a href="#使用场景：封装功能时-需要使用私有的属性和方法-，函数防抖、函数节流、函数柯里化、给元素伪数组添加事件需要使用元素的索引值。" class="headerlink" title="使用场景：封装功能时(需要使用私有的属性和方法)，函数防抖、函数节流、函数柯里化、给元素伪数组添加事件需要使用元素的索引值。"></a>使用场景：封装功能时(需要使用私有的属性和方法)，函数防抖、函数节流、函数柯里化、给元素伪数组添加事件需要使用元素的索引值。</h4><h2 id="new操作符具体干了什么呢"><a href="#new操作符具体干了什么呢" class="headerlink" title="new操作符具体干了什么呢?"></a>new操作符具体干了什么呢?</h2><ul>
+<li>1.创建一个空对象，并且 this 变量引用该对象，同时还继承了该函数的原型。</li>
+<li>2.属性和方法被加入到 this 引用的对象中。</li>
+<li>3.新创建的对象由 this 所引用，并且最后隐式的返回 this 。</li>
+</ul>
+<h2 id="javascript中this的指向"><a href="#javascript中this的指向" class="headerlink" title="javascript中this的指向"></a>javascript中this的指向</h2><h4 id="this永远指向函数运行时所在的对象，而不是函数被创建时所在的对象。"><a href="#this永远指向函数运行时所在的对象，而不是函数被创建时所在的对象。" class="headerlink" title="this永远指向函数运行时所在的对象，而不是函数被创建时所在的对象。"></a>this永远指向函数运行时所在的对象，而不是函数被创建时所在的对象。</h4><h4 id="普通的函数调用，函数被谁调用，this就是谁"><a href="#普通的函数调用，函数被谁调用，this就是谁" class="headerlink" title="普通的函数调用，函数被谁调用，this就是谁"></a>普通的函数调用，函数被谁调用，this就是谁</h4><h4 id="构造函数的话，如果不用new操作符而直接调用，那即this指向window。用new操作符生成对象实例后，this就指向了新生成的对象。"><a href="#构造函数的话，如果不用new操作符而直接调用，那即this指向window。用new操作符生成对象实例后，this就指向了新生成的对象。" class="headerlink" title="构造函数的话，如果不用new操作符而直接调用，那即this指向window。用new操作符生成对象实例后，this就指向了新生成的对象。"></a>构造函数的话，如果不用new操作符而直接调用，那即this指向window。用new操作符生成对象实例后，this就指向了新生成的对象。</h4><h4 id="匿名函数或不处于任何对象中的函数指向window"><a href="#匿名函数或不处于任何对象中的函数指向window" class="headerlink" title="匿名函数或不处于任何对象中的函数指向window"></a>匿名函数或不处于任何对象中的函数指向window</h4><h4 id="如果是call，apply等，指定的this是谁，就是谁。"><a href="#如果是call，apply等，指定的this是谁，就是谁。" class="headerlink" title="如果是call，apply等，指定的this是谁，就是谁。"></a>如果是call，apply等，指定的this是谁，就是谁。</h4><h2 id="Javascript作用链域"><a href="#Javascript作用链域" class="headerlink" title="Javascript作用链域"></a>Javascript作用链域</h2><h4 id="作用域链的原理和原型链很类似，如果这个变量在自己的作用域中没有，那么它会寻找父级的，直到最顶层。"><a href="#作用域链的原理和原型链很类似，如果这个变量在自己的作用域中没有，那么它会寻找父级的，直到最顶层。" class="headerlink" title="作用域链的原理和原型链很类似，如果这个变量在自己的作用域中没有，那么它会寻找父级的，直到最顶层。"></a>作用域链的原理和原型链很类似，如果这个变量在自己的作用域中没有，那么它会寻找父级的，直到最顶层。</h4><h2 id="js如何处理防抖和节流"><a href="#js如何处理防抖和节流" class="headerlink" title="js如何处理防抖和节流"></a>js如何处理防抖和节流</h2><h4 id="在进行窗口的resize、scroll，输入框内容校验等操作时，如果事件处理函数调用的频率无限制，会加重浏览器的负担，导致用户体验非常糟糕。此时我们可以采用debounce（防抖）和throttle（节流）的方式来减少调用频率，同时又不影响实际效果。"><a href="#在进行窗口的resize、scroll，输入框内容校验等操作时，如果事件处理函数调用的频率无限制，会加重浏览器的负担，导致用户体验非常糟糕。此时我们可以采用debounce（防抖）和throttle（节流）的方式来减少调用频率，同时又不影响实际效果。" class="headerlink" title="在进行窗口的resize、scroll，输入框内容校验等操作时，如果事件处理函数调用的频率无限制，会加重浏览器的负担，导致用户体验非常糟糕。此时我们可以采用debounce（防抖）和throttle（节流）的方式来减少调用频率，同时又不影响实际效果。"></a>在进行窗口的resize、scroll，输入框内容校验等操作时，如果事件处理函数调用的频率无限制，会加重浏览器的负担，导致用户体验非常糟糕。此时我们可以采用debounce（防抖）和throttle（节流）的方式来减少调用频率，同时又不影响实际效果。</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 函数防抖（debounce）：</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 当持续触发事件时，一定时间段内没有再触发事件，事件处理函数才会执行一次，如果设定的时间到来之前，又一次触发了事件，就重新开始延时。如下，持续触发scroll事件时，并不执行handle函数，当1000毫秒内没有触发scroll事件时，才会延时触发scroll事件。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> debounce(fn, <span class="built_in">wait</span>) &#123; </span><br><span class="line">  var <span class="built_in">timeout</span> = null; </span><br><span class="line">  <span class="built_in">return</span> <span class="function"><span class="title">function</span></span>() &#123; </span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">timeout</span> !== null) clearTimeout(<span class="built_in">timeout</span>);</span><br><span class="line">    <span class="built_in">timeout</span> = setTimeout(fn, <span class="built_in">wait</span>); </span><br><span class="line">  &#125; </span><br><span class="line">&#125; </span><br><span class="line">// 处理函数 </span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">handle</span></span>() &#123; console.log(Math.random()); &#125; // 滚动事件</span><br><span class="line">window.addEventListener(<span class="string">&#x27;scroll&#x27;</span>, debounce(handle, 1000)); 函数节流函数节流（throttle）：</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当持续触发事件时，保证一定时间段内只调用一次事件处理函数。节流通俗解释就比如我们水龙头放水，阀门一打开，水哗哗的往下流，秉着勤俭节约的优良传统美德，我们要把水龙头关小点，最好是如我们心意按照一定规律在某个时间间隔内一滴一滴的往下滴。如下，持续触发scroll事件时，并不立即执行handle函数，每隔1000毫秒才会执行一次handle函数。</span></span><br><span class="line">var throttle = <span class="keyword">function</span>(func, delay) &#123; </span><br><span class="line">  var prev = Date.now(); </span><br><span class="line">  <span class="built_in">return</span> <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">    var context = this;</span><br><span class="line">    var args = arguments; </span><br><span class="line">    var now = Date.now(); </span><br><span class="line">    <span class="keyword">if</span> (now - prev &gt;= delay) &#123; </span><br><span class="line">      func.apply(context, args);</span><br><span class="line">      prev = Date.now(); </span><br><span class="line">    &#125; </span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">handle</span></span>() &#123; console.log(Math.random()); &#125; </span><br><span class="line">window.addEventListener(<span class="string">&#x27;scroll&#x27;</span>, throttle(handle, 1000));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="JS里垃圾回收机制是什么，常用的是哪种，怎么处理的？"><a href="#JS里垃圾回收机制是什么，常用的是哪种，怎么处理的？" class="headerlink" title="JS里垃圾回收机制是什么，常用的是哪种，怎么处理的？"></a>JS里垃圾回收机制是什么，常用的是哪种，怎么处理的？</h2><h4 id="JS的垃圾回收机制是为了以防内存泄漏，内存泄漏的含义就是当已经不需要某块内存时这块内存还存在着，垃圾回收机制就是间歇的不定期的寻找到不再使用的变量，并释放掉它们所指向的内存。JS中最常见的垃圾回收方式是标记清除。工作原理：是当变量进入环境时，将这个变量标记为“进入环境”。当变量离开环境时，则将其标记为“离开环境”。标记“离开环境”的就回收内存。"><a href="#JS的垃圾回收机制是为了以防内存泄漏，内存泄漏的含义就是当已经不需要某块内存时这块内存还存在着，垃圾回收机制就是间歇的不定期的寻找到不再使用的变量，并释放掉它们所指向的内存。JS中最常见的垃圾回收方式是标记清除。工作原理：是当变量进入环境时，将这个变量标记为“进入环境”。当变量离开环境时，则将其标记为“离开环境”。标记“离开环境”的就回收内存。" class="headerlink" title="JS的垃圾回收机制是为了以防内存泄漏，内存泄漏的含义就是当已经不需要某块内存时这块内存还存在着，垃圾回收机制就是间歇的不定期的寻找到不再使用的变量，并释放掉它们所指向的内存。JS中最常见的垃圾回收方式是标记清除。工作原理：是当变量进入环境时，将这个变量标记为“进入环境”。当变量离开环境时，则将其标记为“离开环境”。标记“离开环境”的就回收内存。"></a>JS的垃圾回收机制是为了以防内存泄漏，内存泄漏的含义就是当已经不需要某块内存时这块内存还存在着，垃圾回收机制就是间歇的不定期的寻找到不再使用的变量，并释放掉它们所指向的内存。JS中最常见的垃圾回收方式是标记清除。工作原理：是当变量进入环境时，将这个变量标记为“进入环境”。当变量离开环境时，则将其标记为“离开环境”。标记“离开环境”的就回收内存。</h4><h4 id="那些操作会造成内存泄漏"><a href="#那些操作会造成内存泄漏" class="headerlink" title="那些操作会造成内存泄漏"></a>那些操作会造成内存泄漏</h4><h4 id="全局变量、闭包、DOM清空或删除时，事件未清除、子元素存在引用"><a href="#全局变量、闭包、DOM清空或删除时，事件未清除、子元素存在引用" class="headerlink" title="全局变量、闭包、DOM清空或删除时，事件未清除、子元素存在引用"></a>全局变量、闭包、DOM清空或删除时，事件未清除、子元素存在引用</h4><h2 id="什么是虚拟DOM"><a href="#什么是虚拟DOM" class="headerlink" title="什么是虚拟DOM"></a>什么是虚拟DOM</h2><h4 id="文档对象模型或-DOM-定义了一个接口，该接口允许-JavaScript-之类的语言访问和操作-HTML-文档。元素由树中的节点表示，并且接口允许我们操纵它们。但是此接口需要付出代价，大量非常频繁的-DOM-操作会使页面速度变慢。为了减少重排和重绘，虚拟dom应运而生。"><a href="#文档对象模型或-DOM-定义了一个接口，该接口允许-JavaScript-之类的语言访问和操作-HTML-文档。元素由树中的节点表示，并且接口允许我们操纵它们。但是此接口需要付出代价，大量非常频繁的-DOM-操作会使页面速度变慢。为了减少重排和重绘，虚拟dom应运而生。" class="headerlink" title="文档对象模型或 DOM 定义了一个接口，该接口允许 JavaScript 之类的语言访问和操作 HTML 文档。元素由树中的节点表示，并且接口允许我们操纵它们。但是此接口需要付出代价，大量非常频繁的 DOM 操作会使页面速度变慢。为了减少重排和重绘，虚拟dom应运而生。"></a>文档对象模型或 DOM 定义了一个接口，该接口允许 JavaScript 之类的语言访问和操作 HTML 文档。元素由树中的节点表示，并且接口允许我们操纵它们。但是此接口需要付出代价，大量非常频繁的 DOM 操作会使页面速度变慢。为了减少重排和重绘，虚拟dom应运而生。</h4><h3 id="JS延迟加载的方式有哪些？"><a href="#JS延迟加载的方式有哪些？" class="headerlink" title="JS延迟加载的方式有哪些？"></a>JS延迟加载的方式有哪些？</h3><h4 id="defer和async、动态创建DOM方式（用得最多）、按需异步载入JS"><a href="#defer和async、动态创建DOM方式（用得最多）、按需异步载入JS" class="headerlink" title="defer和async、动态创建DOM方式（用得最多）、按需异步载入JS"></a>defer和async、动态创建DOM方式（用得最多）、按需异步载入JS</h4><ul>
+<li>defer：延迟脚本。立即下载，但延迟执行（延迟到整个页面都解析完毕后再运行），按照脚本出现的先后顺序执行。</li>
+<li>async：异步脚本。下载完立即执行，但不保证按照脚本出现的先后顺序执行。</li>
+</ul>
+<h2 id="JS为什么要区分微任务和宏任务"><a href="#JS为什么要区分微任务和宏任务" class="headerlink" title="JS为什么要区分微任务和宏任务"></a>JS为什么要区分微任务和宏任务</h2><ul>
+<li>（1）js是单线程的，但是分同步异步</li>
+<li>（2）微任务和宏任务皆为异步任务，它们都属于一个队列</li>
+<li>（3）宏任务一般是：script，setTimeout，setInterval、setImmediate</li>
+<li>（4）微任务：原生Promise</li>
+<li>（5）遇到微任务，先执行微任务，执行完后如果没有微任务，就执行下一个宏任务，如果有微任务，就按顺序一个一个执行微任务</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/18/JS%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/04/18/JS%E7%BB%8F%E5%85%B8%E9%97%AE%E9%A2%98%E6%8C%87%E5%8D%97/" class="post-title-link" itemprop="url">JS经典问题指南</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-04-18 22:09:19" itemprop="dateCreated datePublished" datetime="2018-04-18T22:09:19+08:00">2018-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="JavaScript的数据类型"><a href="#JavaScript的数据类型" class="headerlink" title="JavaScript的数据类型"></a>JavaScript的数据类型</h2><ul>
+<li>值类型(基本类型)：字符串（String）、数字(Number)、布尔(Boolean)、对空（Null）、未定义（Undefined）、Symbol（独一无二的值</li>
+<li>引用数据类型：对象(Object)、数组(Array)、函数(Function)。</li>
+</ul>
+<h2 id="基本数据类型与引用类型在存储上有什么区别"><a href="#基本数据类型与引用类型在存储上有什么区别" class="headerlink" title="基本数据类型与引用类型在存储上有什么区别?"></a>基本数据类型与引用类型在存储上有什么区别?</h2><h3 id="1-存储位置不同"><a href="#1-存储位置不同" class="headerlink" title="1.存储位置不同:"></a>1.存储位置不同:</h3><ul>
+<li>基本数据类型：以栈的形式存储, 保存与赋值指向数据本身, 用typeof 来判断类型</li>
+<li>引用类型：以堆的形式存储, 保存于赋值指向对象的一个指针, 用instanceof 来判断类型</li>
+</ul>
+<h3 id="2-传值方式不同："><a href="#2-传值方式不同：" class="headerlink" title="2.传值方式不同："></a>2.传值方式不同：</h3><ul>
+<li>基本数据类型按值传递，无法改变一个基本数据类型的值</li>
+<li>引用类型按引用传递，应用类型值可以改变</li>
+</ul>
+<h2 id="判断-js-类型的方式"><a href="#判断-js-类型的方式" class="headerlink" title="判断 js 类型的方式"></a>判断 js 类型的方式</h2><ul>
+<li><ol>
+<li>typeof<h3 id="可以判断出’string’-’number’-’boolean’-’undefined’-’symbol’但判断-typeof-null-时值为-‘object’-判断数组和对象时值均为-‘object’"><a href="#可以判断出’string’-’number’-’boolean’-’undefined’-’symbol’但判断-typeof-null-时值为-‘object’-判断数组和对象时值均为-‘object’" class="headerlink" title="可以判断出’string’,’number’,’boolean’,’undefined’,’symbol’但判断 typeof(null) 时值为 ‘object’; 判断数组和对象时值均为 ‘object’"></a>可以判断出’string’,’number’,’boolean’,’undefined’,’symbol’但判断 typeof(null) 时值为 ‘object’; 判断数组和对象时值均为 ‘object’</h3></li>
+</ol>
+</li>
+<li><ol start="2">
+<li>instanceof<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">functionA</span></span>() &#123;&#125;</span><br><span class="line"><span class="built_in">let</span> a = new A();</span><br><span class="line">a instanceof A //true</span><br><span class="line">// 因为 Object.getPrototypeOf(a) === A.prototype;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><ol start="3">
+<li>Object.prototype.toString.call() 可以判断所有类型<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Object.prototype.toString.call(null)//<span class="string">&quot;[object Null]&quot;</span></span><br><span class="line">Object.prototype.toString.call(undefined)//<span class="string">&quot;[object Undefined]&quot;</span></span><br><span class="line">Object.prototype.toString.call(Object)//<span class="string">&quot;[object Function]&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ul>
+<h2 id="描述以下变量的区别：null，undefined或undeclared"><a href="#描述以下变量的区别：null，undefined或undeclared" class="headerlink" title="描述以下变量的区别：null，undefined或undeclared"></a>描述以下变量的区别：null，undefined或undeclared</h2><ul>
+<li>null 表示”没有对象”</li>
+<li>undefined 表示”缺少值”，就是此处应该有一个值，但是还没有定义</li>
+</ul>
+<h4 id="变量被声明了，但没有赋值时，就等于undefined。"><a href="#变量被声明了，但没有赋值时，就等于undefined。" class="headerlink" title="变量被声明了，但没有赋值时，就等于undefined。"></a>变量被声明了，但没有赋值时，就等于undefined。</h4><h4 id="调用函数时，应该提供的参数没有提供，该参数等于undefined。"><a href="#调用函数时，应该提供的参数没有提供，该参数等于undefined。" class="headerlink" title="调用函数时，应该提供的参数没有提供，该参数等于undefined。"></a>调用函数时，应该提供的参数没有提供，该参数等于undefined。</h4><h4 id="对象没有赋值的属性，该属性的值为undefined。"><a href="#对象没有赋值的属性，该属性的值为undefined。" class="headerlink" title="对象没有赋值的属性，该属性的值为undefined。"></a>对象没有赋值的属性，该属性的值为undefined。</h4><h4 id="函数没有返回值时，默认返回undefined。"><a href="#函数没有返回值时，默认返回undefined。" class="headerlink" title="函数没有返回值时，默认返回undefined。"></a>函数没有返回值时，默认返回undefined。</h4><ul>
+<li>undeclared :js语法错误，没有申明直接使用，js无法找到对应的上下文。</li>
+</ul>
+<h2 id="for-in-和-object-keys的区别"><a href="#for-in-和-object-keys的区别" class="headerlink" title="for..in 和 object.keys的区别"></a>for..in 和 object.keys的区别</h2><ul>
+<li>Object.keys不会遍历继承的原型属性</li>
+<li>for…in 会遍历继承的原型属性</li>
+</ul>
+<h2 id="JS-中的函数提升"><a href="#JS-中的函数提升" class="headerlink" title="JS 中的函数提升"></a>JS 中的函数提升</h2><h4 id="JS允许将声明移动到顶部的默认行为称为提升。JS中创建函数的两种方法是函数声明和函数表达式。"><a href="#JS允许将声明移动到顶部的默认行为称为提升。JS中创建函数的两种方法是函数声明和函数表达式。" class="headerlink" title="JS允许将声明移动到顶部的默认行为称为提升。JS中创建函数的两种方法是函数声明和函数表达式。"></a>JS允许将声明移动到顶部的默认行为称为提升。JS中创建函数的两种方法是函数声明和函数表达式。</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 函数声明</span></span><br><span class="line">hoisted();</span><br><span class="line">// logs <span class="string">&quot;foo&quot;</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">hoisted</span></span>() &#123;console.log(<span class="string">&#x27;foo&#x27;</span>);&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 函数表达式</span></span><br><span class="line">notHoisted(); </span><br><span class="line"><span class="comment">#TypeError: notHoisted is not a function</span></span><br><span class="line">var notHoisted = <span class="function"><span class="title">function</span></span>() &#123;console.log(<span class="string">&#x27;bar&#x27;</span>);&#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="Js隐式转换"><a href="#Js隐式转换" class="headerlink" title="Js隐式转换"></a>Js隐式转换</h2><h4 id="在js中，当运算符在运算时，如果两边数据不统一，CPU就无法计算，这时我们编译器会自动将运算符两边的数据做一个数据类型转换，转成一样的数据类型再计算"><a href="#在js中，当运算符在运算时，如果两边数据不统一，CPU就无法计算，这时我们编译器会自动将运算符两边的数据做一个数据类型转换，转成一样的数据类型再计算" class="headerlink" title="在js中，当运算符在运算时，如果两边数据不统一，CPU就无法计算，这时我们编译器会自动将运算符两边的数据做一个数据类型转换，转成一样的数据类型再计算"></a>在js中，当运算符在运算时，如果两边数据不统一，CPU就无法计算，这时我们编译器会自动将运算符两边的数据做一个数据类型转换，转成一样的数据类型再计算</h4><h4 id="这种无需程序员手动转换，而由编译器自动转换的方式就称为隐式转换"><a href="#这种无需程序员手动转换，而由编译器自动转换的方式就称为隐式转换" class="headerlink" title="这种无需程序员手动转换，而由编译器自动转换的方式就称为隐式转换"></a>这种无需程序员手动转换，而由编译器自动转换的方式就称为隐式转换</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 隐式转换规则：</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 转成string类型： +（字符串连接符） 2..转成number类型：++/--(自增自减运算符) + - * / %(算术运算符) &gt; &lt; &gt;= &lt;= == != === !=== (关系运算符)</span></span><br><span class="line"><span class="comment"># 2. 转成boolean类型：!（逻辑非运算符）</span></span><br><span class="line">console.log([] == []) // <span class="literal">false</span> </span><br><span class="line">console.log([] == ![]) // <span class="literal">true</span></span><br><span class="line">console.log([] !== []) // <span class="literal">true</span></span><br><span class="line">console.log(NaN != NaN) // <span class="literal">true</span></span><br><span class="line">console.log(null == undefined) // <span class="literal">true</span></span><br><span class="line">console.log(null === undefined) // <span class="literal">false</span></span><br><span class="line">console.log(1 == <span class="literal">true</span>) // <span class="literal">true</span></span><br><span class="line">console.log(null &gt; 0) // <span class="literal">false</span></span><br><span class="line">console.log(<span class="literal">true</span> + 1) // 2</span><br><span class="line">console.log(undefined + 1) // NaN</span><br><span class="line">console.log(&#123;&#125; + 1) // [object Object]1</span><br><span class="line">console.log([] + &#123;&#125;) // [object Object]</span><br><span class="line">console.log([2,3] + [1,2]) // 2,31,2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="JS-中-x3D-x3D-和-x3D-x3D-x3D-区别是什么？"><a href="#JS-中-x3D-x3D-和-x3D-x3D-x3D-区别是什么？" class="headerlink" title="JS 中 &#x3D;&#x3D; 和 &#x3D;&#x3D;&#x3D; 区别是什么？"></a>JS 中 &#x3D;&#x3D; 和 &#x3D;&#x3D;&#x3D; 区别是什么？</h2><ul>
+<li>两等号判等，会在比较时进行类型转换；</li>
+<li>三等号判等(判断严格)，比较时不进行隐式类型转换，(类 型不同则会返回false)；</li>
+</ul>
+<h2 id="ES5-和-ES6-分别几种方式声明变量"><a href="#ES5-和-ES6-分别几种方式声明变量" class="headerlink" title="ES5 和 ES6 分别几种方式声明变量"></a>ES5 和 ES6 分别几种方式声明变量</h2><ul>
+<li>ES5 有俩种：var 和 function</li>
+<li>ES6 有六种：增加四种，let、const、class 和 import</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -780,270 +1091,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/10/JS%E9%81%8D%E5%8E%86%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E7%9A%84%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/10/JS%E9%81%8D%E5%8E%86%E5%AF%B9%E8%B1%A1%E6%95%B0%E7%BB%84%E7%9A%84%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">JS遍历数组的方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-04-10 19:10:57" itemprop="dateCreated datePublished" datetime="2018-04-10T19:10:57+08:00">2018-04-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="js遍历数组的几种方法"><a href="#js遍历数组的几种方法" class="headerlink" title="js遍历数组的几种方法"></a>js遍历数组的几种方法</h1><ul>
-<li>for 最快</li>
-<li>forEach (不产生新的数组，效率没有map快)</li>
-<li>map （产生新的数组）</li>
-<li>for…….of </li>
-<li>for….in(效率最慢，一般用与遍历对象)</li>
-<li>some and every (返回布尔值)</li>
-<li>filter （返回符合条件的某一项） findIndex （返回符合条件的下标，无则-1）</li>
-<li>while (条件循环)</li>
-</ul>
-<h2 id="第一种：for循环，也是最常见的"><a href="#第一种：for循环，也是最常见的" class="headerlink" title="第一种：for循环，也是最常见的"></a>第一种：for循环，也是最常见的</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="built_in">let</span> i = 0; i &lt; arr.length; i++) &#123;</span><br><span class="line">  console.log(arr[i])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="forEach"><a href="#forEach" class="headerlink" title="forEach"></a>forEach</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arr.forEach(<span class="keyword">function</span>(item)&#123;</span><br><span class="line">  console.log(item)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const newArr = arr.map(<span class="keyword">function</span>(item)&#123;</span><br><span class="line">  console.log(item)</span><br><span class="line">  <span class="built_in">return</span> item</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h2 id="for…of"><a href="#for…of" class="headerlink" title="for…of"></a>for…of</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="built_in">let</span> item of arr)&#123;</span><br><span class="line">  console.log(item)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="for…-in-遍历对象"><a href="#for…-in-遍历对象" class="headerlink" title="for…..in 遍历对象"></a>for…..in 遍历对象</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="built_in">let</span> key <span class="keyword">in</span> obj)&#123;</span><br><span class="line">  console.log(key + <span class="string">&#x27;---&#x27;</span> + obj[key] )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="some-and-every-返回布尔值"><a href="#some-and-every-返回布尔值" class="headerlink" title="some and every (返回布尔值)"></a>some and every (返回布尔值)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">const array = [1, 2, 3, 4, 5];</span><br><span class="line">const someBool = array.some((item)=&gt;&#123;</span><br><span class="line">  <span class="keyword">if</span>(item &gt; 2) &#123;</span><br><span class="line">    // 满足条件中止循环</span><br><span class="line">    <span class="built_in">return</span> <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line">// someBool 为<span class="literal">true</span></span><br><span class="line">const everyBool = array.every((item)=&gt;&#123;</span><br><span class="line">  <span class="keyword">if</span>(item &gt; 2) </span><br><span class="line">    <span class="built_in">return</span> <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">  // 只要有一项不符合就中止循环 <span class="built_in">return</span> <span class="literal">false</span></span><br><span class="line">&#125;)</span><br><span class="line">// everyBool为<span class="literal">false</span></span><br></pre></td></tr></table></figure>
-<h2 id="filter-（返回符合条件的所有项）-findIndex-（返回符合条件的下标，无则-1）"><a href="#filter-（返回符合条件的所有项）-findIndex-（返回符合条件的下标，无则-1）" class="headerlink" title="filter （返回符合条件的所有项） findIndex （返回符合条件的下标，无则-1）"></a>filter （返回符合条件的所有项） findIndex （返回符合条件的下标，无则-1）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const array = [1, 2, 3, 4, 5];</span><br><span class="line">const filterItem = array.filter((item)=&gt;&#123;</span><br><span class="line">  <span class="keyword">if</span>(item &gt; 2) &#123;</span><br><span class="line">    <span class="built_in">return</span> item</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line">// filterItem: [3,4,5]</span><br><span class="line">const findIndex = array.findIndex((item)=&gt;&#123;</span><br><span class="line">  <span class="keyword">if</span>(item &gt; 2) &#123;</span><br><span class="line">    <span class="built_in">return</span> item</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line">// findIndex: 2</span><br></pre></td></tr></table></figure>
-<h2 id="while"><a href="#while" class="headerlink" title="while"></a>while</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> i = 0</span><br><span class="line"><span class="keyword">while</span>(i &lt; arr.length)&#123;</span><br><span class="line">  i++</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/10/First-Blog/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/10/First-Blog/" class="post-title-link" itemprop="url">从零开始搭建我的博客</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-04-10 11:01:35" itemprop="dateCreated datePublished" datetime="2018-04-10T11:01:35+08:00">2018-04-10</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="从零开始搭建我的博客"><a href="#从零开始搭建我的博客" class="headerlink" title="从零开始搭建我的博客"></a><a target="_blank" rel="noopener" href="https://github.com/13725102796/13725102796.github.io">从零开始搭建我的博客</a></h1><h3 id="node-v16-14-0-npm-8-3-1"><a href="#node-v16-14-0-npm-8-3-1" class="headerlink" title="node v16.14.0 npm 8.3.1"></a><code>node v16.14.0</code> <code>npm 8.3.1</code></h3><h1 id="搭建步骤："><a href="#搭建步骤：" class="headerlink" title="搭建步骤："></a>搭建步骤：</h1><ul>
-<li>GitHub创建个人仓库</li>
-<li>安装Hexo</li>
-<li>使用Hexo</li>
-<li>命令简写</li>
-</ul>
-<h2 id="GitHub创建个人仓库"><a href="#GitHub创建个人仓库" class="headerlink" title="GitHub创建个人仓库"></a><strong>GitHub创建个人仓库</strong></h2><h4 id="在Github创建新仓库，仓库名应该为：用户名-github-io-比如我的仓库名为13725102796-github-io"><a href="#在Github创建新仓库，仓库名应该为：用户名-github-io-比如我的仓库名为13725102796-github-io" class="headerlink" title="在Github创建新仓库，仓库名应该为：用户名.github.io 比如我的仓库名为13725102796.github.io"></a>在Github创建新仓库，仓库名应该为：<code>用户名.github.io</code> 比如我的仓库名为<code>13725102796.github.io</code></h4><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a><strong>安装Hexo</strong></h2><h4 id="Hexo-是一个快速、简单、强大的博客框架。你可以用Markdown-（或其他标记语言）写帖子，Hexo-会在几秒钟内生成带有漂亮主题的静态文件。非常快捷，方便。"><a href="#Hexo-是一个快速、简单、强大的博客框架。你可以用Markdown-（或其他标记语言）写帖子，Hexo-会在几秒钟内生成带有漂亮主题的静态文件。非常快捷，方便。" class="headerlink" title="Hexo 是一个快速、简单、强大的博客框架。你可以用Markdown （或其他标记语言）写帖子，Hexo 会在几秒钟内生成带有漂亮主题的静态文件。非常快捷，方便。"></a>Hexo 是一个快速、简单、强大的博客框架。你可以用Markdown （或其他标记语言）写帖子，Hexo 会在几秒钟内生成带有漂亮主题的静态文件。非常快捷，方便。</h4><h4 id="我们先来全局安装-Hexo-初始化项目，在切进对应目录："><a href="#我们先来全局安装-Hexo-初始化项目，在切进对应目录：" class="headerlink" title="我们先来全局安装 Hexo,初始化项目，在切进对应目录："></a>我们先来全局安装 Hexo,初始化项目，在切进对应目录：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br><span class="line">$ hexo init Blog</span><br><span class="line">$ <span class="built_in">cd</span> Blog</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用Hexo"><a href="#使用Hexo" class="headerlink" title="使用Hexo"></a><strong>使用Hexo</strong></h2><h4 id="创建一篇文章-hexo-n-quot-First-Blog-quot-，对应会在-x2F-sources-x2F-posts-x2F-文件下面生成一个First-Blog-md-文件，在里面编辑好博文"><a href="#创建一篇文章-hexo-n-quot-First-Blog-quot-，对应会在-x2F-sources-x2F-posts-x2F-文件下面生成一个First-Blog-md-文件，在里面编辑好博文" class="headerlink" title="创建一篇文章 hexo n &quot;First Blog&quot;，对应会在&#x2F;sources&#x2F;_posts&#x2F;文件下面生成一个First-Blog.md 文件，在里面编辑好博文"></a>创建一篇文章<code> hexo n &quot;First Blog&quot;</code>，对应会在&#x2F;sources&#x2F;_posts&#x2F;文件下面生成一个<code>First-Blog.md</code> 文件，在里面编辑好博文</h4><h4 id="修改根目录-config-yml配置文件"><a href="#修改根目录-config-yml配置文件" class="headerlink" title="修改根目录_config.yml配置文件"></a><a href="">修改根目录_config.yml配置文件</a></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repo: https://github.com/13725102796/13725102796.github.io </span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
-<h4 id="执行-清除缓存并重新生成静态资源并本地运行"><a href="#执行-清除缓存并重新生成静态资源并本地运行" class="headerlink" title="执行 清除缓存并重新生成静态资源并本地运行"></a>执行 清除缓存并重新生成静态资源并本地运行</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean &amp;&amp; hexo g &amp;&amp; hexo s</span><br></pre></td></tr></table></figure>
-
-<h4 id="发布到Github上-，需要安装一个发布github的插件，再发布"><a href="#发布到Github上-，需要安装一个发布github的插件，再发布" class="headerlink" title="发布到Github上 ，需要安装一个发布github的插件，再发布"></a>发布到Github上 ，需要安装一个发布github的插件，再发布</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
-
-<h4 id="通过https-13725102796-github-io-即可访问"><a href="#通过https-13725102796-github-io-即可访问" class="headerlink" title="通过https://13725102796.github.io 即可访问"></a>通过<a target="_blank" rel="noopener" href="https://13725102796.github.io/">https://13725102796.github.io</a> 即可访问</h4><h2 id="命令简写"><a href="#命令简写" class="headerlink" title="命令简写"></a><strong>命令简写</strong></h2><h4 id="新建一篇文章-hexo-n-quot-我的博客-quot-x3D-x3D-hexo-new-quot-我的博客-quot"><a href="#新建一篇文章-hexo-n-quot-我的博客-quot-x3D-x3D-hexo-new-quot-我的博客-quot" class="headerlink" title="新建一篇文章 hexo n &quot;我的博客&quot; &#x3D;&#x3D; hexo new &quot;我的博客&quot;"></a>新建一篇文章 <code>hexo n &quot;我的博客&quot;</code> &#x3D;&#x3D; <code>hexo new &quot;我的博客&quot;</code></h4><h4 id="生成静态资源文件-hexo-g-x3D-x3D-hexo-generate"><a href="#生成静态资源文件-hexo-g-x3D-x3D-hexo-generate" class="headerlink" title="生成静态资源文件 hexo g &#x3D;&#x3D; hexo generate "></a>生成静态资源文件 <code>hexo g</code> &#x3D;&#x3D; <code>hexo generate </code></h4><h4 id="启动本地服务预览-hexo-s-x3D-x3D-hexo-server"><a href="#启动本地服务预览-hexo-s-x3D-x3D-hexo-server" class="headerlink" title="启动本地服务预览 hexo s &#x3D;&#x3D; hexo server "></a>启动本地服务预览 <code>hexo s</code> &#x3D;&#x3D; <code>hexo server </code></h4><h4 id="部署到线上-hexo-d-x3D-x3D-hexo-deploy"><a href="#部署到线上-hexo-d-x3D-x3D-hexo-deploy" class="headerlink" title="部署到线上 hexo d &#x3D;&#x3D; hexo deploy "></a>部署到线上 <code>hexo d</code> &#x3D;&#x3D; <code>hexo deploy </code></h4>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/09/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/09/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-04-09 12:00:35" itemprop="dateCreated datePublished" datetime="2018-04-09T12:00:35+08:00">2018-04-09</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
@@ -1054,7 +1103,7 @@
 
 
 <div class="copyright">
-  &copy; 
+  &copy; 2018 – 
   <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>

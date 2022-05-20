@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-count">73</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -166,6 +166,279 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/25/useState%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/25/useState%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">useState原理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-06-25 21:35:06" itemprop="dateCreated datePublished" datetime="2021-06-25T21:35:06+08:00">2021-06-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="state是异步的"><a href="#state是异步的" class="headerlink" title="state是异步的"></a>state是异步的</h1><p>在控制台中，我们可以看到，打印的num并不是页面上显示的结果，这是因为react中state的更新是异步的。当我们setState后，react并不会立即将值做出改变，而是将其暂时放入pedding队列中。react会合并多个state，然后只render 一次。</p>
+<h1 id="state改变却没有重新初始化"><a href="#state改变却没有重新初始化" class="headerlink" title="state改变却没有重新初始化"></a>state改变却没有重新初始化</h1><p>页面在首次渲染时会 render 渲染 <App /> 函数组件，其实际上是调用 App() 方法，得到虚拟 DOM 元素，并将其渲染到浏览器页面上。当用户点击 button 按钮时会调用 setN(n+1) 方法，然后再进行一次 render 渲染 <App /> 函数组件，其实际上还是调用了 App() 方法，得到一个新的虚拟 DOM 元素，然后 React 会执行 DOM diff 算法，将改变的部分更新到浏览器的页面上。</p>
+<p>页面首次渲染和进行 +1 操作，都会调用 App() 函数去执行 const [n, setN] &#x3D; React.useState(0); 这行代码，那它是怎么做到在 +1 操作后，第二次渲染时执行同样的代码，却不对变量 n 进行初始化的，而是拿到 n 的最新值的呢 </p>
+<p>let _state; &#x2F;&#x2F; 把 state 存储在外面</p>
+<p>function useState(initialValue) {<br>  _state &#x3D; _state || initialValue; &#x2F;&#x2F; 如果没有 _state，说明是第一次执行，把 initialValue 复制给它<br>  function setState(newState) {<br>    _state &#x3D; newState;    &#x2F;&#x2F;实际修改的是_state，重新渲染也会去拿_state<br>    render();<br>  }<br>  return [_state, setState];<br>}</p>
+<h1 id="这种使用-useState的方式在-React-中是不被允许-useEffect同理"><a href="#这种使用-useState的方式在-React-中是不被允许-useEffect同理" class="headerlink" title="这种使用 useState的方式在 React 中是不被允许 useEffect同理"></a>这种使用 useState的方式在 React 中是不被允许 useEffect同理</h1><p>if (n % 2 &#x3D;&#x3D;&#x3D; 1) {    的<br>    [m, setM] &#x3D; React.useState(0);<br>}<br>应对多个变量的问题，React 引用了数组对其进行解决，但是这中改进方式有一个缺点，由于数组不像对象，有对应的键，数组只能依靠顺序找到对应的变量，所以在 React 中不允许将 useState() hook 放到 if 判断语句中，这样就会导致变量在数组中的顺序混乱</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>useState是通过将变量抽离到函数体外形成闭包，在函数体内部判断而形成的缓存<br>因为允许组件多次调用的问题，useState只接受一个参数，所以采用数组的方式进行缓存。<br>不能在顶层做条件执行就是怕数组乱序</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/20/Redux-React-Redux-Reduxjs-toolkit%E7%BB%84%E5%90%88%E6%8B%B3%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/20/Redux-React-Redux-Reduxjs-toolkit%E7%BB%84%E5%90%88%E6%8B%B3%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Redux React-Redux @Reduxjs/toolkit组合拳的使用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-20 21:18:31" itemprop="dateCreated datePublished" datetime="2021-04-20T21:18:31+08:00">2021-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>因为redux不仅仅是react专用的状态管理工具，所以需要用到react-redux来帮助我们更好的在react项目中使用它<br>@reduxjs&#x2F;toolkit 是状态管理使用便捷的工具</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># NPM</span></span><br><span class="line">npm install @reduxjs/toolkit react-redux redux</span><br></pre></td></tr></table></figure>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个reducer  counter.js</span></span><br><span class="line">import &#123; createSlice &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line"></span><br><span class="line">const counterSlice = createSlice(&#123;</span><br><span class="line">  name: <span class="string">&#x27;counter&#x27;</span>,</span><br><span class="line">  initialState: &#123;</span><br><span class="line">    value: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    incremented: state =&gt; &#123;</span><br><span class="line">      state.value += 1</span><br><span class="line">    &#125;,</span><br><span class="line">    decremented: state =&gt; &#123;</span><br><span class="line">      state.value -= 1</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> const &#123; incremented, decremented &#125; = counterSlice.actions</span><br><span class="line"><span class="built_in">export</span> default counterSlice.reducer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集中到store里面</span></span><br><span class="line"><span class="comment"># 引入刚刚的创建的counter.js</span></span><br><span class="line">import counterSlice from <span class="string">&quot;./counter&quot;</span></span><br><span class="line">import &#123; configureStore &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">const store = configureStore(&#123;</span><br><span class="line">  reducer:&#123;</span><br><span class="line">    counter: counterSlice</span><br><span class="line">  &#125; </span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default store</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集成到入口文件， 通过react-redux组件&lt;Provider&gt;传递到全局</span></span><br><span class="line">import React from <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line">import ReactDOM from <span class="string">&#x27;react-dom&#x27;</span>;</span><br><span class="line">import <span class="string">&#x27;./index.css&#x27;</span>;</span><br><span class="line">import &#123; BrowserRouter &#125; from <span class="string">&quot;react-router-dom&quot;</span></span><br><span class="line">import App from <span class="string">&#x27;./App&#x27;</span></span><br><span class="line">import store from <span class="string">&#x27;./reduces/index&#x27;</span></span><br><span class="line">import &#123; Provider &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;BrowserRouter&gt;</span><br><span class="line">    &lt;Provider store=&#123;store&#125;&gt;</span><br><span class="line">      &lt;App /&gt;</span><br><span class="line">    &lt;/Provider&gt;</span><br><span class="line">  &lt;/BrowserRouter&gt;</span><br><span class="line">  ,</span><br><span class="line">  document.getElementById(<span class="string">&#x27;root&#x27;</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 某个组件内部调用</span></span><br><span class="line"></span><br><span class="line">import &#123; Link &#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import HightClock from <span class="string">&#x27;../hightComponents/clock&#x27;</span></span><br><span class="line">import &#123; useSelector, useDispatch &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">import &#123; decremented, incremented &#125; from <span class="string">&#x27;./../reduces/test&#x27;</span></span><br><span class="line"><span class="built_in">export</span> default HightClock((props)=&gt;&#123;</span><br><span class="line">  <span class="comment"># useSelector 用于获取值</span></span><br><span class="line">  const count = useSelector(state =&gt; state.counter.value)</span><br><span class="line">  <span class="comment"># useDispatch() 用于触发action</span></span><br><span class="line">  const dispatch = useDispatch()</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &lt;h1&gt;About&lt;/h1&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(incremented())&#125;&gt;Add One&lt;/h2&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(decremented())&#125;&gt;reduce One&lt;/h2&gt;</span><br><span class="line">      &lt;h2&gt;&#123;count&#125;&lt;/h2&gt;</span><br><span class="line">      &lt;div style=&#123;&#123;color: <span class="string">&#x27;blue&#x27;</span>&#125;&#125;&gt;&#123;props.date&#125;&lt;/div&gt;</span><br><span class="line">      &lt;Link to=<span class="string">&quot;/&quot;</span>&gt;To Home Clock&lt;/Link&gt;</span><br><span class="line">    &lt;/&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="异步的数据更新视图-中间件-thunk"><a href="#异步的数据更新视图-中间件-thunk" class="headerlink" title="异步的数据更新视图 中间件 thunk"></a>异步的数据更新视图 中间件 thunk</h1><p>Redux 存储对异步逻辑一无所知。它只知道如何同步调度动作，通过调用根 reducer 函数更新状态，并通知 UI 发生了一些变化。任何异步都必须在store之外发生。<br>但是，如果您想通过调度或检查当前存储状态来让异步逻辑与存储交互怎么办？这就是Redux 中间件的用武之地。它们扩展了存储，并允许您：</p>
+<ul>
+<li>在dispatch任何操作时执行额外的逻辑（例如记录操作和状态）</li>
+<li>暂停、修改、延迟、替换或暂停已调度的操作</li>
+<li>编写可以访问dispatch和getState</li>
+<li>教dispatch如何接受除了普通动作对象之外的其他值，例如函数和promise，通过拦截它们并派发真实的动作对象来代替</li>
+</ul>
+<p>Redux Toolkit 的configureStore功能默认自动设置 thunk 中间件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改 reducer counter.js</span></span><br><span class="line">import &#123; createSlice &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line"></span><br><span class="line">const counterSlice = createSlice(&#123;</span><br><span class="line">  name: <span class="string">&#x27;counter&#x27;</span>,</span><br><span class="line">  initialState: &#123;</span><br><span class="line">    value: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    incremented: state =&gt; &#123;</span><br><span class="line">      state.value += 1</span><br><span class="line">    &#125;,</span><br><span class="line">    decremented: state =&gt; &#123;</span><br><span class="line">      state.value -= 1</span><br><span class="line">    &#125;,</span><br><span class="line">    incrementByAmount: (state,action) =&gt; &#123;</span><br><span class="line">      state.value += action.payload</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">export</span> const &#123; incremented,incrementByAmount, decremented &#125; = counterSlice.actions</span><br><span class="line"><span class="comment">#  在这里可以 新增异步操作，根据异步的结果再执行更不更新视图的操作</span></span><br><span class="line"><span class="built_in">export</span> const asyncFun = (args)=&gt;&#123;</span><br><span class="line">  <span class="built_in">return</span> async (dispatch,getState)=&gt;&#123;</span><br><span class="line">    // 这里需要引入axios 触发get的请求</span><br><span class="line">    const data = await axios.get(<span class="string">&#x27;url&#x27;</span>)</span><br><span class="line">    const stateBefore = getState()</span><br><span class="line">    console.log(`Counter before: <span class="variable">$&#123;stateBefore.counter.value&#125;</span>`)</span><br><span class="line">    dispatch(incrementByAmount(args))</span><br><span class="line">    const stateAfter = getState()</span><br><span class="line">    console.log(`Counter after: <span class="variable">$&#123;stateAfter.counter.value&#125;</span>`)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default counterSlice.reducer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 组件内部调用 方法同其他dispatch保持一致</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import &#123; Link &#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import HightClock from <span class="string">&#x27;../hightComponents/clock&#x27;</span></span><br><span class="line">import &#123; useSelector, useDispatch &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">import &#123; decremented, incremented,asyncFun &#125; from <span class="string">&#x27;./../reduces/test&#x27;</span></span><br><span class="line"><span class="built_in">export</span> default HightClock((props)=&gt;&#123;</span><br><span class="line">  const count = useSelector(state =&gt; state.counter.value)</span><br><span class="line">  // const selectCounter = useSelector(state =&gt; state.counter.value)</span><br><span class="line">  // console.log(selectCounter)</span><br><span class="line">  const dispatch = useDispatch()</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &lt;h1&gt;About&lt;/h1&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(incremented())&#125;&gt;Add One&lt;/h2&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(decremented())&#125;&gt;reduce One&lt;/h2&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(asyncFun(5))&#125;&gt;add Five&lt;/h2&gt;</span><br><span class="line">      &lt;h2&gt;&#123;count&#125;&lt;/h2&gt;</span><br><span class="line">      &lt;div style=&#123;&#123;color: <span class="string">&#x27;blue&#x27;</span>&#125;&#125;&gt;&#123;props.date&#125;&lt;/div&gt;</span><br><span class="line">      &lt;Link to=<span class="string">&quot;/&quot;</span>&gt;To Home Clock&lt;/Link&gt;</span><br><span class="line">    &lt;/&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/20/Redux-%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E5%85%B6%E4%BB%96%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7%E4%B8%80%E8%B5%B7%E5%AE%8C%E6%88%90%E6%95%B0%E6%8D%AE%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/20/Redux-%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E5%85%B6%E4%BB%96%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7%E4%B8%80%E8%B5%B7%E5%AE%8C%E6%88%90%E6%95%B0%E6%8D%AE%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">Redux 为何需要其他辅助工具一起完成数据状态管理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-20 11:02:25" itemprop="dateCreated datePublished" datetime="2021-04-20T11:02:25+08:00">2021-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Redux-为何需要其他辅助工具一起完成数据状态管理"><a href="#Redux-为何需要其他辅助工具一起完成数据状态管理" class="headerlink" title="Redux 为何需要其他辅助工具一起完成数据状态管理"></a>Redux 为何需要其他辅助工具一起完成数据状态管理</h1><p>Web 应用程序通常需要从服务器获取数据才能显示它。他们通常还需要对该数据进行更新，将这些更新发送到服务器，并使客户端上的缓存数据与服务器上的数据保持同步。由于需要实现当今应用程序中使用的其他行为，这变得更加复杂：</p>
+<ul>
+<li>跟踪加载状态以显示 UI 微调器</li>
+<li>避免对相同数据的重复请求</li>
+<li>乐观的更新，让 UI 感觉更快</li>
+<li>在用户与 UI 交互时管理缓存生命周期</li>
+</ul>
+<h1 id="产生的问题"><a href="#产生的问题" class="headerlink" title="产生的问题"></a>产生的问题</h1><p>Redux 核心一直非常小 而且 Redux 从来没有内置任何东西来帮助解决这些用例。<br>用户仍然需要编写大量的 reducer 逻辑来管理加载状态和缓存数据。</p>
+<h1 id="生态中优秀的辅助工具"><a href="#生态中优秀的辅助工具" class="headerlink" title="生态中优秀的辅助工具"></a>生态中优秀的辅助工具</h1><ul>
+<li>RTK Query（官方的）</li>
+<li>Apollo Client</li>
+<li>React Query</li>
+<li>Urql </li>
+<li>SWR</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -599,10 +872,10 @@
 <h1 id="生成两个账号私钥在本地"><a href="#生成两个账号私钥在本地" class="headerlink" title="生成两个账号私钥在本地"></a>生成两个账号私钥在本地</h1><p>生成默认的 id_rsa 和id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱1”<br>在创建第二个的时候必须要重命名 比如 137_id_ras,这样会生成另外两个文件137_id_rsa 和 137_id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱2”</p>
 <h1 id="在-ssh下面创建config文件"><a href="#在-ssh下面创建config文件" class="headerlink" title="在.ssh下面创建config文件"></a>在.ssh下面创建config文件</h1><p>执行 touch config 创建<br>执行 vim config 编辑</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Default 第一个账号(123456@xxxx.com)</span></span><br><span class="line"></span><br><span class="line">Host default</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/137_id_rsa</span><br><span class="line"><span class="comment">#second 第二个账号（38894403@xxxx.com）    </span></span><br><span class="line">Host zc</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
-<p>只需要修改 IdentityFile 即可<br>ssh -T <a href="mailto:&#x67;&#105;&#x74;&#x40;&#103;&#105;&#116;&#104;&#x75;&#98;&#x2e;&#x63;&#x6f;&#109;">&#x67;&#105;&#x74;&#x40;&#103;&#105;&#116;&#104;&#x75;&#98;&#x2e;&#x63;&#x6f;&#109;</a> 可以测试是否配置成功<br><code>配置成功会显示当前用户名</code> 这个很重要，因为当你想切换用户的时候没有这个不行<br>通过设置<br>git config –global user.name “13725102796”<br>git config –global user.email “<a href="mailto:&#x31;&#52;&#51;&#57;&#54;&#x35;&#53;&#55;&#x36;&#52;&#64;&#113;&#113;&#x2e;&#x63;&#111;&#109;">&#x31;&#52;&#51;&#57;&#54;&#x35;&#53;&#55;&#x36;&#52;&#64;&#113;&#113;&#x2e;&#x63;&#111;&#109;</a>“<br>还没有生效，因为ssh-add的代理始终指向默认的</p>
+<p>只需要修改 IdentityFile 即可<br>ssh -T <a href="mailto:&#103;&#105;&#116;&#x40;&#x67;&#105;&#116;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;">&#103;&#105;&#116;&#x40;&#x67;&#105;&#116;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;</a> 可以测试是否配置成功<br><code>配置成功会显示当前用户名</code> 这个很重要，因为当你想切换用户的时候没有这个不行<br>通过设置<br>git config –global user.name “13725102796”<br>git config –global user.email “<a href="mailto:&#49;&#52;&#x33;&#x39;&#54;&#x35;&#53;&#x37;&#54;&#x34;&#x40;&#113;&#113;&#x2e;&#99;&#x6f;&#x6d;">&#49;&#52;&#x33;&#x39;&#54;&#x35;&#53;&#x37;&#54;&#x34;&#x40;&#113;&#113;&#x2e;&#99;&#x6f;&#x6d;</a>“<br>还没有生效，因为ssh-add的代理始终指向默认的</p>
 <h1 id="通过ssh-add删除代理"><a href="#通过ssh-add删除代理" class="headerlink" title="通过ssh-add删除代理"></a>通过ssh-add删除代理</h1><p>查看 ssh-add -l<br>删除 ssh-add -D<br>添加<br>ssh-add ~&#x2F;.ssh&#x2F;id_rsa<br>ssh-add ~&#x2F;.ssh&#x2F;137_id_rsa </p>
 <h1 id="添加代理后还不可以，需要修改提交的git-clone-ssh链接"><a href="#添加代理后还不可以，需要修改提交的git-clone-ssh链接" class="headerlink" title="添加代理后还不可以，需要修改提交的git clone ssh链接"></a>添加代理后还不可以，需要修改提交的git clone ssh链接</h1><ul>
-<li><p>还没clone的可以通过 来拉取项目，这样可以让ssh-add正确代理<br>git clone zy@:18820677498&#x2F;Blog.git<br>原来是 <a href="mailto:&#x67;&#105;&#x74;&#x40;&#x67;&#105;&#x74;&#104;&#x75;&#x62;&#x2e;&#99;&#x6f;&#109;">&#x67;&#105;&#x74;&#x40;&#x67;&#105;&#x74;&#104;&#x75;&#x62;&#x2e;&#99;&#x6f;&#109;</a>:18820677498&#x2F;Blog.git</p>
+<li><p>还没clone的可以通过 来拉取项目，这样可以让ssh-add正确代理<br>git clone zy@:18820677498&#x2F;Blog.git<br>原来是 <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#x69;&#x74;&#104;&#117;&#98;&#46;&#99;&#111;&#109;">&#103;&#105;&#116;&#x40;&#103;&#x69;&#x74;&#104;&#117;&#98;&#46;&#99;&#111;&#109;</a>:18820677498&#x2F;Blog.git</p>
 </li>
 <li><p>已经clone的 可以切换到当前项目下，命令行执行<br><code>vim .git/config</code><br>打开config文件 按i去修改，按esc退出修改，再按 <code>:qw!</code> 保存修改</p>
 </li>
@@ -808,260 +1081,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/25/webpack%E4%B8%ADloader%E5%92%8CPlugin/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/08/25/webpack%E4%B8%ADloader%E5%92%8CPlugin/" class="post-title-link" itemprop="url">webpack中loader和Plugin</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-08-25 10:17:14" itemprop="dateCreated datePublished" datetime="2020-08-25T10:17:14+08:00">2020-08-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Webpack/" itemprop="url" rel="index"><span itemprop="name">Webpack</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Loader"><a href="#Loader" class="headerlink" title="Loader"></a>Loader</h1><p>Loader直译为”加载器”。Webpack将一切文件视为模块，但是webpack原生是只能解析js文件，如果想将其他文件也打包的话，就会用到loader。 所以Loader的作用是让webpack拥有了加载和解析非JavaScript文件的能力。</p>
-<p>Loader在module.rules中配置，也就是说他作为模块的解析规则而存在。 类型为数组，每一项都是一个Object，里面描述了对于什么类型的文件（test），使用什么加载(loader)和使用的参数（options）</p>
-<p>常见的loader<br>样式：style-loader、css-loader、less-loader、sass-loader等<br>文件：raw-loader、file-loader 、url-loader等<br>编译：babel-loader(把 ES6 转换成 ES5)、coffee-loader 、ts-loader等<br>校验测试：mocha-loader、jshint-loader 、eslint-loader等<br>imports-loader、exports-loader等可以向模块注入变量或者提供导出模块功能</p>
-<h1 id="Plugin"><a href="#Plugin" class="headerlink" title="Plugin"></a>Plugin</h1><p>直译为”插件”。Plugin可以扩展webpack的功能，让webpack具有更多的灵活性。 在 Webpack 运行的生命周期中会广播出许多事件，Plugin 可以监听这些事件，在合适的时机通过 Webpack 提供的 API 改变输出结果</p>
-<p>Plugin在plugins中单独配置。 类型为数组，每一项是一个plugin的实例，参数都通过构造函数传入</p>
-<p>常见的Plugin<br>webpack内置UglifyJsPlugin，压缩和混淆代码,通过UglifyES压缩ES6代码。<br>webpack内置CommonsChunkPlugin，提取公共代码,提高打包效率，将第三方库和业务代码分开打包<br>ProvidePlugin：自动加载模块，代替require和import </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">new webpack.ProvidePlugin(&#123; </span><br><span class="line">   $: <span class="string">&#x27;jquery&#x27;</span>,</span><br><span class="line">   jQuery: <span class="string">&#x27;jquery&#x27;</span> </span><br><span class="line"> &#125;)</span><br></pre></td></tr></table></figure>
-<p>html-webpack-plugin可以根据模板自动生成html代码，并自动引用css和js文件<br>extract-text-webpack-plugin 将js文件中引用的样式单独抽离成css文件<br>DefinePlugin编译时配置全局变量，这对开发模式和发布模式的构建允许不同的行为非常有用<br>HotModuleReplacementPlugin 热更新</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/21/React%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/08/21/React%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90/" class="post-title-link" itemprop="url">React函数组件如何使用生命周期钩子</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-08-21 21:28:16" itemprop="dateCreated datePublished" datetime="2020-08-21T21:28:16+08:00">2020-08-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="useEffect-Hook-useState-Hook"><a href="#useEffect-Hook-useState-Hook" class="headerlink" title="useEffect Hook useState Hook"></a>useEffect Hook useState Hook</h1><p>Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Counter</span></span>()&#123;</span><br><span class="line"></span><br><span class="line">  const [counter,setCounter] = useState(0)</span><br><span class="line">  <span class="comment"># 这句话等同于 class Components 的</span></span><br><span class="line">  <span class="comment"># state = &#123;</span></span><br><span class="line">  <span class="comment">#   counter: 0</span></span><br><span class="line">  <span class="comment"># &#125;</span></span><br><span class="line">  <span class="comment"># 可以在函数内使用多次，用法和state一样，不一定是值，可以是对象，like：</span></span><br><span class="line">  <span class="comment"># const [counter1,setCounter1] = useState(&#123;id:1,value: 2&#125;)</span></span><br><span class="line">  <span class="comment"># 通过setCounter设置counter的值</span></span><br><span class="line">  </span><br><span class="line">  useEffect(()=&gt;&#123;</span><br><span class="line">    <span class="comment"># 这里处理的是 componentDidMount 和 componentDidUpdate</span></span><br><span class="line">    setCounter(counter+1)</span><br><span class="line">    <span class="built_in">return</span> ()=&gt;&#123;</span><br><span class="line">      <span class="comment"># 这里处理的是componentWillUnmount</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="comment"># useEffect也可以设定多个，他还有第二个参数，用于设置他是否在更新的时候执行</span></span><br><span class="line">  <span class="comment"># useEffect(()=&gt;&#123;</span></span><br><span class="line">  <span class="comment">#   setCounter(counter+1)</span></span><br><span class="line">  <span class="comment"># &#125;,[counter])</span></span><br><span class="line">  <span class="comment"># 这里监听了counter，只有counter发生改变才会执行</span></span><br><span class="line">  <span class="comment"># useEffect(()=&gt;&#123;</span></span><br><span class="line">  <span class="comment">#   setCounter(counter+1)</span></span><br><span class="line">  <span class="comment"># &#125;,[])</span></span><br><span class="line">  <span class="comment"># 是空数组的话，就可以在更新的时候不执行，只会在第一次加载的时候执行</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="自定义Hook"><a href="#自定义Hook" class="headerlink" title="自定义Hook"></a>自定义Hook</h1><p>首先 自定义 Hook 是一种自然遵循 Hook 设计的约定，而并不是 React 的特性。<br>类似于将多个组件共同的功能抽离出来，统一封装使用<br>要点：</p>
-<ul>
-<li>自定义 Hook 必须以 “use” 开头，因为要判断某个函数是否包含对其内部 Hook 的调用，React 将需要自动检查你的 Hook 是否违反了 Hook 的规则。</li>
-<li>在两个组件中使用相同的 Hook 不会共享 state。自定义 Hook 是一种重用状态逻辑的机制(例如设置为订阅并存储当前值)，所以每次使用自定义 Hook 时，其中的所有 state 和副作用都是完全隔离的。</li>
-</ul>
-<p>由于使用相同的 Hook 不会共享 state，大多数情况还是需要依赖redux等辅助工具来统一状态管理。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/20/React-%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0%E4%BB%A3%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/08/20/React-%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0%E4%BB%A3%E7%90%86/" class="post-title-link" itemprop="url">React 配置本地代理</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-08-20 23:34:59" itemprop="dateCreated datePublished" datetime="2020-08-20T23:34:59+08:00">2020-08-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="React配置代理"><a href="#React配置代理" class="headerlink" title="React配置代理"></a>React配置代理</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.检查自己的create-react-app脚手架若在2.0版本以下，使用对象类型配置代理，在自己项目的package.json文件中配置如下：</span></span><br><span class="line"><span class="string">&quot;proxy&quot;</span>:&#123;</span><br><span class="line">   <span class="string">&quot;/api&quot;</span>:&#123;</span><br><span class="line">      <span class="string">&quot;target&quot;</span>:<span class="string">&quot;代理服务器的地址&quot;</span>,  <span class="comment"># 跨域地址</span></span><br><span class="line">      <span class="string">&quot;changeOrigin&quot;</span>: <span class="literal">true</span>,    <span class="comment"># 是否允许跨域</span></span><br><span class="line">      <span class="string">&quot;pathRewrite&quot;</span>: &#123;        <span class="comment"># 重写路径</span></span><br><span class="line">           <span class="string">&quot;^/api&quot;</span>: <span class="string">&quot;/&quot;</span></span><br><span class="line">       &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 2.若脚手架版本在2.0以上只能配置string类型</span></span><br><span class="line"><span class="string">&quot;proxy&quot;</span>: <span class="string">&quot;代理服务器的地址&quot;</span>,</span><br><span class="line"><span class="comment"># 多代理配置可以使用中间件的方式 http-proxy-middleware</span></span><br><span class="line"><span class="comment"># 安装 http-proxy-middleware，然后在项目的src目录下建立setupProxy.js文件</span></span><br><span class="line">const &#123; createProxyMiddleware &#125; = require(<span class="string">&#x27;http-proxy-middleware&#x27;</span>);</span><br><span class="line">module.exports = <span class="keyword">function</span> (app) &#123;</span><br><span class="line">    app.use(</span><br><span class="line">      createProxyMiddleware(<span class="string">&#x27;/api&#x27;</span>, &#123;</span><br><span class="line">        target: <span class="string">&#x27;代理地址1&#x27;</span>,</span><br><span class="line">        secure: <span class="literal">false</span>,    <span class="comment"># 指定Cookies能否被用户读取</span></span><br><span class="line">        changeOrigin: <span class="literal">true</span>,</span><br><span class="line">        pathRewrite: &#123;</span><br><span class="line">            <span class="string">&quot;^/api&quot;</span>: <span class="string">&quot;/&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;),</span><br><span class="line">      <span class="comment"># 配置多个代理继续往下加就可以</span></span><br><span class="line">      createProxyMiddleware(<span class="string">&#x27;/api1&#x27;</span>, &#123;</span><br><span class="line">        target: <span class="string">&#x27;代理地址2&#x27;</span>,</span><br><span class="line">        secure: <span class="literal">false</span>,    <span class="comment"># 指定Cookies能否被用户读取</span></span><br><span class="line">        changeOrigin: <span class="literal">true</span>,</span><br><span class="line">        pathRewrite: &#123;</span><br><span class="line">            <span class="string">&quot;^/api&quot;</span>: <span class="string">&quot;/&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;)</span><br><span class="line">    );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
@@ -1072,7 +1093,7 @@
 
 
 <div class="copyright">
-  &copy; 
+  &copy; 2018 – 
   <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>

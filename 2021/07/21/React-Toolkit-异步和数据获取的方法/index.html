@@ -28,7 +28,7 @@
 <meta property="og:description" content="Thunks 中间件Thunks 内部可能有异步逻辑，例如setTimeout、Promises 和async&#x2F;await. 这使它们成为将 AJAX 调用放入服务器 API 的好地方。Redux 的数据获取逻辑通常遵循可预测的模式：  在请求之前调度“开始”操作，以指示请求正在进行中。这可用于跟踪加载状态以允许跳过重复请求或在 UI 中显示加载指示符。 发出异步请求 根据请求结果，异步">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-07-21T00:14:14.000Z">
-<meta property="article:modified_time" content="2022-05-05T03:48:51.732Z">
+<meta property="article:modified_time" content="2022-05-19T06:30:50.800Z">
 <meta property="article:author" content="YeChang Zhang">
 <meta property="article:tag" content="React Redux Toolkit">
 <meta name="twitter:card" content="summary">
@@ -116,7 +116,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Thunks-%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">Thunks 中间件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E7%9A%84%E5%8A%A0%E8%BD%BD%E7%8A%B6%E6%80%81"><span class="nav-number">2.</span> <span class="nav-text">请求的加载状态</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Thunks-%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">Thunks 中间件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E7%9A%84%E5%8A%A0%E8%BD%BD%E7%8A%B6%E6%80%81"><span class="nav-number">2.</span> <span class="nav-text">请求的加载状态</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">案例</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -129,7 +129,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-count">73</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -140,7 +140,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-count">57</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -244,6 +244,11 @@
 <li>请求成功，我们现在有了我们需要的数据</li>
 <li>请求失败，可能有错误消息<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> &#123;</span><br><span class="line">  // Multiple possible status enum values</span><br><span class="line">  status: <span class="string">&#x27;idle&#x27;</span> | <span class="string">&#x27;loading&#x27;</span> | <span class="string">&#x27;succeeded&#x27;</span> | <span class="string">&#x27;failed&#x27;</span>,</span><br><span class="line">  error: string | null</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
+<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">import &#123; createSlice,createAsyncThunk &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">import axios from <span class="string">&#x27;axios&#x27;</span></span><br><span class="line">const testApi = <span class="string">&#x27;/public/page/getHomePageModules&#x27;</span></span><br><span class="line"><span class="comment"># 通过createAsyncThunk，创建一个异步的thunk</span></span><br><span class="line"><span class="built_in">export</span> const fetchThunks = createAsyncThunk(<span class="string">&#x27;thunks/fetchThunks&#x27;</span>, async () =&gt; &#123;</span><br><span class="line">  const response = await axios.get(testApi,&#123;&#125;)</span><br><span class="line">  <span class="built_in">return</span> response.data</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment"># 创建一个thubksSlice，里面包含initialState，reducers，extraReducers</span></span><br><span class="line">const thunksSlice = createSlice(&#123;</span><br><span class="line">  name: <span class="string">&#x27;thunks&#x27;</span>,</span><br><span class="line">  initialState: &#123;</span><br><span class="line">    posts: [],</span><br><span class="line">    status: <span class="string">&#x27;idle&#x27;</span>,</span><br><span class="line">    error: null</span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;&#125;,</span><br><span class="line">  extraReducers(builder)&#123;</span><br><span class="line">    builder</span><br><span class="line">      .addCase(fetchThunks.pending,(state,action)=&gt;&#123;</span><br><span class="line">        state.status = <span class="string">&#x27;loading&#x27;</span></span><br><span class="line">      &#125;)</span><br><span class="line">      .addCase(fetchThunks.fulfilled, (state, action) =&gt; &#123;</span><br><span class="line">        state.status = <span class="string">&#x27;succeeded&#x27;</span></span><br><span class="line">        // Add any fetched posts to the array</span><br><span class="line">        state.posts = state.posts.concat(action.payload)</span><br><span class="line">      &#125;)</span><br><span class="line">      .addCase(fetchThunks.rejected, (state, action) =&gt; &#123;</span><br><span class="line">        state.status = <span class="string">&#x27;failed&#x27;</span></span><br><span class="line">        state.error = action.error.message</span><br><span class="line">      &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default thunksSlice.reducer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在组件中通过</span></span><br><span class="line">useDispatch()(fetchThunks()) 调用获取异步的数据</span><br><span class="line"><span class="comment"># 当触发 fetchThunks 时，extraReducers会监听到该请求的状态，从而根据状态执行相应的操作。</span></span><br><span class="line"><span class="comment"># 在使用了该reducer的state的组件的地方都会同步更新视图</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
 
     </div>
 
@@ -287,7 +292,7 @@
 
 
 <div class="copyright">
-  &copy; 
+  &copy; 2018 – 
   <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="BrowserRouterBrowserRouter 一般是作为 App 的 container 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950ReactDOM.render(    &lt;BrowserRouter&gt;      &lt;App &#x2F;&gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Router源码解析">
+<meta property="og:url" content="http://example.com/2022/05/20/React-Router%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="BrowserRouterBrowserRouter 一般是作为 App 的 container 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950ReactDOM.render(    &lt;BrowserRouter&gt;      &lt;App &#x2F;&gt;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-20T01:46:21.000Z">
+<meta property="article:modified_time" content="2022-05-20T02:51:35.202Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="Blog,Hexo,Theme,Coder,YeChang Zhang">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/05/20/React-Router%E5%8E%9F%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/05/20/React-Router%E5%8E%9F%E7%90%86/","path":"2022/05/20/React-Router原理/","title":"React Router源码解析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React Router源码解析 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BrowserRouter"><span class="nav-number">1.</span> <span class="nav-text">BrowserRouter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#createHashHistory-%E4%B8%8E-createBrowserHistory-%E7%9A%84%E4%B8%8D%E5%90%8C%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">createHashHistory 与 createBrowserHistory 的不同点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/20/React-Router%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="React Router源码解析 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React Router源码解析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-20 09:46:21" itemprop="dateCreated datePublished" datetime="2022-05-20T09:46:21+08:00">2022-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="BrowserRouter"><a href="#BrowserRouter" class="headerlink" title="BrowserRouter"></a>BrowserRouter</h1><p>BrowserRouter 一般是作为 App 的 container</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">ReactDOM.render(</span><br><span class="line">    &lt;BrowserRouter&gt;</span><br><span class="line">      &lt;App /&gt;</span><br><span class="line">    &lt;/BrowserRouter&gt;,</span><br><span class="line">  document.getElementById(<span class="string">&#x27;root&#x27;</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们从BrowserRouter 入口开始,看看其做了哪些初始化工作：</span></span><br><span class="line"><span class="built_in">export</span> <span class="keyword">function</span> BrowserRouter(&#123;</span><br><span class="line">  <span class="built_in">basename</span>,</span><br><span class="line">  children,</span><br><span class="line">  window</span><br><span class="line">&#125;: BrowserRouterProps) &#123;</span><br><span class="line">  const historyRef = React.useRef&lt;BrowserHistory&gt;();</span><br><span class="line">  <span class="keyword">if</span> (historyRef.current == null) &#123;</span><br><span class="line">    // 如果为空，则创建</span><br><span class="line">    // createBrowserHistory 是一个基于当前window构造的一个<span class="built_in">history</span> 的构造函数</span><br><span class="line">    // <span class="built_in">history</span> 拥有两个可读的属性 action location，以及路由跳转，路由监听的一些方法</span><br><span class="line">    historyRef.current = createBrowserHistory(&#123; window &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  const <span class="built_in">history</span> = historyRef.current;</span><br><span class="line">  const [state, setState] = React.useState(&#123;</span><br><span class="line">    action: history.action,</span><br><span class="line">    location: history.location</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  React.useLayoutEffect(() =&gt; &#123;</span><br><span class="line">    /**</span><br><span class="line">     * popstate、push、replace时如果没有blokcers的话，会调用applyTx(nextAction)触发这里的setState</span><br><span class="line">     * <span class="keyword">function</span> applyTx(nextAction: Action) &#123;</span><br><span class="line">     *   action = nextAction;</span><br><span class="line">     * //  获取当前index和location</span><br><span class="line">     *   [index, location] = getIndexAndLocation();</span><br><span class="line">     *   listeners.call(&#123; action, location &#125;);</span><br><span class="line">     * &#125;</span><br><span class="line">     */</span><br><span class="line">    history.listen(setState)</span><br><span class="line">  &#125;, [<span class="built_in">history</span>]);</span><br><span class="line">  // 一般变化的就是action和location</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;Router</span><br><span class="line">      <span class="built_in">basename</span>=&#123;<span class="built_in">basename</span>&#125;</span><br><span class="line">      children=&#123;children&#125;</span><br><span class="line">      action=&#123;state.action&#125;</span><br><span class="line">      location=&#123;state.location&#125;</span><br><span class="line">      navigator=&#123;<span class="built_in">history</span>&#125;</span><br><span class="line">    /&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="createHashHistory-与-createBrowserHistory-的不同点"><a href="#createHashHistory-与-createBrowserHistory-的不同点" class="headerlink" title="createHashHistory 与 createBrowserHistory 的不同点"></a>createHashHistory 与 createBrowserHistory 的不同点</h1><p>createBrowserHistory 是直接获取 window.location，而 createHashHistory 是 parsePath(window.location.hash.substr(1))<br>即 url 中有多个#，但是会取第一个#后面的来解析对应的 pathname、search 和 hash<br>createHashHistory 多了监听 hashchange的事件<br>createHref 会在前面拼接 getBaseHref() + ‘#’</p>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><ul>
+<li>通过 push、replace 和 go 可以切换路由</li>
+<li>可以通过 history.listen 添加路由监听器 listener，每当路由切换可以收到最新的 action 和 location，从而做出不同的判断</li>
+<li>可以通过 history.block 添加阻塞器 blocker，会阻塞 push、replace 和浏览器的前进后退。</li>
+<li>且只要判断有 blockers，那么同时会加上beforeunload阻止浏览器刷新、关闭等默认行为，即弹窗提示。</li>
+<li>且只要有 blocker，那么上面的 listener 就监听不到</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/19/React%E8%87%AA%E5%AE%9A%E4%B9%89Hook/" rel="prev" title="React自定义Hook">
+                  <i class="fa fa-chevron-left"></i> React自定义Hook
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/05/20/React-fiber%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" rel="next" title="React fiber原理解析">
+                  React fiber原理解析 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
