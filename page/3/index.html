@@ -126,18 +126,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">62</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -175,7 +175,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/25/useState%E5%8E%9F%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/30/%E6%8F%90%E4%BA%A4PR%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -193,7 +193,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/25/useState%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">useState原理</a>
+          <a href="/2022/04/30/%E6%8F%90%E4%BA%A4PR%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B/" class="post-title-link" itemprop="url">提交PR完整流程</a>
         </h2>
 
         <div class="post-meta-container">
@@ -204,7 +204,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-06-25 21:35:06" itemprop="dateCreated datePublished" datetime="2021-06-25T21:35:06+08:00">2021-06-25</time>
+      <time title="创建时间：2022-04-30 13:39:11" itemprop="dateCreated datePublished" datetime="2022-04-30T13:39:11+08:00">2022-04-30</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -212,7 +212,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+          <a href="/categories/Issue/" itemprop="url" rel="index"><span itemprop="name">Issue</span></a>
         </span>
     </span>
 
@@ -226,661 +226,29 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="state是异步的"><a href="#state是异步的" class="headerlink" title="state是异步的"></a>state是异步的</h1><p>在控制台中，我们可以看到，打印的num并不是页面上显示的结果，这是因为react中state的更新是异步的。当我们setState后，react并不会立即将值做出改变，而是将其暂时放入pedding队列中。react会合并多个state，然后只render 一次。</p>
-<h1 id="state改变却没有重新初始化"><a href="#state改变却没有重新初始化" class="headerlink" title="state改变却没有重新初始化"></a>state改变却没有重新初始化</h1><p>页面在首次渲染时会 render 渲染 <App /> 函数组件，其实际上是调用 App() 方法，得到虚拟 DOM 元素，并将其渲染到浏览器页面上。当用户点击 button 按钮时会调用 setN(n+1) 方法，然后再进行一次 render 渲染 <App /> 函数组件，其实际上还是调用了 App() 方法，得到一个新的虚拟 DOM 元素，然后 React 会执行 DOM diff 算法，将改变的部分更新到浏览器的页面上。</p>
-<p>页面首次渲染和进行 +1 操作，都会调用 App() 函数去执行 const [n, setN] &#x3D; React.useState(0); 这行代码，那它是怎么做到在 +1 操作后，第二次渲染时执行同样的代码，却不对变量 n 进行初始化的，而是拿到 n 的最新值的呢 </p>
-<p>let _state; &#x2F;&#x2F; 把 state 存储在外面</p>
-<p>function useState(initialValue) {<br>  _state &#x3D; _state || initialValue; &#x2F;&#x2F; 如果没有 _state，说明是第一次执行，把 initialValue 复制给它<br>  function setState(newState) {<br>    _state &#x3D; newState;    &#x2F;&#x2F;实际修改的是_state，重新渲染也会去拿_state<br>    render();<br>  }<br>  return [_state, setState];<br>}</p>
-<h1 id="这种使用-useState的方式在-React-中是不被允许-useEffect同理"><a href="#这种使用-useState的方式在-React-中是不被允许-useEffect同理" class="headerlink" title="这种使用 useState的方式在 React 中是不被允许 useEffect同理"></a>这种使用 useState的方式在 React 中是不被允许 useEffect同理</h1><p>if (n % 2 &#x3D;&#x3D;&#x3D; 1) {    的<br>    [m, setM] &#x3D; React.useState(0);<br>}<br>应对多个变量的问题，React 引用了数组对其进行解决，但是这中改进方式有一个缺点，由于数组不像对象，有对应的键，数组只能依靠顺序找到对应的变量，所以在 React 中不允许将 useState() hook 放到 if 判断语句中，这样就会导致变量在数组中的顺序混乱</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>useState是通过将变量抽离到函数体外形成闭包，在函数体内部判断而形成的缓存<br>因为允许组件多次调用的问题，useState只接受一个参数，所以采用数组的方式进行缓存。<br>不能在顶层做条件执行就是怕数组乱序</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/20/Redux-React-Redux-Reduxjs-toolkit%E7%BB%84%E5%90%88%E6%8B%B3%E7%9A%84%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/20/Redux-React-Redux-Reduxjs-toolkit%E7%BB%84%E5%90%88%E6%8B%B3%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Redux React-Redux @Reduxjs/toolkit组合拳的使用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-04-20 21:18:31" itemprop="dateCreated datePublished" datetime="2021-04-20T21:18:31+08:00">2021-04-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>因为redux不仅仅是react专用的状态管理工具，所以需要用到react-redux来帮助我们更好的在react项目中使用它<br>@reduxjs&#x2F;toolkit 是状态管理使用便捷的工具</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># NPM</span></span><br><span class="line">npm install @reduxjs/toolkit react-redux redux</span><br></pre></td></tr></table></figure>
-<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个reducer  counter.js</span></span><br><span class="line">import &#123; createSlice &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line"></span><br><span class="line">const counterSlice = createSlice(&#123;</span><br><span class="line">  name: <span class="string">&#x27;counter&#x27;</span>,</span><br><span class="line">  initialState: &#123;</span><br><span class="line">    value: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    incremented: state =&gt; &#123;</span><br><span class="line">      state.value += 1</span><br><span class="line">    &#125;,</span><br><span class="line">    decremented: state =&gt; &#123;</span><br><span class="line">      state.value -= 1</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> const &#123; incremented, decremented &#125; = counterSlice.actions</span><br><span class="line"><span class="built_in">export</span> default counterSlice.reducer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集中到store里面</span></span><br><span class="line"><span class="comment"># 引入刚刚的创建的counter.js</span></span><br><span class="line">import counterSlice from <span class="string">&quot;./counter&quot;</span></span><br><span class="line">import &#123; configureStore &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">const store = configureStore(&#123;</span><br><span class="line">  reducer:&#123;</span><br><span class="line">    counter: counterSlice</span><br><span class="line">  &#125; </span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default store</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集成到入口文件， 通过react-redux组件&lt;Provider&gt;传递到全局</span></span><br><span class="line">import React from <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line">import ReactDOM from <span class="string">&#x27;react-dom&#x27;</span>;</span><br><span class="line">import <span class="string">&#x27;./index.css&#x27;</span>;</span><br><span class="line">import &#123; BrowserRouter &#125; from <span class="string">&quot;react-router-dom&quot;</span></span><br><span class="line">import App from <span class="string">&#x27;./App&#x27;</span></span><br><span class="line">import store from <span class="string">&#x27;./reduces/index&#x27;</span></span><br><span class="line">import &#123; Provider &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;BrowserRouter&gt;</span><br><span class="line">    &lt;Provider store=&#123;store&#125;&gt;</span><br><span class="line">      &lt;App /&gt;</span><br><span class="line">    &lt;/Provider&gt;</span><br><span class="line">  &lt;/BrowserRouter&gt;</span><br><span class="line">  ,</span><br><span class="line">  document.getElementById(<span class="string">&#x27;root&#x27;</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 某个组件内部调用</span></span><br><span class="line"></span><br><span class="line">import &#123; Link &#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import HightClock from <span class="string">&#x27;../hightComponents/clock&#x27;</span></span><br><span class="line">import &#123; useSelector, useDispatch &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">import &#123; decremented, incremented &#125; from <span class="string">&#x27;./../reduces/test&#x27;</span></span><br><span class="line"><span class="built_in">export</span> default HightClock((props)=&gt;&#123;</span><br><span class="line">  <span class="comment"># useSelector 用于获取值</span></span><br><span class="line">  const count = useSelector(state =&gt; state.counter.value)</span><br><span class="line">  <span class="comment"># useDispatch() 用于触发action</span></span><br><span class="line">  const dispatch = useDispatch()</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &lt;h1&gt;About&lt;/h1&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(incremented())&#125;&gt;Add One&lt;/h2&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(decremented())&#125;&gt;reduce One&lt;/h2&gt;</span><br><span class="line">      &lt;h2&gt;&#123;count&#125;&lt;/h2&gt;</span><br><span class="line">      &lt;div style=&#123;&#123;color: <span class="string">&#x27;blue&#x27;</span>&#125;&#125;&gt;&#123;props.date&#125;&lt;/div&gt;</span><br><span class="line">      &lt;Link to=<span class="string">&quot;/&quot;</span>&gt;To Home Clock&lt;/Link&gt;</span><br><span class="line">    &lt;/&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="异步的数据更新视图-中间件-thunk"><a href="#异步的数据更新视图-中间件-thunk" class="headerlink" title="异步的数据更新视图 中间件 thunk"></a>异步的数据更新视图 中间件 thunk</h1><p>Redux 存储对异步逻辑一无所知。它只知道如何同步调度动作，通过调用根 reducer 函数更新状态，并通知 UI 发生了一些变化。任何异步都必须在store之外发生。<br>但是，如果您想通过调度或检查当前存储状态来让异步逻辑与存储交互怎么办？这就是Redux 中间件的用武之地。它们扩展了存储，并允许您：</p>
-<ul>
-<li>在dispatch任何操作时执行额外的逻辑（例如记录操作和状态）</li>
-<li>暂停、修改、延迟、替换或暂停已调度的操作</li>
-<li>编写可以访问dispatch和getState</li>
-<li>教dispatch如何接受除了普通动作对象之外的其他值，例如函数和promise，通过拦截它们并派发真实的动作对象来代替</li>
-</ul>
-<p>Redux Toolkit 的configureStore功能默认自动设置 thunk 中间件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改 reducer counter.js</span></span><br><span class="line">import &#123; createSlice &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line"></span><br><span class="line">const counterSlice = createSlice(&#123;</span><br><span class="line">  name: <span class="string">&#x27;counter&#x27;</span>,</span><br><span class="line">  initialState: &#123;</span><br><span class="line">    value: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    incremented: state =&gt; &#123;</span><br><span class="line">      state.value += 1</span><br><span class="line">    &#125;,</span><br><span class="line">    decremented: state =&gt; &#123;</span><br><span class="line">      state.value -= 1</span><br><span class="line">    &#125;,</span><br><span class="line">    incrementByAmount: (state,action) =&gt; &#123;</span><br><span class="line">      state.value += action.payload</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">export</span> const &#123; incremented,incrementByAmount, decremented &#125; = counterSlice.actions</span><br><span class="line"><span class="comment">#  在这里可以 新增异步操作，根据异步的结果再执行更不更新视图的操作</span></span><br><span class="line"><span class="built_in">export</span> const asyncFun = (args)=&gt;&#123;</span><br><span class="line">  <span class="built_in">return</span> async (dispatch,getState)=&gt;&#123;</span><br><span class="line">    // 这里需要引入axios 触发get的请求</span><br><span class="line">    const data = await axios.get(<span class="string">&#x27;url&#x27;</span>)</span><br><span class="line">    const stateBefore = getState()</span><br><span class="line">    console.log(`Counter before: <span class="variable">$&#123;stateBefore.counter.value&#125;</span>`)</span><br><span class="line">    dispatch(incrementByAmount(args))</span><br><span class="line">    const stateAfter = getState()</span><br><span class="line">    console.log(`Counter after: <span class="variable">$&#123;stateAfter.counter.value&#125;</span>`)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default counterSlice.reducer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 组件内部调用 方法同其他dispatch保持一致</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import &#123; Link &#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import HightClock from <span class="string">&#x27;../hightComponents/clock&#x27;</span></span><br><span class="line">import &#123; useSelector, useDispatch &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">import &#123; decremented, incremented,asyncFun &#125; from <span class="string">&#x27;./../reduces/test&#x27;</span></span><br><span class="line"><span class="built_in">export</span> default HightClock((props)=&gt;&#123;</span><br><span class="line">  const count = useSelector(state =&gt; state.counter.value)</span><br><span class="line">  // const selectCounter = useSelector(state =&gt; state.counter.value)</span><br><span class="line">  // console.log(selectCounter)</span><br><span class="line">  const dispatch = useDispatch()</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &lt;h1&gt;About&lt;/h1&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(incremented())&#125;&gt;Add One&lt;/h2&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(decremented())&#125;&gt;reduce One&lt;/h2&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(asyncFun(5))&#125;&gt;add Five&lt;/h2&gt;</span><br><span class="line">      &lt;h2&gt;&#123;count&#125;&lt;/h2&gt;</span><br><span class="line">      &lt;div style=&#123;&#123;color: <span class="string">&#x27;blue&#x27;</span>&#125;&#125;&gt;&#123;props.date&#125;&lt;/div&gt;</span><br><span class="line">      &lt;Link to=<span class="string">&quot;/&quot;</span>&gt;To Home Clock&lt;/Link&gt;</span><br><span class="line">    &lt;/&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/20/Redux-%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E5%85%B6%E4%BB%96%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7%E4%B8%80%E8%B5%B7%E5%AE%8C%E6%88%90%E6%95%B0%E6%8D%AE%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/20/Redux-%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E5%85%B6%E4%BB%96%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7%E4%B8%80%E8%B5%B7%E5%AE%8C%E6%88%90%E6%95%B0%E6%8D%AE%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">Redux 为何需要其他辅助工具一起完成数据状态管理</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-04-20 11:02:25" itemprop="dateCreated datePublished" datetime="2021-04-20T11:02:25+08:00">2021-04-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Redux-为何需要其他辅助工具一起完成数据状态管理"><a href="#Redux-为何需要其他辅助工具一起完成数据状态管理" class="headerlink" title="Redux 为何需要其他辅助工具一起完成数据状态管理"></a>Redux 为何需要其他辅助工具一起完成数据状态管理</h1><p>Web 应用程序通常需要从服务器获取数据才能显示它。他们通常还需要对该数据进行更新，将这些更新发送到服务器，并使客户端上的缓存数据与服务器上的数据保持同步。由于需要实现当今应用程序中使用的其他行为，这变得更加复杂：</p>
-<ul>
-<li>跟踪加载状态以显示 UI 微调器</li>
-<li>避免对相同数据的重复请求</li>
-<li>乐观的更新，让 UI 感觉更快</li>
-<li>在用户与 UI 交互时管理缓存生命周期</li>
-</ul>
-<h1 id="产生的问题"><a href="#产生的问题" class="headerlink" title="产生的问题"></a>产生的问题</h1><p>Redux 核心一直非常小 而且 Redux 从来没有内置任何东西来帮助解决这些用例。<br>用户仍然需要编写大量的 reducer 逻辑来管理加载状态和缓存数据。</p>
-<h1 id="生态中优秀的辅助工具"><a href="#生态中优秀的辅助工具" class="headerlink" title="生态中优秀的辅助工具"></a>生态中优秀的辅助工具</h1><ul>
-<li>RTK Query（官方的）</li>
-<li>Apollo Client</li>
-<li>React Query</li>
-<li>Urql </li>
-<li>SWR</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/16/mobx6-x%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/16/mobx6-x%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="post-title-link" itemprop="url">mobx6.x使用指南</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-04-16 09:30:41" itemprop="dateCreated datePublished" datetime="2021-04-16T09:30:41+08:00">2021-04-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="直接开启动态监听，与视图双向绑定"><a href="#直接开启动态监听，与视图双向绑定" class="headerlink" title="直接开启动态监听，与视图双向绑定"></a>直接开启动态监听，与视图双向绑定</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">import &#123;extendObservable&#125; from <span class="string">&#x27;mobx&#x27;</span>;</span><br><span class="line">import &#123; observer &#125; from <span class="string">&#x27;mobx-react&#x27;</span>;</span><br><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line"></span><br><span class="line">class ShoppingList extends React.Component &#123;</span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    super(props);</span><br><span class="line">    extendObservable(this, &#123;</span><br><span class="line">      counter: 0,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  onIncrement = () =&gt; &#123;</span><br><span class="line">    this.counter++;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  onDecrement = () =&gt; &#123;</span><br><span class="line">    this.counter--;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    // const &#123; value &#125; = this.props</span><br><span class="line">    // const &#123; authStore &#125; = this.props.store;</span><br><span class="line">    console.log(this.props)</span><br><span class="line">    <span class="built_in">return</span> (</span><br><span class="line">      &lt;div className=<span class="string">&quot;shopping-list&quot;</span>&gt;</span><br><span class="line">        &lt;h1&gt; &#123; this.counter&#125;&lt;/h1&gt;</span><br><span class="line">        &lt;ul&gt;</span><br><span class="line">          &lt;li onClick=&#123;this.onIncrement&#125; &gt;onIncrement&lt;/li&gt;</span><br><span class="line">          &lt;li onClick=&#123;this.onDecrement&#125;&gt;onDecrement&lt;/li&gt;</span><br><span class="line">          &lt;li&gt;Oculus&lt;/li&gt;</span><br><span class="line">        &lt;/ul&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">export</span> default observer(ShoppingList)</span><br></pre></td></tr></table></figure>
-
-<h1 id="注意要点"><a href="#注意要点" class="headerlink" title="注意要点"></a>注意要点</h1><ul>
-<li>安装 mobx mobx-react</li>
-<li>初始化需要监听的数据,<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">constructor(props) &#123;</span><br><span class="line">  super(props);</span><br><span class="line">  extendObservable(this, &#123;</span><br><span class="line">    counter: 0,</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>export 的时候 observer(ShoppingList) 一下</li>
-</ul>
-<p>这是实现了组件内的双向绑定类似于 data(){return{…obj}} v-model </p>
-<pre><code>
-
-</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/27/Vue3-%E5%AF%B9%E6%AF%94Vue2%E7%9A%84%E6%8F%90%E5%8D%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/27/Vue3-%E5%AF%B9%E6%AF%94Vue2%E7%9A%84%E6%8F%90%E5%8D%87/" class="post-title-link" itemprop="url">Vue3 对比Vue2的提升</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-27 09:39:50" itemprop="dateCreated datePublished" datetime="2021-03-27T09:39:50+08:00">2021-03-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="性能提升"><a href="#性能提升" class="headerlink" title="性能提升"></a>性能提升</h1><ul>
-<li>响应式系统提升<br>vue2在初始化的时候，对data中的每个属性使用defineProperty调用getter和setter使之变为响应式对象。如果属性值为对象，还会递归调用。<br>vue3使用proxy对象重写响应式。proxy的性能本来比defineproperty好，proxy可以拦截属性的访问、赋值、删除等操作，不需要初始化的时候遍历所有属性<br>优势：</li>
-</ul>
-<ol>
-<li>可以监听动态新增的属性；</li>
-<li>可以监听删除的属性 ；</li>
-<li>可以监听数组的索引和 length 属性；</li>
+          <h1 id="首先，fork项目到本地"><a href="#首先，fork项目到本地" class="headerlink" title="首先，fork项目到本地"></a>首先，fork项目到本地</h1><ol>
+<li>访问想要PR的github项目</li>
+<li>点击Start旁边的Fork，fork到自己的仓库</li>
+<li>通过git clone xxx 下载到本地</li>
 </ol>
-<ul>
-<li>编译优化<br>优化编译和重写虚拟dom，让首次渲染和更新dom性能有更大的提升。</li>
-</ul>
-<ol>
-<li>vue2 通过标记静态根节点,优化 diff 算法；vue3 标记和提升所有静态根节点,diff 的时候只比较动态节点内容</li>
-<li>Fragments, 模板里面不用创建唯一根节点,可以直接放同级标签和文本内容</li>
-<li>静态提升 patch flag, 跳过静态节点,直接对比动态节点,缓存事件处理函数</li>
-</ol>
-<ul>
-<li>源码体积的优化<br>vue3移除了一些不常用的api，例如：inline-template、filter等 使用tree-shaking</li>
-</ul>
-<h1 id="Composition-Api-与-Vue-2-x使用的Options-Api-有什么区别？"><a href="#Composition-Api-与-Vue-2-x使用的Options-Api-有什么区别？" class="headerlink" title="Composition Api 与 Vue 2.x使用的Options Api 有什么区别？"></a>Composition Api 与 Vue 2.x使用的Options Api 有什么区别？</h1><ul>
-<li>Options Api<br>包含一个描述组件选项（data、methods、props等）的对象 options；<br>API开发复杂组件，同一个功能逻辑的代码被拆分到不同选项 ；<br>使用mixin重用公用代码，也有问题：命名冲突，数据来源不清晰；</li>
-<li>composition Api<br>vue3 新增的一组 api，它是基于函数的 api，可以更灵活的组织组件的逻辑。<br>解决options api在大型项目中，options api不好拆分和重用的问题。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/03/13/Vue-%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF%E7%9A%84%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/13/Vue-%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF%E7%9A%84%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">Vue 组件通讯的方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-13 23:29:45" itemprop="dateCreated datePublished" datetime="2021-03-13T23:29:45+08:00">2021-03-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Vue-组件通讯的方法"><a href="#Vue-组件通讯的方法" class="headerlink" title="Vue 组件通讯的方法"></a>Vue 组件通讯的方法</h1><ul>
-<li>props和$emit</li>
-<li>$on&#x2F;$emit</li>
-<li>$parent&#x2F;$childen &amp; ref</li>
-<li>Vuex</li>
-</ul>
-<h2 id="props和-emit"><a href="#props和-emit" class="headerlink" title="props和$emit"></a>props和$emit</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=<span class="string">&quot;home&quot;</span>&gt;</span><br><span class="line">    &lt;div&gt;我是父组件&lt;/div&gt;</span><br><span class="line">    &lt;Child :msg=<span class="string">&quot;msg&quot;</span> v-on:changed=<span class="string">&quot;changed&quot;</span>/&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Child from <span class="string">&#x27;@/components/Child.vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default &#123;</span><br><span class="line">  name: <span class="string">&#x27;home&#x27;</span>,</span><br><span class="line">  components: &#123;</span><br><span class="line">    Child</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">data</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> &#123;</span><br><span class="line">      msg: <span class="string">&#x27;child&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    changed(e) &#123;</span><br><span class="line">      this.msg = e;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># ------- child component-------------</span></span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;p @click=<span class="string">&quot;change&quot;</span>&gt;</span><br><span class="line">          我是子组件:传递来的消息是：&#123;&#123;msg&#125;&#125;</span><br><span class="line">        &lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="built_in">export</span> default &#123;</span><br><span class="line">  name: <span class="string">&#x27;Child&#x27;</span>,</span><br><span class="line">  props: &#123;</span><br><span class="line">    msg: &#123;</span><br><span class="line">      <span class="built_in">type</span>: String,</span><br><span class="line">      default: <span class="string">&#x27;&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="function"><span class="title">change</span></span>() &#123;</span><br><span class="line">      this.<span class="variable">$emit</span>(<span class="string">&#x27;changed&#x27;</span>,<span class="string">&#x27;向父组件传值&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="on-x2F-emit"><a href="#on-x2F-emit" class="headerlink" title="$on&#x2F;$emit"></a>$on&#x2F;$emit</h2><p>通过一个空的vue实例作为中央事件总线，用它来触发和监听事件，跨级组件之间的通讯</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ------  bus --------------</span></span><br><span class="line">import Vue from <span class="string">&#x27;vue&#x27;</span></span><br><span class="line">var Event = new Vue()</span><br><span class="line"><span class="built_in">export</span> <span class="keyword">function</span> <span class="function"><span class="title">sendSDKLoadend</span></span> () &#123;</span><br><span class="line">  Event.<span class="variable">$emit</span>(<span class="string">&#x27;loadendSDK&#x27;</span>, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">export</span> <span class="keyword">function</span> monitorSDKLoadend(callback) &#123;</span><br><span class="line">  Event.<span class="variable">$on</span>(<span class="string">&#x27;loadendSDK&#x27;</span>, callback)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 当某个页面触发了sendSDKLoadend()时，绑定了monitorSDKLoadend(fn) 的地方，fn会执行</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="parent-x2F-childen，访问父-x2F-子实例-和-ref获取组件实例"><a href="#parent-x2F-childen，访问父-x2F-子实例-和-ref获取组件实例" class="headerlink" title="$parent&#x2F;$childen，访问父&#x2F;子实例 和 ref获取组件实例"></a>$parent&#x2F;$childen，访问父&#x2F;子实例 和 ref获取组件实例</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在组件上绑定 ref</span></span><br><span class="line">&lt;Child ref=<span class="string">&quot;child&quot;</span> /&gt;</span><br><span class="line"><span class="comment"># 通过 this.$refs.child 获取子组件的实例</span></span><br><span class="line">this.<span class="variable">$refs</span>.child</span><br><span class="line"></span><br><span class="line"><span class="comment"># 子组件通过 $parent 获取父组件的实例</span></span><br><span class="line">this.<span class="variable">$parent</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="Vuex"><a href="#Vuex" class="headerlink" title="Vuex"></a>Vuex</h2><p>通过 this.$store.dispatch(‘actionName’,params) 触发Action去通知Mutation更新State的值。所有引用改State的值的组件都会更新</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/04/npm%E5%8C%85classNames%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/02/04/npm%E5%8C%85classNames%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">npm包classNames详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-02-04 10:51:38" itemprop="dateCreated datePublished" datetime="2021-02-04T10:51:38+08:00">2021-02-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/NPM/" itemprop="url" rel="index"><span itemprop="name">NPM</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="classnames-快速组合CSS类"><a href="#classnames-快速组合CSS类" class="headerlink" title="classnames 快速组合CSS类"></a>classnames 快速组合CSS类</h1><p>在前端开发中，我们经常需要JS来判断生成DOM节点CSS类，比如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> className=<span class="string">&#x27;btn-primary&#x27;</span>;</span><br><span class="line"><span class="keyword">if</span>(active)&#123;</span><br><span class="line">  className+=<span class="string">&#x27; active&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">return</span> &lt;div className=&#123;className&#125;&gt;Save&lt;/div&gt;;</span><br></pre></td></tr></table></figure>
-<p>在上述代码中，我们需要判断active变量来控制生成的按钮的CSS样式是否是激活状态，在实际开发中，可能会有更多的类似这样的样式控制逻辑，从而干扰阅读业务逻辑代码，使得代码变得很“脏”。</p>
-<p>classnames 库对CSS样式类操作进行了封装，方便我们快速使用：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const classNames = require(<span class="string">&#x27;classnames&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">return</span> &lt;div className=&#123;classNames(<span class="string">&#x27;btn-primary&#x27;</span>,&#123; active &#125;)&#125;&gt;Save&lt;/div&gt;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更多用法</span></span><br><span class="line">classNames(<span class="string">&#x27;foo&#x27;</span>, <span class="string">&#x27;bar&#x27;</span>); // =&gt; <span class="string">&#x27;foo bar&#x27;</span> </span><br><span class="line">classNames(<span class="string">&#x27;foo&#x27;</span>, &#123; bar: <span class="literal">true</span> &#125;); // =&gt; <span class="string">&#x27;foo bar&#x27;</span> </span><br><span class="line">classNames(&#123; <span class="string">&#x27;foo-bar&#x27;</span>: <span class="literal">true</span> &#125;); // =&gt; <span class="string">&#x27;foo-bar&#x27;</span> </span><br><span class="line">classNames(&#123; <span class="string">&#x27;foo-bar&#x27;</span>: <span class="literal">false</span> &#125;); // =&gt; <span class="string">&#x27;&#x27;</span> </span><br><span class="line">classNames(&#123; foo: <span class="literal">true</span> &#125;, &#123; bar: <span class="literal">true</span> &#125;); // =&gt; <span class="string">&#x27;foo bar&#x27;</span> </span><br><span class="line">classNames(&#123; foo: <span class="literal">true</span>, bar: <span class="literal">true</span> &#125;); // =&gt; <span class="string">&#x27;foo bar&#x27;</span> </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/01/git-%E5%A4%9A%E8%B4%A6%E5%8F%B7%E9%85%8D%E7%BD%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/02/01/git-%E5%A4%9A%E8%B4%A6%E5%8F%B7%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">git 多账号配置</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-02-01 00:12:23" itemprop="dateCreated datePublished" datetime="2021-02-01T00:12:23+08:00">2021-02-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="git-多账号账号切换使用"><a href="#git-多账号账号切换使用" class="headerlink" title="git 多账号账号切换使用"></a>git 多账号账号切换使用</h1><ul>
-<li>解决密钥问题。默认只有一个密钥，二次创建会覆盖</li>
-<li>使用哪个账号提交的</li>
-</ul>
-<h1 id="生成两个账号私钥在本地"><a href="#生成两个账号私钥在本地" class="headerlink" title="生成两个账号私钥在本地"></a>生成两个账号私钥在本地</h1><p>生成默认的 id_rsa 和id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱1”<br>在创建第二个的时候必须要重命名 比如 137_id_ras,这样会生成另外两个文件137_id_rsa 和 137_id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱2”</p>
-<h1 id="在-ssh下面创建config文件"><a href="#在-ssh下面创建config文件" class="headerlink" title="在.ssh下面创建config文件"></a>在.ssh下面创建config文件</h1><p>执行 touch config 创建<br>执行 vim config 编辑</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Default 第一个账号(123456@xxxx.com)</span></span><br><span class="line"></span><br><span class="line">Host default</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/137_id_rsa</span><br><span class="line"><span class="comment">#second 第二个账号（38894403@xxxx.com）    </span></span><br><span class="line">Host zc</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
-<p>只需要修改 IdentityFile 即可<br>ssh -T <a href="mailto:&#103;&#105;&#116;&#x40;&#x67;&#105;&#116;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;">&#103;&#105;&#116;&#x40;&#x67;&#105;&#116;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;</a> 可以测试是否配置成功<br><code>配置成功会显示当前用户名</code> 这个很重要，因为当你想切换用户的时候没有这个不行<br>通过设置<br>git config –global user.name “13725102796”<br>git config –global user.email “<a href="mailto:&#49;&#52;&#x33;&#x39;&#54;&#x35;&#53;&#x37;&#54;&#x34;&#x40;&#113;&#113;&#x2e;&#99;&#x6f;&#x6d;">&#49;&#52;&#x33;&#x39;&#54;&#x35;&#53;&#x37;&#54;&#x34;&#x40;&#113;&#113;&#x2e;&#99;&#x6f;&#x6d;</a>“<br>还没有生效，因为ssh-add的代理始终指向默认的</p>
-<h1 id="通过ssh-add删除代理"><a href="#通过ssh-add删除代理" class="headerlink" title="通过ssh-add删除代理"></a>通过ssh-add删除代理</h1><p>查看 ssh-add -l<br>删除 ssh-add -D<br>添加<br>ssh-add ~&#x2F;.ssh&#x2F;id_rsa<br>ssh-add ~&#x2F;.ssh&#x2F;137_id_rsa </p>
-<h1 id="添加代理后还不可以，需要修改提交的git-clone-ssh链接"><a href="#添加代理后还不可以，需要修改提交的git-clone-ssh链接" class="headerlink" title="添加代理后还不可以，需要修改提交的git clone ssh链接"></a>添加代理后还不可以，需要修改提交的git clone ssh链接</h1><ul>
-<li><p>还没clone的可以通过 来拉取项目，这样可以让ssh-add正确代理<br>git clone zy@:18820677498&#x2F;Blog.git<br>原来是 <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#x69;&#x74;&#104;&#117;&#98;&#46;&#99;&#111;&#109;">&#103;&#105;&#116;&#x40;&#103;&#x69;&#x74;&#104;&#117;&#98;&#46;&#99;&#111;&#109;</a>:18820677498&#x2F;Blog.git</p>
+<h1 id="创建Issues"><a href="#创建Issues" class="headerlink" title="创建Issues"></a>创建Issues</h1><ol>
+<li><p>Issues标题格式规范<br><code>[标签] 标题 </code> 的格式: “[bug] 点击获取验证码的时候有问题”</p>
 </li>
-<li><p>已经clone的 可以切换到当前项目下，命令行执行<br><code>vim .git/config</code><br>打开config文件 按i去修改，按esc退出修改，再按 <code>:qw!</code> 保存修改</p>
+<li><p>内容规范</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 背景</span></span><br><span class="line"></span><br><span class="line">- 描述你希望解决的问题的现状</span><br><span class="line">- 附上相关的 issue 地址</span><br><span class="line"></span><br><span class="line"><span class="comment">## 思路</span></span><br><span class="line"></span><br><span class="line">描述大概的解决思路，可以包含 API 设计和伪代码等</span><br><span class="line"></span><br><span class="line"><span class="comment">## 跟进</span></span><br><span class="line"></span><br><span class="line">后续编辑，附上对应的 Pull Request 地址，可以用 `- [ ] some task` 的方式。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 案例</span></span><br><span class="line">标题：[RFC] 框架统一错误码</span><br><span class="line"><span class="comment"># 背景</span></span><br><span class="line">Egg 生态插件众多，研发流程可能会抛出各种框架、插件异常，开发者难以自行定位和解决</span><br><span class="line"></span><br><span class="line">* 没有统一的错误引导文档，目前的文档分散在官网、语雀各个空间里；错误和文档之间没有建立联系</span><br><span class="line">* 一些底层 sdk 的抛错已经丢失了链路信息，定位很困难。例如：mysql 客户端抛 ACCESS_DENIED_ERROR，已经在最后环节，但是问题可能是在上层 SDK 的使用上</span><br><span class="line"><span class="comment"># 目标</span></span><br><span class="line">* 所有框架、中间件抛出的异常信息，带上对应的 FAQ 自查文档；向下兼容对非统一 Error 的错误展示</span><br><span class="line">* 覆盖研发流程的所有阶段：CLI 命令、应用启动、运行时</span><br><span class="line">* 逐步对框架和中间件使用统一的 Error 改造，补充 FAQ 文档</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案</span></span><br><span class="line">具体实现的大致思路...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 </li>
+<li><p>拓展词汇缩写<br>WIP：work in progress 进展中，比如 The next major version of Vue (WIP)<br>RFC：request for comments 请求意见稿，<br>PR：pull request 请求合并<br>CR：code review 代码审查<br>BTW： By the way 顺便说一下<br>FYI：For your information 供您参考<br>ASAP：As soon as possible马上，尽快<br>LGTM：Look good to me 看起来不错，代码已review，可以合并</p>
+</li>
+</ol>
+<h1 id="认领Issues-对Issues打标签，指派给某个开发者"><a href="#认领Issues-对Issues打标签，指派给某个开发者" class="headerlink" title="认领Issues,对Issues打标签，指派给某个开发者"></a>认领Issues,对Issues打标签，指派给某个开发者</h1><p>该仓库的维护者可以对这个Issues做一些事情：</p>
+<ul>
+<li>指派开发者去修复这个Issues</li>
+<li>打标签 Labels Assignees </li>
+<li>创建指定分支去维护</li>
 </ul>
-
+<h1 id="在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR"><a href="#在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR" class="headerlink" title="在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR"></a>在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR</h1><p>在远程仓库项目主页可以看到提交记录旁边存在两个按钮Contribute和Fetch-upstream<br>点击Contribut -》 点击 Open pull request -》 Create pull request<br>输入本次提交的标题和描述 -》 点击Create pull request</p>
+<p>此时 已经完成了PR的提交了<br>原项目的管理者可以到项目的Pull request 去合并完成整个Issues的修复</p>
+<h1 id="测试git切换账号提交"><a href="#测试git切换账号提交" class="headerlink" title="测试git切换账号提交"></a>测试git切换账号提交</h1>
       
     </div>
 
@@ -906,7 +274,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/29/Vue%E4%B8%8EReact-Diff%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/29/%E6%B7%B1%E5%BA%A6%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%8E%E8%AE%BF%E9%97%AEurl%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -924,7 +292,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/29/Vue%E4%B8%8EReact-Diff%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/" class="post-title-link" itemprop="url">Vue与React Diff算法比较</a>
+          <a href="/2022/04/29/%E6%B7%B1%E5%BA%A6%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%8E%E8%AE%BF%E9%97%AEurl%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">深度理解浏览器从访问url到页面展示的全过程</a>
         </h2>
 
         <div class="post-meta-container">
@@ -935,103 +303,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2020-10-29 14:15:40" itemprop="dateCreated datePublished" datetime="2020-10-29T14:15:40+08:00">2020-10-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Vue/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="diff算法比对方式"><a href="#diff算法比对方式" class="headerlink" title="diff算法比对方式"></a>diff算法比对方式</h1><ol>
-<li>Vue采用的是递归加双指针的方式对比旧节点，react是从左到右逐个对比<br>当一个集合，只是把最后一个节点移动到了第一个，</li>
-<li>对比具体某个元素时，当元素类型相同，但是className不同，<br>vue认为是不同类型元素，删除重建。<br>react会认为是同类型节点，只是修改节点属性</li>
-</ol>
-<h1 id="diff-渲染机制不同"><a href="#diff-渲染机制不同" class="headerlink" title="diff 渲染机制不同"></a>diff 渲染机制不同</h1><ol>
-<li>Vue是边对比边更新DOM</li>
-<li>React使用的是队列保存需要更新的DDM，得到Patch树，再统一批量更新DOM</li>
-</ol>
-<h1 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h1><ol>
-<li>虚拟DOM在比较时只比较同一层级节点，复杂度都为 O(n)，降低了算法复杂度；</li>
-<li>都使用key比较是否是相同节点，都是为了尽可能的复用节点</li>
-<li>都是操作虚拟DOM，最小化操作真实DOM，提高性能</li>
-<li>都是不要用 index作为 key</li>
-<li>在同级节点中元素顺序的变换，都是复用处理，新增的插入，多余的删掉</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/25/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E8%AF%84%E4%BC%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/25/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E8%AF%84%E4%BC%B0/" class="post-title-link" itemprop="url">谷歌浏览器性能测试评估</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-25 11:51:22" itemprop="dateCreated datePublished" datetime="2020-10-25T11:51:22+08:00">2020-10-25</time>
+      <time title="创建时间：2022-04-29 14:48:13" itemprop="dateCreated datePublished" datetime="2022-04-29T14:48:13+08:00">2022-04-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1053,16 +325,789 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="Console-面板"><a href="#Console-面板" class="headerlink" title="Console 面板"></a>Console 面板</h1><p>console.log(‘普通信息’)<br>console.info(‘提示性信息’)<br>console.error(‘错误信息’)<br>console.warn(‘警示信息’)<br>time 和 timeEnd 一般放在一起用，传入一个参数用来标识起始位置用于统计时间:<br>console.time(‘遍历九十万次执行时间’)<br>Array(900000).fill({}).forEach((v, index) &#x3D;&gt; v.index &#x3D; index)<br>console.timeEnd(‘遍历九十万次执行时间’)<br>&#x2F;&#x2F;打印输出 遍历九十万次执行时间: 21.874755859375 ms</p>
-<p>console.trace() 用于追踪代码的调用栈，不用专门断点去看了<br>performance.memory可以查看内存的使用情况<br>jsHeapSizeLimit: 4294705152<br>totalJSHeapSize: 31789794<br>usedJSHeapSize: 30112726<br>usedJSHeapSize &gt; totalJSHeapSize 则表明内存泄漏了</p>
-<h1 id="代码断点-源代码面板"><a href="#代码断点-源代码面板" class="headerlink" title="代码断点  源代码面板"></a>代码断点  源代码面板</h1><p>找到源代码，点击要中断代码执行的位置，点击红色按钮的位置。然后再触发该方法执行，因为已知点击按钮可以触发，精准的定位到代码行就可以了</p>
-<h1 id="Performance-面板"><a href="#Performance-面板" class="headerlink" title="Performance 面板"></a>Performance 面板</h1><ul>
-<li>首先点击控制条左边的第一个圆圈，开始记录日志</li>
-<li>等待几分钟(正常操作页面)</li>
-<li>点击 Stop 按钮，Devtools 停止录制，处理数据，然后显示性能报告</li>
+          <h1 id="浏览器的多进程架构"><a href="#浏览器的多进程架构" class="headerlink" title="浏览器的多进程架构"></a>浏览器的多进程架构</h1><p>因为js是单线程的，一个线程可以有多个进程<br>浏览器的三大主要进程：</p>
+<ol>
+<li>浏览器进程<br>主要负责用户交互、子进程管理和文件存储等功能</li>
+<li>网络进程<br>面向渲染进程和浏览器进程等提供网路下载功能</li>
+<li>渲染进程<br>把从网络下载的资源文件解析为可以显示和交互的页面。因为渲染进程里面所有的内容都是通过网络获取的，会存在一些恶意代码利用浏览器漏洞对操作系统进行攻击，所以运行在渲染进程里面的代码是被不信任的。这也是为什么 Chrome 会让渲染进程运行在安全沙箱里，为了保证系统的安全。</li>
+</ol>
+<h1 id="整个过程的大体描述"><a href="#整个过程的大体描述" class="headerlink" title="整个过程的大体描述"></a>整个过程的大体描述</h1><ul>
+<li>首先用户从浏览器进程里输入请求信息</li>
+<li>然后网络进程向服务器发起 URL 请求</li>
+<li>服务器响应 URL 请求后，浏览器进程开始准备渲染进程</li>
+<li>渲染进程准备好之后，需要向渲染进程提交待渲染的资源文档，提交文段阶段</li>
+<li>渲染进程接收到文档后，便开始解析页面和加载子资源，完成页面的渲染</li>
+<li>完成页面的渲染后，将渲染的图片交给浏览器进程，浏览器进程负责展示</li>
 </ul>
-<h1 id="Lighthouse-Audits-面板"><a href="#Lighthouse-Audits-面板" class="headerlink" title="Lighthouse(Audits) 面板"></a>Lighthouse(Audits) 面板</h1><p>来自 Google 的描述： Lighthouse 是一个开源的自动化工具，用于改进网络应用的质量。 您可以将其作为一个 Chrome 扩展程序运行，或从命令行运行。 您为 Lighthouse 提供一个您要审查的网址，它将针对此页面运行一连串的测试，然后生成一个有关页面性能的报告</p>
-<p>会对页面的加载进行分析，然后给出提高页面性能的建议</p>
+<h1 id="从输入-URL-到页面展示的具体细节"><a href="#从输入-URL-到页面展示的具体细节" class="headerlink" title="从输入 URL 到页面展示的具体细节"></a>从输入 URL 到页面展示的具体细节</h1><ol>
+<li>URL请求过程<br>浏览器进程会通过进程间通信（IPC）把 URL 请求发送至网络进程，网络进程接收到 URL 请求后，会在这里发起真正的 URL 请求流程<br>首先，网络进程基于http缓存协议去执行该Url的请求<br>如果已经存在该资源且资源没有过期，则直接返回（命中强缓存）<br>如果没有或者已过期，则发起网络请求：</li>
+</ol>
+<ul>
+<li>已过期，服务器发现该请求资源没有更新，则返回304，浏览器则取本地资源并更新</li>
+<li>已过期，服务器发现该请求资源已经更新，则返回200，携带最新资源给浏览器</li>
+<li>没有 则直接请求<br>浏览器缓存控制三种方式（Expires、Last-Modified、Etag）</li>
+<li>第一次请求http响应头会有Last-Modified标记文件在服务器端最后被修改的时间。</li>
+<li>浏览器第二次请求上次请求过的url时，浏览器会在HTTP请求头添加一个If-Modified-Since的标记，用来询问服务器该时间之后文件是否被修改过</li>
+</ul>
+<p>Etag 主要为了解决 Last-Modified 无法解决的一些问题:</p>
+<ul>
+<li>一些文件也许会周期性的更改，但是他的内容并不改变(仅仅改变的修改时间)，这个时候我们并不希望客户端认为这个文件被修改了，而重新GET;</li>
+<li>某些文件修改非常频繁，比如在秒以下的时间内进行修改，(比方说1s内修改了N次)，If-Modified-Since能检查到的粒度是s级的，这种修改无法判断(或者说UNIX记录MTIME只能精确到秒)</li>
+<li>某些服务器不能精确的得到文件的最后修改时间；</li>
+</ul>
+<p>浏览器是通过last-Modified Expires Etag控制缓存</p>
+<p>第二次请求相同的资源的时候</p>
+<ul>
+<li>有缓存，过期了， 则判断Etag ？ 带If-None-Match ：判断last-Modified<br>判断 last-Modified ？ 带If-Modified-Since ： 发请求<br>根据服务器判断资源更新返回304或者200</li>
+<li>缓存没有过期，则直接使用</li>
+</ul>
+<h1 id="根据响应的数据类型进行处理"><a href="#根据响应的数据类型进行处理" class="headerlink" title="根据响应的数据类型进行处理"></a>根据响应的数据类型进行处理</h1><p>浏览器会根据响应头中的 Content-Type 字段，来决定如何显示响应体的内容。</p>
+<ul>
+<li>如果是HTML，那么浏览器会继续进行页面渲染，需要准备渲染进程<br>默认情况下，Chrome 会为每个页面分配一个渲染进程，即每打开一个新页面，Chrome就会创建分配一个新的渲染进程，在某些情况下，浏览器会让多个页面直接运行在同一个渲染进程中。Chrome 的默认策略是，每个标签对应一个渲染进程，但如果从一个页面打开了另一个新页面，而新页面和当前页面属于同一站点的化，那么新页面会复用父页面的渲染进程。process-per-site-instance</li>
+</ul>
+<h1 id="渲染阶段"><a href="#渲染阶段" class="headerlink" title="渲染阶段"></a>渲染阶段</h1><p>浏览器的渲染过程主要分为五个步骤：</p>
+<ol>
+<li>浏览器将获取的 HTML 文档解析成 DOM 树；</li>
+<li>处理 CSS 标记，构成层叠样式表模型（CSSOM）；</li>
+<li>将 DOM 和 CSSOM 合并为渲染树（rendering tree）；</li>
+<li>根据渲染树上的元素布局 layout</li>
+<li>将渲染树上的各个节点绘制到屏幕上，称之为 绘制painting；</li>
+</ol>
+<h1 id="构建-DOM-树"><a href="#构建-DOM-树" class="headerlink" title="构建 DOM 树"></a>构建 DOM 树</h1><ul>
+<li>DOM 树的构建可能会被 CSS 和 JS 的加载而阻塞；</li>
+<li>display: none 的元素也会在 DOM 树中；</li>
+<li>注释也会在 DOM 树中；</li>
+<li>script 标签也会在 DOM 树中；</li>
+</ul>
+<h1 id="解析-CSS"><a href="#解析-CSS" class="headerlink" title="解析 CSS"></a>解析 CSS</h1><p>浏览器会解析 CSS 文件并生成 CSS 规则树，每个 CSS 文件都会被解析成 StyleSheet 对象，每个对象都包括 CSS 规则，CSS规则对象包括对应的选择器和声明对象以及其他对象；</p>
+<ul>
+<li>CSS 的解析可以与 DOM 的解析同步进行（因为渲染树需要Dom和CSSOM一起合成，所以无论哪个都会阻塞dom的渲染）</li>
+<li>CSS 的解析与 script 的执行互斥</li>
+<li>在 Webkit 内核中进行了 script 执行优化，只有在 JS 访问 CSS 时才会发生互斥</li>
+</ul>
+<h1 id="构建渲染树"><a href="#构建渲染树" class="headerlink" title="构建渲染树"></a>构建渲染树</h1><p>根据 DOM 树和 CSS 规则树，浏览器就可以构建渲染树了。浏览器首先遍历 DOM 树上的每一个可见节点，然后对每个可见节点找到匹配的 CSS 样式规则并应用</p>
+<ol>
+<li>渲染树和 DOM 树不完全对对应；</li>
+<li>display: none 的元素不在渲染树中；</li>
+<li>visiblity: none 的元素在渲染树中；</li>
+</ol>
+<h1 id="渲染树布局"><a href="#渲染树布局" class="headerlink" title="渲染树布局"></a>渲染树布局</h1><p>布局阶段浏览器会遍历渲染树的所有节点，由于每个节点都是一个render对象，都包含宽高、位置、背景等样式信息，所以浏览器就能根据这写信息来确定元素在页面中的所在位置，及其样式；</p>
+<ol>
+<li>float 元素、absolute 元素、fixed 元素会发生位置偏移；</li>
+<li>脱离标准文档流就是脱离渲染树（render tree）；所以一些动画元素可以让其脱离渲染树，通过absolute等方式</li>
+</ol>
+<h1 id="渲染树的绘制"><a href="#渲染树的绘制" class="headerlink" title="渲染树的绘制"></a>渲染树的绘制</h1><p>绘制阶段，浏览器遍历所有的渲染树节点，调用 paint() 方法，将其渲染在屏幕上。渲染树的绘制工作是由浏览器的UI后端组件完成的。</p>
+<h1 id="浏览器渲染过程可能出现的事情"><a href="#浏览器渲染过程可能出现的事情" class="headerlink" title="浏览器渲染过程可能出现的事情"></a>浏览器渲染过程可能出现的事情</h1><ul>
+<li>阻塞渲染<br>浏览器会延迟 JavaScript 的执行和 DOM 的构建，</li>
+</ul>
+<ol>
+<li>CSS 被默认为阻塞渲染的资源，所以在 CSSOM 构建完成之前不会处理任何已处理的内容；</li>
+<li>JavaScript 可以读取和修改 DOM 属性，还可读取和修改 CSSOM 属性，所以 CSS 解析和 script 的执行互斥<br>因此，script标签的位置很重要我们在实际开发中应该尽量坚持以下两个原则： </li>
+<li>在引入顺序上，CSS 资源先于 JavaScript 资源；</li>
+<li>JavaScript 尽量少去影响 DOM 的构建；</li>
+</ol>
+<ul>
+<li>回流和重绘（ reflow 和 repaint ）<br>display:none 会触发 reflow；<br>visibility: hidden 不会触发 reflow，只会触发 repaint；</li>
+</ul>
+<h1 id="优化渲染效率建议"><a href="#优化渲染效率建议" class="headerlink" title="优化渲染效率建议"></a>优化渲染效率建议</h1><ol>
+<li>合法地去书写 HTML 和 CSS ，且不要忘了文档编码类型；</li>
+<li>样式文档应该在 head 标签中，而脚本文档应该在 body 结束之前，防阻塞；</li>
+<li>优化 CSS 选择器，尽量少嵌套；</li>
+<li>减少 JavaScript 对 DOM 的操作；</li>
+<li>修改元素的样式时，修改 class 是性能最高的方法；</li>
+<li>尽量用 transform 来做形变和位移</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>从输入Url -》 dns解析 -》http请求，响应-》页面渲染<br>这里最主要就是http请求响应与页面渲染<br>http请求响应又分3次握手4次挥手协议，与http请求缓存<br>页面渲染 -》多个进程一起工作 -》事件循环机制 -》 回流重绘 -》<br>多个进程： </p>
+<ul>
+<li>浏览器主进程</li>
+<li>GPU进程</li>
+<li>渲染进程<br>事件循环机制：（又分宏任物和微任务）<br>同步任务在JS线程上优先执行，形成一个执行栈<br>JS的异步是通过回调函数来实现的，JS只有一个执行线程。 通过把回调函数添加到任务队列中来实现<br>执行步骤：</li>
+</ul>
+<ol>
+<li>先执行执行栈中的同步任务</li>
+<li>异步任务放入任务队列</li>
+<li>同步任务执行完毕，从任务队列中读取异步任务，进入执行栈，开始执行<br>异步任务的主要类型：（又分宏任物和微任务） 微任务优先执行<br>1、普通事件 如click resize 等<br>2、资源加载 如load error 等<br>3、定时器 setInterval 等<br>这些都是宏任物<br>ajax async属于微任务</li>
+</ol>
+<p>渲染进程的组成： </p>
+<ol>
+<li>GUI渲染线程，构建DOM树，构建CSSOM，两者合成渲染树，然后绘制在页面上。</li>
+<li>JS引擎线程（V8引擎）由于js是单线程，依靠任务队列来进行js代码的执行，所以js引擎会一直等待着任务队列中任务的到来，然后加以处理。</li>
+<li>事件触发线程，定时器触发线程，异步HTTP请求线程</li>
+</ol>
+<p>GUI渲染线程与JS引擎线程互斥 JS阻塞页面加载<br>JavaScript是可操纵DOM的，如果在修改这些元素属性同时渲染界面（即JS线程和UI线程同时运行），那么渲染线程前后获得的元素数据就可能不一致了。<br>因此为了防止渲染出现不可预期的结果，浏览器设置GUI渲染线程与JS引擎为互斥的关系。<br>当JS引擎执行时GUI线程会被挂起，GUI更新则会被保存在一个队列中等到JS引擎线程空闲时立即被执行。</p>
+<p>浏览器渲染的图层一般包含两大类：普通图层以及复合图层<br>可以通过硬件加速的方式，声明一个新的复合图层，它会单独分配资源<br>translate3d、translateZ， z-index 都可以加速</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/27/%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AAloader/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/27/%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AAloader/" class="post-title-link" itemprop="url">手写一个loader</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-27 00:04:20" itemprop="dateCreated datePublished" datetime="2022-04-27T00:04:20+08:00">2022-04-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Webpack/" itemprop="url" rel="index"><span itemprop="name">Webpack</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="loader-原理"><a href="#loader-原理" class="headerlink" title="loader 原理"></a>loader 原理</h1><p>loader就像一个翻译员，能将源文件翻译后输出新的结果，并且一个文件可以链式的经过几个翻译员。<br>以.scss文件为例子：</p>
+<ul>
+<li>先将.scss文件内容交给sass-loader翻译为css</li>
+<li>在将翻译后的css交给css-loader,找出css中依赖的资源，压缩css</li>
+<li>再将css-loader输出的内容交给style-loader,转化为通过脚本加载的JavaScript代码</li>
+</ul>
+<p>1，本质是一个函数。<br>参数能获取目标的内容，<br>结果能传递给下一个loader。</p>
+<p>2.自定义loader要使用绝对路径引入。</p>
+<h1 id="自定义一个loader"><a href="#自定义一个loader" class="headerlink" title="自定义一个loader"></a>自定义一个loader</h1><ul>
+<li>首先定义一个loader自动在jsx文件中</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/25/useCallback-%E5%92%8C-useMemo-%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/25/useCallback-%E5%92%8C-useMemo-%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">useCallback 和 useMemo 的区别</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-25 20:52:17" itemprop="dateCreated datePublished" datetime="2022-04-25T20:52:17+08:00">2022-04-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="useCallback"><a href="#useCallback" class="headerlink" title="useCallback"></a>useCallback</h1><p>const memoizedCallback &#x3D; useCallback(<br>  () &#x3D;&gt; {<br>    doSomething(a, b);<br>  },<br>  [a, b],<br>);<br>把内联回调函数及依赖项数组作为参数传入 useCallback，它将返回该回调函数的 memoized 版本，该回调函数仅在某个依赖项改变时才会更新。当你把回调函数传递给经过优化的并使用引用相等性去避免非必要渲染（例如 shouldComponentUpdate）的子组件时，它将非常有用。</p>
+<h1 id="useMemo"><a href="#useMemo" class="headerlink" title="useMemo"></a>useMemo</h1><p>const memoizedValue &#x3D; useMemo(() &#x3D;&gt; computeExpensiveValue(a, b), [a, b]);<br>返回一个 memoized 值 。</p>
+<p>把“创建”函数和依赖项数组作为参数传入 useMemo，它仅会在某个依赖项改变时才重新计算 memoized 值。这种优化有助于避免在每次渲染时都进行高开销的计算。</p>
+<p>你可以把 useMemo 作为性能优化的手段，但不要把它当成语义上的保证<br>将来，React 可能会选择“遗忘”以前的一些 memoized 值，并在下次渲染时重新计算它们，比如为离屏组件释放内存。先编写在没有 useMemo 的情况下也可以执行的代码 —— 之后再在你的代码中添加 useMemo，以达到优化性能的目的。</p>
+<p>function Example() {<br>    const [count, setCount] &#x3D; useState(1);<br>    const [val, setValue] &#x3D; useState(‘’);</p>
+<pre><code>const getNum = useMemo(() =&gt; &#123;
+    return Array.from(&#123;length: count * 100&#125;, (v, i) =&gt; i).reduce((a, b) =&gt; a+b)
+&#125;, [count])
+
+return &lt;div&gt;
+    &lt;h4&gt;总和：&#123;getNum()&#125;&lt;/h4&gt;
+    &lt;div&gt;
+        &lt;button onClick=&#123;() =&gt; setCount(count + 1)&#125;&gt;+1&lt;/button&gt;
+        &lt;input value=&#123;val&#125; onChange=&#123;event =&gt; setValue(event.target.value)&#125;/&gt;
+    &lt;/div&gt;
+&lt;/div&gt;;
+</code></pre>
+<p>}</p>
+<p>避免因为val变化而导致getNum重新渲染</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>useCallback 返回的是一个函数<br>useMemo 返回的的函数的执行结果</p>
+<p>类似于计算属性computed，避免使用了该函数或者该值的组件重复渲染。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 把事件写进render里面会在重新渲染的时候重新生成新的onclick</span></span><br><span class="line">class Demo extends Component&#123;</span><br><span class="line">    <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> </span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; () =&gt; &#123; console.log(<span class="string">&#x27;Hello World！！&#x27;</span>); &#125;&#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 在组件中可以在constructor里面</span></span><br><span class="line">class Demo extends Component&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span></span>()&#123;</span><br><span class="line">        super();</span><br><span class="line">        this.buttonClick = this.buttonClick.<span class="built_in">bind</span>(this);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> </span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; this.buttonClick &#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 在函数式组件中开发</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Demo</span></span>()&#123;</span><br><span class="line">    const buttonClick = useCallback(() =&gt; &#123; </span><br><span class="line">    	console.log(<span class="string">&#x27;Hello World！！&#x27;</span>)</span><br><span class="line">    &#125;,[])</span><br><span class="line">    <span class="built_in">return</span>(</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; buttonClick &#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">内存泄漏详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-25 13:15:32" itemprop="dateCreated datePublished" datetime="2022-04-25T13:15:32+08:00">2022-04-25</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="JS的回收机制"><a href="#JS的回收机制" class="headerlink" title="JS的回收机制"></a>JS的回收机制</h1><p>JS垃圾回收的机制（GC）会按照固定的时间间隔，周期性的执行。<br>标记清除：<br>当变量进入环境时，例如，在函数中声明一个变量，就将这个变量标记为“进入环境”。从逻辑上讲，永远不能释放进入环境的变量所占用的内存，因为只要执行流进入相应的环境，就可能会用到它们。而当变量离开环境时，则将其标记为“离开环境”。</p>
+<p>function test(){<br>  var a&#x3D;10;&#x2F;&#x2F;被标记，进入环境<br>  var b&#x3D;20;&#x2F;&#x2F;被标记，进入环境<br>}<br>test();&#x2F;&#x2F;执行完毕之后a、b又被标记离开环境，被回收</p>
+<h1 id="哪些操作会造成内存泄露"><a href="#哪些操作会造成内存泄露" class="headerlink" title="哪些操作会造成内存泄露"></a>哪些操作会造成内存泄露</h1><p>意外的全局变量引起的内存泄露：<br>function leak(){<br>  leak&#x3D;”xxx”;&#x2F;&#x2F;leak成为一个全局变量，不会被回收<br>}<br>闭包引起的内存泄漏<br>function bindEvent(){<br>  var obj&#x3D;document.createElement(“XXX”);<br>  obj.οnclick&#x3D;function(){<br>    &#x2F;&#x2F;Even if it’s a empty function<br>  }<br>}<br>解决方法：</p>
+<ul>
+<li>将事件处理函数定义在外部，解除闭包。<br>&#x2F;&#x2F;将事件处理函数定义在外部<br>function onclickHandler(){<br>&#x2F;&#x2F;do something<br>}<br>function bindEvent(){<br>var obj&#x3D;document.createElement(“XXX”);<br>obj.οnclick&#x3D;onclickHandler;<br>}</li>
+<li>在定义事件处理函数的外部函数中，删除对 DOM 的引用<br>function bindEvent(){<br>var obj&#x3D;document.createElement(“XXX”);<br>obj.οnclick&#x3D;function(){<br>  &#x2F;&#x2F;Even if it’s a empty function<br>}<br>obj&#x3D;null;<br>}</li>
+<li>没有清理的 DOM 元素引用：<br>var elements&#x3D;{<br>  button: document.getElementById(“button”),<br>  image: document.getElementById(“image”),<br>  text: document.getElementById(“text”)<br>};<br>function doStuff(){<br>  image.src&#x3D;”<a target="_blank" rel="noopener" href="http://some.url/image&quot;">http://some.url/image&quot;</a>;<br>  button.click():<br>  console.log(text.innerHTML)<br>}<br>function removeButton(){<br>  document.body.removeChild(document.getElementById(‘button’))<br>}</li>
+<li>被遗忘的定时器或者回调：<br>var someResouce&#x3D;getData();<br>setInterval(function(){<br>  var node&#x3D;document.getElementById(‘Node’);<br>  if(node){<br>  node.innerHTML&#x3D;JSON.stringify(someResouce)<br>  }<br>},1000)</li>
+</ul>
+<h1 id="怎样避免内存泄露："><a href="#怎样避免内存泄露：" class="headerlink" title="怎样避免内存泄露："></a>怎样避免内存泄露：</h1><ul>
+<li>减少不必要的全局变量，或者生命周期较长的对象，及时对无用的数据进行垃圾回收；</li>
+<li>注意程序逻辑，避免“死循环”之类的；</li>
+<li>避免创建过多的对象，原则：不用了的东西要及时归还。</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>定义全局变量，闭包，dom的引用，定时器都会产生内存使用的问题。不处理会导致内存泄漏</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/24/Vue-Computd%E4%B8%8Ewatch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/24/Vue-Computd%E4%B8%8Ewatch/" class="post-title-link" itemprop="url">Vue Computd与watch</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-24 16:21:34" itemprop="dateCreated datePublished" datetime="2022-04-24T16:21:34+08:00">2022-04-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Computd"><a href="#Computd" class="headerlink" title="Computd"></a>Computd</h1><p>计算属性的结果会被缓存，除非依赖的响应式 property 变化才会重新计算。注意，如果某个依赖 (比如非响应式 property) 在该实例范畴之外，则计算属性是不会被更新的。<br>computed 就是一个带了缓存的执行函数，只有依赖的数据发生的变化才会重新求值</p>
+<p>当计算属性依赖的响应式属性发生修改会做两件事<br>是将计算属性的watcher 中的dirty属性更新为true ，表示要重新求值<br>是将渲染函数的watcher 加入任务队列。当渲染函数重新执行的时候就会触发计算属性的getter 并重新计算，这样就达到的缓存计算结果的目的。</p>
+<h1 id="watch"><a href="#watch" class="headerlink" title="watch"></a>watch</h1><p>一个对象，键是需要观察的表达式，值是对应回调函数。值也可以是方法名，或者包含选项的对象。Vue 实例将会在实例化时调用$watch()，遍历 watch 对象的每一个 property。<br>watch 更像是一个观察者，只要监测到数据变动就会重新执行回调<br>首先Vue 会根据用户传入的参数类型做格式处理，按处理后的参数调用 $<br>watch 生成观察器</p>
+<h1 id="Vue-初始化的时候"><a href="#Vue-初始化的时候" class="headerlink" title="Vue 初始化的时候"></a>Vue 初始化的时候</h1><p>vue 在init 阶段会根据传入的options 进行初始化，如果传入的options 中包含有computed , 会执行initComputed<br>vue 会为每个computed 属性生成一个watcher 实例，并将其中的lazy 属性设置为true (这个状态是用来标识 watcher 做惰性求值， 配合watcher 实例中的dirty 属性来实现)。并调用 createComputedGetter 重写计算属性的getter</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> createComputedGetter (key) &#123;</span><br><span class="line">  // 重写计算属性的 getter, </span><br><span class="line">  <span class="built_in">return</span> <span class="keyword">function</span> <span class="function"><span class="title">computedGetter</span></span> () &#123;</span><br><span class="line">    const watcher = this._computedWatchers &amp;&amp; this._computedWatchers[key]</span><br><span class="line">    <span class="keyword">if</span> (watcher) &#123;</span><br><span class="line">      // 初始化的时候会根据 lazy 来初始化dirty属性； </span><br><span class="line">      // 只有当依赖的响应属性变化，才会重新将计算属性的watcher.dirty 更新为 <span class="literal">true</span></span><br><span class="line">      // 表示在下次重新渲染的时候要重新求值。</span><br><span class="line">      <span class="keyword">if</span> (watcher.dirty) &#123;</span><br><span class="line">        watcher.evaluate()</span><br><span class="line">      &#125;</span><br><span class="line">      // 当前watcher 中收集了依赖的响应属性的dep</span><br><span class="line">      // 在这个阶段把计算属性依赖的渲染函数的watcher 收集到相同的dep中。</span><br><span class="line">      <span class="keyword">if</span> (Dep.target) &#123;</span><br><span class="line">        watcher.depend()</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">return</span> watcher.value</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// watcher 内定义的方法。  </span><br><span class="line"><span class="function"><span class="title">update</span></span> () &#123;</span><br><span class="line">    /* istanbul ignore <span class="keyword">else</span> */</span><br><span class="line">    // 计算属性</span><br><span class="line">    <span class="keyword">if</span> (this.lazy) &#123;</span><br><span class="line">      this.dirty = <span class="literal">true</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (this.sync) &#123;</span><br><span class="line">      this.run()</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      // 其他异步 watcher 加入任务队列等待执行</span><br><span class="line">      queueWatcher(this)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>重写后的 getter 做了两件事:</p>
+<ul>
+<li>是判断watcher 的dirty 属性，如果为true表示要重新执行watcher 实例的get 函数（重新求值的函数）</li>
+<li>将计算属性依赖的渲染函数的 watcher 收集到自己依赖的响应属性的Dep 实例中。经过这样的一个初始化后在响应式数据的 dep 中将收集了两个watcher 一个是计算属性的 watcher , 另一个是计算属性关联的渲染函数的watcher</li>
+</ul>
+<p>当计算属性关联的渲染函数的watcher收到来自更新的通知后，就会执行其 update 方法，要求重新求值。判断计算后的值是否相等，不等就通知计算属性的 watcher更新</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>computed 、watch 的底层都是通过生成一个Watcher 对响应数据进行观察，并在需要的时候重新执行求值，他们的不同点主要在于：</p>
+<ul>
+<li>计算属性的依赖收集并能实现在依赖的数据变化的时候能触发视图的更新，也就要求这个属性必须在组件的 render 函数中有引用到，这样他才能收集渲染函数的watcher 。当在依赖的数据变化后进行重新求值并通知渲染函数重新渲染。</li>
+<li>虽然watch 要求监听的也是响应式数据，但用户对监听的数据做了修改，用户定义的回调就会被执行。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/24/Redux-saga-%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/24/Redux-saga-%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">Redux-saga 详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-24 11:20:36" itemprop="dateCreated datePublished" datetime="2022-04-24T11:20:36+08:00">2022-04-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="在与redux-toolkit-一起使用的-基础配置"><a href="#在与redux-toolkit-一起使用的-基础配置" class="headerlink" title="在与redux-toolkit 一起使用的 基础配置"></a>在与redux-toolkit 一起使用的 基础配置</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建一个saga.js</span></span><br><span class="line">import &#123; call, put, takeEvery &#125; from <span class="string">&#x27;redux-saga/effects&#x27;</span></span><br><span class="line">import axios from <span class="string">&#x27;axios&#x27;</span></span><br><span class="line">const testApi = <span class="string">&#x27;/public/page/getHomePageModules&#x27;</span></span><br><span class="line"></span><br><span class="line">// worker Saga : 将在 USER_FETCH_REQUESTED action 被 dispatch 时调用</span><br><span class="line"><span class="keyword">function</span>* fetchUser(action)&#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    const user = yield call(axios.get(testApi),action.payload.userId)</span><br><span class="line">    console.log(user)</span><br><span class="line">    yield put (&#123;<span class="built_in">type</span>:<span class="string">&quot;USER_FETCH_SUCCEEDED&quot;</span>,user:user&#125;)</span><br><span class="line">  &#125; catch (e)&#123;</span><br><span class="line">    yield put(&#123;<span class="built_in">type</span>: <span class="string">&quot;USER_FETCH_FAILED&quot;</span>,message:e.message&#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">  在每个 `USER_FETCH_REQUESTED` action 被 dispatch 时调用 fetchUser</span><br><span class="line">  允许并发（译注：即同时处理多个相同的 action）</span><br><span class="line">*/</span><br><span class="line"><span class="keyword">function</span>* <span class="function"><span class="title">mySaga</span></span>()&#123;</span><br><span class="line">  yield takeEvery(<span class="string">&quot;USER_FETCH_REQUESTED&quot;</span>,fetchUser)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">  也可以使用 takeLatest</span><br><span class="line"></span><br><span class="line">  不允许并发，dispatch 一个 `USER_FETCH_REQUESTED` action 时，</span><br><span class="line">  如果在这之前已经有一个 `USER_FETCH_REQUESTED` action 在处理中，</span><br><span class="line">  那么处理中的 action 会被取消，只会执行当前的</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default mySaga;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集中到store里面的写法</span></span><br><span class="line">import counterSlice from <span class="string">&quot;./test&quot;</span></span><br><span class="line">import &#123; configureStore &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">import thunksSlice from <span class="string">&quot;./thunks&quot;</span></span><br><span class="line">import createSagaMiddleware from <span class="string">&#x27;redux-saga&#x27;</span></span><br><span class="line">import mySaga from <span class="string">&#x27;./saga&#x27;</span></span><br><span class="line"></span><br><span class="line">// create the saga middleware</span><br><span class="line">const sagaMiddleware = createSagaMiddleware()</span><br><span class="line">const store = configureStore(&#123;</span><br><span class="line">  reducer:&#123;</span><br><span class="line">    counter: counterSlice,</span><br><span class="line">    thunks: thunksSlice,</span><br><span class="line">    </span><br><span class="line">  &#125;,</span><br><span class="line">  middleware: defaultMiddleware =&gt; defaultMiddleware().concat(sagaMiddleware)</span><br><span class="line"> </span><br><span class="line">&#125;)</span><br><span class="line">sagaMiddleware.run(mySaga)</span><br><span class="line"><span class="built_in">export</span> default store</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用与其他的一致，通过dispatch</span></span><br><span class="line">import HightClock from <span class="string">&#x27;../hightComponents/clock&#x27;</span></span><br><span class="line">import &#123; useSelector,useDispatch &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">import &#123; useEffect &#125; from <span class="string">&#x27;react&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default HightClock((props)=&gt;&#123;</span><br><span class="line">  const count = useSelector(state=&gt;state.counter.value)</span><br><span class="line">  const dispatch = useDispatch()</span><br><span class="line">  useEffect(()=&gt;&#123;</span><br><span class="line">    dispatch(&#123;<span class="built_in">type</span>: <span class="string">&#x27;USER_FETCH_REQUESTED&#x27;</span>, payload: &#123;&#125;&#125;)</span><br><span class="line">  &#125;,[])</span><br><span class="line">  // </span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &lt;h1&gt;Home Child1&lt;/h1&gt;</span><br><span class="line">      &lt;h2&gt;counterValue: &#123;count&#125;&lt;/h2&gt;</span><br><span class="line">      &lt;div&gt;&#123;props.date&#125;&lt;/div&gt;</span><br><span class="line">      &#123;/* &lt;Link to=<span class="string">&quot;/about&quot;</span>&gt;To About Clock&lt;/Link&gt; */&#125;</span><br><span class="line">    &lt;/&gt;</span><br><span class="line">)&#125;)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/22/people-X%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/22/people-X%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">people X后台管理项目介绍</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-22 11:11:10" itemprop="dateCreated datePublished" datetime="2022-04-22T11:11:10+08:00">2022-04-22</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="依赖包版本"><a href="#依赖包版本" class="headerlink" title="依赖包版本"></a>依赖包版本</h1><p>“antd”: “3.26.16”<br>“dva”: “^2.4.0”<br>“react-router-dom”: “^4.3.1”,</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/21/%E8%8B%B1%E6%96%87%E7%89%88%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/21/%E8%8B%B1%E6%96%87%E7%89%88%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">英文版自我介绍</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-21 15:37:25" itemprop="dateCreated datePublished" datetime="2022-04-21T15:37:25+08:00">2022-04-21</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="自我介绍"><a href="#自我介绍" class="headerlink" title="自我介绍"></a>自我介绍</h1><p>  Hello!<br>  My name is Zhang YeChang. twenty-six years old.<br>  I’m very glad to join in the interview.<br>  First, I come from GuangDong ZhangJiang. Graduated from Panyu University of Technology. majoring in marketing<br>  I have about four point five years of front-end development experience.<br>  I’m mainly good at Vue React and Uni-app.<br>  Lead the construction of too many large projects.<br>  Like: people X,PinPin Bear Shop<br>  I like to communicate with others, discuss problems and share new learning technologies.<br>  In my free time.I will Continue to focus on front-end technology updates, like: mobx six version, Redux Toolkit.<br>  now, End of introduction.<br>  thank you very much.</p>
+<h1 id="最近的项目-people-X"><a href="#最近的项目-people-X" class="headerlink" title="最近的项目 people X"></a>最近的项目 people X</h1><p>  Recently, In my led projects is people-x.<br>  People-x is P &amp; G’s enterprise wechat multi tenant  platform.<br>  The old version is based on PHP + angular1 Developed by X.</p>
+<p>  Why should we refactor it.</p>
+<p>  The response of the old system is too slow, the experience is very poor, and the request link is too long, resulting in easy disconnection. The most important thing is that one set of code for one tenant is inconvenient for future maintenance.<br>  The new system architecture scheme is as follows</p>
+<p>● front end: enterprise wechat is based on Vue + vant . The background management system is based on react + ant-design-pro</p>
+<p>● back end: Based on spring boot </p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/19/React-Router-%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/19/React-Router-%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">React-Router 主要功能详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-19 10:18:43" itemprop="dateCreated datePublished" datetime="2022-04-19T10:18:43+08:00">2022-04-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p><code> $ npm install react-router-dom@6</code></p>
+<h1 id="使用-（使用组件注册路由）"><a href="#使用-（使用组件注册路由）" class="headerlink" title="使用 （使用组件注册路由）"></a>使用 （使用组件注册路由）</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&quot;react&quot;</span>;</span><br><span class="line">import &#123; Routes, Route, Link,BrowserRouter &#125; from <span class="string">&quot;react-router-dom&quot;</span>;</span><br><span class="line">import ReactDOM from <span class="string">&quot;react-dom&quot;</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div &gt;</span><br><span class="line">      &lt;h1&gt;Welcome to React Router!&lt;/h1&gt;</span><br><span class="line">      &lt;Routes&gt;</span><br><span class="line">        &lt;Route path=<span class="string">&quot;/&quot;</span> element=&#123;&lt;Home /&gt;&#125; /&gt;</span><br><span class="line">        &lt;Route path=<span class="string">&quot;about&quot;</span> element=&#123;&lt;About /&gt;&#125; /&gt;</span><br><span class="line">      &lt;/Routes&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Home</span></span>()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      Home</span><br><span class="line">      &lt;Link to=<span class="string">&quot;/about&quot;</span>&gt;About&lt;/Link&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">About</span></span>()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;About&lt;Link to=<span class="string">&quot;/&quot;</span>&gt;About&lt;/Link&gt;&lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;BrowserRouter&gt;</span><br><span class="line">    &lt;App /&gt;</span><br><span class="line">  &lt;/BrowserRouter&gt;,</span><br><span class="line">  document.getElementById(<span class="string">&quot;root&quot;</span>)</span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="使用useRoutes注册路由"><a href="#使用useRoutes注册路由" class="headerlink" title="使用useRoutes注册路由"></a>使用useRoutes注册路由</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">//路由表配置：src/routes/index.js</span><br><span class="line">import About from <span class="string">&#x27;../pages/About&#x27;</span></span><br><span class="line">import Home from <span class="string">&#x27;../pages/Home&#x27;</span></span><br><span class="line">import &#123;Navigate&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default [</span><br><span class="line">	&#123;</span><br><span class="line">		path:<span class="string">&#x27;/about&#x27;</span>,</span><br><span class="line">		element:&lt;About/&gt;,</span><br><span class="line">    children: [&#123;</span><br><span class="line">      path:<span class="string">&#x27;aboutChild1&#x27;</span>,</span><br><span class="line">		  element:&lt;AboutChild1 /&gt;,</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">      path:<span class="string">&#x27;aboutChild2&#x27;</span>,</span><br><span class="line">		  element:&lt;AboutChild2 /&gt;,</span><br><span class="line">    &#125;</span><br><span class="line">    ]</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		path:<span class="string">&#x27;/home&#x27;</span>,</span><br><span class="line">		element:&lt;Home/&gt;</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		path:<span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">		element:&lt;Navigate to=<span class="string">&quot;/about&quot;</span>/&gt;</span><br><span class="line">	&#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">//App.jsx</span><br><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line">import &#123;NavLink,useRoutes&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import routes from <span class="string">&#x27;./routes&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default <span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">	//根据路由表生成对应的路由规则</span><br><span class="line">	const element = useRoutes(routes)</span><br><span class="line">	<span class="built_in">return</span> (</span><br><span class="line">		&lt;div&gt;</span><br><span class="line">			......</span><br><span class="line">      &#123;/* 注册路由 */&#125;</span><br><span class="line">      &#123;element&#125;</span><br><span class="line">		  ......</span><br><span class="line">		&lt;/div&gt;</span><br><span class="line">	)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="子路由渲染位置"><a href="#子路由渲染位置" class="headerlink" title=" 子路由渲染位置"></a><Outlet> 子路由渲染位置</h1><h1 id="useNavigate-返回一个函数用来实现编程式导航。"><a href="#useNavigate-返回一个函数用来实现编程式导航。" class="headerlink" title="useNavigate 返回一个函数用来实现编程式导航。"></a>useNavigate 返回一个函数用来实现编程式导航。</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import &#123;useNavigate&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line">import &#123;useNavigate&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default <span class="keyword">function</span> <span class="function"><span class="title">Demo</span></span>() &#123;</span><br><span class="line">  const navigate = useNavigate()</span><br><span class="line">  const handle = () =&gt; &#123;</span><br><span class="line">    //第一种使用方式：指定具体的路径</span><br><span class="line">    navigate(<span class="string">&#x27;/login&#x27;</span>, &#123;</span><br><span class="line">      replace: <span class="literal">false</span>,</span><br><span class="line">      state: &#123;a:1, b:2&#125;</span><br><span class="line">    &#125;) </span><br><span class="line">    //第二种使用方式：传入数值进行前进或后退，类似于5.x中的 history.go()方法</span><br><span class="line">    navigate(-1)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;button onClick=&#123;handle&#125;&gt;按钮&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="useParams-返回当前匹配路由的params参数-useSearchParams-用于读取和修改当前位置的-URL-中的查询字符串。-useLocation-获取当前-location-信息"><a href="#useParams-返回当前匹配路由的params参数-useSearchParams-用于读取和修改当前位置的-URL-中的查询字符串。-useLocation-获取当前-location-信息" class="headerlink" title="useParams 返回当前匹配路由的params参数 | useSearchParams 用于读取和修改当前位置的 URL 中的查询字符串。 | useLocation 获取当前 location 信息"></a>useParams 返回当前匹配路由的params参数 | useSearchParams 用于读取和修改当前位置的 URL 中的查询字符串。 | useLocation 获取当前 location 信息</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># useParams</span></span><br><span class="line">import &#123; Routes, Route, useParams,useSearchParams,useLocation &#125; from <span class="string">&#x27;react-router-dom&#x27;</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">ProfilePage</span></span>() &#123;</span><br><span class="line">  // 获取URL中携带过来的params参数</span><br><span class="line">  <span class="built_in">let</span> &#123; <span class="built_in">id</span> &#125; = useParams();</span><br><span class="line">  // 返回一个包含两个值的数组，内容分别为：当前的seaech参数、更新search的函数。</span><br><span class="line">  const [search,setSearch] = useSearchParams()</span><br><span class="line">  // update</span><br><span class="line">  const <span class="built_in">id</span> = search.get(<span class="string">&#x27;id&#x27;</span>)</span><br><span class="line">  setSearch(<span class="string">&#x27;id=12123123&#x27;</span>) </span><br><span class="line">  // 获取当前 location 信息</span><br><span class="line">  const x = useLocation()</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;Routes&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;users/:id&quot;</span> element=&#123;&lt;User /&gt;&#125;/&gt;</span><br><span class="line">    &lt;/Routes&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="路由钩子-routerWillLeave"><a href="#路由钩子-routerWillLeave" class="headerlink" title="路由钩子 routerWillLeave"></a>路由钩子 routerWillLeave</h1><p>可以拦截正在发生的跳转，或在离开 route 前提示用户。<br>routerWillLeave 返回值有以下两种：</p>
+<ul>
+<li>return false 取消此次跳转</li>
+<li>return 返回提示信息，在离开 route 前提示用户进行确认。</li>
+</ul>
 
       
     </div>
@@ -1082,7 +1127,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
@@ -1094,7 +1139,7 @@
 
 <div class="copyright">
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

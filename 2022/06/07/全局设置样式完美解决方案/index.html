@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="问题起源在多人开发，UI参次不齐的过程中。产生了大量的问题。其中最主要的就是统一滚动区域。 思考解决方案的历程 提供一个动态style，通过复制到各个使用的页面去解决；（无法统一修改，维护麻烦） 提供一个动态类，通过vuex去缓存，再各个页面去调用；（由vuex统一维护，但是使用麻烦）  终极解决方案通过全局动态插入css脚本，给某个id或者类赋值的方式使用时给对应div添加该id或者类即可 案例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="全局设置样式完美解决方案">
+<meta property="og:url" content="http://example.com/2022/06/07/%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E6%A0%B7%E5%BC%8F%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="问题起源在多人开发，UI参次不齐的过程中。产生了大量的问题。其中最主要的就是统一滚动区域。 思考解决方案的历程 提供一个动态style，通过复制到各个使用的页面去解决；（无法统一修改，维护麻烦） 提供一个动态类，通过vuex去缓存，再各个页面去调用；（由vuex统一维护，但是使用麻烦）  终极解决方案通过全局动态插入css脚本，给某个id或者类赋值的方式使用时给对应div添加该id或者类即可 案例">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-06-07T08:49:25.000Z">
+<meta property="article:modified_time" content="2022-06-07T09:10:00.578Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="三元运算符妙用">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/06/07/%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E6%A0%B7%E5%BC%8F%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/06/07/%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E6%A0%B7%E5%BC%8F%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/","path":"2022/06/07/全局设置样式完美解决方案/","title":"全局设置样式完美解决方案"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>全局设置样式完美解决方案 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%B5%B7%E6%BA%90"><span class="nav-number">1.</span> <span class="nav-text">问题起源</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%9D%E8%80%83%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%E7%9A%84%E5%8E%86%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">思考解决方案的历程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%88%E6%9E%81%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">3.</span> <span class="nav-text">终极解决方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">案例</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/07/%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E6%A0%B7%E5%BC%8F%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="全局设置样式完美解决方案 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          全局设置样式完美解决方案
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-07 16:49:25" itemprop="dateCreated datePublished" datetime="2022-06-07T16:49:25+08:00">2022-06-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CSS/" itemprop="url" rel="index"><span itemprop="name">CSS</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="问题起源"><a href="#问题起源" class="headerlink" title="问题起源"></a>问题起源</h1><p>在多人开发，UI参次不齐的过程中。产生了大量的问题。其中最主要的就是统一滚动区域。</p>
+<h1 id="思考解决方案的历程"><a href="#思考解决方案的历程" class="headerlink" title="思考解决方案的历程"></a>思考解决方案的历程</h1><ul>
+<li>提供一个动态style，通过复制到各个使用的页面去解决；（无法统一修改，维护麻烦）</li>
+<li>提供一个动态类，通过vuex去缓存，再各个页面去调用；（由vuex统一维护，但是使用麻烦）</li>
+</ul>
+<h1 id="终极解决方案"><a href="#终极解决方案" class="headerlink" title="终极解决方案"></a>终极解决方案</h1><p>通过全局动态插入css脚本，给某个id或者类赋值的方式<br>使用时给对应div添加该id或者类即可</p>
+<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">mounted</span></span>() &#123;</span><br><span class="line">  const that = this</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">fixHeight</span></span>() &#123;</span><br><span class="line">    that.clientHeight = document.body.clientHeight</span><br><span class="line">    <span class="built_in">let</span> height = 0</span><br><span class="line">    <span class="keyword">if</span> (that.clientHeight &lt; 855) &#123;</span><br><span class="line">      const calc = 855 - that.clientHeight</span><br><span class="line">      height = (550 - calc) &gt; 200 ? 550 - calc : 200</span><br><span class="line">    &#125;</span><br><span class="line">    var style = document.createElement(<span class="string">&#x27;style&#x27;</span>)</span><br><span class="line">    style.type = <span class="string">&#x27;text/css&#x27;</span></span><br><span class="line">    try &#123;</span><br><span class="line">      style.appendChild(document.createTextNode(<span class="string">&#x27;#formBody&#123;height:&#x27;</span> + (that.clientHeight - 250) + <span class="string">&#x27;px&#x27;</span> + <span class="string">&#x27;&#125;&#x27;</span>))</span><br><span class="line">    &#125; catch (ex) &#123;</span><br><span class="line">      style.styleSheet.cssText = <span class="string">&#x27;#formBody&#123;height:&#x27;</span> + (that.clientHeight - 250) + <span class="string">&#x27;px&#x27;</span> + <span class="string">&#x27;&#125;&#x27;</span>// 针对IE</span><br><span class="line">    &#125;</span><br><span class="line">    var <span class="built_in">head</span> = document.getElementsByTagName(<span class="string">&#x27;head&#x27;</span>)[0]</span><br><span class="line">    head.appendChild(style)</span><br><span class="line">  &#125;</span><br><span class="line">  window.onload = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">    fixHeight()</span><br><span class="line">    window.onresize = throttle(fixHeight, 300)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在对应页面添加 #formBody 即可<br>优化点： 可以在插入之前删掉之前插入的。<br>因为这个会根据窗口高度不断变化，不断插入，不删也不影响。<br>因为后面会覆盖前面的</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E5%A6%99%E7%94%A8/" rel="tag"># 三元运算符妙用</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/21/JS-%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/" rel="prev" title="JS 回溯算法">
+                  <i class="fa fa-chevron-left"></i> JS 回溯算法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/06/08/%E4%B8%83%E7%89%9B%E4%BA%91%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%A4%A7%E5%B0%8F%E9%99%90%E5%88%B6/" rel="next" title="七牛云获取图片大小限制">
+                  七牛云获取图片大小限制 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

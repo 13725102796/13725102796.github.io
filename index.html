@@ -126,18 +126,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-count">89</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-count">62</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -175,7 +175,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/20/React-fiber%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/29/react17-x-%E4%B8%BB%E6%B5%81%E7%A8%8B%E8%A7%A3%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -193,7 +193,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/20/React-fiber%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/" class="post-title-link" itemprop="url">React fiber原理解析</a>
+          <a href="/2023/03/29/react17-x-%E4%B8%BB%E6%B5%81%E7%A8%8B%E8%A7%A3%E6%9E%90/" class="post-title-link" itemprop="url">react17.x 主流程解析</a>
         </h2>
 
         <div class="post-meta-container">
@@ -204,16 +204,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-05-20 10:55:12" itemprop="dateCreated datePublished" datetime="2022-05-20T10:55:12+08:00">2022-05-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
+      <time title="创建时间：2023-03-29 09:35:36" itemprop="dateCreated datePublished" datetime="2023-03-29T09:35:36+08:00">2023-03-29</time>
     </span>
 
   
@@ -226,133 +217,47 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="Fiber-起源"><a href="#Fiber-起源" class="headerlink" title="Fiber 起源"></a>Fiber 起源</h1><p>Fiber架构诞生于React16，是为了解决React15及之前版本的更新不可中断问题的。</p>
-<h1 id="堆栈协调Stack-Reconciler"><a href="#堆栈协调Stack-Reconciler" class="headerlink" title="堆栈协调Stack Reconciler"></a>堆栈协调Stack Reconciler</h1><p>在React15的时候，React采用的还是堆栈协调Stack Reconciler，之所以把它成为堆栈协调，是因为React是使用递归来构建虚拟Dom树(React 15的叫法)的，构建过程中，数据被保存在递归调用栈中。由于递归是同步执行的，所以它一旦执行就只能执行完，不能被中途打断。这导致浏览器在执行代码时，Stack Reconciler 经常由于需要协调非常多的节点而耗费大量时间，而浏览器的UI渲染工作迟迟得不到执行</p>
-<h1 id="Fiber协调器-Fiber-Reconciler"><a href="#Fiber协调器-Fiber-Reconciler" class="headerlink" title="Fiber协调器 Fiber Reconciler"></a>Fiber协调器 Fiber Reconciler</h1><p>在React16发布时推出了全新的Fiber架构，旨在解决老版本的更新不可中断问题。<br>一个大的同步任务可以分成许多小的同步任务，在浏览器运作的时候，平均的把这些小的同步任务塞到每一帧的一小块时间里执行，这种做法我们称为可中断的异步更新。</p>
-<h1 id="Fiber工作流程"><a href="#Fiber工作流程" class="headerlink" title="Fiber工作流程"></a>Fiber工作流程</h1><p>双缓存机制<br>我们在图像处理的时候，往往会经历渲染画面-清除画面-重新渲染画面这个过程，往往清除画面后进行重绘的时候，可能会比较耗时，这时候用户就会感知到闪屏的现象。如果我们在内存中进行当前帧画面的构建，构建完毕后直接替换之前的画面，省去清屏的步骤，这样就节省了很多时间，很大程度上改善了用户体验。</p>
-<p>所以在React中，我们也使用了双缓存机制，即系统中始终存在着两棵Fiber树，一棵对应的是当前DOM在屏幕上显示的画面，被称作current，此时我们称其为当前组件树，一棵是在内存中进行构建的新的Fiber树，被称作workInProgress，此时我们称其为正在构建中的组件树</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">  const [num , setNum] = useState(0);</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">        &lt;p onClick=&#123;()=&gt;setNum(num + 1)&#125;&gt;</span><br><span class="line">           &#123;num&#125;</span><br><span class="line">        &lt;/p&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="Fiber-初始化首屏渲染"><a href="#Fiber-初始化首屏渲染" class="headerlink" title="Fiber 初始化首屏渲染"></a>Fiber 初始化首屏渲染</h1><p>一开始Fiber会构建 一个FiberRootNode和RootFiber，FiberRootNode的current指针指向rootFiber，此时rootFiber是为空的。</p>
-<p>然后根据组件树返回的jsx对象，在render阶段创建新的rootFiber</p>
-<p>这一步是递归的创建workInProgress，创建完workInProgress后，然后在commit阶段把这棵树渲染到页面上，此时修改current指针指向workInProgress，使其成为新的current树<br>current和workInProgress通过alternate互相连接</p>
-<h1 id="Fiber树更新"><a href="#Fiber树更新" class="headerlink" title="Fiber树更新"></a>Fiber树更新</h1><p>在我们点击p使得页面触发更新后，React会在内存中重新构建一棵完整的Fiber树，也就是workInProgress<br>在构建完成后会直接让current指针指向它，然后render阶段就会基于这个新的current进行渲染。<br>在此过程中我们可以使用Diff算法决定是否复用current树中的节点，省去创建节点的流程，进一步加快渲染过程</p>
-<h1 id="节点复用"><a href="#节点复用" class="headerlink" title="节点复用"></a>节点复用</h1><p>在页面更新时，由于React的双缓存机制，在渲染页面的时候，会先从内存中构建一棵Fiber树，等构建完毕后，直接改变current指针的指向替换掉当前的Fiber树，达到页面更新的目的。<br>如果重新的从无到有渲染一棵完整的Fiber树，是很耗时的，所以我们可以基于 current 树来复用一些节点创建workInProgress树.<br>我们会使用Diff算法来决定是否复用节点，要复用的节点就是current.alternate。</p>
-<h1 id="Fiber-调度机制"><a href="#Fiber-调度机制" class="headerlink" title="Fiber 调度机制"></a>Fiber 调度机制</h1><p>Fiber将一个DOM更新任务拆分为由多个原子化可调度的节点组成的集合，从而提供了细粒度的任务调度能力。<br>Fiber架构由2部分组成：分发器（dispatcher）和调度器（scheduler）。</p>
-<p>当点击p，触发点击事件，将事件会触发分发器的转换动作。可以先简单的认为分发器将触发1个FiberNode的更新： p文本由0变为1。</p>
-<p>Task<br>分发器与调度器之间通过Task进行通信。Task对应的是组件的挂载或更新动作。由FiberRoot和FiberTree构成。<br>FiberTree是由一个一个FiberNode以单链表的形式组合成的节点集合。<br>FiberNode是调度器执行的最小单位，每执行完一个FiberNode更新后，线程的控制权将转交给调度器，由调度器来选择下一个执行的任务（继续或中断插入其他任务）。</p>
-<p>Task调度过程<br>组件的初始化挂载或事件驱动更新都会触发一个任务的启动。</p>
-<p>Task 挂起<br>开始执行过程。在执行每个节点单元的时候会先判断浏览器是否有空余时间执行下一个工作单元。当不满足向下执行条件时（比如有其他高优先级的任务插入，或则当前时间片已用完），任务中断，被挂起。</p>
-<p>Task 任务恢复<br>任务执行过程中，每一个FiberNode的执行结果都会标记在属性上。调度模块重新执行挂起任务时，本质上是重新执行该更新任务，在具体更新每一FiberNode的时候会根据节点上的缓存属性判断该节点是否（props参数前后比对）需要重新计算更新数据，需要则逻辑不变，不需要则跳过。</p>
-<p>Task 任务结束<br>当整个FiberTree中的节点都被处理后，统一提交所有FiberNode更新。并将更新结果统一反应到界面上，到此任务结束，任务将会被注销，同时回收FiberRoot保存的上下文。</p>
-<h1 id="commit阶段"><a href="#commit阶段" class="headerlink" title="commit阶段"></a>commit阶段</h1><p>commit阶段的主要职责就是将render阶段创建的fiber树渲染到页面中，也就是要执行具体的dom操作。</p>
+          <h1 id="关于-React-三大架构"><a href="#关于-React-三大架构" class="headerlink" title="关于 React 三大架构"></a>关于 React 三大架构</h1><ul>
+<li>reconciler 协调器 ，集成filber</li>
+<li>Scheduler 任务调度器</li>
+<li>react-dom 渲染器</li>
+</ul>
+<h1 id="reconciler"><a href="#reconciler" class="headerlink" title="reconciler"></a>reconciler</h1><p>reconciler 主要是负责 scheduler 与 react-dom 的任务之间的互相协调与分配。</p>
+<p>内置一个任务循环，将同步的任务放入循环，按顺序执行。异步的任务，直接执行。</p>
+<p>通过fiber 构建fiber树。输出给react-dom去生成dom树给浏览器渲染。</p>
+<p>内置一个 scheduleUpdateOnFiber （更新fiber树）的方法，该方法主要将 更新fiber树 的操作封装成 scheduler 接收的 task 任务包。然后放进任务调度循环里面，根据优先级 ，等待 reconciler 提取task来执行 task的回调 来构建fiber树。</p>
+<h1 id="scheduler"><a href="#scheduler" class="headerlink" title="scheduler"></a>scheduler</h1><p>scheduler 存放任务包 用的是 二叉堆 中的最小堆数据模型。优先级最高的就会出现在最顶点，等待被取用。</p>
+<p>优先级使用的是 lanes 模型。二进制变量。 利用了位掩码的特性, 在频繁运算的时候占用内存少, 计算速度快.</p>
+<p>主要提供了4个调度的核心的函数</p>
 <ul>
-<li>渲染前(before mutation)</li>
-<li>渲染(mutation)</li>
-<li>渲染后(layout)<br>各阶段执行函数<br>before mutation阶段：commitBeforeMutationEffects<br>mutation阶段：commitMutationEffects<br>layout阶段 commitLayoutEffects</li>
+<li>requestHostCallback</li>
+<li>cancelHostCallback</li>
+<li>requestHostTimeout</li>
+<li>cancelHostTimeout</li>
 </ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
-<li><p>Fiber 调度机制<br>Fiber 主要是可以在React更新节点的时候挂起更新，以往的由递归更新同步执行。<br>现在是由调度器在执行完每一个Task下的FiberNode（调度器执行的最小单元），将执行权返回调度器，由调度器决定 继续执行还是挂起等待。<br>当任务和FiberNode非常大的时候，也会存在性能瓶颈。</p>
-</li>
-<li><p>Fiber 工作流程<br>Fiber 是双缓存机制。在首屏初始化的时候 会创建一个 FiberRootNode 和 FiberRoot，<br>FiberRootNode.current 指向 FiberRoot。<br>在构建返回的jsx时，会额外创建一个工作中的FiberRoot，FiberRoot下面的节点与dom一致。<br>在构建时，会根据diff算法进行比对是否可以复用节点；<br>构建完成后，将FiberRootNode.current 指向该工作中的FiberRoot。</p>
-</li>
-</ul>
-<p>最后提交到Commit交给浏览器渲染</p>
-<h1 id="Fiber的主要目标是利用React的Scheduling的优势"><a href="#Fiber的主要目标是利用React的Scheduling的优势" class="headerlink" title="Fiber的主要目标是利用React的Scheduling的优势"></a>Fiber的主要目标是利用React的Scheduling的优势</h1><p>当前React并没有充分利用Scheduling的优势，一次更新会导致立刻重新渲染整个子树。<br>Fiber背后的思想就是彻底革新整个核心算法以充分利用Scheduling的优势。<br>它可以做到： </p>
+<p>通过 消息通道 MessageChannel 来通知执行callback</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// 接收 MessageChannel 消息</span><br><span class="line">const performWorkUntilDeadline = () =&gt; &#123;</span><br><span class="line">  // ...省略无关代码</span><br><span class="line">  <span class="keyword">if</span> (scheduledHostCallback !== null) &#123;</span><br><span class="line">    // 执行callback</span><br><span class="line">    scheduledHostCallback(hasTimeRemaining, currentTime);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    isMessageLoopRunning = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">const channel = new MessageChannel()</span><br><span class="line">const port = channel.port2</span><br><span class="line">channel.port1.onmessage = performWorkUntilDeadline;</span><br><span class="line"></span><br><span class="line">// 请求回调</span><br><span class="line">requestHostCallback = <span class="keyword">function</span>(callback) &#123;</span><br><span class="line">  // 1. 保存callback</span><br><span class="line">  scheduledHostCallback = callback;</span><br><span class="line">  // 判断事件循环是否处于工作中，不是就开启</span><br><span class="line">  <span class="keyword">if</span> (!isMessageLoopRunning) &#123;</span><br><span class="line">    isMessageLoopRunning = <span class="literal">true</span>;</span><br><span class="line">    // 2. 通过 MessageChannel 发送消息</span><br><span class="line">    port.postMessage(null);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">// 取消回调 就是移除回调</span><br><span class="line">cancelHostCallback = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">  scheduledHostCallback = null;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>时间切片(time slicing)相关: 执行时间分割, 让出主线程(把控制权归还浏览器, 浏览器可以处理用户输入, UI 绘制等紧急任务).</p>
 <ul>
-<li>暂停工作，并回来</li>
-<li>为不同类型任务分配优先级</li>
-<li>重用以前完成的工作</li>
-<li>不需要的时候终止任务<br>为了做到这一点，我们需要一种将工作分解成多个单元的方法。从某种意义上来说，这就是Fiber。Fiber是一个最小工作单元</li>
+<li>getCurrentTime: 获取当前时间</li>
+<li>shouldYieldToHost: 是否让出主线程</li>
+<li>requestPaint: 请求绘制</li>
+<li>forceFrameRate: 强制设置 yieldInterval(从源码中的引用来看, 算一个保留函数, 其他地方没有用到)</li>
 </ul>
-<h1 id="计算机工作原理"><a href="#计算机工作原理" class="headerlink" title="计算机工作原理"></a>计算机工作原理</h1><p>计算机通常使用调用堆栈来跟踪程序执行的方式，一个函数被调用的时候，一个新的stack frame被添加到堆栈中，这个stack frame也代表了这个函数的工作也被执行了</p>
-<h1 id="Fiber是堆栈的重新实现，也可以将其视为虚拟堆栈-。"><a href="#Fiber是堆栈的重新实现，也可以将其视为虚拟堆栈-。" class="headerlink" title="Fiber是堆栈的重新实现，也可以将其视为虚拟堆栈 。"></a>Fiber是堆栈的重新实现，也可以将其视为虚拟堆栈 。</h1><p>重新实现堆栈的优势在于，你可以将堆栈保存在内存中，并根据需要（以及任何时候）执行他们，这对于我们的目标来说至关重要。<br>除了任务调度之外，手动处理堆栈还可以释放并发和错误边界等功能。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/20/React-Router%E5%8E%9F%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/20/React-Router%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">React Router源码解析</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-20 09:46:21" itemprop="dateCreated datePublished" datetime="2022-05-20T09:46:21+08:00">2022-05-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="BrowserRouter"><a href="#BrowserRouter" class="headerlink" title="BrowserRouter"></a>BrowserRouter</h1><p>BrowserRouter 一般是作为 App 的 container</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">ReactDOM.render(</span><br><span class="line">    &lt;BrowserRouter&gt;</span><br><span class="line">      &lt;App /&gt;</span><br><span class="line">    &lt;/BrowserRouter&gt;,</span><br><span class="line">  document.getElementById(<span class="string">&#x27;root&#x27;</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们从BrowserRouter 入口开始,看看其做了哪些初始化工作：</span></span><br><span class="line"><span class="built_in">export</span> <span class="keyword">function</span> BrowserRouter(&#123;</span><br><span class="line">  <span class="built_in">basename</span>,</span><br><span class="line">  children,</span><br><span class="line">  window</span><br><span class="line">&#125;: BrowserRouterProps) &#123;</span><br><span class="line">  const historyRef = React.useRef&lt;BrowserHistory&gt;();</span><br><span class="line">  <span class="keyword">if</span> (historyRef.current == null) &#123;</span><br><span class="line">    // 如果为空，则创建</span><br><span class="line">    // createBrowserHistory 是一个基于当前window构造的一个<span class="built_in">history</span> 的构造函数</span><br><span class="line">    // <span class="built_in">history</span> 拥有两个可读的属性 action location，以及路由跳转，路由监听的一些方法</span><br><span class="line">    historyRef.current = createBrowserHistory(&#123; window &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  const <span class="built_in">history</span> = historyRef.current;</span><br><span class="line">  const [state, setState] = React.useState(&#123;</span><br><span class="line">    action: history.action,</span><br><span class="line">    location: history.location</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  React.useLayoutEffect(() =&gt; &#123;</span><br><span class="line">    /**</span><br><span class="line">     * popstate、push、replace时如果没有blokcers的话，会调用applyTx(nextAction)触发这里的setState</span><br><span class="line">     * <span class="keyword">function</span> applyTx(nextAction: Action) &#123;</span><br><span class="line">     *   action = nextAction;</span><br><span class="line">     * //  获取当前index和location</span><br><span class="line">     *   [index, location] = getIndexAndLocation();</span><br><span class="line">     *   listeners.call(&#123; action, location &#125;);</span><br><span class="line">     * &#125;</span><br><span class="line">     */</span><br><span class="line">    history.listen(setState)</span><br><span class="line">  &#125;, [<span class="built_in">history</span>]);</span><br><span class="line">  // 一般变化的就是action和location</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;Router</span><br><span class="line">      <span class="built_in">basename</span>=&#123;<span class="built_in">basename</span>&#125;</span><br><span class="line">      children=&#123;children&#125;</span><br><span class="line">      action=&#123;state.action&#125;</span><br><span class="line">      location=&#123;state.location&#125;</span><br><span class="line">      navigator=&#123;<span class="built_in">history</span>&#125;</span><br><span class="line">    /&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="createHashHistory-与-createBrowserHistory-的不同点"><a href="#createHashHistory-与-createBrowserHistory-的不同点" class="headerlink" title="createHashHistory 与 createBrowserHistory 的不同点"></a>createHashHistory 与 createBrowserHistory 的不同点</h1><p>createBrowserHistory 是直接获取 window.location，而 createHashHistory 是 parsePath(window.location.hash.substr(1))<br>即 url 中有多个#，但是会取第一个#后面的来解析对应的 pathname、search 和 hash<br>createHashHistory 多了监听 hashchange的事件<br>createHref 会在前面拼接 getBaseHref() + ‘#’</p>
-<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><ul>
-<li>通过 push、replace 和 go 可以切换路由</li>
-<li>可以通过 history.listen 添加路由监听器 listener，每当路由切换可以收到最新的 action 和 location，从而做出不同的判断</li>
-<li>可以通过 history.block 添加阻塞器 blocker，会阻塞 push、replace 和浏览器的前进后退。</li>
-<li>且只要判断有 blockers，那么同时会加上beforeunload阻止浏览器刷新、关闭等默认行为，即弹窗提示。</li>
-<li>且只要有 blocker，那么上面的 listener 就监听不到</li>
+<h1 id="Fiber"><a href="#Fiber" class="headerlink" title="Fiber"></a>Fiber</h1><p>fiber树构造 </p>
+<ul>
+<li>从scheduler调度中心的角度来看, 它是任务队列taskQueue中的一个具体的任务回调(task.callback).</li>
+<li>从React 工作循环的角度来看, 它属于fiber树构造循环.</li>
+</ul>
+<p>通过 函数编程 return 出来的是一段类似html的jsx语法片段，经过编译器转换, 最终会以React.createElement(…)的方式，创建出来一个与之对应的ReactElement对象。</p>
+<p>经过scheduler包，封装成task，放入二叉堆，按照任务优先级，等待任务回调</p>
+<p>执行任务回调， 通过 ReactElement对象 里面的属性 进行创建多个fiber对象， 这些fiber构成了一棵fiber树, fiber树是构造DOM树的数据模型。</p>
+<p>开发人员通过编程只能控制ReactElement树的结构, ReactElement树驱动fiber树, fiber树再驱动DOM树, 最后展现到页面上. 所以fiber树的构造过程, 实际上就是ReactElement对象到fiber对象的转换过程.</p>
+<p>双缓冲技术(double buffering)<br>fiber树的构造过程, 就是把ReactElement转换成fiber树的过程.<br>在这个过程中, 内存里会同时存在 2 棵fiber树: fiberRoot &amp;&amp; HostRootFiber</p>
+<ul>
+<li>代表当前界面的fiber树(已经被展示出来, 挂载到fiberRoot.current上). 如果是初次构造(初始化渲染), 页面还没有渲染, 此时界面对应的 fiber 树为空(fiberRoot.current &#x3D; null).</li>
+<li>正在构造的fiber树(即将展示出来, 挂载到HostRootFiber.alternate上, 正在构造的节点称为workInProgress). 当构造完成之后, 重新渲染页面, 最后切换fiberRoot.current &#x3D; workInProgress, 使得fiberRoot.current重新指向代表当前界面的fiber树.</li>
 </ul>
 
       
@@ -380,7 +285,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/19/React%E8%87%AA%E5%AE%9A%E4%B9%89Hook/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/27/test/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -398,7 +303,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/19/React%E8%87%AA%E5%AE%9A%E4%B9%89Hook/" class="post-title-link" itemprop="url">React自定义Hook</a>
+          <a href="/2022/10/27/test/" class="post-title-link" itemprop="url">test</a>
         </h2>
 
         <div class="post-meta-container">
@@ -409,16 +314,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-05-19 13:04:03" itemprop="dateCreated datePublished" datetime="2022-05-19T13:04:03+08:00">2022-05-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
+      <time title="创建时间：2022-10-27 10:01:44" itemprop="dateCreated datePublished" datetime="2022-10-27T10:01:44+08:00">2022-10-27</time>
     </span>
 
   
@@ -431,14 +327,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="为何要自定义Hook"><a href="#为何要自定义Hook" class="headerlink" title="为何要自定义Hook"></a>为何要自定义Hook</h1><p>抽离公共逻辑hook，复用代码，而且数据隔离</p>
-<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><p>想要一个公共获取详情的Hook</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> useGetDetail(<span class="built_in">id</span>,url,params=&#123;&#125;)&#123;</span><br><span class="line">  const [detail, setDetail] = useState(null);</span><br><span class="line">  useEffect(async ()=&gt;&#123;</span><br><span class="line">    const data = await axios.get(url+<span class="built_in">id</span>,params)</span><br><span class="line">    setDetail(data.result);</span><br><span class="line">  &#125;,[])</span><br><span class="line">  <span class="built_in">return</span> detail</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这样就可以通过 useGetDetail(id,url,params)去获取对应的详情</span></span><br><span class="line">const detail1 = useGetDetail(<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;xxxx/api/detail?id=&#x27;</span>,&#123;&#125;)</span><br><span class="line">const detail2 = useGetDetail(<span class="string">&#x27;2&#x27;</span>,<span class="string">&#x27;xxxx/api/detail?id=&#x27;</span>,&#123;&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">#注意，自定义Hook必须以use开头，不然eslint检测不到这是一个自定义Hook</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
+          
       
     </div>
 
@@ -464,7 +353,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/05/%E8%AF%95%E5%9B%BE%E5%A4%84%E7%90%86antd-mobile-Issue%E7%9A%84%E6%96%B0%E8%B7%AF/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/07/git-%E5%A4%9A%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6%E5%87%8F%E5%B0%91%E5%86%B2%E7%AA%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -482,7 +371,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/05/%E8%AF%95%E5%9B%BE%E5%A4%84%E7%90%86antd-mobile-Issue%E7%9A%84%E6%96%B0%E8%B7%AF/" class="post-title-link" itemprop="url">试图处理antd-mobile Issue的心路历程</a>
+          <a href="/2022/09/07/git-%E5%A4%9A%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6%E5%87%8F%E5%B0%91%E5%86%B2%E7%AA%81/" class="post-title-link" itemprop="url">git 多分支合并减少冲突</a>
         </h2>
 
         <div class="post-meta-container">
@@ -493,16 +382,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-05-05 11:00:18" itemprop="dateCreated datePublished" datetime="2022-05-05T11:00:18+08:00">2022-05-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Issue/" itemprop="url" rel="index"><span itemprop="name">Issue</span></a>
-        </span>
+      <time title="创建时间：2022-09-07 18:24:35" itemprop="dateCreated datePublished" datetime="2022-09-07T18:24:35+08:00">2022-09-07</time>
     </span>
 
   
@@ -515,30 +395,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="问题：antd-mobile-Swiper-在滑动切换的时候，触发点击事件，会导致Swiper卡住"><a href="#问题：antd-mobile-Swiper-在滑动切换的时候，触发点击事件，会导致Swiper卡住" class="headerlink" title="问题：antd-mobile Swiper 在滑动切换的时候，触发点击事件，会导致Swiper卡住"></a>问题：antd-mobile Swiper 在滑动切换的时候，触发点击事件，会导致Swiper卡住</h1><h1 id="开始调研相关swiper插件，发现都有这样的问题，如vant等"><a href="#开始调研相关swiper插件，发现都有这样的问题，如vant等" class="headerlink" title="开始调研相关swiper插件，发现都有这样的问题，如vant等"></a>开始调研相关swiper插件，发现都有这样的问题，如vant等</h1><h1 id="只能进入源码层研究"><a href="#只能进入源码层研究" class="headerlink" title="只能进入源码层研究"></a>只能进入源码层研究</h1><ul>
-<li>fork ant-design-mobile 关联到自己仓库</li>
-<li>git clone ant-design-mobile 下载到本地运行</li>
-<li>yarn install &amp;&amp; yarn start 安装依赖并本地运行调试</li>
-<li>切换到 <code>./src/components/swiper/swiper.tsx</code></li>
+          <h1 id="git-在开发生产环境产生的问题"><a href="#git-在开发生产环境产生的问题" class="headerlink" title="git 在开发生产环境产生的问题"></a>git 在开发生产环境产生的问题</h1><p>一般情况所存在的主要分支</p>
+<ul>
+<li>master 生产</li>
+<li>hotfix 用于修复生产bug的专属分支</li>
+<li>main 开发分支</li>
 </ul>
-<h1 id="开始分析-swiper-构成"><a href="#开始分析-swiper-构成" class="headerlink" title="开始分析 swiper 构成"></a>开始分析 swiper 构成</h1><ul>
-<li><p>主要依赖两个库 @react-spring&#x2F;web &amp;&amp; @use-gesture&#x2F;react<br><code>@react-spring/web</code> 主要是对动画的优化<br><code>@use-gesture/react</code> 是对手势的操作处理<br>很明显该bug产生的原因是因为滑动即拖拽手势，而产生的</p>
-</li>
-<li><p>分析<code>@use-gesture/react</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line">import &#123; useDrag &#125; from <span class="string">&#x27;@use-gesture/react&#x27;</span></span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">const <span class="built_in">bind</span> = useDrag(</span><br><span class="line">  state =&gt; &#123;</span><br><span class="line">    const slidePixels = getSlidePixels()</span><br><span class="line">    <span class="keyword">if</span> (!slidePixels) <span class="built_in">return</span></span><br><span class="line">    const paramIndex = isVertical ? 1 : 0</span><br><span class="line">    const offset = state.offset[paramIndex]</span><br><span class="line">    const direction = state.direction[paramIndex]</span><br><span class="line">    const velocity = state.velocity[paramIndex]</span><br><span class="line">    setDragging(<span class="literal">true</span>)</span><br><span class="line">    <span class="keyword">if</span> (!state.last) &#123;</span><br><span class="line">      api.start(&#123;</span><br><span class="line">        position: (offset * 100) / slidePixels,</span><br><span class="line">        immediate: <span class="literal">true</span>,</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      const minIndex = Math.floor(offset / slidePixels)</span><br><span class="line">      const maxIndex = minIndex + 1</span><br><span class="line">      const index = Math.round(</span><br><span class="line">        (offset + velocity * 2000 * direction) / slidePixels</span><br><span class="line">      )</span><br><span class="line">      swipeTo(bound(index, minIndex, maxIndex))</span><br><span class="line">      window.setTimeout(() =&gt; &#123;</span><br><span class="line">        setDragging(<span class="literal">false</span>)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    transform: ([x, y]) =&gt; [-x, -y],</span><br><span class="line">    from: () =&gt; &#123;</span><br><span class="line">      const slidePixels = getSlidePixels()</span><br><span class="line">      <span class="built_in">return</span> [</span><br><span class="line">        (position.get() / 100) * slidePixels,</span><br><span class="line">        (position.get() / 100) * slidePixels,</span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    bounds: () =&gt; &#123;</span><br><span class="line">      <span class="keyword">if</span> (loop) <span class="built_in">return</span> &#123;&#125;</span><br><span class="line">      const slidePixels = getSlidePixels()</span><br><span class="line">      const lowerBound = boundIndex(0) * slidePixels</span><br><span class="line">      const upperBound = boundIndex(count - 1) * slidePixels</span><br><span class="line">      <span class="built_in">return</span> isVertical</span><br><span class="line">        ? &#123;</span><br><span class="line">            top: lowerBound,</span><br><span class="line">            bottom: upperBound,</span><br><span class="line">          &#125;</span><br><span class="line">        : &#123;</span><br><span class="line">            left: lowerBound,</span><br><span class="line">            right: upperBound,</span><br><span class="line">          &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    rubberband: props.rubberband,</span><br><span class="line">    axis: isVertical ? <span class="string">&#x27;y&#x27;</span> : <span class="string">&#x27;x&#x27;</span>,</span><br><span class="line">    preventScroll: <span class="literal">true</span>,</span><br><span class="line">    pointer: &#123;</span><br><span class="line">      <span class="built_in">touch</span>: <span class="literal">true</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>发现将 preventScroll 设置为 false 则bug消失了。<br>产生新的问题： 在拖拽的时候会存在纵向滚动的问题</p>
-</li>
-<li><p>查看 use-gesture 文档，发现 该属性是个实验性的属性，建议使用 axis 配合 touchAction 达到同等效果。修改源码：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">const touchMero: object = useMemo(()=&gt;&#123;</span><br><span class="line">  console.log(dragging)</span><br><span class="line">  <span class="built_in">return</span> dragging ? &#123;touchAction: <span class="string">&#x27;pan-x&#x27;</span>&#125; : &#123;&#125;</span><br><span class="line">&#125;,[dragging])</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">&lt;animated.div</span><br><span class="line">  className=<span class="string">&#x27;adm-swiper-track-inner&#x27;</span></span><br><span class="line">  style=&#123;&#123;</span><br><span class="line">    [isVertical ? <span class="string">&#x27;y&#x27;</span> : <span class="string">&#x27;x&#x27;</span>]: position.to(</span><br><span class="line">      position =&gt; `<span class="variable">$&#123;-position&#125;</span>%`</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">  &#125;&#125;</span><br><span class="line">&gt;</span><br><span class="line">  &#123;React.Children.map(validChildren, child =&gt; &#123;</span><br><span class="line">    <span class="built_in">return</span> &lt;div className=<span class="string">&#x27;adm-swiper-slide&#x27;</span> style=&#123;touchMero&#125;&gt;&#123;child&#125;&lt;/div&gt;</span><br><span class="line">  &#125;)&#125;</span><br><span class="line">&lt;/animated.div&gt;</span><br></pre></td></tr></table></figure>
-<p>在微信环境，功能一切正常了。<br>在Safair环境，依旧存在纵向滚动的问题</p>
-</li>
-<li><p>查看 use-gesture github<br>发现该属性确实在Safair存在bug，<a target="_blank" rel="noopener" href="https://github.com/pmndrs/use-gesture/issues/486#issue-1212399919">Issue</a></p>
-</li>
-<li><p>最后只能不了了之，等待第三方插件的维护人员修复这个bug</p>
-</li>
+<p>问题<br>在多人协作开发的时候，大家都往main提交代码，甚至有时候直接在main上改，导致main的版本已经超前了master很多很多，在下一次合并master的时侯会产生很多冲突。</p>
+<h1 id="提交与合并原则"><a href="#提交与合并原则" class="headerlink" title="提交与合并原则"></a>提交与合并原则</h1><ul>
+<li>在hotfix 修复完 bug 合并到 master 上时，用 main 去合并一下 master，让生产修复的bug在测试环境也生效</li>
+<li>准备发生产时，先用 main 去合并 master，再用master去合并main。</li>
 </ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>该bug是由antd-mobile依赖的第三方插件引起的。所以一时半会也处理不了。<br>终于明白为什么antd-pro要自己封装完整的工具链，继承到umi，dva里面。<br>如果什么都要等他们修复，不知道要等到什么时候。<br>最终的结果可能是，该框架存在很多无法解决的bug，大多来源于第三方插件。</p>
 
       
     </div>
@@ -565,7 +432,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/04/%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E8%BD%AC%E4%BA%8C%E5%85%83%E7%9A%84%E7%9A%84%E5%A6%99%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/12/centos-%E9%83%A8%E7%BD%B2-Uni-H5%E6%89%93%E5%8C%85/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -583,7 +450,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/04/%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E8%BD%AC%E4%BA%8C%E5%85%83%E7%9A%84%E7%9A%84%E5%A6%99%E7%94%A8/" class="post-title-link" itemprop="url">三元运算符转二元的的妙用</a>
+          <a href="/2022/08/12/centos-%E9%83%A8%E7%BD%B2-Uni-H5%E6%89%93%E5%8C%85/" class="post-title-link" itemprop="url">centos 部署 Uni H5打包</a>
         </h2>
 
         <div class="post-meta-container">
@@ -594,16 +461,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-05-04 10:03:31" itemprop="dateCreated datePublished" datetime="2022-05-04T10:03:31+08:00">2022-05-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
-        </span>
+      <time title="创建时间：2022-08-12 11:26:32" itemprop="dateCreated datePublished" datetime="2022-08-12T11:26:32+08:00">2022-08-12</time>
     </span>
 
   
@@ -616,107 +474,14 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 三元运算符</span></span><br><span class="line">var obj = &#123;a: 1&#125;</span><br><span class="line"></span><br><span class="line">var a = obj.a ? obj.a : undefined</span><br><span class="line"></span><br><span class="line"><span class="comment"># ?.的妙用</span></span><br><span class="line">var obj = &#123;a: 1&#125;</span><br><span class="line"></span><br><span class="line">var a = obj?.a </span><br><span class="line"></span><br><span class="line"><span class="comment"># 在jsx的语法中，经常需要模版语法根据条件渲染，此时可以缩减写法</span></span><br><span class="line">const obj = &#123;arr: [1,2,3], &#125;</span><br><span class="line">obj?.arr.map((item)=&gt;&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;&#123;item&#125;&lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment"># 因为obj.arr1不存在所以不会执行</span></span><br><span class="line">obj.arr1?.arr1.map((item)=&gt;&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;&#123;item&#125;&lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/30/%E6%8F%90%E4%BA%A4PR%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/30/%E6%8F%90%E4%BA%A4PR%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B/" class="post-title-link" itemprop="url">提交PR完整流程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-30 13:39:11" itemprop="dateCreated datePublished" datetime="2022-04-30T13:39:11+08:00">2022-04-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Issue/" itemprop="url" rel="index"><span itemprop="name">Issue</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="首先，fork项目到本地"><a href="#首先，fork项目到本地" class="headerlink" title="首先，fork项目到本地"></a>首先，fork项目到本地</h1><ol>
-<li>访问想要PR的github项目</li>
-<li>点击Start旁边的Fork，fork到自己的仓库</li>
-<li>通过git clone xxx 下载到本地</li>
+          <h1 id="大致流程"><a href="#大致流程" class="headerlink" title="大致流程"></a>大致流程</h1><ol>
+<li>从window hbuildx 软件中提取构建包 <code>uniapp-cli</code>.zip ,放到服务器里面 rz 命令上传,通过<code>cp 复制文件路径/名称 文件路径/名称</code>  复制到指定的目录上面。</li>
+<li>安装node 环境<br>  下载 node-v16.16.0-linux-x64.tar.xz<br>  rz 传到服务器<br>  tar -xvf node-v16.16.0-linux-x64.tar.xz 解压<br>  配置环境变量<br>  vi  &#x2F;etc&#x2F;profile<br>  export NODEJS&#x3D;&#x2F;zyc&#x2F;node-v16.16.0<br>  export PATH&#x3D;$PATH:$NODEJS&#x2F;bin</li>
 </ol>
-<h1 id="创建Issues"><a href="#创建Issues" class="headerlink" title="创建Issues"></a>创建Issues</h1><ol>
-<li><p>Issues标题格式规范<br><code>[标签] 标题 </code> 的格式: “[bug] 点击获取验证码的时候有问题”</p>
-</li>
-<li><p>内容规范</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 背景</span></span><br><span class="line"></span><br><span class="line">- 描述你希望解决的问题的现状</span><br><span class="line">- 附上相关的 issue 地址</span><br><span class="line"></span><br><span class="line"><span class="comment">## 思路</span></span><br><span class="line"></span><br><span class="line">描述大概的解决思路，可以包含 API 设计和伪代码等</span><br><span class="line"></span><br><span class="line"><span class="comment">## 跟进</span></span><br><span class="line"></span><br><span class="line">后续编辑，附上对应的 Pull Request 地址，可以用 `- [ ] some task` 的方式。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 案例</span></span><br><span class="line">标题：[RFC] 框架统一错误码</span><br><span class="line"><span class="comment"># 背景</span></span><br><span class="line">Egg 生态插件众多，研发流程可能会抛出各种框架、插件异常，开发者难以自行定位和解决</span><br><span class="line"></span><br><span class="line">* 没有统一的错误引导文档，目前的文档分散在官网、语雀各个空间里；错误和文档之间没有建立联系</span><br><span class="line">* 一些底层 sdk 的抛错已经丢失了链路信息，定位很困难。例如：mysql 客户端抛 ACCESS_DENIED_ERROR，已经在最后环节，但是问题可能是在上层 SDK 的使用上</span><br><span class="line"><span class="comment"># 目标</span></span><br><span class="line">* 所有框架、中间件抛出的异常信息，带上对应的 FAQ 自查文档；向下兼容对非统一 Error 的错误展示</span><br><span class="line">* 覆盖研发流程的所有阶段：CLI 命令、应用启动、运行时</span><br><span class="line">* 逐步对框架和中间件使用统一的 Error 改造，补充 FAQ 文档</span><br><span class="line"></span><br><span class="line"><span class="comment"># 方案</span></span><br><span class="line">具体实现的大致思路...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>拓展词汇缩写<br>WIP：work in progress 进展中，比如 The next major version of Vue (WIP)<br>RFC：request for comments 请求意见稿，<br>PR：pull request 请求合并<br>CR：code review 代码审查<br>BTW： By the way 顺便说一下<br>FYI：For your information 供您参考<br>ASAP：As soon as possible马上，尽快<br>LGTM：Look good to me 看起来不错，代码已review，可以合并</p>
-</li>
-</ol>
-<h1 id="认领Issues-对Issues打标签，指派给某个开发者"><a href="#认领Issues-对Issues打标签，指派给某个开发者" class="headerlink" title="认领Issues,对Issues打标签，指派给某个开发者"></a>认领Issues,对Issues打标签，指派给某个开发者</h1><p>该仓库的维护者可以对这个Issues做一些事情：</p>
-<ul>
-<li>指派开发者去修复这个Issues</li>
-<li>打标签 Labels Assignees </li>
-<li>创建指定分支去维护</li>
-</ul>
-<h1 id="在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR"><a href="#在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR" class="headerlink" title="在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR"></a>在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR</h1><p>在远程仓库项目主页可以看到提交记录旁边存在两个按钮Contribute和Fetch-upstream<br>点击Contribut -》 点击 Open pull request -》 Create pull request<br>输入本次提交的标题和描述 -》 点击Create pull request</p>
-<p>此时 已经完成了PR的提交了<br>原项目的管理者可以到项目的Pull request 去合并完成整个Issues的修复</p>
-<h1 id="测试git切换账号提交"><a href="#测试git切换账号提交" class="headerlink" title="测试git切换账号提交"></a>测试git切换账号提交</h1>
+<p>  触发生效<br>  source &#x2F;etc&#x2F;profile<br>  设置淘宝镜像源<br>   npm config set registry <a target="_blank" rel="noopener" href="http://registry.npm.taobao.org/">http://registry.npm.taobao.org/</a></p>
+<h1 id="检查是否更换成功"><a href="#检查是否更换成功" class="headerlink" title="检查是否更换成功"></a>检查是否更换成功</h1><p>   npm config get registry<br>3. 安装 uniapp-cli 依赖包，以及编译器包<br>   cd uniapp-cli 到该目录，npm install<br>  npm install bcrypt less node-sass-china –save<br>  因为node-sass-china镜像源无法下载需要到github官网去下载<br>  <a target="_blank" rel="noopener" href="https://github.com/sass/node-sass/releases/tag/v6.0.1">https://github.com/sass/node-sass/releases/tag/v6.0.1</a></p>
+<p>4. </p>
+
       
     </div>
 
@@ -742,7 +507,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/29/%E6%B7%B1%E5%BA%A6%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%8E%E8%AE%BF%E9%97%AEurl%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/27/React-render-props/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -760,7 +525,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/29/%E6%B7%B1%E5%BA%A6%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%8E%E8%AE%BF%E9%97%AEurl%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">深度理解浏览器从访问url到页面展示的全过程</a>
+          <a href="/2022/07/27/React-render-props/" class="post-title-link" itemprop="url">React render props</a>
         </h2>
 
         <div class="post-meta-container">
@@ -771,7 +536,94 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-04-29 14:48:13" itemprop="dateCreated datePublished" datetime="2022-04-29T14:48:13+08:00">2022-04-29</time>
+      <time title="创建时间：2022-07-27 10:58:48" itemprop="dateCreated datePublished" datetime="2022-07-27T10:58:48+08:00">2022-07-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Render-Props"><a href="#Render-Props" class="headerlink" title="Render Props"></a>Render Props</h1><p>术语 “render prop” 是指一种在 React 组件之间使用一个值为函数的 prop 共享代码的简单技术<br>该函数的返回值 可以是一个 ReactElement</p>
+<h1 id="Render-Props-解决的问题"><a href="#Render-Props-解决的问题" class="headerlink" title="Render Props 解决的问题"></a>Render Props 解决的问题</h1><ul>
+<li>组件复用性的问题<br>以往我们需要通过高阶组件去复用其内部的逻辑与方法，但是不想复用其中的视图，或者只是想复用部分的数据</li>
+<li>让组件可以动态的处理一些问题，而不是全量复制。特殊化处理。</li>
+<li>类似于vue中的slot</li>
+</ul>
+<h1 id="Render-Props-注意事项"><a href="#Render-Props-注意事项" class="headerlink" title="Render Props 注意事项"></a>Render Props 注意事项</h1><ul>
+<li>在使用ts进行类型定义时，必须声明该类型是一个函数</li>
+<li>它的命名不一定是render ，也可以是children或者其他<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Mouse.propTypes = &#123;</span><br><span class="line">  children: PropTypes.func.isRequired</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%80%E5%B8%A7%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/07/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%80%E5%B8%A7%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/" class="post-title-link" itemprop="url">浏览器一帧做了什么（RequestAnimationFrame）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-26 11:08:28" itemprop="dateCreated datePublished" datetime="2022-07-26T11:08:28+08:00">2022-07-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -793,117 +645,37 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="浏览器的多进程架构"><a href="#浏览器的多进程架构" class="headerlink" title="浏览器的多进程架构"></a>浏览器的多进程架构</h1><p>因为js是单线程的，一个线程可以有多个进程<br>浏览器的三大主要进程：</p>
-<ol>
-<li>浏览器进程<br>主要负责用户交互、子进程管理和文件存储等功能</li>
-<li>网络进程<br>面向渲染进程和浏览器进程等提供网路下载功能</li>
-<li>渲染进程<br>把从网络下载的资源文件解析为可以显示和交互的页面。因为渲染进程里面所有的内容都是通过网络获取的，会存在一些恶意代码利用浏览器漏洞对操作系统进行攻击，所以运行在渲染进程里面的代码是被不信任的。这也是为什么 Chrome 会让渲染进程运行在安全沙箱里，为了保证系统的安全。</li>
+          <h1 id="浏览器渲染原理"><a href="#浏览器渲染原理" class="headerlink" title="浏览器渲染原理"></a>浏览器渲染原理</h1><p>我们都知道，页面的内容都是一帧一帧绘制出来的，浏览器刷新率代表浏览器一秒绘制多少帧。原则上说 1s 内绘制的帧数也多，画面表现就也细腻。目前浏览器大多是 60Hz（60帧&#x2F;s），每一帧耗时也就是在 16.6ms 左右。</p>
+<h1 id="在一帧内的执行过程"><a href="#在一帧内的执行过程" class="headerlink" title="在一帧内的执行过程"></a>在一帧内的执行过程</h1><ul>
+<li>接受输入事件 like：touch wheel click keypress</li>
+<li>执行事件回调  Timers</li>
+<li>开始一帧 <ol>
+<li>window resize 窗口大小调整</li>
+<li>scroll 滚动</li>
+<li>mediaquery changed 媒体查询变化</li>
+<li>animation events 动画事件<br>上述这些情况都可以触发开始一帧</li>
 </ol>
-<h1 id="整个过程的大体描述"><a href="#整个过程的大体描述" class="headerlink" title="整个过程的大体描述"></a>整个过程的大体描述</h1><ul>
-<li>首先用户从浏览器进程里输入请求信息</li>
-<li>然后网络进程向服务器发起 URL 请求</li>
-<li>服务器响应 URL 请求后，浏览器进程开始准备渲染进程</li>
-<li>渲染进程准备好之后，需要向渲染进程提交待渲染的资源文档，提交文段阶段</li>
-<li>渲染进程接收到文档后，便开始解析页面和加载子资源，完成页面的渲染</li>
-<li>完成页面的渲染后，将渲染的图片交给浏览器进程，浏览器进程负责展示</li>
+</li>
+<li>执行 RAF (RequestAnimationFrame)</li>
+<li>页面布局，样式计算</li>
+<li>绘制渲染</li>
+<li>执行 RIC (RequestIdelCallback)</li>
 </ul>
-<h1 id="从输入-URL-到页面展示的具体细节"><a href="#从输入-URL-到页面展示的具体细节" class="headerlink" title="从输入 URL 到页面展示的具体细节"></a>从输入 URL 到页面展示的具体细节</h1><ol>
-<li>URL请求过程<br>浏览器进程会通过进程间通信（IPC）把 URL 请求发送至网络进程，网络进程接收到 URL 请求后，会在这里发起真正的 URL 请求流程<br>首先，网络进程基于http缓存协议去执行该Url的请求<br>如果已经存在该资源且资源没有过期，则直接返回（命中强缓存）<br>如果没有或者已过期，则发起网络请求：</li>
-</ol>
-<ul>
-<li>已过期，服务器发现该请求资源没有更新，则返回304，浏览器则取本地资源并更新</li>
-<li>已过期，服务器发现该请求资源已经更新，则返回200，携带最新资源给浏览器</li>
-<li>没有 则直接请求<br>浏览器缓存控制三种方式（Expires、Last-Modified、Etag）</li>
-<li>第一次请求http响应头会有Last-Modified标记文件在服务器端最后被修改的时间。</li>
-<li>浏览器第二次请求上次请求过的url时，浏览器会在HTTP请求头添加一个If-Modified-Since的标记，用来询问服务器该时间之后文件是否被修改过</li>
+<h1 id="RequestAnimationFrame-动画绘制-与-通过定时器触发的区别"><a href="#RequestAnimationFrame-动画绘制-与-通过定时器触发的区别" class="headerlink" title="RequestAnimationFrame 动画绘制 与 通过定时器触发的区别"></a>RequestAnimationFrame 动画绘制 与 通过定时器触发的区别</h1><p>计时器一直是javascript动画的核心技术，而setTimeout和setInterval的问题是，它们都不精确。<br>它们的内在运行机制决定了时间间隔参数实际上只是指定了把动画代码添加到浏览器UI线程队列中以等待执行的时间。<br>如果队列前面已经加入了其他任务，那动画代码就要等前面的任务完成后再执行。</p>
+<p>requestAnimationFrame采用系统时间间隔，保持最佳绘制效率。<br>不会因为间隔时间过短，造成过度绘制，增加开销；也不会因为间隔时间太长，使用动画卡顿不流畅，让各种网页动画效果能够有一个统一的刷新机制，从而节省系统资源，提高系统性能，改善视觉效果。</p>
+<h1 id="RequestAnimationFrame的特点"><a href="#RequestAnimationFrame的特点" class="headerlink" title="RequestAnimationFrame的特点"></a>RequestAnimationFrame的特点</h1><ul>
+<li>requestAnimationFrame会把每一帧中的所有DOM操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率</li>
+<li>在隐藏或不可见的元素中，requestAnimationFrame将不会进行重绘或回流，这当然就意味着更少的CPU、GPU和内存使用量</li>
+<li>requestAnimationFrame是由浏览器专门为动画提供的API，在运行时浏览器会自动优化方法的调用，并且如果页面不是激活状态下的话，动画会自动暂停，有效节省了CPU开销</li>
 </ul>
-<p>Etag 主要为了解决 Last-Modified 无法解决的一些问题:</p>
-<ul>
-<li>一些文件也许会周期性的更改，但是他的内容并不改变(仅仅改变的修改时间)，这个时候我们并不希望客户端认为这个文件被修改了，而重新GET;</li>
-<li>某些文件修改非常频繁，比如在秒以下的时间内进行修改，(比方说1s内修改了N次)，If-Modified-Since能检查到的粒度是s级的，这种修改无法判断(或者说UNIX记录MTIME只能精确到秒)</li>
-<li>某些服务器不能精确的得到文件的最后修改时间；</li>
-</ul>
-<p>浏览器是通过last-Modified Expires Etag控制缓存</p>
-<p>第二次请求相同的资源的时候</p>
-<ul>
-<li>有缓存，过期了， 则判断Etag ？ 带If-None-Match ：判断last-Modified<br>判断 last-Modified ？ 带If-Modified-Since ： 发请求<br>根据服务器判断资源更新返回304或者200</li>
-<li>缓存没有过期，则直接使用</li>
-</ul>
-<h1 id="根据响应的数据类型进行处理"><a href="#根据响应的数据类型进行处理" class="headerlink" title="根据响应的数据类型进行处理"></a>根据响应的数据类型进行处理</h1><p>浏览器会根据响应头中的 Content-Type 字段，来决定如何显示响应体的内容。</p>
-<ul>
-<li>如果是HTML，那么浏览器会继续进行页面渲染，需要准备渲染进程<br>默认情况下，Chrome 会为每个页面分配一个渲染进程，即每打开一个新页面，Chrome就会创建分配一个新的渲染进程，在某些情况下，浏览器会让多个页面直接运行在同一个渲染进程中。Chrome 的默认策略是，每个标签对应一个渲染进程，但如果从一个页面打开了另一个新页面，而新页面和当前页面属于同一站点的化，那么新页面会复用父页面的渲染进程。process-per-site-instance</li>
-</ul>
-<h1 id="渲染阶段"><a href="#渲染阶段" class="headerlink" title="渲染阶段"></a>渲染阶段</h1><p>浏览器的渲染过程主要分为五个步骤：</p>
-<ol>
-<li>浏览器将获取的 HTML 文档解析成 DOM 树；</li>
-<li>处理 CSS 标记，构成层叠样式表模型（CSSOM）；</li>
-<li>将 DOM 和 CSSOM 合并为渲染树（rendering tree）；</li>
-<li>根据渲染树上的元素布局 layout</li>
-<li>将渲染树上的各个节点绘制到屏幕上，称之为 绘制painting；</li>
-</ol>
-<h1 id="构建-DOM-树"><a href="#构建-DOM-树" class="headerlink" title="构建 DOM 树"></a>构建 DOM 树</h1><ul>
-<li>DOM 树的构建可能会被 CSS 和 JS 的加载而阻塞；</li>
-<li>display: none 的元素也会在 DOM 树中；</li>
-<li>注释也会在 DOM 树中；</li>
-<li>script 标签也会在 DOM 树中；</li>
-</ul>
-<h1 id="解析-CSS"><a href="#解析-CSS" class="headerlink" title="解析 CSS"></a>解析 CSS</h1><p>浏览器会解析 CSS 文件并生成 CSS 规则树，每个 CSS 文件都会被解析成 StyleSheet 对象，每个对象都包括 CSS 规则，CSS规则对象包括对应的选择器和声明对象以及其他对象；</p>
-<ul>
-<li>CSS 的解析可以与 DOM 的解析同步进行（因为渲染树需要Dom和CSSOM一起合成，所以无论哪个都会阻塞dom的渲染）</li>
-<li>CSS 的解析与 script 的执行互斥</li>
-<li>在 Webkit 内核中进行了 script 执行优化，只有在 JS 访问 CSS 时才会发生互斥</li>
-</ul>
-<h1 id="构建渲染树"><a href="#构建渲染树" class="headerlink" title="构建渲染树"></a>构建渲染树</h1><p>根据 DOM 树和 CSS 规则树，浏览器就可以构建渲染树了。浏览器首先遍历 DOM 树上的每一个可见节点，然后对每个可见节点找到匹配的 CSS 样式规则并应用</p>
-<ol>
-<li>渲染树和 DOM 树不完全对对应；</li>
-<li>display: none 的元素不在渲染树中；</li>
-<li>visiblity: none 的元素在渲染树中；</li>
-</ol>
-<h1 id="渲染树布局"><a href="#渲染树布局" class="headerlink" title="渲染树布局"></a>渲染树布局</h1><p>布局阶段浏览器会遍历渲染树的所有节点，由于每个节点都是一个render对象，都包含宽高、位置、背景等样式信息，所以浏览器就能根据这写信息来确定元素在页面中的所在位置，及其样式；</p>
-<ol>
-<li>float 元素、absolute 元素、fixed 元素会发生位置偏移；</li>
-<li>脱离标准文档流就是脱离渲染树（render tree）；所以一些动画元素可以让其脱离渲染树，通过absolute等方式</li>
-</ol>
-<h1 id="渲染树的绘制"><a href="#渲染树的绘制" class="headerlink" title="渲染树的绘制"></a>渲染树的绘制</h1><p>绘制阶段，浏览器遍历所有的渲染树节点，调用 paint() 方法，将其渲染在屏幕上。渲染树的绘制工作是由浏览器的UI后端组件完成的。</p>
-<h1 id="浏览器渲染过程可能出现的事情"><a href="#浏览器渲染过程可能出现的事情" class="headerlink" title="浏览器渲染过程可能出现的事情"></a>浏览器渲染过程可能出现的事情</h1><ul>
-<li>阻塞渲染<br>浏览器会延迟 JavaScript 的执行和 DOM 的构建，</li>
-</ul>
-<ol>
-<li>CSS 被默认为阻塞渲染的资源，所以在 CSSOM 构建完成之前不会处理任何已处理的内容；</li>
-<li>JavaScript 可以读取和修改 DOM 属性，还可读取和修改 CSSOM 属性，所以 CSS 解析和 script 的执行互斥<br>因此，script标签的位置很重要我们在实际开发中应该尽量坚持以下两个原则： </li>
-<li>在引入顺序上，CSS 资源先于 JavaScript 资源；</li>
-<li>JavaScript 尽量少去影响 DOM 的构建；</li>
-</ol>
-<ul>
-<li>回流和重绘（ reflow 和 repaint ）<br>display:none 会触发 reflow；<br>visibility: hidden 不会触发 reflow，只会触发 repaint；</li>
-</ul>
-<h1 id="优化渲染效率建议"><a href="#优化渲染效率建议" class="headerlink" title="优化渲染效率建议"></a>优化渲染效率建议</h1><ol>
-<li>合法地去书写 HTML 和 CSS ，且不要忘了文档编码类型；</li>
-<li>样式文档应该在 head 标签中，而脚本文档应该在 body 结束之前，防阻塞；</li>
-<li>优化 CSS 选择器，尽量少嵌套；</li>
-<li>减少 JavaScript 对 DOM 的操作；</li>
-<li>修改元素的样式时，修改 class 是性能最高的方法；</li>
-<li>尽量用 transform 来做形变和位移</li>
-</ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>从输入Url -》 dns解析 -》http请求，响应-》页面渲染<br>这里最主要就是http请求响应与页面渲染<br>http请求响应又分3次握手4次挥手协议，与http请求缓存<br>页面渲染 -》多个进程一起工作 -》事件循环机制 -》 回流重绘 -》<br>多个进程： </p>
-<ul>
-<li>浏览器主进程</li>
-<li>GPU进程</li>
-<li>渲染进程<br>事件循环机制：（又分宏任物和微任务）<br>同步任务在JS线程上优先执行，形成一个执行栈<br>JS的异步是通过回调函数来实现的，JS只有一个执行线程。 通过把回调函数添加到任务队列中来实现<br>执行步骤：</li>
-</ul>
-<ol>
-<li>先执行执行栈中的同步任务</li>
-<li>异步任务放入任务队列</li>
-<li>同步任务执行完毕，从任务队列中读取异步任务，进入执行栈，开始执行<br>异步任务的主要类型：（又分宏任物和微任务） 微任务优先执行<br>1、普通事件 如click resize 等<br>2、资源加载 如load error 等<br>3、定时器 setInterval 等<br>这些都是宏任物<br>ajax async属于微任务</li>
-</ol>
-<p>渲染进程的组成： </p>
-<ol>
-<li>GUI渲染线程，构建DOM树，构建CSSOM，两者合成渲染树，然后绘制在页面上。</li>
-<li>JS引擎线程（V8引擎）由于js是单线程，依靠任务队列来进行js代码的执行，所以js引擎会一直等待着任务队列中任务的到来，然后加以处理。</li>
-<li>事件触发线程，定时器触发线程，异步HTTP请求线程</li>
-</ol>
-<p>GUI渲染线程与JS引擎线程互斥 JS阻塞页面加载<br>JavaScript是可操纵DOM的，如果在修改这些元素属性同时渲染界面（即JS线程和UI线程同时运行），那么渲染线程前后获得的元素数据就可能不一致了。<br>因此为了防止渲染出现不可预期的结果，浏览器设置GUI渲染线程与JS引擎为互斥的关系。<br>当JS引擎执行时GUI线程会被挂起，GUI更新则会被保存在一个队列中等到JS引擎线程空闲时立即被执行。</p>
-<p>浏览器渲染的图层一般包含两大类：普通图层以及复合图层<br>可以通过硬件加速的方式，声明一个新的复合图层，它会单独分配资源<br>translate3d、translateZ， z-index 都可以加速</p>
+<h1 id="RequestAnimationFrame-的使用"><a href="#RequestAnimationFrame-的使用" class="headerlink" title="RequestAnimationFrame 的使用"></a>RequestAnimationFrame 的使用</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">&lt;div <span class="built_in">id</span>=<span class="string">&quot;myDiv&quot;</span> style=<span class="string">&quot;background-color: lightblue;width: 0;height: 20px;line-height: 20px;&quot;</span>&gt;0%&lt;/div&gt;</span><br><span class="line">&lt;button <span class="built_in">id</span>=<span class="string">&quot;btn&quot;</span>&gt;run&lt;/button&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  var timer;</span><br><span class="line">  const btn = document.getElementById(<span class="string">&#x27;btn&#x27;</span>)</span><br><span class="line">  btn.onclick = <span class="function"><span class="title">function</span></span> () &#123;</span><br><span class="line">    myDiv.style.width = <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">    cancelAnimationFrame(timer);</span><br><span class="line">    timer = requestAnimationFrame(<span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>() &#123;</span><br><span class="line">      <span class="keyword">if</span> (parseInt(myDiv.style.width) &lt; 500) &#123;</span><br><span class="line">        myDiv.style.width = parseInt(myDiv.style.width) + 5 + <span class="string">&#x27;px&#x27;</span>;</span><br><span class="line">        myDiv.innerHTML = parseInt(myDiv.style.width) / 5 + <span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">        timer = requestAnimationFrame(fn);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        cancelAnimationFrame(timer);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
 
       
     </div>
@@ -930,7 +702,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/27/%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AAloader/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/26/React16-%E8%AE%BE%E8%AE%A1%E4%B8%8E%E6%9E%B6%E6%9E%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -948,7 +720,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/27/%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AAloader/" class="post-title-link" itemprop="url">手写一个loader</a>
+          <a href="/2022/07/26/React16-%E8%AE%BE%E8%AE%A1%E4%B8%8E%E6%9E%B6%E6%9E%84/" class="post-title-link" itemprop="url">React16 设计与架构</a>
         </h2>
 
         <div class="post-meta-container">
@@ -959,7 +731,253 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-04-27 00:04:20" itemprop="dateCreated datePublished" datetime="2022-04-27T00:04:20+08:00">2022-04-27</time>
+      <time title="创建时间：2022-07-26 11:01:21" itemprop="dateCreated datePublished" datetime="2022-07-26T11:01:21+08:00">2022-07-26</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="React-设计理念"><a href="#React-设计理念" class="headerlink" title="React 设计理念"></a>React 设计理念</h1><p>由于JS是单线程的，脚本执行与页面渲染无法同时进行。当项目庞大，组件繁多时，JS执行就会超过16.6ms（浏览器单帧时长），用户就会感受到卡顿。<br>为了解决JS执行事件过长的问题，React 采取了时间切片的方式。将长任务拆分成多个片段到每一帧中执行。</p>
+<h1 id="React16架构可以分为三层："><a href="#React16架构可以分为三层：" class="headerlink" title="React16架构可以分为三层："></a>React16架构可以分为三层：</h1><ul>
+<li><p>Scheduler（调度器）—— 调度任务的优先级，高优任务优先进入Reconciler<br>1.时间分片<br>每隔一段时间就把主线程还给浏览器，避免长时间占用主线程。当浏览器更新页面之后，继续执行未完成任务<br>浏览器每一帧JS执行流程：<br>task(宏任务) – 队列中全部job(微任务) – requestAnimationFrame – 浏览器重排&#x2F;重绘 – requestIdleCallback<br>requestIdleCallback 在ie和safair浏览器上会有兼容性问题。<br>React团队采用了宏任务中的 MessageChannel 来实现任务中断。<br>MessageChannel 可以在页面与内嵌iframe直接通信</p>
+</li>
+<li><p>Reconciler（协调器）—— 负责找出变化的组件 (render阶段)</p>
+</li>
+<li><p>Renderer（渲染器）—— 负责将变化的组件渲染到页面上 (commit阶段)</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/27/Github%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%87%AA%E5%8A%A8%E5%8C%96%E5%8F%91%E5%B8%83npm%E5%8C%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/06/27/Github%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%87%AA%E5%8A%A8%E5%8C%96%E5%8F%91%E5%B8%83npm%E5%8C%85/" class="post-title-link" itemprop="url">Github持续集成自动化发布npm包</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-27 11:03:18" itemprop="dateCreated datePublished" datetime="2022-06-27T11:03:18+08:00">2022-06-27</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><p>我们发布插件不可能每次都 npm run build 然后 npm login npm publish，这属实有点麻烦，能不能简单一点，我提交个代码或者合并代码的时候就发布呢？<br>那就是持续集成，自动化发布了。</p>
+<h1 id="什么是持续集成"><a href="#什么是持续集成" class="headerlink" title="什么是持续集成"></a>什么是持续集成</h1><p>持续集成指的是，频繁地（一天多次）将代码集成到主干。</p>
+<p>它的好处主要有两个。</p>
+<ul>
+<li>快速发现错误。每完成一点更新，就集成到主干，可以快速发现错误，定位错误也比较容易。</li>
+<li>防止分支大幅偏离主干。如果不是经常集成，主干又在不断更新，会导致以后集成的难度变大，甚至难以集成。<br>持续集成的目的，就是让产品可以快速迭代，同时还能保持高质量。它的核心措施是，代码集成到主干之前，必须通过自动化测试。只要有一个测试用例失败，就不能集成。</li>
+</ul>
+<h1 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h1><ul>
+<li><p>代码托管GitHub</p>
+</li>
+<li><p>找到Actions创建workflow模板<br>找到Publish Node.js Package 去 初始化config，并保存。<br>项目中即可生成下列文件<br>.github&#x2F;workflows&#x2F;npmpublish.yml</p>
+</li>
+<li><p>同步远程分支，并修改npmpublish.yml</p>
+</li>
+<li><p>npmpublish.yml 文件解释<br>name 此工作流的名称。<br>on 触发条件，上述文本表示当master分支合并和推送时会触发workflow。<br>jobs 工作集合，例如jobs内部的build、publish-npm表示具体的工作任务的ID，可以自定义。<br>needs 表示当前的job依赖与另外一个job，例如上面的publish-npm依赖于build。<br>runs-on 表示工作所在的虚拟机操作系统，目前可选的系统有ubuntu-latest、ubuntu-18.04、ubuntu-16.04、windows-latest、windows-2019、windows-2016、macOS-latest、macOS-10.14。<br>steps 表示job所执行的 actions 和 commands 集合。</p>
+</li>
+<li><p>添加npm access Tokens<br>登陆npm - accessTokens - Generate New Token 获取到token<br>在github对应项目&#x2F;settings&#x2F;secrets&#x2F;dependabot 上 New secret 保存，<br>名字要和npmpublish.yml设置的保持一致，一般不做修改: npm_token</p>
+</li>
+<li><p>提交之后就会自动构建更新npm</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/27/npm%E4%B8%8A%E6%9E%B6%E6%B5%81%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/06/27/npm%E4%B8%8A%E6%9E%B6%E6%B5%81%E7%A8%8B/" class="post-title-link" itemprop="url">npm上架流程</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-27 09:53:32" itemprop="dateCreated datePublished" datetime="2022-06-27T09:53:32+08:00">2022-06-27</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="步骤流程"><a href="#步骤流程" class="headerlink" title="步骤流程"></a>步骤流程</h1><ul>
+<li><p>注册npm账户 ，安装node.js</p>
+</li>
+<li><p>在本地创建自己的npm包<br>创建文件夹，名字建议不要与线上包重名<br>初始化npm包 npm init<br>创建一个index.js文件作为包入口文件（和package.json下的main保持一致）<br>编写完善index.js</p>
+</li>
+<li><p>发布npm包<br>npm adduser 添加登录用户，请确保当前链接源是官网，使用nrm工具可以快速查看和切换<br>npm publish 发布上传包</p>
+</li>
+<li><p>更新npm包<br>修改内容，更新版本号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//直接修改package.json中的version</span><br><span class="line"><span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.1.0&quot;</span></span><br></pre></td></tr></table></figure>
+<p>npm publish 再次发布</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/10/uni%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E4%B8%BB%E9%A2%98%E8%89%B2%E8%B0%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/06/10/uni%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E4%B8%BB%E9%A2%98%E8%89%B2%E8%B0%83/" class="post-title-link" itemprop="url">UNI全局设置主题色调</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-10 16:19:21" itemprop="dateCreated datePublished" datetime="2022-06-10T16:19:21+08:00">2022-06-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -967,7 +985,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Webpack/" itemprop="url" rel="index"><span itemprop="name">Webpack</span></a>
+          <a href="/categories/UNI/" itemprop="url" rel="index"><span itemprop="name">UNI</span></a>
         </span>
     </span>
 
@@ -981,199 +999,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="loader-原理"><a href="#loader-原理" class="headerlink" title="loader 原理"></a>loader 原理</h1><p>loader就像一个翻译员，能将源文件翻译后输出新的结果，并且一个文件可以链式的经过几个翻译员。<br>以.scss文件为例子：</p>
-<ul>
-<li>先将.scss文件内容交给sass-loader翻译为css</li>
-<li>在将翻译后的css交给css-loader,找出css中依赖的资源，压缩css</li>
-<li>再将css-loader输出的内容交给style-loader,转化为通过脚本加载的JavaScript代码</li>
+          <h1 id="UNI全局设置主题色调-的思路"><a href="#UNI全局设置主题色调-的思路" class="headerlink" title="UNI全局设置主题色调 的思路"></a>UNI全局设置主题色调 的思路</h1><ul>
+<li>通过全局设置主类，在主类下添加子类来控制样式</li>
+<li>基于scss去控制全局色调</li>
+<li>基于scss mixin去生成多色调</li>
+<li>通过vuex去控制全局色调的类</li>
+<li>通过mixin混到全局暴露出全局的类和色调</li>
 </ul>
-<p>1，本质是一个函数。<br>参数能获取目标的内容，<br>结果能传递给下一个loader。</p>
-<p>2.自定义loader要使用绝对路径引入。</p>
-<h1 id="自定义一个loader"><a href="#自定义一个loader" class="headerlink" title="自定义一个loader"></a>自定义一个loader</h1><ul>
-<li>首先定义一个loader自动在jsx文件中</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/25/useCallback-%E5%92%8C-useMemo-%E7%9A%84%E5%8C%BA%E5%88%AB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/25/useCallback-%E5%92%8C-useMemo-%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">useCallback 和 useMemo 的区别</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-25 20:52:17" itemprop="dateCreated datePublished" datetime="2022-04-25T20:52:17+08:00">2022-04-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="useCallback"><a href="#useCallback" class="headerlink" title="useCallback"></a>useCallback</h1><p>const memoizedCallback &#x3D; useCallback(<br>  () &#x3D;&gt; {<br>    doSomething(a, b);<br>  },<br>  [a, b],<br>);<br>把内联回调函数及依赖项数组作为参数传入 useCallback，它将返回该回调函数的 memoized 版本，该回调函数仅在某个依赖项改变时才会更新。当你把回调函数传递给经过优化的并使用引用相等性去避免非必要渲染（例如 shouldComponentUpdate）的子组件时，它将非常有用。</p>
-<h1 id="useMemo"><a href="#useMemo" class="headerlink" title="useMemo"></a>useMemo</h1><p>const memoizedValue &#x3D; useMemo(() &#x3D;&gt; computeExpensiveValue(a, b), [a, b]);<br>返回一个 memoized 值 。</p>
-<p>把“创建”函数和依赖项数组作为参数传入 useMemo，它仅会在某个依赖项改变时才重新计算 memoized 值。这种优化有助于避免在每次渲染时都进行高开销的计算。</p>
-<p>你可以把 useMemo 作为性能优化的手段，但不要把它当成语义上的保证<br>将来，React 可能会选择“遗忘”以前的一些 memoized 值，并在下次渲染时重新计算它们，比如为离屏组件释放内存。先编写在没有 useMemo 的情况下也可以执行的代码 —— 之后再在你的代码中添加 useMemo，以达到优化性能的目的。</p>
-<p>function Example() {<br>    const [count, setCount] &#x3D; useState(1);<br>    const [val, setValue] &#x3D; useState(‘’);</p>
-<pre><code>const getNum = useMemo(() =&gt; &#123;
-    return Array.from(&#123;length: count * 100&#125;, (v, i) =&gt; i).reduce((a, b) =&gt; a+b)
-&#125;, [count])
-
-return &lt;div&gt;
-    &lt;h4&gt;总和：&#123;getNum()&#125;&lt;/h4&gt;
-    &lt;div&gt;
-        &lt;button onClick=&#123;() =&gt; setCount(count + 1)&#125;&gt;+1&lt;/button&gt;
-        &lt;input value=&#123;val&#125; onChange=&#123;event =&gt; setValue(event.target.value)&#125;/&gt;
-    &lt;/div&gt;
-&lt;/div&gt;;
-</code></pre>
-<p>}</p>
-<p>避免因为val变化而导致getNum重新渲染</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>useCallback 返回的是一个函数<br>useMemo 返回的的函数的执行结果</p>
-<p>类似于计算属性computed，避免使用了该函数或者该值的组件重复渲染。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 把事件写进render里面会在重新渲染的时候重新生成新的onclick</span></span><br><span class="line">class Demo extends Component&#123;</span><br><span class="line">    <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> </span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; () =&gt; &#123; console.log(<span class="string">&#x27;Hello World！！&#x27;</span>); &#125;&#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 在组件中可以在constructor里面</span></span><br><span class="line">class Demo extends Component&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span></span>()&#123;</span><br><span class="line">        super();</span><br><span class="line">        this.buttonClick = this.buttonClick.<span class="built_in">bind</span>(this);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> </span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; this.buttonClick &#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 在函数式组件中开发</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Demo</span></span>()&#123;</span><br><span class="line">    const buttonClick = useCallback(() =&gt; &#123; </span><br><span class="line">    	console.log(<span class="string">&#x27;Hello World！！&#x27;</span>)</span><br><span class="line">    &#125;,[])</span><br><span class="line">    <span class="built_in">return</span>(</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; buttonClick &#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">内存泄漏详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-25 13:15:32" itemprop="dateCreated datePublished" datetime="2022-04-25T13:15:32+08:00">2022-04-25</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="JS的回收机制"><a href="#JS的回收机制" class="headerlink" title="JS的回收机制"></a>JS的回收机制</h1><p>JS垃圾回收的机制（GC）会按照固定的时间间隔，周期性的执行。<br>标记清除：<br>当变量进入环境时，例如，在函数中声明一个变量，就将这个变量标记为“进入环境”。从逻辑上讲，永远不能释放进入环境的变量所占用的内存，因为只要执行流进入相应的环境，就可能会用到它们。而当变量离开环境时，则将其标记为“离开环境”。</p>
-<p>function test(){<br>  var a&#x3D;10;&#x2F;&#x2F;被标记，进入环境<br>  var b&#x3D;20;&#x2F;&#x2F;被标记，进入环境<br>}<br>test();&#x2F;&#x2F;执行完毕之后a、b又被标记离开环境，被回收</p>
-<h1 id="哪些操作会造成内存泄露"><a href="#哪些操作会造成内存泄露" class="headerlink" title="哪些操作会造成内存泄露"></a>哪些操作会造成内存泄露</h1><p>意外的全局变量引起的内存泄露：<br>function leak(){<br>  leak&#x3D;”xxx”;&#x2F;&#x2F;leak成为一个全局变量，不会被回收<br>}<br>闭包引起的内存泄漏<br>function bindEvent(){<br>  var obj&#x3D;document.createElement(“XXX”);<br>  obj.οnclick&#x3D;function(){<br>    &#x2F;&#x2F;Even if it’s a empty function<br>  }<br>}<br>解决方法：</p>
-<ul>
-<li>将事件处理函数定义在外部，解除闭包。<br>&#x2F;&#x2F;将事件处理函数定义在外部<br>function onclickHandler(){<br>&#x2F;&#x2F;do something<br>}<br>function bindEvent(){<br>var obj&#x3D;document.createElement(“XXX”);<br>obj.οnclick&#x3D;onclickHandler;<br>}</li>
-<li>在定义事件处理函数的外部函数中，删除对 DOM 的引用<br>function bindEvent(){<br>var obj&#x3D;document.createElement(“XXX”);<br>obj.οnclick&#x3D;function(){<br>  &#x2F;&#x2F;Even if it’s a empty function<br>}<br>obj&#x3D;null;<br>}</li>
-<li>没有清理的 DOM 元素引用：<br>var elements&#x3D;{<br>  button: document.getElementById(“button”),<br>  image: document.getElementById(“image”),<br>  text: document.getElementById(“text”)<br>};<br>function doStuff(){<br>  image.src&#x3D;”<a target="_blank" rel="noopener" href="http://some.url/image&quot;">http://some.url/image&quot;</a>;<br>  button.click():<br>  console.log(text.innerHTML)<br>}<br>function removeButton(){<br>  document.body.removeChild(document.getElementById(‘button’))<br>}</li>
-<li>被遗忘的定时器或者回调：<br>var someResouce&#x3D;getData();<br>setInterval(function(){<br>  var node&#x3D;document.getElementById(‘Node’);<br>  if(node){<br>  node.innerHTML&#x3D;JSON.stringify(someResouce)<br>  }<br>},1000)</li>
-</ul>
-<h1 id="怎样避免内存泄露："><a href="#怎样避免内存泄露：" class="headerlink" title="怎样避免内存泄露："></a>怎样避免内存泄露：</h1><ul>
-<li>减少不必要的全局变量，或者生命周期较长的对象，及时对无用的数据进行垃圾回收；</li>
-<li>注意程序逻辑，避免“死循环”之类的；</li>
-<li>避免创建过多的对象，原则：不用了的东西要及时归还。</li>
-</ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>定义全局变量，闭包，dom的引用，定时器都会产生内存使用的问题。不处理会导致内存泄漏</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">// themes.scss</span><br><span class="line"><span class="variable">$bg</span>-007aff: <span class="comment">#007aff;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$bg</span>-00C997: <span class="comment">#00C997; </span></span><br><span class="line"></span><br><span class="line">@mixin setTheme(<span class="variable">$color</span>)&#123;</span><br><span class="line">  .Text&#123;</span><br><span class="line">    color: <span class="variable">$color</span>!important;</span><br><span class="line">  &#125;</span><br><span class="line">  .u-button &#123;</span><br><span class="line">		background-color: <span class="variable">$color</span>!important;</span><br><span class="line">	&#125;</span><br><span class="line">  .uni-button-color &#123;</span><br><span class="line">    color: <span class="variable">$color</span>!important;</span><br><span class="line">  &#125;</span><br><span class="line">  .uni-modal__btn  &#123;</span><br><span class="line">    color: <span class="variable">$color</span>!important;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// uni.scss</span><br><span class="line"> @import <span class="string">&#x27;@/common/styles/themes.scss&#x27;</span>;</span><br><span class="line">.THEME-00C997 &#123;</span><br><span class="line">  @include setTheme(<span class="variable">$bg</span>-00C997)</span><br><span class="line">&#125;</span><br><span class="line">.THEME-007aff &#123;</span><br><span class="line">  @include setTheme(<span class="variable">$bg</span>-007aff)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// store/index.js</span><br><span class="line">import Vue from <span class="string">&#x27;vue&#x27;</span></span><br><span class="line">import Vuex from <span class="string">&#x27;vuex&#x27;</span></span><br><span class="line"></span><br><span class="line">Vue.use(Vuex) // vue的插件机制</span><br><span class="line"></span><br><span class="line">const store = new Vuex.Store(&#123;</span><br><span class="line">    // 为了不和页面或组件的data中的造成混淆，state中的变量前面建议加上$符号</span><br><span class="line">    state: &#123;</span><br><span class="line">      <span class="variable">$themeClass</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    actions: &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;,</span><br><span class="line">    mutations: &#123;</span><br><span class="line">        SETTHEMECLASS(state,data)&#123;</span><br><span class="line">            state.<span class="variable">$themeClass</span> = data</span><br><span class="line">            uni.setStorageSync(<span class="string">&#x27;themeClass&#x27;</span>, data);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default store</span><br><span class="line"></span><br><span class="line">// 在app.vue中设置</span><br><span class="line">onLaunch: <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">  // 可以异步获取</span><br><span class="line">	this.<span class="variable">$store</span>.commit(<span class="string">&#x27;SETTHEMECLASS&#x27;</span>,<span class="string">&#x27;00C997&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 全局暴露</span><br><span class="line">computed:&#123;</span><br><span class="line">  <span class="function"><span class="title">GETTHEME</span></span>()&#123;</span><br><span class="line">    <span class="built_in">return</span> <span class="string">&#x27;THEME-&#x27;</span> + this.<span class="variable">$store</span>.state.<span class="variable">$themeClass</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">GETCOLOR</span></span>()&#123;</span><br><span class="line">    <span class="built_in">return</span> <span class="string">&#x27;#&#x27;</span> + this.<span class="variable">$store</span>.state.<span class="variable">$themeClass</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="使用注意"><a href="#使用注意" class="headerlink" title="使用注意"></a>使用注意</h1><p>需要在每个页面的根节点，动态注入该类 :class&#x3D;”GETTHEME”</p>
+<p>可以通过 GETCOLOR 获取到该主题的色值，辅助某些组件提供api修改状态值</p>
 
       
     </div>
@@ -1193,7 +1028,7 @@ return &lt;div&gt;
 
 
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
@@ -1205,7 +1040,7 @@ return &lt;div&gt;
 
 <div class="copyright">
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

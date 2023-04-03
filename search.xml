@@ -4,6 +4,315 @@
   
     
     <entry>
+      <title>react17.x 主流程解析</title>
+      <link href="/2023/03/29/react17-x-%E4%B8%BB%E6%B5%81%E7%A8%8B%E8%A7%A3%E6%9E%90/"/>
+      <url>/2023/03/29/react17-x-%E4%B8%BB%E6%B5%81%E7%A8%8B%E8%A7%A3%E6%9E%90/</url>
+      
+        <content type="html"><![CDATA[<h1 id="关于-React-三大架构"><a href="#关于-React-三大架构" class="headerlink" title="关于 React 三大架构"></a>关于 React 三大架构</h1><ul><li>reconciler 协调器 ，集成filber</li><li>Scheduler 任务调度器</li><li>react-dom 渲染器</li></ul><h1 id="reconciler"><a href="#reconciler" class="headerlink" title="reconciler"></a>reconciler</h1><p>reconciler 主要是负责 scheduler 与 react-dom 的任务之间的互相协调与分配。</p><p>内置一个任务循环，将同步的任务放入循环，按顺序执行。异步的任务，直接执行。</p><p>通过fiber 构建fiber树。输出给react-dom去生成dom树给浏览器渲染。</p><p>内置一个 scheduleUpdateOnFiber （更新fiber树）的方法，该方法主要将 更新fiber树 的操作封装成 scheduler 接收的 task 任务包。然后放进任务调度循环里面，根据优先级 ，等待 reconciler 提取task来执行 task的回调 来构建fiber树。</p><h1 id="scheduler"><a href="#scheduler" class="headerlink" title="scheduler"></a>scheduler</h1><p>scheduler 存放任务包 用的是 二叉堆 中的最小堆数据模型。优先级最高的就会出现在最顶点，等待被取用。</p><p>优先级使用的是 lanes 模型。二进制变量。 利用了位掩码的特性, 在频繁运算的时候占用内存少, 计算速度快.</p><p>主要提供了4个调度的核心的函数</p><ul><li>requestHostCallback</li><li>cancelHostCallback</li><li>requestHostTimeout</li><li>cancelHostTimeout</li></ul><p>通过 消息通道 MessageChannel 来通知执行callback</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">// 接收 MessageChannel 消息</span><br><span class="line">const performWorkUntilDeadline = () =&gt; &#123;</span><br><span class="line">  // ...省略无关代码</span><br><span class="line">  <span class="keyword">if</span> (scheduledHostCallback !== null) &#123;</span><br><span class="line">    // 执行callback</span><br><span class="line">    scheduledHostCallback(hasTimeRemaining, currentTime);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    isMessageLoopRunning = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">const channel = new MessageChannel()</span><br><span class="line">const port = channel.port2</span><br><span class="line">channel.port1.onmessage = performWorkUntilDeadline;</span><br><span class="line"></span><br><span class="line">// 请求回调</span><br><span class="line">requestHostCallback = <span class="keyword">function</span>(callback) &#123;</span><br><span class="line">  // 1. 保存callback</span><br><span class="line">  scheduledHostCallback = callback;</span><br><span class="line">  // 判断事件循环是否处于工作中，不是就开启</span><br><span class="line">  <span class="keyword">if</span> (!isMessageLoopRunning) &#123;</span><br><span class="line">    isMessageLoopRunning = <span class="literal">true</span>;</span><br><span class="line">    // 2. 通过 MessageChannel 发送消息</span><br><span class="line">    port.postMessage(null);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">// 取消回调 就是移除回调</span><br><span class="line">cancelHostCallback = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">  scheduledHostCallback = null;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><p>时间切片(time slicing)相关: 执行时间分割, 让出主线程(把控制权归还浏览器, 浏览器可以处理用户输入, UI 绘制等紧急任务).</p><ul><li>getCurrentTime: 获取当前时间</li><li>shouldYieldToHost: 是否让出主线程</li><li>requestPaint: 请求绘制</li><li>forceFrameRate: 强制设置 yieldInterval(从源码中的引用来看, 算一个保留函数, 其他地方没有用到)</li></ul><h1 id="Fiber"><a href="#Fiber" class="headerlink" title="Fiber"></a>Fiber</h1><p>fiber树构造 </p><ul><li>从scheduler调度中心的角度来看, 它是任务队列taskQueue中的一个具体的任务回调(task.callback).</li><li>从React 工作循环的角度来看, 它属于fiber树构造循环.</li></ul><p>通过 函数编程 return 出来的是一段类似html的jsx语法片段，经过编译器转换, 最终会以React.createElement(…)的方式，创建出来一个与之对应的ReactElement对象。</p><p>经过scheduler包，封装成task，放入二叉堆，按照任务优先级，等待任务回调</p><p>执行任务回调， 通过 ReactElement对象 里面的属性 进行创建多个fiber对象， 这些fiber构成了一棵fiber树, fiber树是构造DOM树的数据模型。</p><p>开发人员通过编程只能控制ReactElement树的结构, ReactElement树驱动fiber树, fiber树再驱动DOM树, 最后展现到页面上. 所以fiber树的构造过程, 实际上就是ReactElement对象到fiber对象的转换过程.</p><p>双缓冲技术(double buffering)<br>fiber树的构造过程, 就是把ReactElement转换成fiber树的过程.<br>在这个过程中, 内存里会同时存在 2 棵fiber树: fiberRoot &amp;&amp; HostRootFiber</p><ul><li>代表当前界面的fiber树(已经被展示出来, 挂载到fiberRoot.current上). 如果是初次构造(初始化渲染), 页面还没有渲染, 此时界面对应的 fiber 树为空(fiberRoot.current &#x3D; null).</li><li>正在构造的fiber树(即将展示出来, 挂载到HostRootFiber.alternate上, 正在构造的节点称为workInProgress). 当构造完成之后, 重新渲染页面, 最后切换fiberRoot.current &#x3D; workInProgress, 使得fiberRoot.current重新指向代表当前界面的fiber树.</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> React </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>test</title>
+      <link href="/2022/10/27/test/"/>
+      <url>/2022/10/27/test/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>git 多分支合并减少冲突</title>
+      <link href="/2022/09/07/git-%E5%A4%9A%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6%E5%87%8F%E5%B0%91%E5%86%B2%E7%AA%81/"/>
+      <url>/2022/09/07/git-%E5%A4%9A%E5%88%86%E6%94%AF%E5%90%88%E5%B9%B6%E5%87%8F%E5%B0%91%E5%86%B2%E7%AA%81/</url>
+      
+        <content type="html"><![CDATA[<h1 id="git-在开发生产环境产生的问题"><a href="#git-在开发生产环境产生的问题" class="headerlink" title="git 在开发生产环境产生的问题"></a>git 在开发生产环境产生的问题</h1><p>一般情况所存在的主要分支</p><ul><li>master 生产</li><li>hotfix 用于修复生产bug的专属分支</li><li>main 开发分支</li></ul><p>问题<br>在多人协作开发的时候，大家都往main提交代码，甚至有时候直接在main上改，导致main的版本已经超前了master很多很多，在下一次合并master的时侯会产生很多冲突。</p><h1 id="提交与合并原则"><a href="#提交与合并原则" class="headerlink" title="提交与合并原则"></a>提交与合并原则</h1><ul><li>在hotfix 修复完 bug 合并到 master 上时，用 main 去合并一下 master，让生产修复的bug在测试环境也生效</li><li>准备发生产时，先用 main 去合并 master，再用master去合并main。</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>centos 部署 Uni H5打包</title>
+      <link href="/2022/08/12/centos-%E9%83%A8%E7%BD%B2-Uni-H5%E6%89%93%E5%8C%85/"/>
+      <url>/2022/08/12/centos-%E9%83%A8%E7%BD%B2-Uni-H5%E6%89%93%E5%8C%85/</url>
+      
+        <content type="html"><![CDATA[<h1 id="大致流程"><a href="#大致流程" class="headerlink" title="大致流程"></a>大致流程</h1><ol><li>从window hbuildx 软件中提取构建包 <code>uniapp-cli</code>.zip ,放到服务器里面 rz 命令上传,通过<code>cp 复制文件路径/名称 文件路径/名称</code>  复制到指定的目录上面。</li><li>安装node 环境<br>  下载 node-v16.16.0-linux-x64.tar.xz<br>  rz 传到服务器<br>  tar -xvf node-v16.16.0-linux-x64.tar.xz 解压<br>  配置环境变量<br>  vi  &#x2F;etc&#x2F;profile<br>  export NODEJS&#x3D;&#x2F;zyc&#x2F;node-v16.16.0<br>  export PATH&#x3D;$PATH:$NODEJS&#x2F;bin</li></ol><p>  触发生效<br>  source &#x2F;etc&#x2F;profile<br>  设置淘宝镜像源<br>   npm config set registry <a href="http://registry.npm.taobao.org/">http://registry.npm.taobao.org/</a></p><h1 id="检查是否更换成功"><a href="#检查是否更换成功" class="headerlink" title="检查是否更换成功"></a>检查是否更换成功</h1><p>   npm config get registry<br>3. 安装 uniapp-cli 依赖包，以及编译器包<br>   cd uniapp-cli 到该目录，npm install<br>  npm install bcrypt less node-sass-china –save<br>  因为node-sass-china镜像源无法下载需要到github官网去下载<br>  <a href="https://github.com/sass/node-sass/releases/tag/v6.0.1">https://github.com/sass/node-sass/releases/tag/v6.0.1</a></p><p>4. </p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Uni </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>React render props</title>
+      <link href="/2022/07/27/React-render-props/"/>
+      <url>/2022/07/27/React-render-props/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Render-Props"><a href="#Render-Props" class="headerlink" title="Render Props"></a>Render Props</h1><p>术语 “render prop” 是指一种在 React 组件之间使用一个值为函数的 prop 共享代码的简单技术<br>该函数的返回值 可以是一个 ReactElement</p><h1 id="Render-Props-解决的问题"><a href="#Render-Props-解决的问题" class="headerlink" title="Render Props 解决的问题"></a>Render Props 解决的问题</h1><ul><li>组件复用性的问题<br>以往我们需要通过高阶组件去复用其内部的逻辑与方法，但是不想复用其中的视图，或者只是想复用部分的数据</li><li>让组件可以动态的处理一些问题，而不是全量复制。特殊化处理。</li><li>类似于vue中的slot</li></ul><h1 id="Render-Props-注意事项"><a href="#Render-Props-注意事项" class="headerlink" title="Render Props 注意事项"></a>Render Props 注意事项</h1><ul><li>在使用ts进行类型定义时，必须声明该类型是一个函数</li><li>它的命名不一定是render ，也可以是children或者其他<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Mouse.propTypes = &#123;</span><br><span class="line">  children: PropTypes.func.isRequired</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> React </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> render props </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>浏览器一帧做了什么（RequestAnimationFrame）</title>
+      <link href="/2022/07/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%80%E5%B8%A7%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/"/>
+      <url>/2022/07/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%80%E5%B8%A7%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/</url>
+      
+        <content type="html"><![CDATA[<h1 id="浏览器渲染原理"><a href="#浏览器渲染原理" class="headerlink" title="浏览器渲染原理"></a>浏览器渲染原理</h1><p>我们都知道，页面的内容都是一帧一帧绘制出来的，浏览器刷新率代表浏览器一秒绘制多少帧。原则上说 1s 内绘制的帧数也多，画面表现就也细腻。目前浏览器大多是 60Hz（60帧&#x2F;s），每一帧耗时也就是在 16.6ms 左右。</p><h1 id="在一帧内的执行过程"><a href="#在一帧内的执行过程" class="headerlink" title="在一帧内的执行过程"></a>在一帧内的执行过程</h1><ul><li>接受输入事件 like：touch wheel click keypress</li><li>执行事件回调  Timers</li><li>开始一帧 <ol><li>window resize 窗口大小调整</li><li>scroll 滚动</li><li>mediaquery changed 媒体查询变化</li><li>animation events 动画事件<br>上述这些情况都可以触发开始一帧</li></ol></li><li>执行 RAF (RequestAnimationFrame)</li><li>页面布局，样式计算</li><li>绘制渲染</li><li>执行 RIC (RequestIdelCallback)</li></ul><h1 id="RequestAnimationFrame-动画绘制-与-通过定时器触发的区别"><a href="#RequestAnimationFrame-动画绘制-与-通过定时器触发的区别" class="headerlink" title="RequestAnimationFrame 动画绘制 与 通过定时器触发的区别"></a>RequestAnimationFrame 动画绘制 与 通过定时器触发的区别</h1><p>计时器一直是javascript动画的核心技术，而setTimeout和setInterval的问题是，它们都不精确。<br>它们的内在运行机制决定了时间间隔参数实际上只是指定了把动画代码添加到浏览器UI线程队列中以等待执行的时间。<br>如果队列前面已经加入了其他任务，那动画代码就要等前面的任务完成后再执行。</p><p>requestAnimationFrame采用系统时间间隔，保持最佳绘制效率。<br>不会因为间隔时间过短，造成过度绘制，增加开销；也不会因为间隔时间太长，使用动画卡顿不流畅，让各种网页动画效果能够有一个统一的刷新机制，从而节省系统资源，提高系统性能，改善视觉效果。</p><h1 id="RequestAnimationFrame的特点"><a href="#RequestAnimationFrame的特点" class="headerlink" title="RequestAnimationFrame的特点"></a>RequestAnimationFrame的特点</h1><ul><li>requestAnimationFrame会把每一帧中的所有DOM操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率</li><li>在隐藏或不可见的元素中，requestAnimationFrame将不会进行重绘或回流，这当然就意味着更少的CPU、GPU和内存使用量</li><li>requestAnimationFrame是由浏览器专门为动画提供的API，在运行时浏览器会自动优化方法的调用，并且如果页面不是激活状态下的话，动画会自动暂停，有效节省了CPU开销</li></ul><h1 id="RequestAnimationFrame-的使用"><a href="#RequestAnimationFrame-的使用" class="headerlink" title="RequestAnimationFrame 的使用"></a>RequestAnimationFrame 的使用</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">&lt;div <span class="built_in">id</span>=<span class="string">&quot;myDiv&quot;</span> style=<span class="string">&quot;background-color: lightblue;width: 0;height: 20px;line-height: 20px;&quot;</span>&gt;0%&lt;/div&gt;</span><br><span class="line">&lt;button <span class="built_in">id</span>=<span class="string">&quot;btn&quot;</span>&gt;run&lt;/button&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  var timer;</span><br><span class="line">  const btn = document.getElementById(<span class="string">&#x27;btn&#x27;</span>)</span><br><span class="line">  btn.onclick = <span class="function"><span class="title">function</span></span> () &#123;</span><br><span class="line">    myDiv.style.width = <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">    cancelAnimationFrame(timer);</span><br><span class="line">    timer = requestAnimationFrame(<span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>() &#123;</span><br><span class="line">      <span class="keyword">if</span> (parseInt(myDiv.style.width) &lt; 500) &#123;</span><br><span class="line">        myDiv.style.width = parseInt(myDiv.style.width) + 5 + <span class="string">&#x27;px&#x27;</span>;</span><br><span class="line">        myDiv.innerHTML = parseInt(myDiv.style.width) / 5 + <span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">        timer = requestAnimationFrame(fn);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        cancelAnimationFrame(timer);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 浏览器 </category>
+          
+      </categories>
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>React16 设计与架构</title>
+      <link href="/2022/07/26/React16-%E8%AE%BE%E8%AE%A1%E4%B8%8E%E6%9E%B6%E6%9E%84/"/>
+      <url>/2022/07/26/React16-%E8%AE%BE%E8%AE%A1%E4%B8%8E%E6%9E%B6%E6%9E%84/</url>
+      
+        <content type="html"><![CDATA[<h1 id="React-设计理念"><a href="#React-设计理念" class="headerlink" title="React 设计理念"></a>React 设计理念</h1><p>由于JS是单线程的，脚本执行与页面渲染无法同时进行。当项目庞大，组件繁多时，JS执行就会超过16.6ms（浏览器单帧时长），用户就会感受到卡顿。<br>为了解决JS执行事件过长的问题，React 采取了时间切片的方式。将长任务拆分成多个片段到每一帧中执行。</p><h1 id="React16架构可以分为三层："><a href="#React16架构可以分为三层：" class="headerlink" title="React16架构可以分为三层："></a>React16架构可以分为三层：</h1><ul><li><p>Scheduler（调度器）—— 调度任务的优先级，高优任务优先进入Reconciler<br>1.时间分片<br>每隔一段时间就把主线程还给浏览器，避免长时间占用主线程。当浏览器更新页面之后，继续执行未完成任务<br>浏览器每一帧JS执行流程：<br>task(宏任务) – 队列中全部job(微任务) – requestAnimationFrame – 浏览器重排&#x2F;重绘 – requestIdleCallback<br>requestIdleCallback 在ie和safair浏览器上会有兼容性问题。<br>React团队采用了宏任务中的 MessageChannel 来实现任务中断。<br>MessageChannel 可以在页面与内嵌iframe直接通信</p></li><li><p>Reconciler（协调器）—— 负责找出变化的组件 (render阶段)</p></li><li><p>Renderer（渲染器）—— 负责将变化的组件渲染到页面上 (commit阶段)</p></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> React </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Github持续集成自动化发布npm包</title>
+      <link href="/2022/06/27/Github%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%87%AA%E5%8A%A8%E5%8C%96%E5%8F%91%E5%B8%83npm%E5%8C%85/"/>
+      <url>/2022/06/27/Github%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%87%AA%E5%8A%A8%E5%8C%96%E5%8F%91%E5%B8%83npm%E5%8C%85/</url>
+      
+        <content type="html"><![CDATA[<h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><p>我们发布插件不可能每次都 npm run build 然后 npm login npm publish，这属实有点麻烦，能不能简单一点，我提交个代码或者合并代码的时候就发布呢？<br>那就是持续集成，自动化发布了。</p><h1 id="什么是持续集成"><a href="#什么是持续集成" class="headerlink" title="什么是持续集成"></a>什么是持续集成</h1><p>持续集成指的是，频繁地（一天多次）将代码集成到主干。</p><p>它的好处主要有两个。</p><ul><li>快速发现错误。每完成一点更新，就集成到主干，可以快速发现错误，定位错误也比较容易。</li><li>防止分支大幅偏离主干。如果不是经常集成，主干又在不断更新，会导致以后集成的难度变大，甚至难以集成。<br>持续集成的目的，就是让产品可以快速迭代，同时还能保持高质量。它的核心措施是，代码集成到主干之前，必须通过自动化测试。只要有一个测试用例失败，就不能集成。</li></ul><h1 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h1><ul><li><p>代码托管GitHub</p></li><li><p>找到Actions创建workflow模板<br>找到Publish Node.js Package 去 初始化config，并保存。<br>项目中即可生成下列文件<br>.github&#x2F;workflows&#x2F;npmpublish.yml</p></li><li><p>同步远程分支，并修改npmpublish.yml</p></li><li><p>npmpublish.yml 文件解释<br>name 此工作流的名称。<br>on 触发条件，上述文本表示当master分支合并和推送时会触发workflow。<br>jobs 工作集合，例如jobs内部的build、publish-npm表示具体的工作任务的ID，可以自定义。<br>needs 表示当前的job依赖与另外一个job，例如上面的publish-npm依赖于build。<br>runs-on 表示工作所在的虚拟机操作系统，目前可选的系统有ubuntu-latest、ubuntu-18.04、ubuntu-16.04、windows-latest、windows-2019、windows-2016、macOS-latest、macOS-10.14。<br>steps 表示job所执行的 actions 和 commands 集合。</p></li><li><p>添加npm access Tokens<br>登陆npm - accessTokens - Generate New Token 获取到token<br>在github对应项目&#x2F;settings&#x2F;secrets&#x2F;dependabot 上 New secret 保存，<br>名字要和npmpublish.yml设置的保持一致，一般不做修改: npm_token</p></li><li><p>提交之后就会自动构建更新npm</p></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> NPM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>npm上架流程</title>
+      <link href="/2022/06/27/npm%E4%B8%8A%E6%9E%B6%E6%B5%81%E7%A8%8B/"/>
+      <url>/2022/06/27/npm%E4%B8%8A%E6%9E%B6%E6%B5%81%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<h1 id="步骤流程"><a href="#步骤流程" class="headerlink" title="步骤流程"></a>步骤流程</h1><ul><li><p>注册npm账户 ，安装node.js</p></li><li><p>在本地创建自己的npm包<br>创建文件夹，名字建议不要与线上包重名<br>初始化npm包 npm init<br>创建一个index.js文件作为包入口文件（和package.json下的main保持一致）<br>编写完善index.js</p></li><li><p>发布npm包<br>npm adduser 添加登录用户，请确保当前链接源是官网，使用nrm工具可以快速查看和切换<br>npm publish 发布上传包</p></li><li><p>更新npm包<br>修改内容，更新版本号</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//直接修改package.json中的version</span><br><span class="line"><span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.1.0&quot;</span></span><br></pre></td></tr></table></figure><p>npm publish 再次发布</p></li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> NPM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>UNI全局设置主题色调</title>
+      <link href="/2022/06/10/uni%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E4%B8%BB%E9%A2%98%E8%89%B2%E8%B0%83/"/>
+      <url>/2022/06/10/uni%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E4%B8%BB%E9%A2%98%E8%89%B2%E8%B0%83/</url>
+      
+        <content type="html"><![CDATA[<h1 id="UNI全局设置主题色调-的思路"><a href="#UNI全局设置主题色调-的思路" class="headerlink" title="UNI全局设置主题色调 的思路"></a>UNI全局设置主题色调 的思路</h1><ul><li>通过全局设置主类，在主类下添加子类来控制样式</li><li>基于scss去控制全局色调</li><li>基于scss mixin去生成多色调</li><li>通过vuex去控制全局色调的类</li><li>通过mixin混到全局暴露出全局的类和色调</li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">// themes.scss</span><br><span class="line"><span class="variable">$bg</span>-007aff: <span class="comment">#007aff;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$bg</span>-00C997: <span class="comment">#00C997; </span></span><br><span class="line"></span><br><span class="line">@mixin setTheme(<span class="variable">$color</span>)&#123;</span><br><span class="line">  .Text&#123;</span><br><span class="line">    color: <span class="variable">$color</span>!important;</span><br><span class="line">  &#125;</span><br><span class="line">  .u-button &#123;</span><br><span class="line">background-color: <span class="variable">$color</span>!important;</span><br><span class="line">&#125;</span><br><span class="line">  .uni-button-color &#123;</span><br><span class="line">    color: <span class="variable">$color</span>!important;</span><br><span class="line">  &#125;</span><br><span class="line">  .uni-modal__btn  &#123;</span><br><span class="line">    color: <span class="variable">$color</span>!important;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// uni.scss</span><br><span class="line"> @import <span class="string">&#x27;@/common/styles/themes.scss&#x27;</span>;</span><br><span class="line">.THEME-00C997 &#123;</span><br><span class="line">  @include setTheme(<span class="variable">$bg</span>-00C997)</span><br><span class="line">&#125;</span><br><span class="line">.THEME-007aff &#123;</span><br><span class="line">  @include setTheme(<span class="variable">$bg</span>-007aff)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// store/index.js</span><br><span class="line">import Vue from <span class="string">&#x27;vue&#x27;</span></span><br><span class="line">import Vuex from <span class="string">&#x27;vuex&#x27;</span></span><br><span class="line"></span><br><span class="line">Vue.use(Vuex) // vue的插件机制</span><br><span class="line"></span><br><span class="line">const store = new Vuex.Store(&#123;</span><br><span class="line">    // 为了不和页面或组件的data中的造成混淆，state中的变量前面建议加上$符号</span><br><span class="line">    state: &#123;</span><br><span class="line">      <span class="variable">$themeClass</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    actions: &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;,</span><br><span class="line">    mutations: &#123;</span><br><span class="line">        SETTHEMECLASS(state,data)&#123;</span><br><span class="line">            state.<span class="variable">$themeClass</span> = data</span><br><span class="line">            uni.setStorageSync(<span class="string">&#x27;themeClass&#x27;</span>, data);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default store</span><br><span class="line"></span><br><span class="line">// 在app.vue中设置</span><br><span class="line">onLaunch: <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">  // 可以异步获取</span><br><span class="line">this.<span class="variable">$store</span>.commit(<span class="string">&#x27;SETTHEMECLASS&#x27;</span>,<span class="string">&#x27;00C997&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 全局暴露</span><br><span class="line">computed:&#123;</span><br><span class="line">  <span class="function"><span class="title">GETTHEME</span></span>()&#123;</span><br><span class="line">    <span class="built_in">return</span> <span class="string">&#x27;THEME-&#x27;</span> + this.<span class="variable">$store</span>.state.<span class="variable">$themeClass</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">GETCOLOR</span></span>()&#123;</span><br><span class="line">    <span class="built_in">return</span> <span class="string">&#x27;#&#x27;</span> + this.<span class="variable">$store</span>.state.<span class="variable">$themeClass</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure><h1 id="使用注意"><a href="#使用注意" class="headerlink" title="使用注意"></a>使用注意</h1><p>需要在每个页面的根节点，动态注入该类 :class&#x3D;”GETTHEME”</p><p>可以通过 GETCOLOR 获取到该主题的色值，辅助某些组件提供api修改状态值</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> UNI </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> UNI </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>七牛云获取图片大小限制</title>
+      <link href="/2022/06/08/%E4%B8%83%E7%89%9B%E4%BA%91%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%A4%A7%E5%B0%8F%E9%99%90%E5%88%B6/"/>
+      <url>/2022/06/08/%E4%B8%83%E7%89%9B%E4%BA%91%E8%8E%B7%E5%8F%96%E5%9B%BE%E7%89%87%E5%A4%A7%E5%B0%8F%E9%99%90%E5%88%B6/</url>
+      
+        <content type="html"><![CDATA[<h1 id="通过链接访问图片"><a href="#通过链接访问图片" class="headerlink" title="通过链接访问图片"></a>通过链接访问图片</h1><p><a href="http://static.kewaimiao.com/0arRAjL94RNEwYIQ.img">http://static.kewaimiao.com/0arRAjL94RNEwYIQ.img</a></p><p>该方式获取到的是图片的原图，没有经过任何处理</p><h1 id="产生的问题"><a href="#产生的问题" class="headerlink" title="产生的问题"></a>产生的问题</h1><ul><li>在大量图片的网页中，多用户访问，会产生很多流量费用。</li><li>客户端在弱网环境下，访问资源加载会非常缓慢</li></ul><h1 id="解决方案-七牛云：云端的数据处理"><a href="#解决方案-七牛云：云端的数据处理" class="headerlink" title="解决方案 七牛云：云端的数据处理"></a>解决方案 七牛云：云端的数据处理</h1><p>通过添加后缀的方式：<br><code>?imageView2/3/w/200/h/100/q/90</code><br>按照 宽200px、高100px、质量为原图的90%进行展示</p><p><a href="http://static.kewaimiao.com/0arRAjL94RNEwYIQ.img?imageView2/3/w/200/h/100/q/90">http://static.kewaimiao.com/0arRAjL94RNEwYIQ.img?imageView2/3/w/200/h/100/q/90</a></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>全局设置样式完美解决方案</title>
+      <link href="/2022/06/07/%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E6%A0%B7%E5%BC%8F%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
+      <url>/2022/06/07/%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E6%A0%B7%E5%BC%8F%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+      
+        <content type="html"><![CDATA[<h1 id="问题起源"><a href="#问题起源" class="headerlink" title="问题起源"></a>问题起源</h1><p>在多人开发，UI参次不齐的过程中。产生了大量的问题。其中最主要的就是统一滚动区域。</p><h1 id="思考解决方案的历程"><a href="#思考解决方案的历程" class="headerlink" title="思考解决方案的历程"></a>思考解决方案的历程</h1><ul><li>提供一个动态style，通过复制到各个使用的页面去解决；（无法统一修改，维护麻烦）</li><li>提供一个动态类，通过vuex去缓存，再各个页面去调用；（由vuex统一维护，但是使用麻烦）</li></ul><h1 id="终极解决方案"><a href="#终极解决方案" class="headerlink" title="终极解决方案"></a>终极解决方案</h1><p>通过全局动态插入css脚本，给某个id或者类赋值的方式<br>使用时给对应div添加该id或者类即可</p><h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">mounted</span></span>() &#123;</span><br><span class="line">  const that = this</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">fixHeight</span></span>() &#123;</span><br><span class="line">    that.clientHeight = document.body.clientHeight</span><br><span class="line">    <span class="built_in">let</span> height = 0</span><br><span class="line">    <span class="keyword">if</span> (that.clientHeight &lt; 855) &#123;</span><br><span class="line">      const calc = 855 - that.clientHeight</span><br><span class="line">      height = (550 - calc) &gt; 200 ? 550 - calc : 200</span><br><span class="line">    &#125;</span><br><span class="line">    var style = document.createElement(<span class="string">&#x27;style&#x27;</span>)</span><br><span class="line">    style.type = <span class="string">&#x27;text/css&#x27;</span></span><br><span class="line">    try &#123;</span><br><span class="line">      style.appendChild(document.createTextNode(<span class="string">&#x27;#formBody&#123;height:&#x27;</span> + (that.clientHeight - 250) + <span class="string">&#x27;px&#x27;</span> + <span class="string">&#x27;&#125;&#x27;</span>))</span><br><span class="line">    &#125; catch (ex) &#123;</span><br><span class="line">      style.styleSheet.cssText = <span class="string">&#x27;#formBody&#123;height:&#x27;</span> + (that.clientHeight - 250) + <span class="string">&#x27;px&#x27;</span> + <span class="string">&#x27;&#125;&#x27;</span>// 针对IE</span><br><span class="line">    &#125;</span><br><span class="line">    var <span class="built_in">head</span> = document.getElementsByTagName(<span class="string">&#x27;head&#x27;</span>)[0]</span><br><span class="line">    head.appendChild(style)</span><br><span class="line">  &#125;</span><br><span class="line">  window.onload = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">    fixHeight()</span><br><span class="line">    window.onresize = throttle(fixHeight, 300)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>在对应页面添加 #formBody 即可<br>优化点： 可以在插入之前删掉之前插入的。<br>因为这个会根据窗口高度不断变化，不断插入，不删也不影响。<br>因为后面会覆盖前面的</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> CSS </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 三元运算符妙用 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JS 回溯算法</title>
+      <link href="/2022/05/21/JS-%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/"/>
+      <url>/2022/05/21/JS-%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<h1 id="回溯算法"><a href="#回溯算法" class="headerlink" title="回溯算法"></a>回溯算法</h1><p>回溯算法实际上一个类似枚举的搜索尝试过程，主要是在搜索尝试过程中寻找问题的解，当发现已不满足求解条件时，就“回溯”返回，尝试别的路径。<br>解题步骤</p><ul><li>1.定义一个解空间，它包含问题的解；</li><li>2.利用适于搜索的方法组织解空间；</li><li>3.利用深度优先法搜索解空间；</li><li>4.利用限界函数避免移动到不可能产生解的子空间。</li></ul><h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><p>给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。（不包含重复的数组）<br>示例:<br>输入: nums &#x3D; [1,2,3]<br>输出:[3][1][2][1,2,3][1,3][2,3][1,2][]</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> allResult(nums)&#123;</span><br><span class="line">  <span class="built_in">let</span> arr = [[]]</span><br><span class="line">  <span class="keyword">function</span> digui(combine,idx)&#123;</span><br><span class="line">    combine.push(nums[idx])</span><br><span class="line">    arr.push([...combine])  </span><br><span class="line">    <span class="keyword">while</span>(idx !== nums.length-1) &#123;</span><br><span class="line">      idx++</span><br><span class="line">      digui([...combine],idx)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  nums.map((item,idx)=&gt;&#123;</span><br><span class="line">    digui([],idx)</span><br><span class="line">  &#125;)  </span><br><span class="line">  <span class="built_in">return</span> arr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> JS </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JS 滚动窗口视图算法</title>
+      <link href="/2022/05/21/JS-%E6%BB%9A%E5%8A%A8%E7%AA%97%E5%8F%A3%E8%A7%86%E5%9B%BE%E7%AE%97%E6%B3%95/"/>
+      <url>/2022/05/21/JS-%E6%BB%9A%E5%8A%A8%E7%AA%97%E5%8F%A3%E8%A7%86%E5%9B%BE%E7%AE%97%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<h1 id="滑动窗口算法"><a href="#滑动窗口算法" class="headerlink" title="滑动窗口算法"></a>滑动窗口算法</h1><p>滑动窗口算法在一个特定大小的字符串或数组上进行操作，而不在整个字符串和数组上操作，这样就降低了问题的复杂度，从而也达到降低了循环的嵌套深度。</p><h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><p>无重复字符的最长子串<br>给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。<br>输入: s &#x3D; “abcabcbb”<br>输出: 3<br>解释: 因为无重复字符的最长子串是 “abc”，所以其长度为 3。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @param &#123;string&#125; s</span><br><span class="line"> * @<span class="built_in">return</span> &#123;number&#125;</span><br><span class="line"> */</span><br><span class="line">var lengthOfLongestSubstring = <span class="keyword">function</span>(s) &#123;</span><br><span class="line">    // 窗口视图拖动</span><br><span class="line">    var maxL = 0</span><br><span class="line">    var i = 0</span><br><span class="line">    <span class="keyword">while</span>(s.length &gt;= i) &#123;</span><br><span class="line">        var j = i+1      </span><br><span class="line">        <span class="keyword">while</span>(s.length &gt;= j)&#123;</span><br><span class="line">            var tmpStr = s.substring(i,j)</span><br><span class="line">            maxL = Math.max(maxL,tmpStr.length)</span><br><span class="line">            <span class="keyword">if</span>(tmpStr.indexOf(s.charAt(j)) &gt; -1)&#123;</span><br><span class="line">              <span class="built_in">break</span>  </span><br><span class="line">            &#125;</span><br><span class="line">            j++</span><br><span class="line">        &#125;</span><br><span class="line">        i++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">return</span> maxL</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> JS </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JS 双指针算法</title>
+      <link href="/2022/05/21/JS-%E5%8F%8C%E6%8C%87%E9%92%88%E7%AE%97%E6%B3%95/"/>
+      <url>/2022/05/21/JS-%E5%8F%8C%E6%8C%87%E9%92%88%E7%AE%97%E6%B3%95/</url>
+      
+        <content type="html"><![CDATA[<h1 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h1><p>双指针指的是在遍历对象的过程中，不是普通的使用单个指针进行访问，而是使用两个相同方向（快慢指针）或者相反方向（对撞指针）的指针进行扫描，从而达到相应的目的。</p><h1 id="案例-对撞指针"><a href="#案例-对撞指针" class="headerlink" title="案例 对撞指针"></a>案例 对撞指针</h1><p>给你一个整数 x ，如果 x 是一个回文整数，返回 true ；否则，返回 false 。<br>回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。<br>例如，121 是回文，而 123 不是。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @param &#123;number&#125; x</span><br><span class="line"> * @<span class="built_in">return</span> &#123;boolean&#125;</span><br><span class="line"> */</span><br><span class="line">var isPalindrome = <span class="keyword">function</span>(x) &#123;</span><br><span class="line">    // 双指针解法 </span><br><span class="line">    x = String(x)</span><br><span class="line">    <span class="keyword">if</span>(x.length == 1) <span class="built_in">return</span> <span class="literal">true</span></span><br><span class="line">    <span class="built_in">let</span> i = 0,j=x.length -1</span><br><span class="line">    <span class="keyword">while</span>(x.charAt(i) === x.charAt(j) )&#123;</span><br><span class="line">        i++;</span><br><span class="line">        j--;</span><br><span class="line">        <span class="keyword">if</span>(i &gt;= j ) <span class="built_in">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">return</span> <span class="literal">false</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> JS </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> JS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>React fiber原理解析</title>
       <link href="/2022/05/20/React-fiber%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/"/>
       <url>/2022/05/20/React-fiber%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/</url>
@@ -381,6 +690,31 @@
     
     
     <entry>
+      <title>splice方法在react Hock中无法改变state数据</title>
+      <link href="/2022/01/07/splice%E6%96%B9%E6%B3%95%E5%9C%A8react-Hock%E4%B8%AD%E6%97%A0%E6%B3%95%E6%94%B9%E5%8F%98state%E6%95%B0%E6%8D%AE/"/>
+      <url>/2022/01/07/splice%E6%96%B9%E6%B3%95%E5%9C%A8react-Hock%E4%B8%AD%E6%97%A0%E6%B3%95%E6%94%B9%E5%8F%98state%E6%95%B0%E6%8D%AE/</url>
+      
+        <content type="html"><![CDATA[<h1 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fun</span></span>()&#123;</span><br><span class="line">  const [arr,setArr] = useState([1,2])</span><br><span class="line">  arr.splice(1,3)</span><br><span class="line">  setArr(arr)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>这时候发现是没有效果的。<br>因为splice是修改原数组，并返回被切掉的元素。<br>而arr保存的是引用地址<br>所以要先copy一份arr再操作<br>const copyArr &#x3D; arr.slice()  ||  const copyArr &#x3D; […arr]</p><h1 id="正解"><a href="#正解" class="headerlink" title="正解"></a>正解</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fun</span></span>()&#123;</span><br><span class="line">  const [arr,setArr] = useState([1,2])</span><br><span class="line">  const copyArr = arr.slice() </span><br><span class="line">  copyArr.splice(1,3)</span><br><span class="line">  setArr(copyArr)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> React </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> React </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>React组件通讯</title>
       <link href="/2021/09/22/React%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF/"/>
       <url>/2021/09/22/React%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF/</url>
@@ -629,7 +963,7 @@
       <link href="/2021/02/01/git-%E5%A4%9A%E8%B4%A6%E5%8F%B7%E9%85%8D%E7%BD%AE/"/>
       <url>/2021/02/01/git-%E5%A4%9A%E8%B4%A6%E5%8F%B7%E9%85%8D%E7%BD%AE/</url>
       
-        <content type="html"><![CDATA[<h1 id="git-多账号账号切换使用"><a href="#git-多账号账号切换使用" class="headerlink" title="git 多账号账号切换使用"></a>git 多账号账号切换使用</h1><ul><li>解决密钥问题。默认只有一个密钥，二次创建会覆盖</li><li>使用哪个账号提交的</li></ul><h1 id="生成两个账号私钥在本地"><a href="#生成两个账号私钥在本地" class="headerlink" title="生成两个账号私钥在本地"></a>生成两个账号私钥在本地</h1><p>生成默认的 id_rsa 和id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱1”<br>在创建第二个的时候必须要重命名 比如 137_id_ras,这样会生成另外两个文件137_id_rsa 和 137_id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱2”</p><h1 id="在-ssh下面创建config文件"><a href="#在-ssh下面创建config文件" class="headerlink" title="在.ssh下面创建config文件"></a>在.ssh下面创建config文件</h1><p>执行 touch config 创建<br>执行 vim config 编辑</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Default 第一个账号(123456@xxxx.com)</span></span><br><span class="line"></span><br><span class="line">Host default</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/137_id_rsa</span><br><span class="line"><span class="comment">#second 第二个账号（38894403@xxxx.com）    </span></span><br><span class="line">Host zc</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure><p>只需要修改 IdentityFile 即可<br>ssh -T <a href="mailto:&#103;&#105;&#116;&#x40;&#x67;&#105;&#116;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;">&#103;&#105;&#116;&#x40;&#x67;&#105;&#116;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;</a> 可以测试是否配置成功<br><code>配置成功会显示当前用户名</code> 这个很重要，因为当你想切换用户的时候没有这个不行<br>通过设置<br>git config –global user.name “13725102796”<br>git config –global user.email “<a href="mailto:&#49;&#52;&#x33;&#x39;&#54;&#x35;&#53;&#x37;&#54;&#x34;&#x40;&#113;&#113;&#x2e;&#99;&#x6f;&#x6d;">&#49;&#52;&#x33;&#x39;&#54;&#x35;&#53;&#x37;&#54;&#x34;&#x40;&#113;&#113;&#x2e;&#99;&#x6f;&#x6d;</a>“<br>还没有生效，因为ssh-add的代理始终指向默认的</p><h1 id="通过ssh-add删除代理"><a href="#通过ssh-add删除代理" class="headerlink" title="通过ssh-add删除代理"></a>通过ssh-add删除代理</h1><p>查看 ssh-add -l<br>删除 ssh-add -D<br>添加<br>ssh-add ~&#x2F;.ssh&#x2F;id_rsa<br>ssh-add ~&#x2F;.ssh&#x2F;137_id_rsa </p><h1 id="添加代理后还不可以，需要修改提交的git-clone-ssh链接"><a href="#添加代理后还不可以，需要修改提交的git-clone-ssh链接" class="headerlink" title="添加代理后还不可以，需要修改提交的git clone ssh链接"></a>添加代理后还不可以，需要修改提交的git clone ssh链接</h1><ul><li><p>还没clone的可以通过 来拉取项目，这样可以让ssh-add正确代理<br>git clone zy@:18820677498&#x2F;Blog.git<br>原来是 <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#x69;&#x74;&#104;&#117;&#98;&#46;&#99;&#111;&#109;">&#103;&#105;&#116;&#x40;&#103;&#x69;&#x74;&#104;&#117;&#98;&#46;&#99;&#111;&#109;</a>:18820677498&#x2F;Blog.git</p></li><li><p>已经clone的 可以切换到当前项目下，命令行执行<br><code>vim .git/config</code><br>打开config文件 按i去修改，按esc退出修改，再按 <code>:qw!</code> 保存修改</p></li></ul>]]></content>
+        <content type="html"><![CDATA[<h1 id="git-多账号账号切换使用"><a href="#git-多账号账号切换使用" class="headerlink" title="git 多账号账号切换使用"></a>git 多账号账号切换使用</h1><ul><li>解决密钥问题。默认只有一个密钥，二次创建会覆盖</li><li>使用哪个账号提交的</li></ul><h1 id="生成两个账号私钥在本地"><a href="#生成两个账号私钥在本地" class="headerlink" title="生成两个账号私钥在本地"></a>生成两个账号私钥在本地</h1><p>生成默认的 id_rsa 和id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱1”<br>在创建第二个的时候必须要重命名 比如 137_id_ras,这样会生成另外两个文件137_id_rsa 和 137_id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱2”</p><h1 id="在-ssh下面创建config文件"><a href="#在-ssh下面创建config文件" class="headerlink" title="在.ssh下面创建config文件"></a>在.ssh下面创建config文件</h1><p>执行 touch config 创建<br>执行 vim config 编辑</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Default 第一个账号(123456@xxxx.com)</span></span><br><span class="line"></span><br><span class="line">Host default</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/137_id_rsa</span><br><span class="line"><span class="comment">#second 第二个账号（38894403@xxxx.com）    </span></span><br><span class="line">Host zc</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure><p>只需要修改 IdentityFile 即可<br>ssh -T <a href="mailto:&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#x74;&#104;&#117;&#98;&#46;&#x63;&#111;&#x6d;">&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#x74;&#104;&#117;&#98;&#46;&#x63;&#111;&#x6d;</a> 可以测试是否配置成功<br><code>配置成功会显示当前用户名</code> 这个很重要，因为当你想切换用户的时候没有这个不行<br>通过设置<br>git config –global user.name “13725102796”<br>git config –global user.email “<a href="mailto:&#x31;&#x34;&#x33;&#x39;&#x36;&#x35;&#53;&#55;&#54;&#52;&#x40;&#113;&#113;&#46;&#x63;&#x6f;&#109;">&#x31;&#x34;&#x33;&#x39;&#x36;&#x35;&#53;&#55;&#54;&#52;&#x40;&#113;&#113;&#46;&#x63;&#x6f;&#109;</a>“<br>还没有生效，因为ssh-add的代理始终指向默认的</p><h1 id="通过ssh-add删除代理"><a href="#通过ssh-add删除代理" class="headerlink" title="通过ssh-add删除代理"></a>通过ssh-add删除代理</h1><p>查看 ssh-add -l<br>删除 ssh-add -D<br>添加<br>ssh-add ~&#x2F;.ssh&#x2F;id_rsa<br>ssh-add ~&#x2F;.ssh&#x2F;137_id_rsa </p><h1 id="添加代理后还不可以，需要修改提交的git-clone-ssh链接"><a href="#添加代理后还不可以，需要修改提交的git-clone-ssh链接" class="headerlink" title="添加代理后还不可以，需要修改提交的git clone ssh链接"></a>添加代理后还不可以，需要修改提交的git clone ssh链接</h1><ul><li><p>还没clone的可以通过 来拉取项目，这样可以让ssh-add正确代理<br>git clone zy@:18820677498&#x2F;Blog.git<br>原来是 <a href="mailto:&#x67;&#x69;&#x74;&#x40;&#103;&#105;&#x74;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;">&#x67;&#x69;&#x74;&#x40;&#103;&#105;&#x74;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;</a>:18820677498&#x2F;Blog.git</p></li><li><p>已经clone的 可以切换到当前项目下，命令行执行<br><code>vim .git/config</code><br>打开config文件 按i去修改，按esc退出修改，再按 <code>:qw!</code> 保存修改</p></li></ul>]]></content>
       
       
       <categories>
