@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">96</span>
+          <span class="site-state-item-count">98</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,6 +166,177 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/07/%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E6%A0%B7%E5%BC%8F%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/06/07/%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E6%A0%B7%E5%BC%8F%E5%AE%8C%E7%BE%8E%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="post-title-link" itemprop="url">全局设置样式完美解决方案</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-07 16:49:25" itemprop="dateCreated datePublished" datetime="2022-06-07T16:49:25+08:00">2022-06-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CSS/" itemprop="url" rel="index"><span itemprop="name">CSS</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="问题起源"><a href="#问题起源" class="headerlink" title="问题起源"></a>问题起源</h1><p>在多人开发，UI参次不齐的过程中。产生了大量的问题。其中最主要的就是统一滚动区域。</p>
+<h1 id="思考解决方案的历程"><a href="#思考解决方案的历程" class="headerlink" title="思考解决方案的历程"></a>思考解决方案的历程</h1><ul>
+<li>提供一个动态style，通过复制到各个使用的页面去解决；（无法统一修改，维护麻烦）</li>
+<li>提供一个动态类，通过vuex去缓存，再各个页面去调用；（由vuex统一维护，但是使用麻烦）</li>
+</ul>
+<h1 id="终极解决方案"><a href="#终极解决方案" class="headerlink" title="终极解决方案"></a>终极解决方案</h1><p>通过全局动态插入css脚本，给某个id或者类赋值的方式<br>使用时给对应div添加该id或者类即可</p>
+<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">mounted</span></span>() &#123;</span><br><span class="line">  const that = this</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">fixHeight</span></span>() &#123;</span><br><span class="line">    that.clientHeight = document.body.clientHeight</span><br><span class="line">    <span class="built_in">let</span> height = 0</span><br><span class="line">    <span class="keyword">if</span> (that.clientHeight &lt; 855) &#123;</span><br><span class="line">      const calc = 855 - that.clientHeight</span><br><span class="line">      height = (550 - calc) &gt; 200 ? 550 - calc : 200</span><br><span class="line">    &#125;</span><br><span class="line">    var style = document.createElement(<span class="string">&#x27;style&#x27;</span>)</span><br><span class="line">    style.type = <span class="string">&#x27;text/css&#x27;</span></span><br><span class="line">    try &#123;</span><br><span class="line">      style.appendChild(document.createTextNode(<span class="string">&#x27;#formBody&#123;height:&#x27;</span> + (that.clientHeight - 250) + <span class="string">&#x27;px&#x27;</span> + <span class="string">&#x27;&#125;&#x27;</span>))</span><br><span class="line">    &#125; catch (ex) &#123;</span><br><span class="line">      style.styleSheet.cssText = <span class="string">&#x27;#formBody&#123;height:&#x27;</span> + (that.clientHeight - 250) + <span class="string">&#x27;px&#x27;</span> + <span class="string">&#x27;&#125;&#x27;</span>// 针对IE</span><br><span class="line">    &#125;</span><br><span class="line">    var <span class="built_in">head</span> = document.getElementsByTagName(<span class="string">&#x27;head&#x27;</span>)[0]</span><br><span class="line">    head.appendChild(style)</span><br><span class="line">  &#125;</span><br><span class="line">  window.onload = <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">    fixHeight()</span><br><span class="line">    window.onresize = throttle(fixHeight, 300)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在对应页面添加 #formBody 即可<br>优化点： 可以在插入之前删掉之前插入的。<br>因为这个会根据窗口高度不断变化，不断插入，不删也不影响。<br>因为后面会覆盖前面的</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/21/JS-%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/21/JS-%E5%9B%9E%E6%BA%AF%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">JS 回溯算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-21 13:02:54" itemprop="dateCreated datePublished" datetime="2022-05-21T13:02:54+08:00">2022-05-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="回溯算法"><a href="#回溯算法" class="headerlink" title="回溯算法"></a>回溯算法</h1><p>回溯算法实际上一个类似枚举的搜索尝试过程，主要是在搜索尝试过程中寻找问题的解，当发现已不满足求解条件时，就“回溯”返回，尝试别的路径。<br>解题步骤</p>
+<ul>
+<li>1.定义一个解空间，它包含问题的解；</li>
+<li>2.利用适于搜索的方法组织解空间；</li>
+<li>3.利用深度优先法搜索解空间；</li>
+<li>4.利用限界函数避免移动到不可能产生解的子空间。</li>
+</ul>
+<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><p>给定一组不含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。（不包含重复的数组）<br>示例:<br>输入: nums &#x3D; [1,2,3]<br>输出:[3][1][2][1,2,3][1,3][2,3][1,2][]</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> allResult(nums)&#123;</span><br><span class="line">  <span class="built_in">let</span> arr = [[]]</span><br><span class="line">  <span class="keyword">function</span> digui(combine,idx)&#123;</span><br><span class="line">    combine.push(nums[idx])</span><br><span class="line">    arr.push([...combine])  </span><br><span class="line">    <span class="keyword">while</span>(idx !== nums.length-1) &#123;</span><br><span class="line">      idx++</span><br><span class="line">      digui([...combine],idx)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  nums.map((item,idx)=&gt;&#123;</span><br><span class="line">    digui([],idx)</span><br><span class="line">  &#125;)  </span><br><span class="line">  <span class="built_in">return</span> arr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -877,282 +1048,6 @@
 <h1 id="在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR"><a href="#在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR" class="headerlink" title="在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR"></a>在Fork到本地的代码，修复了bug后，推送到远程仓库，开始提交PR</h1><p>在远程仓库项目主页可以看到提交记录旁边存在两个按钮Contribute和Fetch-upstream<br>点击Contribut -》 点击 Open pull request -》 Create pull request<br>输入本次提交的标题和描述 -》 点击Create pull request</p>
 <p>此时 已经完成了PR的提交了<br>原项目的管理者可以到项目的Pull request 去合并完成整个Issues的修复</p>
 <h1 id="测试git切换账号提交"><a href="#测试git切换账号提交" class="headerlink" title="测试git切换账号提交"></a>测试git切换账号提交</h1>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/29/%E6%B7%B1%E5%BA%A6%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%8E%E8%AE%BF%E9%97%AEurl%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/29/%E6%B7%B1%E5%BA%A6%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E4%BB%8E%E8%AE%BF%E9%97%AEurl%E5%88%B0%E9%A1%B5%E9%9D%A2%E5%B1%95%E7%A4%BA%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B/" class="post-title-link" itemprop="url">深度理解浏览器从访问url到页面展示的全过程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-29 14:48:13" itemprop="dateCreated datePublished" datetime="2022-04-29T14:48:13+08:00">2022-04-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">浏览器</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="浏览器的多进程架构"><a href="#浏览器的多进程架构" class="headerlink" title="浏览器的多进程架构"></a>浏览器的多进程架构</h1><p>因为js是单线程的，一个线程可以有多个进程<br>浏览器的三大主要进程：</p>
-<ol>
-<li>浏览器进程<br>主要负责用户交互、子进程管理和文件存储等功能</li>
-<li>网络进程<br>面向渲染进程和浏览器进程等提供网路下载功能</li>
-<li>渲染进程<br>把从网络下载的资源文件解析为可以显示和交互的页面。因为渲染进程里面所有的内容都是通过网络获取的，会存在一些恶意代码利用浏览器漏洞对操作系统进行攻击，所以运行在渲染进程里面的代码是被不信任的。这也是为什么 Chrome 会让渲染进程运行在安全沙箱里，为了保证系统的安全。</li>
-</ol>
-<h1 id="整个过程的大体描述"><a href="#整个过程的大体描述" class="headerlink" title="整个过程的大体描述"></a>整个过程的大体描述</h1><ul>
-<li>首先用户从浏览器进程里输入请求信息</li>
-<li>然后网络进程向服务器发起 URL 请求</li>
-<li>服务器响应 URL 请求后，浏览器进程开始准备渲染进程</li>
-<li>渲染进程准备好之后，需要向渲染进程提交待渲染的资源文档，提交文段阶段</li>
-<li>渲染进程接收到文档后，便开始解析页面和加载子资源，完成页面的渲染</li>
-<li>完成页面的渲染后，将渲染的图片交给浏览器进程，浏览器进程负责展示</li>
-</ul>
-<h1 id="从输入-URL-到页面展示的具体细节"><a href="#从输入-URL-到页面展示的具体细节" class="headerlink" title="从输入 URL 到页面展示的具体细节"></a>从输入 URL 到页面展示的具体细节</h1><ol>
-<li>URL请求过程<br>浏览器进程会通过进程间通信（IPC）把 URL 请求发送至网络进程，网络进程接收到 URL 请求后，会在这里发起真正的 URL 请求流程<br>首先，网络进程基于http缓存协议去执行该Url的请求<br>如果已经存在该资源且资源没有过期，则直接返回（命中强缓存）<br>如果没有或者已过期，则发起网络请求：</li>
-</ol>
-<ul>
-<li>已过期，服务器发现该请求资源没有更新，则返回304，浏览器则取本地资源并更新</li>
-<li>已过期，服务器发现该请求资源已经更新，则返回200，携带最新资源给浏览器</li>
-<li>没有 则直接请求<br>浏览器缓存控制三种方式（Expires、Last-Modified、Etag）</li>
-<li>第一次请求http响应头会有Last-Modified标记文件在服务器端最后被修改的时间。</li>
-<li>浏览器第二次请求上次请求过的url时，浏览器会在HTTP请求头添加一个If-Modified-Since的标记，用来询问服务器该时间之后文件是否被修改过</li>
-</ul>
-<p>Etag 主要为了解决 Last-Modified 无法解决的一些问题:</p>
-<ul>
-<li>一些文件也许会周期性的更改，但是他的内容并不改变(仅仅改变的修改时间)，这个时候我们并不希望客户端认为这个文件被修改了，而重新GET;</li>
-<li>某些文件修改非常频繁，比如在秒以下的时间内进行修改，(比方说1s内修改了N次)，If-Modified-Since能检查到的粒度是s级的，这种修改无法判断(或者说UNIX记录MTIME只能精确到秒)</li>
-<li>某些服务器不能精确的得到文件的最后修改时间；</li>
-</ul>
-<p>浏览器是通过last-Modified Expires Etag控制缓存</p>
-<p>第二次请求相同的资源的时候</p>
-<ul>
-<li>有缓存，过期了， 则判断Etag ？ 带If-None-Match ：判断last-Modified<br>判断 last-Modified ？ 带If-Modified-Since ： 发请求<br>根据服务器判断资源更新返回304或者200</li>
-<li>缓存没有过期，则直接使用</li>
-</ul>
-<h1 id="根据响应的数据类型进行处理"><a href="#根据响应的数据类型进行处理" class="headerlink" title="根据响应的数据类型进行处理"></a>根据响应的数据类型进行处理</h1><p>浏览器会根据响应头中的 Content-Type 字段，来决定如何显示响应体的内容。</p>
-<ul>
-<li>如果是HTML，那么浏览器会继续进行页面渲染，需要准备渲染进程<br>默认情况下，Chrome 会为每个页面分配一个渲染进程，即每打开一个新页面，Chrome就会创建分配一个新的渲染进程，在某些情况下，浏览器会让多个页面直接运行在同一个渲染进程中。Chrome 的默认策略是，每个标签对应一个渲染进程，但如果从一个页面打开了另一个新页面，而新页面和当前页面属于同一站点的化，那么新页面会复用父页面的渲染进程。process-per-site-instance</li>
-</ul>
-<h1 id="渲染阶段"><a href="#渲染阶段" class="headerlink" title="渲染阶段"></a>渲染阶段</h1><p>浏览器的渲染过程主要分为五个步骤：</p>
-<ol>
-<li>浏览器将获取的 HTML 文档解析成 DOM 树；</li>
-<li>处理 CSS 标记，构成层叠样式表模型（CSSOM）；</li>
-<li>将 DOM 和 CSSOM 合并为渲染树（rendering tree）；</li>
-<li>根据渲染树上的元素布局 layout</li>
-<li>将渲染树上的各个节点绘制到屏幕上，称之为 绘制painting；</li>
-</ol>
-<h1 id="构建-DOM-树"><a href="#构建-DOM-树" class="headerlink" title="构建 DOM 树"></a>构建 DOM 树</h1><ul>
-<li>DOM 树的构建可能会被 CSS 和 JS 的加载而阻塞；</li>
-<li>display: none 的元素也会在 DOM 树中；</li>
-<li>注释也会在 DOM 树中；</li>
-<li>script 标签也会在 DOM 树中；</li>
-</ul>
-<h1 id="解析-CSS"><a href="#解析-CSS" class="headerlink" title="解析 CSS"></a>解析 CSS</h1><p>浏览器会解析 CSS 文件并生成 CSS 规则树，每个 CSS 文件都会被解析成 StyleSheet 对象，每个对象都包括 CSS 规则，CSS规则对象包括对应的选择器和声明对象以及其他对象；</p>
-<ul>
-<li>CSS 的解析可以与 DOM 的解析同步进行（因为渲染树需要Dom和CSSOM一起合成，所以无论哪个都会阻塞dom的渲染）</li>
-<li>CSS 的解析与 script 的执行互斥</li>
-<li>在 Webkit 内核中进行了 script 执行优化，只有在 JS 访问 CSS 时才会发生互斥</li>
-</ul>
-<h1 id="构建渲染树"><a href="#构建渲染树" class="headerlink" title="构建渲染树"></a>构建渲染树</h1><p>根据 DOM 树和 CSS 规则树，浏览器就可以构建渲染树了。浏览器首先遍历 DOM 树上的每一个可见节点，然后对每个可见节点找到匹配的 CSS 样式规则并应用</p>
-<ol>
-<li>渲染树和 DOM 树不完全对对应；</li>
-<li>display: none 的元素不在渲染树中；</li>
-<li>visiblity: none 的元素在渲染树中；</li>
-</ol>
-<h1 id="渲染树布局"><a href="#渲染树布局" class="headerlink" title="渲染树布局"></a>渲染树布局</h1><p>布局阶段浏览器会遍历渲染树的所有节点，由于每个节点都是一个render对象，都包含宽高、位置、背景等样式信息，所以浏览器就能根据这写信息来确定元素在页面中的所在位置，及其样式；</p>
-<ol>
-<li>float 元素、absolute 元素、fixed 元素会发生位置偏移；</li>
-<li>脱离标准文档流就是脱离渲染树（render tree）；所以一些动画元素可以让其脱离渲染树，通过absolute等方式</li>
-</ol>
-<h1 id="渲染树的绘制"><a href="#渲染树的绘制" class="headerlink" title="渲染树的绘制"></a>渲染树的绘制</h1><p>绘制阶段，浏览器遍历所有的渲染树节点，调用 paint() 方法，将其渲染在屏幕上。渲染树的绘制工作是由浏览器的UI后端组件完成的。</p>
-<h1 id="浏览器渲染过程可能出现的事情"><a href="#浏览器渲染过程可能出现的事情" class="headerlink" title="浏览器渲染过程可能出现的事情"></a>浏览器渲染过程可能出现的事情</h1><ul>
-<li>阻塞渲染<br>浏览器会延迟 JavaScript 的执行和 DOM 的构建，</li>
-</ul>
-<ol>
-<li>CSS 被默认为阻塞渲染的资源，所以在 CSSOM 构建完成之前不会处理任何已处理的内容；</li>
-<li>JavaScript 可以读取和修改 DOM 属性，还可读取和修改 CSSOM 属性，所以 CSS 解析和 script 的执行互斥<br>因此，script标签的位置很重要我们在实际开发中应该尽量坚持以下两个原则： </li>
-<li>在引入顺序上，CSS 资源先于 JavaScript 资源；</li>
-<li>JavaScript 尽量少去影响 DOM 的构建；</li>
-</ol>
-<ul>
-<li>回流和重绘（ reflow 和 repaint ）<br>display:none 会触发 reflow；<br>visibility: hidden 不会触发 reflow，只会触发 repaint；</li>
-</ul>
-<h1 id="优化渲染效率建议"><a href="#优化渲染效率建议" class="headerlink" title="优化渲染效率建议"></a>优化渲染效率建议</h1><ol>
-<li>合法地去书写 HTML 和 CSS ，且不要忘了文档编码类型；</li>
-<li>样式文档应该在 head 标签中，而脚本文档应该在 body 结束之前，防阻塞；</li>
-<li>优化 CSS 选择器，尽量少嵌套；</li>
-<li>减少 JavaScript 对 DOM 的操作；</li>
-<li>修改元素的样式时，修改 class 是性能最高的方法；</li>
-<li>尽量用 transform 来做形变和位移</li>
-</ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>从输入Url -》 dns解析 -》http请求，响应-》页面渲染<br>这里最主要就是http请求响应与页面渲染<br>http请求响应又分3次握手4次挥手协议，与http请求缓存<br>页面渲染 -》多个进程一起工作 -》事件循环机制 -》 回流重绘 -》<br>多个进程： </p>
-<ul>
-<li>浏览器主进程</li>
-<li>GPU进程</li>
-<li>渲染进程<br>事件循环机制：（又分宏任物和微任务）<br>同步任务在JS线程上优先执行，形成一个执行栈<br>JS的异步是通过回调函数来实现的，JS只有一个执行线程。 通过把回调函数添加到任务队列中来实现<br>执行步骤：</li>
-</ul>
-<ol>
-<li>先执行执行栈中的同步任务</li>
-<li>异步任务放入任务队列</li>
-<li>同步任务执行完毕，从任务队列中读取异步任务，进入执行栈，开始执行<br>异步任务的主要类型：（又分宏任物和微任务） 微任务优先执行<br>1、普通事件 如click resize 等<br>2、资源加载 如load error 等<br>3、定时器 setInterval 等<br>这些都是宏任物<br>ajax async属于微任务</li>
-</ol>
-<p>渲染进程的组成： </p>
-<ol>
-<li>GUI渲染线程，构建DOM树，构建CSSOM，两者合成渲染树，然后绘制在页面上。</li>
-<li>JS引擎线程（V8引擎）由于js是单线程，依靠任务队列来进行js代码的执行，所以js引擎会一直等待着任务队列中任务的到来，然后加以处理。</li>
-<li>事件触发线程，定时器触发线程，异步HTTP请求线程</li>
-</ol>
-<p>GUI渲染线程与JS引擎线程互斥 JS阻塞页面加载<br>JavaScript是可操纵DOM的，如果在修改这些元素属性同时渲染界面（即JS线程和UI线程同时运行），那么渲染线程前后获得的元素数据就可能不一致了。<br>因此为了防止渲染出现不可预期的结果，浏览器设置GUI渲染线程与JS引擎为互斥的关系。<br>当JS引擎执行时GUI线程会被挂起，GUI更新则会被保存在一个队列中等到JS引擎线程空闲时立即被执行。</p>
-<p>浏览器渲染的图层一般包含两大类：普通图层以及复合图层<br>可以通过硬件加速的方式，声明一个新的复合图层，它会单独分配资源<br>translate3d、translateZ， z-index 都可以加速</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/27/%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AAloader/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/27/%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AAloader/" class="post-title-link" itemprop="url">手写一个loader</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-27 00:04:20" itemprop="dateCreated datePublished" datetime="2022-04-27T00:04:20+08:00">2022-04-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Webpack/" itemprop="url" rel="index"><span itemprop="name">Webpack</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="loader-原理"><a href="#loader-原理" class="headerlink" title="loader 原理"></a>loader 原理</h1><p>loader就像一个翻译员，能将源文件翻译后输出新的结果，并且一个文件可以链式的经过几个翻译员。<br>以.scss文件为例子：</p>
-<ul>
-<li>先将.scss文件内容交给sass-loader翻译为css</li>
-<li>在将翻译后的css交给css-loader,找出css中依赖的资源，压缩css</li>
-<li>再将css-loader输出的内容交给style-loader,转化为通过脚本加载的JavaScript代码</li>
-</ul>
-<p>1，本质是一个函数。<br>参数能获取目标的内容，<br>结果能传递给下一个loader。</p>
-<p>2.自定义loader要使用绝对路径引入。</p>
-<h1 id="自定义一个loader"><a href="#自定义一个loader" class="headerlink" title="自定义一个loader"></a>自定义一个loader</h1><ul>
-<li>首先定义一个loader自动在jsx文件中</li>
-</ul>
-
       
     </div>
 

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="样式开发主流引用 hooks 库中的 useClass ，方便条件渲染判断。个人感觉比较鸡肋，故而很少使用。因为其内部是通过函数转化的，每次渲染页面用到的地方都会先跑一遍该函数，将其转化成正常的className 1234567891011121314151617181920export function useClass(style: CSSModuleClasses) &amp;#123;  retu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React页面开发实操指南">
+<meta property="og:url" content="http://example.com/2023/07/10/React%E9%A1%B5%E9%9D%A2%E5%BC%80%E5%8F%91%E5%AE%9E%E6%93%8D%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="样式开发主流引用 hooks 库中的 useClass ，方便条件渲染判断。个人感觉比较鸡肋，故而很少使用。因为其内部是通过函数转化的，每次渲染页面用到的地方都会先跑一遍该函数，将其转化成正常的className 1234567891011121314151617181920export function useClass(style: CSSModuleClasses) &amp;#123;  retu">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-10T02:09:48.000Z">
+<meta property="article:modified_time" content="2024-07-10T02:49:38.846Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="Blog,Hexo,Theme,Coder,YeChang Zhang">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2023/07/10/React%E9%A1%B5%E9%9D%A2%E5%BC%80%E5%8F%91%E5%AE%9E%E6%93%8D%E6%8C%87%E5%8D%97/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/07/10/React%E9%A1%B5%E9%9D%A2%E5%BC%80%E5%8F%91%E5%AE%9E%E6%93%8D%E6%8C%87%E5%8D%97/","path":"2023/07/10/React页面开发实操指南/","title":"React页面开发实操指南"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React页面开发实操指南 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%B7%E5%BC%8F%E5%BC%80%E5%8F%91"><span class="nav-number">1.</span> <span class="nav-text">样式开发</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B5%E9%9D%A2%E5%BC%80%E5%8F%91%E9%87%8D%E7%82%B9-useState-useEffect"><span class="nav-number">2.</span> <span class="nav-text">页面开发重点 useState useEffect</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81-Store-%E7%94%A8%E7%9A%84%E6%98%AF-react-redux"><span class="nav-number">3.</span> <span class="nav-text">数据流 Store 用的是 react-redux</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/07/10/React%E9%A1%B5%E9%9D%A2%E5%BC%80%E5%8F%91%E5%AE%9E%E6%93%8D%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="React页面开发实操指南 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React页面开发实操指南
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-10 10:09:48" itemprop="dateCreated datePublished" datetime="2023-07-10T10:09:48+08:00">2023-07-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="样式开发"><a href="#样式开发" class="headerlink" title="样式开发"></a>样式开发</h1><p>主流引用 hooks 库中的 useClass ，方便条件渲染判断。<br>个人感觉比较鸡肋，故而很少使用。<br>因为其内部是通过函数转化的，每次渲染页面用到的地方都会先跑一遍该函数，将其转化成正常的className</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> <span class="keyword">function</span> useClass(style: CSSModuleClasses) &#123;</span><br><span class="line">  <span class="built_in">return</span> (className: string | string[] | Record&lt;string, boolean&gt;) =&gt; &#123;</span><br><span class="line">    const arrStr = (arr: string[]) =&gt; &#123;</span><br><span class="line">      <span class="built_in">return</span> arr.map((item) =&gt; style[item] || item).<span class="built_in">join</span>(<span class="string">&quot; &quot;</span>) + <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    // 数组写法</span><br><span class="line">    <span class="keyword">if</span> (Array.isArray(className)) &#123;</span><br><span class="line">      <span class="built_in">return</span> arrStr(className);</span><br><span class="line">    &#125;</span><br><span class="line">    // 字符串写法</span><br><span class="line">    <span class="keyword">if</span> (typeof className === <span class="string">&quot;string&quot;</span>) &#123;</span><br><span class="line">      const target = className.replace(/ +/g, <span class="string">&quot;,&quot;</span>).<span class="built_in">split</span>(<span class="string">&quot;,&quot;</span>);</span><br><span class="line">      <span class="built_in">return</span> arrStr(target);</span><br><span class="line">    &#125;</span><br><span class="line">    // 对象写法</span><br><span class="line">    const target = Object.keys(className).filter((key) =&gt; className[key]);</span><br><span class="line">    <span class="built_in">return</span> arrStr(target);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>本质是，减少代码量，增加客户端的渲染压力。</p>
+<h1 id="页面开发重点-useState-useEffect"><a href="#页面开发重点-useState-useEffect" class="headerlink" title="页面开发重点 useState useEffect"></a>页面开发重点 useState useEffect</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># useState 是定义一个 可以驱动视图的变量</span></span><br><span class="line">const [showUs, setShowUs] = useState(<span class="literal">false</span>);</span><br><span class="line">setShowUs 可以改变 showUs 的值，showUs变化，进而更新绑定的视图模块</span><br><span class="line"></span><br><span class="line">&lt;List.Item onClick=&#123;() =&gt; setShowUs(<span class="literal">true</span>)&#125; &gt;</span><br><span class="line">  联系客服</span><br><span class="line">&lt;/List.Item&gt;</span><br><span class="line"> &lt;CenterPopup</span><br><span class="line">  visible=&#123;showUs&#125;</span><br><span class="line">  onMaskClick=&#123;() =&gt; &#123;</span><br><span class="line">    setShowUs(<span class="literal">false</span>);</span><br><span class="line">  &#125;&#125;</span><br><span class="line">&gt;</span><br><span class="line">  &lt;div className=&#123;styles.myContent&#125;&gt;</span><br><span class="line">    &lt;div className=&#123;styles.btnBox&#125;&gt;</span><br><span class="line">      &lt;a href=<span class="string">&quot;tel:020-XXXXXXXX&quot;</span>&gt;</span><br><span class="line">        &lt;div className=&#123;styles.confirm&#125;&gt;立即拨打&lt;/div&gt;</span><br><span class="line">      &lt;/a&gt;</span><br><span class="line">      &lt;div className=&#123;styles.cancel&#125; onClick=&#123;() =&gt; setShowUs(<span class="literal">false</span>)&#125;&gt;</span><br><span class="line">        取消</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/CenterPopup&gt;</span><br><span class="line"><span class="comment"># 至始至终都是单向的数据流，这是与Vue中v-model，最本质的区别</span></span><br><span class="line"><span class="comment"># 使用setState进行状态更新时，React可能会将多个setState调用合并成一个，并在稍后异步地更新组件</span></span><br><span class="line"><span class="comment"># 即时更新的方法</span></span><br><span class="line">this.setState((props)=&gt;(&#123;</span><br><span class="line">  num:props.num+1 // 实现state的num属性值加1</span><br><span class="line">&#125;));</span><br><span class="line"><span class="comment"># useEffect 包含生命周期的开始阶段和更新阶段以及销毁阶段</span></span><br><span class="line"></span><br><span class="line"> useEffect(() =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (user &amp;&amp; user.mobile) &#123;</span><br><span class="line">      window.<span class="variable">$api</span>(<span class="string">&#x27;index/getUserDetail&#x27;</span>).<span class="keyword">then</span>((res) =&gt; &#123;</span><br><span class="line">        localStorage.setItem(<span class="string">&#x27;userMsg&#x27;</span>, JSON.stringify(res.data));</span><br><span class="line">        <span class="keyword">if</span> (!localStorage.getItem(<span class="string">&#x27;promoterStatus&#x27;</span>)) &#123;</span><br><span class="line">          localStorage.setItem(<span class="string">&#x27;promoterId&#x27;</span>, res.data.promoterId);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">return</span> ()=&gt;&#123;</span><br><span class="line">      <span class="comment">#销毁需要TODO</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, [<span class="string">&#x27;监听需要的参数&#x27;</span>]);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 两者都只能写在函数的第一层，因为它们都是通过数组下标来识别执行哪个方法。写到第二层会抛出异常了</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="数据流-Store-用的是-react-redux"><a href="#数据流-Store-用的是-react-redux" class="headerlink" title="数据流 Store 用的是 react-redux"></a>数据流 Store 用的是 react-redux</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">import &#123; useSelector, useDispatch &#125; from <span class="string">&#x27;react-redux&#x27;</span>;</span><br><span class="line"><span class="comment"># 获取store中的数据</span></span><br><span class="line">const user = useSelector((state: RootState) =&gt; state.user.userMsg);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 事件分发 </span></span><br><span class="line">const dispatch = useDispatch();</span><br><span class="line">dispatch(setUserMsg([]));</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义数据 切片 toolkit</span></span><br><span class="line">import &#123; createSlice &#125; from <span class="string">&quot;@reduxjs/toolkit&quot;</span>;</span><br><span class="line">import &#123; getLocalStorage, setLocalStorage &#125; from <span class="string">&quot;@/utils/localStorage&quot;</span>;</span><br><span class="line">const counterSlice = createSlice(&#123;</span><br><span class="line">  name: <span class="string">&quot;userMsg&quot;</span>,</span><br><span class="line">  initialState: &#123;</span><br><span class="line">    orderUserMsg: getLocalStorage(<span class="string">&quot;orderUserMsg&quot;</span>, <span class="string">&quot;array&quot;</span>) || [],</span><br><span class="line">    selectSchool: getLocalStorage(<span class="string">&quot;selectSchool&quot;</span>, <span class="string">&quot;object&quot;</span>) || &#123;&#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    setUserMsg: (state, action) =&gt; &#123;</span><br><span class="line">      console.log(action);</span><br><span class="line">      setLocalStorage(<span class="string">&quot;orderUserMsg&quot;</span>, action.payload);</span><br><span class="line">      state.orderUserMsg = action.payload;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">export</span> const &#123; setUserMsg, setSelectSchool &#125; = counterSlice.actions;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> interface RootState &#123;</span><br><span class="line">  userMsg: any;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">export</span> default counterSlice.reducer;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据切片集中输出</span></span><br><span class="line">import counterSlice from <span class="string">&quot;./test&quot;</span>;</span><br><span class="line">import starSlice from <span class="string">&quot;./setStar&quot;</span>;</span><br><span class="line">import userSlice from <span class="string">&quot;./user&quot;</span>;</span><br><span class="line">import userMsgSlice from <span class="string">&quot;./userMsg&quot;</span>;</span><br><span class="line">import &#123; configureStore &#125; from <span class="string">&quot;@reduxjs/toolkit&quot;</span>;</span><br><span class="line">import thunksSlice from <span class="string">&quot;./thunks&quot;</span>;</span><br><span class="line">const store = configureStore(&#123;</span><br><span class="line">  reducer: &#123;</span><br><span class="line">    counter: counterSlice,</span><br><span class="line">    thunks: thunksSlice,</span><br><span class="line">    star: starSlice,</span><br><span class="line">    user: userSlice,</span><br><span class="line">    userMsg: userMsgSlice,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default store;</span><br></pre></td></tr></table></figure>
+
+<p>掌握以上这些就可以正常开放React 页面了</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/06/05/git-%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80/" rel="prev" title="git 版本回退">
+                  <i class="fa fa-chevron-left"></i> git 版本回退
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/08/06/React-%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6%E5%AE%9E%E6%88%98%E6%8A%80%E5%B7%A7/" rel="next" title="React 高阶组件实战技巧">
+                  React 高阶组件实战技巧 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

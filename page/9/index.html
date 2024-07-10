@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">96</span>
+          <span class="site-state-item-count">98</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,6 +166,193 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/26/%E7%A7%BB%E5%8A%A8%E7%AB%AF1px%E5%83%8F%E7%B4%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/05/26/%E7%A7%BB%E5%8A%A8%E7%AB%AF1px%E5%83%8F%E7%B4%A0/" class="post-title-link" itemprop="url">移动端1px像素</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-05-26 19:33:47" itemprop="dateCreated datePublished" datetime="2018-05-26T19:33:47+08:00">2018-05-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Issue/" itemprop="url" rel="index"><span itemprop="name">Issue</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="移动端1px像素起源"><a href="#移动端1px像素起源" class="headerlink" title="移动端1px像素起源"></a>移动端1px像素起源</h1><p>在移动端，css中的1px并不等于移动设备的1px，因为手机屏幕有不同的像素密度。window中的devicePixelRatio就是反应css中像素与真实像素的比例，也就是设备物理像素和设备独立像素的比例，也就是 devicePixelRatio &#x3D; 物理像素 &#x2F; 独立像素。所以造成了通过css设置1px，在移动端屏幕上会变粗。</p>
+<h1 id="解决方案一：使用伪类缩放"><a href="#解决方案一：使用伪类缩放" class="headerlink" title="解决方案一：使用伪类缩放"></a>解决方案一：使用伪类缩放</h1><p>使用伪类缩放需要主要的是：</p>
+<ul>
+<li>设置全边框的时候，box-sizing要设置为border-box，否则伪元素上下左右各会多1px</li>
+<li>需要将父元素设置为relative</li>
+<li>注意 transform 的起点，上边距要用左上角，下边距用左下角</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/* 下边框 */</span><br><span class="line">.one-px-border2:after &#123;</span><br><span class="line">  content: <span class="string">&quot;&quot;</span>;</span><br><span class="line">  position: absolute;</span><br><span class="line">  bottom: 0;</span><br><span class="line">  left: 0;</span><br><span class="line">  right: 0;</span><br><span class="line">  border-bottom: 1px solid red;</span><br><span class="line">  transform: scaleY(.5);</span><br><span class="line">  transform-origin: left bottom;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/25/rem-em-px%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/05/25/rem-em-px%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">rem em px详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-05-25 11:40:04" itemprop="dateCreated datePublished" datetime="2018-05-25T11:40:04+08:00">2018-05-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CSS/" itemprop="url" rel="index"><span itemprop="name">CSS</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="rem-em-px详解"><a href="#rem-em-px详解" class="headerlink" title="rem em px详解"></a>rem em px详解</h1><ul>
+<li>px相对长度单位，相对于显示器屏幕分辨率来的</li>
+<li>em相对长度单位，相对于当前对象内文本的字体尺寸来的，值不固定，会继承父级元素字体的大小，未经调整浏览器：16px &#x3D; 1em 假如父元素为2em，子元素为2em字体实际大小为4em</li>
+<li>rem是css3新增的相对单位，使用rem为元素设置大小时，是相对大小，相对的是html根元素，修改根元素就可以调整所有字体大小，还可以避免字体大小逐层复合的连锁反应，未经调整浏览器：16px &#x3D; 1rem。</li>
+</ul>
+<h1 id="移动端适配-相关知识储备"><a href="#移动端适配-相关知识储备" class="headerlink" title="移动端适配 相关知识储备"></a>移动端适配 相关知识储备</h1><p>响应式 —— 在css中，针对不同大小的浏览器窗口，用不同的方式相应更新页面的样式。<br>1inch（英寸） &#x3D; 25.4mm（毫米） &#x3D; 6pc（pica，印刷术语，长度为12points） &#x3D; 72pt（点） &#x3D; 96px（像素）</p>
+<p>em —— 基准是 当前元素的字号（font-size）大小，实际值取决于在哪个元素上应用。</p>
+<ul>
+<li>基准是当前元素的font-size</li>
+<li>如果当前元素的字号用的是em，那么当前元素字号的基准是其父元素</li>
+<li>先算出当前元素的font-size的像素值，再计算其他使用em作为单位的属性值大小</li>
+</ul>
+<p>rem —— 是根em的缩写，基准是根元素的字号大小**</p>
+<p>视口viewport —— 浏览器窗口中用来渲染页面的可视区域，不包括浏览器的地址栏、工具栏、状态栏等。<br>相关单位</p>
+<ul>
+<li>vh ——视口高度的1&#x2F;100</li>
+<li>vw——视口宽度的1&#x2F;100</li>
+<li>vmin——视口宽度或者高度较小值的1&#x2F;100</li>
+<li>vmax——视口官渡或者高度较大值的1&#x2F;100（横竖屏时可以用这两个值）</li>
+</ul>
+<p>flexible源码解读</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">// 立即执行函数，入参是window和document</span><br><span class="line">(<span class="keyword">function</span> flexible (window, document) &#123;</span><br><span class="line">  var docEl = document.documentElement</span><br><span class="line">  // 文档的root元素</span><br><span class="line">  var dpr = window.devicePixelRatio || 1</span><br><span class="line">  // 获取设备的dpr（返回当前显示设备的物理像素分辨率与css像素分辨率之比），它告诉浏览器应该使用多少屏幕实际像素来绘制单个css像素，</span><br><span class="line"></span><br><span class="line">  // adjust body font size</span><br><span class="line">  // 调整body标签的fontsize，fontsize = (12 * dpr) + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">  // 设置默认字体大小，默认的字体大小继承自body，如果子元素没有设置font-size就继承父元素设置的这个默认字号（这个地方有个疑问，为什么以12位基准，是因为浏览器的最小显示的字号是12吗？）</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">setBodyFontSize</span></span> () &#123;</span><br><span class="line">    <span class="keyword">if</span> (document.body) &#123;</span><br><span class="line">      document.body.style.fontSize = (12 * dpr) + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      document.addEventListener(<span class="string">&#x27;DOMContentLoaded&#x27;</span>, setBodyFontSize)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  setBodyFontSize();</span><br><span class="line"></span><br><span class="line">  // <span class="built_in">set</span> 1rem = viewWidth / 10</span><br><span class="line">  // 设置根元素的fontsize为clientwidth/10（除以10纯粹是为了计算方便）这个地方也可以直接写10vw（表示可视窗口的宽度的十分之一）</span><br><span class="line">  <span class="keyword">function</span> <span class="function"><span class="title">setRemUnit</span></span> () &#123;</span><br><span class="line">    var rem = docEl.clientWidth / 10</span><br><span class="line">    docEl.style.fontSize = rem + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  setRemUnit()</span><br><span class="line"></span><br><span class="line">  // reset rem unit on page resize</span><br><span class="line">  // 当页面展示或重新设置大小的时候，重新对rem的px值进行计算</span><br><span class="line">  window.addEventListener(<span class="string">&#x27;resize&#x27;</span>, setRemUnit)</span><br><span class="line">  window.addEventListener(<span class="string">&#x27;pageshow&#x27;</span>, <span class="keyword">function</span> (e) &#123;</span><br><span class="line">    <span class="keyword">if</span> (e.persisted) &#123;</span><br><span class="line">      setRemUnit()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  // detect 0.5px supports</span><br><span class="line">  <span class="keyword">if</span> (dpr &gt;= 2) &#123;</span><br><span class="line">    var fakeBody = document.createElement(<span class="string">&#x27;body&#x27;</span>)</span><br><span class="line">    var testElement = document.createElement(<span class="string">&#x27;div&#x27;</span>)</span><br><span class="line">    testElement.style.border = <span class="string">&#x27;.5px solid transparent&#x27;</span></span><br><span class="line">    fakeBody.appendChild(testElement)</span><br><span class="line">    docEl.appendChild(fakeBody)</span><br><span class="line">    <span class="keyword">if</span> (testElement.offsetHeight === 1) &#123;</span><br><span class="line">      docEl.classList.add(<span class="string">&#x27;hairlines&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    docEl.removeChild(fakeBody)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;(window, document))</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -903,180 +1090,6 @@
 
 
 
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/14/JS%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E7%94%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/14/JS%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E7%94%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">JS字符串常用的操作方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-04-14 16:04:43" itemprop="dateCreated datePublished" datetime="2018-04-14T16:04:43+08:00">2018-04-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="JS字符串常用的操作方法"><a href="#JS字符串常用的操作方法" class="headerlink" title="JS字符串常用的操作方法"></a>JS字符串常用的操作方法</h1><ul>
-<li>str.charAt(index) 返回指定index下标的字符 下标从0开始</li>
-<li>str.includes(str1) 方法用于判断str1是否包含在str中，根据情况返回 true 或 false。</li>
-<li>str.indexOf(str1) 方法用于判断str1是否包含在str中，返回存在的下标，无则-1</li>
-<li>str.replace(regx,str) 按照regx的规则，将符合的替换成str</li>
-<li>str.split(‘分隔符’) 将str按照分隔符转化成数组</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">var anyString = <span class="string">&quot;Brave new world&quot;</span>;</span><br><span class="line">console.log(<span class="string">&quot;The character at index 0   is &#x27;&quot;</span> + anyString.charAt(0)   + <span class="string">&quot;&#x27;&quot;</span>);</span><br><span class="line">// The character at index 0 is <span class="string">&#x27;B&#x27;</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// str.includes(str1) 方法用于判断str1是否包含在str中，根据情况返回 <span class="literal">true</span> 或 <span class="literal">false</span>。 区分大小写</span><br><span class="line"><span class="string">&#x27;Blue Whale&#x27;</span>.includes(<span class="string">&#x27;blue&#x27;</span>); // returns <span class="literal">false</span></span><br><span class="line"><span class="string">&#x27;Blue Whale&#x27;</span>.includes(<span class="string">&#x27;Blue&#x27;</span>); // returns <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">//str.indexOf(str1) 方法用于判断str1是否包含在str中，返回存在的下标，无则-1</span><br><span class="line">const paragraph = <span class="string">&#x27;The quick brown fox jumps over the lazy dog. If the dog barked, was it really lazy?&#x27;</span>;</span><br><span class="line"></span><br><span class="line">const searchTerm = <span class="string">&#x27;dog&#x27;</span>;</span><br><span class="line">const indexOfFirst = paragraph.indexOf(searchTerm);</span><br><span class="line">console.log(indexOfFirst); // expected output: <span class="string">&quot;40&quot;</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// str.replace(regx,str) 按照regx的规则，将符合的替换成str</span><br><span class="line">const p = <span class="string">&#x27;The quick brown fox jumps over the lazy dog. If the dog reacted, was it really lazy?&#x27;</span>;</span><br><span class="line"></span><br><span class="line">console.log(p.replace(<span class="string">&#x27;dog&#x27;</span>, <span class="string">&#x27;monkey&#x27;</span>));</span><br><span class="line">// expected output: <span class="string">&quot;The quick brown fox jumps over the lazy monkey. If the dog reacted, was it really lazy?&quot;</span></span><br><span class="line">const regex = /Dog/i;</span><br><span class="line">console.log(p.replace(regex, <span class="string">&#x27;ferret&#x27;</span>));</span><br><span class="line">// expected output: <span class="string">&quot;The quick brown fox jumps over the lazy ferret. If the dog reacted, was it really lazy?&quot;</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">//str.split(<span class="string">&#x27;分隔符&#x27;</span>) 将str按照分隔符转化成数组</span><br><span class="line">const str = <span class="string">&#x27;The quick brown fox jumps over the lazy dog.&#x27;</span>;</span><br><span class="line">const words = str.split(<span class="string">&#x27; &#x27;</span>);</span><br><span class="line">console.log(words[3]);// expected output: <span class="string">&quot;fox&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/04/13/JS%E6%95%B0%E7%BB%84%E5%B8%B8%E7%94%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/04/13/JS%E6%95%B0%E7%BB%84%E5%B8%B8%E7%94%A8%E7%9A%84%E6%93%8D%E4%BD%9C%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">JS数组常用的操作方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-04-13 11:38:05" itemprop="dateCreated datePublished" datetime="2018-04-13T11:38:05+08:00">2018-04-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="JS数组常用的操作方法"><a href="#JS数组常用的操作方法" class="headerlink" title="JS数组常用的操作方法"></a>JS数组常用的操作方法</h2><ul>
-<li>Array.length 获取数组长度</li>
-<li>Array.shift() Array.unshift()  Array.push() Array.pop()</li>
-<li>Array.concat(a1,a2….) 数组合并</li>
-<li>Array.reverse() 数组元素颠倒</li>
-<li>Array.join(‘拼接字符’) 数组转字符串</li>
-<li>Array.indexOf(item) ||  Array.includes(item) 判断Item 是否存在数组里面 </li>
-<li>Array.fill(填充val，下标1，下标2) 数组填充</li>
-<li>[…new Set(arr)]数组去重 || Array.from(new Set(arr))</li>
-<li>Array.slice(begin,end) 这一对象是一个由 begin 和 end 决定的原数组的浅拷贝</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line">// Array.length 获取数组长度</span><br><span class="line">const clothing = [<span class="string">&#x27;shoes&#x27;</span>, <span class="string">&#x27;shirts&#x27;</span>, <span class="string">&#x27;socks&#x27;</span>, <span class="string">&#x27;sweaters&#x27;</span>];</span><br><span class="line">console.log(clothing.length); // 4</span><br><span class="line"></span><br><span class="line">// ---------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.<span class="built_in">shift</span>() Array.unshift()  Array.push() Array.pop()</span><br><span class="line">const array1 = [1, 2, 3];</span><br><span class="line">// 往头部插入</span><br><span class="line">array1.unshift(4, 5); </span><br><span class="line">// array1: [4,5,1,2,3] </span><br><span class="line">// 往头部删除</span><br><span class="line">array1.shift() </span><br><span class="line">// array1: [5,1,2,3] </span><br><span class="line">// 往尾部插入</span><br><span class="line">array1.push(4)</span><br><span class="line">//  array1: [5,1,2,3,4] </span><br><span class="line">// 往尾部删除</span><br><span class="line">array1.pop()</span><br><span class="line">// array1: [5,1,2,3]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">//Array.reverse() 数组元素颠倒</span><br><span class="line">const array1 = [<span class="string">&#x27;one&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;three&#x27;</span>];</span><br><span class="line">array1.reverse() // [<span class="string">&quot;three&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;one&quot;</span>]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.<span class="built_in">join</span>(<span class="string">&#x27;拼接字符&#x27;</span>) 数组转字符串</span><br><span class="line">const elements = [<span class="string">&#x27;Fire&#x27;</span>, <span class="string">&#x27;Air&#x27;</span>, <span class="string">&#x27;Water&#x27;</span>];</span><br><span class="line">console.log(elements.join());</span><br><span class="line">// expected output: <span class="string">&quot;Fire,Air,Water&quot;</span></span><br><span class="line"></span><br><span class="line">console.log(elements.join(<span class="string">&#x27;&#x27;</span>));</span><br><span class="line">// expected output: <span class="string">&quot;FireAirWater&quot;</span></span><br><span class="line"></span><br><span class="line">console.log(elements.join(<span class="string">&#x27;-&#x27;</span>));</span><br><span class="line">// expected output: <span class="string">&quot;Fire-Air-Water&quot;</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.indexOf(item) ||  Array.includes(item) 判断Item 是否存在数组里面</span><br><span class="line">const beasts = [<span class="string">&#x27;ant&#x27;</span>, <span class="string">&#x27;bison&#x27;</span>, <span class="string">&#x27;camel&#x27;</span>, <span class="string">&#x27;duck&#x27;</span>, <span class="string">&#x27;bison&#x27;</span>];</span><br><span class="line"></span><br><span class="line">console.log(beasts.indexOf(<span class="string">&#x27;bison&#x27;</span>));// expected output: 1</span><br><span class="line">console.log(beasts.includes(<span class="string">&#x27;bison&#x27;</span>));// expected output: <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.concat(a1,a2....) 数组合并</span><br><span class="line">const array1 = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">const array2 = [<span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>];</span><br><span class="line">const array3 = array1.concat(array2);</span><br><span class="line"></span><br><span class="line">console.log(array3);// [<span class="string">&quot;a&quot;</span>, <span class="string">&quot;b&quot;</span>, <span class="string">&quot;c&quot;</span>, <span class="string">&quot;d&quot;</span>, <span class="string">&quot;e&quot;</span>, <span class="string">&quot;f&quot;</span>]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.fill(填充val，下标1，下标2) 数组填充</span><br><span class="line">const array1 = [1, 2, 3, 4];</span><br><span class="line">console.log(array1.fill(0, 2, 4)); // [1, 2, 0, 0]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">//*[...new Set(arr)]数组去重 || Array.from(new Set(arr))</span><br><span class="line"><span class="keyword">function</span> unique (arr) &#123;</span><br><span class="line">  <span class="built_in">return</span> Array.from(new Set(arr))</span><br><span class="line">&#125;</span><br><span class="line">var arr = [1,1,<span class="string">&#x27;true&#x27;</span>,<span class="string">&#x27;true&#x27;</span>,<span class="literal">true</span>,<span class="literal">true</span>,15,15,<span class="literal">false</span>,<span class="literal">false</span>, undefined,undefined, null,null, NaN, NaN,<span class="string">&#x27;NaN&#x27;</span>, 0, 0, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;a&#x27;</span>,&#123;&#125;,&#123;&#125;];</span><br><span class="line">console.log(unique(arr)) //[1, <span class="string">&quot;true&quot;</span>, <span class="literal">true</span>, 15, <span class="literal">false</span>, undefined, null, NaN, <span class="string">&quot;NaN&quot;</span>, 0, <span class="string">&quot;a&quot;</span>, &#123;&#125;, &#123;&#125;]</span><br><span class="line"></span><br><span class="line">// -------------------------------------------------------</span><br><span class="line"></span><br><span class="line">// Array.slice(begin,end) 这一对象是一个由 begin 和 end 决定的原数组的浅拷贝</span><br><span class="line">const animals = [<span class="string">&#x27;ant&#x27;</span>, <span class="string">&#x27;bison&#x27;</span>, <span class="string">&#x27;camel&#x27;</span>, <span class="string">&#x27;duck&#x27;</span>, <span class="string">&#x27;elephant&#x27;</span>];</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(2));</span><br><span class="line">// expected output: Array [<span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>, <span class="string">&quot;elephant&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(2, 4));</span><br><span class="line">// expected output: Array [<span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(1, 5));</span><br><span class="line">// expected output: Array [<span class="string">&quot;bison&quot;</span>, <span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>, <span class="string">&quot;elephant&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(-2));</span><br><span class="line">// expected output: Array [<span class="string">&quot;duck&quot;</span>, <span class="string">&quot;elephant&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice(2, -1));</span><br><span class="line">// expected output: Array [<span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>]</span><br><span class="line"></span><br><span class="line">console.log(animals.slice());</span><br><span class="line">// expected output: Array [<span class="string">&quot;ant&quot;</span>, <span class="string">&quot;bison&quot;</span>, <span class="string">&quot;camel&quot;</span>, <span class="string">&quot;duck&quot;</span>, <span class="string">&quot;elephant&quot;</span>]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
       
     </div>
