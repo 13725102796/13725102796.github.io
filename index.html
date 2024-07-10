@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">96</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">67</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -166,6 +166,547 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/05/git-%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/06/05/git-%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80/" class="post-title-link" itemprop="url">git 版本回退</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-06-05 17:56:44" itemprop="dateCreated datePublished" datetime="2023-06-05T17:56:44+08:00">2023-06-05</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="git-版本回退"><a href="#git-版本回退" class="headerlink" title="git 版本回退"></a>git 版本回退</h1><p>git reset –hard 8a85bfd95f0e63543c699470595da119fa4480f7<br>&#x2F;&#x2F; 强推<br>git push -f </p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/06/02/threejs-%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/06/02/threejs-%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">threejs 基础</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-06-02 09:52:26" itemprop="dateCreated datePublished" datetime="2023-06-02T09:52:26+08:00">2023-06-02</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="创建一个场景-依赖3个对象"><a href="#创建一个场景-依赖3个对象" class="headerlink" title="创建一个场景 依赖3个对象"></a>创建一个场景 依赖3个对象</h1><ul>
+<li>场景 </li>
+<li>相机</li>
+<li>渲染器</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 场景</span></span><br><span class="line">const scene = new THREE.Scene();</span><br><span class="line"><span class="comment"># 相机 PerspectiveCamera（透视摄像机）</span></span><br><span class="line"><span class="comment"># new THREE.PerspectiveCamera(视野角度（FOV）,长宽比（aspect ratio）,近截面（near）,远截面（far） ）</span></span><br><span class="line">const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );</span><br><span class="line"><span class="comment"># 渲染器</span></span><br><span class="line">const renderer = new THREE.WebGLRenderer();</span><br><span class="line"></span><br><span class="line">renderer.setSize( window.innerWidth, window.innerHeight );</span><br><span class="line">document.body.appendChild( renderer.domElement );</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="添加一个立方体"><a href="#添加一个立方体" class="headerlink" title="添加一个立方体"></a>添加一个立方体</h1>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/19/Vue2-%E4%B8%8E-Vue3-%E7%9B%91%E5%90%AC%E6%96%B9%E5%BC%8F%E7%9A%84%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/04/19/Vue2-%E4%B8%8E-Vue3-%E7%9B%91%E5%90%AC%E6%96%B9%E5%BC%8F%E7%9A%84%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">Vue2 与 Vue3 监听方式的优化</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-04-19 13:47:25" itemprop="dateCreated datePublished" datetime="2023-04-19T13:47:25+08:00">2023-04-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="DefineProperty"><a href="#DefineProperty" class="headerlink" title="DefineProperty"></a>DefineProperty</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">var data = &#123;</span><br><span class="line">  key: &#123;</span><br><span class="line">    a: 1,</span><br><span class="line">    b: 2,</span><br><span class="line">    c: &#123;</span><br><span class="line">      c1: 5</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">function</span> isObject(a) &#123;</span><br><span class="line">  <span class="built_in">return</span> typeof a === <span class="string">&#x27;object&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> reduce(obj) &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (var i <span class="keyword">in</span> obj) &#123;</span><br><span class="line">    <span class="built_in">let</span> val = obj[i]</span><br><span class="line">    <span class="keyword">if</span> (isObject(val)) &#123;</span><br><span class="line">      reduce(val)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Object.defineProperty(obj, i, &#123;</span><br><span class="line">      <span class="function"><span class="title">get</span></span>() &#123;</span><br><span class="line">        console.log(<span class="string">&#x27;属性&#x27;</span> + i + <span class="string">&#x27;被get了一下&#x27;</span>)</span><br><span class="line">        <span class="built_in">return</span> val</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="built_in">set</span>(value) &#123;</span><br><span class="line">        console.log(<span class="string">&#x27;属性&#x27;</span> + i + <span class="string">&#x27;被set成了&#x27;</span> + value)</span><br><span class="line">        val = value</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">reduce(data)</span><br><span class="line">console.log(data.key.a)</span><br></pre></td></tr></table></figure>
+
+<h1 id="Proxy"><a href="#Proxy" class="headerlink" title="Proxy"></a>Proxy</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">var data = &#123;</span><br><span class="line">  key: &#123;</span><br><span class="line">    a: 1,</span><br><span class="line">    b: 2,</span><br><span class="line">    c: &#123;</span><br><span class="line">      c1: 5</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">const handler = &#123;</span><br><span class="line">  get: <span class="keyword">function</span> (obj, prop) &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;属性&#x27;</span> + prop + <span class="string">&#x27;被get了一下&#x27;</span>)</span><br><span class="line">    <span class="built_in">return</span> prop <span class="keyword">in</span> obj ? obj[prop] : null;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="built_in">set</span>: <span class="keyword">function</span> (obj, prop, value) &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;属性&#x27;</span> + prop + <span class="string">&#x27;被set成了&#x27;</span> + value)</span><br><span class="line">    obj[prop] = value</span><br><span class="line">    <span class="built_in">return</span> <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">data = new Proxy(data, handler)</span><br><span class="line"></span><br><span class="line">console.log(data.key.a)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/18/react-lazy-%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%87%8D%E8%BD%BD%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/04/18/react-lazy-%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%87%8D%E8%BD%BD%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">react.lazy 失败的重载机制</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-04-18 15:16:48" itemprop="dateCreated datePublished" datetime="2023-04-18T15:16:48+08:00">2023-04-18</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="React-lazy"><a href="#React-lazy" class="headerlink" title="React.lazy"></a>React.lazy</h1><p>前言：<br>在使用 vite + react 构建项目发布生产后，一切都正常使用没有问题。<br>当开始迭代了第一个版本发布后，部分用户出现 <code>Failed to fetch dynamicallyimported module</code> 的错误。大致意思就是找不到动态导入的模块。<br>当用户手动刷新后，又正常显示。</p>
+<p>初步原因判断：初版使用的用户访问网站域名后，微信将资源文件缓存下来，后续访问会读取本地资源。当访问到没有缓存的资源时，就会报该错误。因为本地没有该资源，服务器也没有。版本已经迭代了。</p>
+<p>解决方案</p>
+<ul>
+<li><p>配置 nginx 永不缓存<br>该方法直接在服务器修改nginx配置即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">        include vhost/security/ua_deny.conf;</span><br><span class="line">        include vhost/security/country_deny.conf;</span><br><span class="line">        <span class="keyword">if</span> (<span class="variable">$request_filename</span> ~* .*\.(?:htm|html)$)</span><br><span class="line">        &#123;</span><br><span class="line">                add_header Cache-Control <span class="string">&quot;private, no-store, no-cache, must-revalidate, proxy-revalidate&quot;</span>;</span><br><span class="line">                // 或者</span><br><span class="line">                expires -1;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这样每次访问域名都会从服务器拉取最新的index.html</p>
+<p>经过多次Jenkins构建尝试后，发现有以下缺陷：</p>
+<ol>
+<li>第一次，必须要手动清除微信缓存。否则无法读取到新的资源。</li>
+<li>当用户停留在网站，刚好发生更新时，依旧无法获取到新的资源</li>
+<li>资源正确的情况，弱网环境也有可能发生动态加载失败</li>
+</ol>
+<p>情况1必然无法避免，情况2和3可以在发生更新时，手动触发一下更新。<br>于是有了方案二</p>
+</li>
+<li><p>在React.lazy 的时候，加入异常处理的流程，当正确加载时，正常显示。失败则记录并无感刷新<br>首先去研究 React.lazy 该方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># callback: useLazy(() =&gt; import(&quot;@/pages/home/index&quot;)),</span></span><br><span class="line"><span class="built_in">export</span> <span class="keyword">function</span> useLazy(callback) &#123;</span><br><span class="line">  const LazyRC = React.lazy(callback);</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;React.Suspense fallback=&#123;&lt;Skeleton animated /&gt;&#125;&gt;</span><br><span class="line">      &lt;LazyRC /&gt;</span><br><span class="line">    &lt;/React.Suspense&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># import() 返回的是一个promise ，那么可以再包多一层</span></span><br><span class="line">const lazyRetry = <span class="keyword">function</span> (componentImport) &#123;</span><br><span class="line">  <span class="built_in">return</span> new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">    componentImport()</span><br><span class="line">      .<span class="keyword">then</span>(resolve)</span><br><span class="line">      .catch((error) =&gt; &#123;</span><br><span class="line">        // 检查是否已经刷新过了</span><br><span class="line">        const hasRefreshed = JSON.parse(</span><br><span class="line">          window.sessionStorage.getItem(`retry-lazy-refreshed`) ||</span><br><span class="line">            <span class="string">&quot;false&quot;</span></span><br><span class="line">        );</span><br><span class="line">        <span class="keyword">if</span> (!hasRefreshed) &#123;</span><br><span class="line">          // 没有刷新过，需要刷新页面刷新</span><br><span class="line">          window.sessionStorage.setItem(`retry-lazy-refreshed`, <span class="string">&quot;true&quot;</span>);</span><br><span class="line">          <span class="built_in">return</span> window.location.reload(); </span><br><span class="line">        &#125;</span><br><span class="line">        reject(error);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> <span class="keyword">function</span> useLazy(callback) &#123;</span><br><span class="line">  <span class="comment"># const LazyRC = React.lazy(callback);</span></span><br><span class="line"></span><br><span class="line">  const LazyRC = React.lazy(() =&gt; lazyRetry(callback));</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;React.Suspense fallback=&#123;&lt;Skeleton animated /&gt;&#125;&gt;</span><br><span class="line">      &lt;LazyRC /&gt;</span><br><span class="line">    &lt;/React.Suspense&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/10/%E8%93%9D%E6%B9%96%E7%9B%B4%E8%BD%ACHtml-%E3%80%8BReact-Vue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/04/10/%E8%93%9D%E6%B9%96%E7%9B%B4%E8%BD%ACHtml-%E3%80%8BReact-Vue/" class="post-title-link" itemprop="url">蓝湖直转Html=》React && Vue</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-04-10 09:41:47" itemprop="dateCreated datePublished" datetime="2023-04-10T09:41:47+08:00">2023-04-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h1><p>简化，页面绘制流程。高效率生产。摸鱼神器</p>
+<h1 id="蓝湖"><a href="#蓝湖" class="headerlink" title="蓝湖"></a>蓝湖</h1><p>具体到某一张设计稿，点击旁边的代码</p>
+<p>可以看到里面含有 Vue Uni React 版本的代码。这里主要讲解React代码怎么用<br>因为Vue 与 Uni 在单页面开发中存在 <code>&lt;style scoped&gt;</code> 属性<br>可以直接复制代码使用。但是React中的Css没办法通过设置隔离。页面与页面之间的CSS重叠问题。<br>这里主要解决这个问题</p>
+<h1 id="React"><a href="#React" class="headerlink" title="React"></a>React</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div className=<span class="string">&quot;block_3 flex-col&quot;</span>&gt;</span><br><span class="line">  &lt;span className=<span class="string">&quot;text_10&quot;</span>&gt;注册/登录&lt;/span&gt;</span><br><span class="line">  &lt;div className=<span class="string">&quot;group_17 flex-col&quot;</span> /&gt;</span><br><span class="line">  &lt;span className=<span class="string">&quot;text_11&quot;</span>&gt;手机号&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>这是一段React页面UI转化的代码，<br>蓝湖生成的规则都是一个样，换一个页面它还是会定义<code>group_xx，text_xx</code><br>这就导致页面css重用，页面UI样式错乱问题。</p>
+<p>我们需要一个程序将html中的className重新定义，以符合我们的实际需求<br>像这样</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;div className=&#123;styles.block_3 + <span class="string">&quot; &quot;</span> + styles[<span class="string">&#x27;flex-col&#x27;</span>]&#125;&gt;</span><br><span class="line">  &lt;span className=&#123;styles.text_10&#125;&gt;注册/登录&lt;/span&gt;</span><br><span class="line">  &lt;div className=&#123;styles.group_17 + <span class="string">&quot; &quot;</span> + styles[<span class="string">&#x27;flex-col&#x27;</span>]&#125; /&gt;</span><br><span class="line">  &lt;span className=&#123;styles.text_11&#125;&gt;手机号&lt;/span&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"><span class="comment"># 再把styles变量 引入进来 </span></span><br><span class="line">import styles from <span class="string">&#x27;./index.module.scss&#x27;</span>;</span><br><span class="line"><span class="comment"># 把蓝湖的CSS复制到这个index文件里面</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="生成工具代码"><a href="#生成工具代码" class="headerlink" title="生成工具代码"></a>生成工具代码</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">const &#123; src, dest &#125; = require(<span class="string">&#x27;gulp&#x27;</span>);</span><br><span class="line">var through = require(<span class="string">&#x27;through2&#x27;</span>);</span><br><span class="line"><span class="keyword">function</span> defaultTask(cb) &#123;</span><br><span class="line">  // place code <span class="keyword">for</span> your default task here</span><br><span class="line">  // cb();</span><br><span class="line">  <span class="built_in">return</span> src(<span class="string">&#x27;src/index.jsx&#x27;</span>).pipe(through.obj(<span class="keyword">function</span> (file, encode, cb) &#123;</span><br><span class="line">    <span class="built_in">let</span> str = file.contents.toString()</span><br><span class="line">    str = str.replace(/className=<span class="string">&quot;([^&quot;</span>]+)<span class="string">&quot;/g, function (match, className) &#123;</span></span><br><span class="line"><span class="string">      const classNames = className.split(&#x27; &#x27;)</span></span><br><span class="line"><span class="string">      const strTemp = classNames.map(function (name) &#123;</span></span><br><span class="line"><span class="string">        if (name.indexOf(&#x27;-&#x27;) &gt; -1) &#123;</span></span><br><span class="line"><span class="string">          return &#x27;styles[\&#x27;&#x27; + name + &#x27;\&#x27;]&#x27;</span></span><br><span class="line"><span class="string">        &#125; else &#123;</span></span><br><span class="line"><span class="string">          return &#x27;styles.&#x27; + name;</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">      &#125;)</span></span><br><span class="line"><span class="string">        .join(&#x27; + &quot;</span> <span class="string">&quot; + &#x27;);</span></span><br><span class="line"><span class="string">      console.log(strTemp)</span></span><br><span class="line"><span class="string">      return &#x27;className=&#123;&#x27; + strTemp + &#x27;&#125;&#x27;</span></span><br><span class="line"><span class="string">    &#125;)</span></span><br><span class="line"><span class="string">    file.contents = new Buffer(str)</span></span><br><span class="line"><span class="string">    this.push(file)</span></span><br><span class="line"><span class="string">    cb()</span></span><br><span class="line"><span class="string">  &#125;)).pipe(dest(&#x27;output/&#x27;))</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">exports.default = defaultTask</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/04/%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86AI%E7%94%9F%E6%88%90%E7%9A%84%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/04/04/%E6%89%B9%E9%87%8F%E5%A4%84%E7%90%86AI%E7%94%9F%E6%88%90%E7%9A%84%E9%9D%99%E6%80%81%E6%96%87%E4%BB%B6/" class="post-title-link" itemprop="url">批量处理AI生成的静态文件</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-04-04 14:51:55" itemprop="dateCreated datePublished" datetime="2023-04-04T14:51:55+08:00">2023-04-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="批量处理AI生成的静态文件"><a href="#批量处理AI生成的静态文件" class="headerlink" title="批量处理AI生成的静态文件"></a>批量处理AI生成的静态文件</h1><p>起因是，我需要将一段不合格的jsx文件 转化成 合格的jsx文件<br>用过React 都知道。在SPA应用下。css的状态是共享的。需要将其私有化。<br>只能通过定义一个 index.module.scss<br>再通过 引人styles的方式去使用，将其私有化<br>整个过程类似vue scoped 的效果。但是比较繁琐。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 转化前</span></span><br><span class="line">&lt;div className=<span class="string">&quot;group_1 flex-row&quot;</span>&gt;</span><br><span class="line">  &lt;div className=<span class="string">&quot;image-text_4 flex-row justify-between&quot;</span>&gt;</span><br><span class="line">    &lt;div className=<span class="string">&quot;box_4 flex-col&quot;</span> /&gt;</span><br><span class="line">    &lt;div className=<span class="string">&quot;text-group_4 flex-col&quot;</span>&gt;</span><br><span class="line">      &lt;span className=<span class="string">&quot;text_4&quot;</span>&gt;【自然探索类】&lt;/span&gt;</span><br><span class="line">      &lt;span className=<span class="string">&quot;text_5&quot;</span>&gt;科技创新类-变废为宝·争当环保先锋研学课程&lt;/span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">#转化后</span></span><br><span class="line">&lt;div className=&#123;styles.group_1 + <span class="string">&quot; &quot;</span> + styles[<span class="string">&#x27;flex-row&#x27;</span>]&#125;&gt;</span><br><span class="line">  &lt;div className=&#123;styles[<span class="string">&#x27;image-text_4&#x27;</span>] + <span class="string">&quot; &quot;</span> + styles[<span class="string">&#x27;flex-row&#x27;</span>] + <span class="string">&quot; &quot;</span> + styles[<span class="string">&#x27;justify-between&#x27;</span>]&#125;&gt;</span><br><span class="line">    &lt;div className=&#123;styles.box_4 + <span class="string">&quot; &quot;</span> + styles[<span class="string">&#x27;flex-col&#x27;</span>]&#125; /&gt;</span><br><span class="line">    &lt;div className=&#123;styles[<span class="string">&#x27;text-group_4&#x27;</span>] + <span class="string">&quot; &quot;</span> + styles[<span class="string">&#x27;flex-col&#x27;</span>]&#125;&gt;</span><br><span class="line">      &lt;span className=&#123;styles.text_4&#125;&gt;【自然探索类】&lt;/span&gt;</span><br><span class="line">      &lt;span className=&#123;styles.text_5&#125;&gt;科技创新类-变废为宝·争当环保先锋研学课程&lt;/span&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><ul>
+<li>首先批量处理，需要使用工具Gulp，定义一个gulpfile 文件</li>
+<li>写一个任务，将文件内容提取出来</li>
+<li>再将内容执行批量替换操作</li>
+<li>操作完，将内容输出到新的文件，保存下来</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">const &#123; src, dest &#125; = require(<span class="string">&#x27;gulp&#x27;</span>);</span><br><span class="line">var through = require(<span class="string">&#x27;through2&#x27;</span>);</span><br><span class="line"><span class="keyword">function</span> defaultTask(cb) &#123;</span><br><span class="line">  // place code <span class="keyword">for</span> your default task here</span><br><span class="line">  // cb();</span><br><span class="line">  <span class="built_in">return</span> src(<span class="string">&#x27;src/index.jsx&#x27;</span>).pipe(through.obj(<span class="keyword">function</span> (file, encode, cb) &#123;</span><br><span class="line">    <span class="built_in">let</span> str = file.contents.toString()</span><br><span class="line">    str = str.replace(/className=<span class="string">&quot;([^&quot;</span>]+)<span class="string">&quot;/g, function (match, className) &#123;</span></span><br><span class="line"><span class="string">      const classNames = className.split(&#x27; &#x27;)</span></span><br><span class="line"><span class="string">      const strTemp = classNames.map(function (name) &#123;</span></span><br><span class="line"><span class="string">        if (name.indexOf(&#x27;-&#x27;) &gt; -1) &#123;</span></span><br><span class="line"><span class="string">          return &#x27;styles[\&#x27;&#x27; + name + &#x27;\&#x27;]&#x27;</span></span><br><span class="line"><span class="string">        &#125; else &#123;</span></span><br><span class="line"><span class="string">          return &#x27;styles.&#x27; + name;</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">      &#125;)</span></span><br><span class="line"><span class="string">        .join(&#x27; + &quot;</span> <span class="string">&quot; + &#x27;);</span></span><br><span class="line"><span class="string">      console.log(strTemp)</span></span><br><span class="line"><span class="string">      return &#x27;className=&#123;&#x27; + strTemp + &#x27;&#125;&#x27;</span></span><br><span class="line"><span class="string">    &#125;)</span></span><br><span class="line"><span class="string">    file.contents = new Buffer(str)</span></span><br><span class="line"><span class="string">    this.push(file)</span></span><br><span class="line"><span class="string">    cb()</span></span><br><span class="line"><span class="string">  &#125;)).pipe(dest(&#x27;output/&#x27;))</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">exports.default = defaultTask</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/03/react-%E5%85%A8%E5%B1%80%E9%A1%B5%E9%9D%A2%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/04/03/react-%E5%85%A8%E5%B1%80%E9%A1%B5%E9%9D%A2%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" class="post-title-link" itemprop="url">react 全局页面权限控制</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-04-03 11:12:28" itemprop="dateCreated datePublished" datetime="2023-04-03T11:12:28+08:00">2023-04-03</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="基于最新版本的-react-router-dom-V6-版"><a href="#基于最新版本的-react-router-dom-V6-版" class="headerlink" title="基于最新版本的 react-router-dom V6 版"></a>基于最新版本的 react-router-dom V6 版</h1><p>主要依赖方法：</p>
+<ul>
+<li>useMatches</li>
+<li>useOutlet</li>
+<li>Navigate</li>
+<li>Outlet</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### useMatches 判断路由地址白名单是否完全匹配</span></span><br><span class="line"><span class="comment">### Outlet 匹配规则路由，放行操作</span></span><br><span class="line"><span class="comment">### Navigate 不匹配则打到登录页或者无权限访问页</span></span><br><span class="line"></span><br><span class="line">const whiteList = [</span><br><span class="line">  <span class="string">&quot;/&quot;</span>,</span><br><span class="line">  <span class="string">&quot;/index&quot;</span>,</span><br><span class="line">];</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">AuthRoute</span></span>() &#123;</span><br><span class="line">  const matches = useMatches();</span><br><span class="line">  console.log(matches);</span><br><span class="line">  const outlet = useOutlet();</span><br><span class="line">  const isLogined = <span class="literal">false</span>;</span><br><span class="line">  // 从user-redux读取用户信息，判断是否登录</span><br><span class="line">  const user = useSelector((state: RootState) =&gt; state.user.userMsg);</span><br><span class="line">  // 根据白名单的登录状态进行鉴权</span><br><span class="line">  const page = useMemo(() =&gt; &#123;</span><br><span class="line">    const &#123; pathname &#125; = matches[1];</span><br><span class="line">    const isInWL = whiteList.includes(pathname);</span><br><span class="line"></span><br><span class="line">    const isLogined = user.mobile ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (isInWL) <span class="built_in">return</span> &lt;Outlet /&gt;;</span><br><span class="line">    <span class="keyword">if</span> (isLogined) <span class="built_in">return</span> &lt;Outlet /&gt;;</span><br><span class="line">    <span class="built_in">return</span> &lt;Navigate to=<span class="string">&quot;/index-no-user?type=1&quot;</span> replace /&gt;;</span><br><span class="line">  &#125;, [isLogined, matches, outlet]);</span><br><span class="line">  // 路由后置钩子更改网页标题</span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    const title = (matches[1].handle as any)?.title;</span><br><span class="line">    const isHasTitle = typeof title === <span class="string">&quot;string&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span> (isHasTitle) &#123;</span><br><span class="line">      document.title = title;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, [matches]);</span><br><span class="line">  <span class="built_in">return</span> page;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">### 路由表定义</span></span><br><span class="line">// 将需要鉴权的页面放进 被 AuthRoute 组件包裹的 children 里面。</span><br><span class="line">// 例如当访问 /index 路径时，会先执行 AuthRoute，</span><br><span class="line">// 根据对应的条件在决定 &lt;Outlet /&gt; 还是 &lt;Navigate to=<span class="string">&quot;/index-no-user&quot;</span> replace /&gt;;</span><br><span class="line">const routes: RouteObject[] = [</span><br><span class="line">  &#123;</span><br><span class="line">    path: <span class="string">&quot;/&quot;</span>,</span><br><span class="line">    element: &lt;AuthRoute /&gt;,</span><br><span class="line">    children: [</span><br><span class="line">      &#123;</span><br><span class="line">        path: <span class="string">&quot;&quot;</span>,</span><br><span class="line">        element: &lt;Navigate to=<span class="string">&quot;/index&quot;</span> replace /&gt;,</span><br><span class="line">        handle: &#123; title: <span class="string">&quot;index&quot;</span> &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        path: <span class="string">&quot;index&quot;</span>,</span><br><span class="line">        element: useLazy(() =&gt; import(<span class="string">&quot;@/pages/home/index&quot;</span>)),</span><br><span class="line">        handle: &#123; title: <span class="string">&quot;index&quot;</span> &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    path: <span class="string">&quot;*&quot;</span>,</span><br><span class="line">    element: &lt;div&gt;无权限访问 &lt;/div&gt;,</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    path: <span class="string">&quot;/index-no-user&quot;</span>,</span><br><span class="line">    element: useLazy(() =&gt; import(<span class="string">&quot;@/pages/404&quot;</span>)),</span><br><span class="line">    handle: &#123; title: <span class="string">&quot;无法访问&quot;</span> &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<h1 id="拓展性配置-createHashRouter"><a href="#拓展性配置-createHashRouter" class="headerlink" title="拓展性配置 createHashRouter"></a>拓展性配置 createHashRouter</h1><p>要想使用最新版本的功能，需要通过最新的语法去创建路由<br>createBrowserRouter </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const hashRouter = createHashRouter(routes);</span><br><span class="line"><span class="built_in">export</span> default <span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    <span class="comment"># store 是 redux 暴露出来的。目的是将redux挂载进来</span></span><br><span class="line">    &lt;Provider store=&#123;store&#125;&gt;</span><br><span class="line">      &lt;RouterProvider router=&#123;hashRouter&#125; /&gt;</span><br><span class="line">    &lt;/Provider&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -424,611 +965,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/12/centos-%E9%83%A8%E7%BD%B2-Uni-H5%E6%89%93%E5%8C%85/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/08/12/centos-%E9%83%A8%E7%BD%B2-Uni-H5%E6%89%93%E5%8C%85/" class="post-title-link" itemprop="url">centos 部署 Uni H5打包</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-08-12 11:26:32" itemprop="dateCreated datePublished" datetime="2022-08-12T11:26:32+08:00">2022-08-12</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="大致流程"><a href="#大致流程" class="headerlink" title="大致流程"></a>大致流程</h1><ol>
-<li>从window hbuildx 软件中提取构建包 <code>uniapp-cli</code>.zip ,放到服务器里面 rz 命令上传,通过<code>cp 复制文件路径/名称 文件路径/名称</code>  复制到指定的目录上面。</li>
-<li>安装node 环境<br>  下载 node-v16.16.0-linux-x64.tar.xz<br>  rz 传到服务器<br>  tar -xvf node-v16.16.0-linux-x64.tar.xz 解压<br>  配置环境变量<br>  vi  &#x2F;etc&#x2F;profile<br>  export NODEJS&#x3D;&#x2F;zyc&#x2F;node-v16.16.0<br>  export PATH&#x3D;$PATH:$NODEJS&#x2F;bin</li>
-</ol>
-<p>  触发生效<br>  source &#x2F;etc&#x2F;profile<br>  设置淘宝镜像源<br>   npm config set registry <a target="_blank" rel="noopener" href="http://registry.npm.taobao.org/">http://registry.npm.taobao.org/</a></p>
-<h1 id="检查是否更换成功"><a href="#检查是否更换成功" class="headerlink" title="检查是否更换成功"></a>检查是否更换成功</h1><p>   npm config get registry<br>3. 安装 uniapp-cli 依赖包，以及编译器包<br>   cd uniapp-cli 到该目录，npm install<br>  npm install bcrypt less node-sass-china –save<br>  因为node-sass-china镜像源无法下载需要到github官网去下载<br>  <a target="_blank" rel="noopener" href="https://github.com/sass/node-sass/releases/tag/v6.0.1">https://github.com/sass/node-sass/releases/tag/v6.0.1</a></p>
-<p>4. </p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/27/React-render-props/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/07/27/React-render-props/" class="post-title-link" itemprop="url">React render props</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-27 10:58:48" itemprop="dateCreated datePublished" datetime="2022-07-27T10:58:48+08:00">2022-07-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Render-Props"><a href="#Render-Props" class="headerlink" title="Render Props"></a>Render Props</h1><p>术语 “render prop” 是指一种在 React 组件之间使用一个值为函数的 prop 共享代码的简单技术<br>该函数的返回值 可以是一个 ReactElement</p>
-<h1 id="Render-Props-解决的问题"><a href="#Render-Props-解决的问题" class="headerlink" title="Render Props 解决的问题"></a>Render Props 解决的问题</h1><ul>
-<li>组件复用性的问题<br>以往我们需要通过高阶组件去复用其内部的逻辑与方法，但是不想复用其中的视图，或者只是想复用部分的数据</li>
-<li>让组件可以动态的处理一些问题，而不是全量复制。特殊化处理。</li>
-<li>类似于vue中的slot</li>
-</ul>
-<h1 id="Render-Props-注意事项"><a href="#Render-Props-注意事项" class="headerlink" title="Render Props 注意事项"></a>Render Props 注意事项</h1><ul>
-<li>在使用ts进行类型定义时，必须声明该类型是一个函数</li>
-<li>它的命名不一定是render ，也可以是children或者其他<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Mouse.propTypes = &#123;</span><br><span class="line">  children: PropTypes.func.isRequired</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%80%E5%B8%A7%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/07/26/%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%80%E5%B8%A7%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88/" class="post-title-link" itemprop="url">浏览器一帧做了什么（RequestAnimationFrame）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-26 11:08:28" itemprop="dateCreated datePublished" datetime="2022-07-26T11:08:28+08:00">2022-07-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">浏览器</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="浏览器渲染原理"><a href="#浏览器渲染原理" class="headerlink" title="浏览器渲染原理"></a>浏览器渲染原理</h1><p>我们都知道，页面的内容都是一帧一帧绘制出来的，浏览器刷新率代表浏览器一秒绘制多少帧。原则上说 1s 内绘制的帧数也多，画面表现就也细腻。目前浏览器大多是 60Hz（60帧&#x2F;s），每一帧耗时也就是在 16.6ms 左右。</p>
-<h1 id="在一帧内的执行过程"><a href="#在一帧内的执行过程" class="headerlink" title="在一帧内的执行过程"></a>在一帧内的执行过程</h1><ul>
-<li>接受输入事件 like：touch wheel click keypress</li>
-<li>执行事件回调  Timers</li>
-<li>开始一帧 <ol>
-<li>window resize 窗口大小调整</li>
-<li>scroll 滚动</li>
-<li>mediaquery changed 媒体查询变化</li>
-<li>animation events 动画事件<br>上述这些情况都可以触发开始一帧</li>
-</ol>
-</li>
-<li>执行 RAF (RequestAnimationFrame)</li>
-<li>页面布局，样式计算</li>
-<li>绘制渲染</li>
-<li>执行 RIC (RequestIdelCallback)</li>
-</ul>
-<h1 id="RequestAnimationFrame-动画绘制-与-通过定时器触发的区别"><a href="#RequestAnimationFrame-动画绘制-与-通过定时器触发的区别" class="headerlink" title="RequestAnimationFrame 动画绘制 与 通过定时器触发的区别"></a>RequestAnimationFrame 动画绘制 与 通过定时器触发的区别</h1><p>计时器一直是javascript动画的核心技术，而setTimeout和setInterval的问题是，它们都不精确。<br>它们的内在运行机制决定了时间间隔参数实际上只是指定了把动画代码添加到浏览器UI线程队列中以等待执行的时间。<br>如果队列前面已经加入了其他任务，那动画代码就要等前面的任务完成后再执行。</p>
-<p>requestAnimationFrame采用系统时间间隔，保持最佳绘制效率。<br>不会因为间隔时间过短，造成过度绘制，增加开销；也不会因为间隔时间太长，使用动画卡顿不流畅，让各种网页动画效果能够有一个统一的刷新机制，从而节省系统资源，提高系统性能，改善视觉效果。</p>
-<h1 id="RequestAnimationFrame的特点"><a href="#RequestAnimationFrame的特点" class="headerlink" title="RequestAnimationFrame的特点"></a>RequestAnimationFrame的特点</h1><ul>
-<li>requestAnimationFrame会把每一帧中的所有DOM操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率</li>
-<li>在隐藏或不可见的元素中，requestAnimationFrame将不会进行重绘或回流，这当然就意味着更少的CPU、GPU和内存使用量</li>
-<li>requestAnimationFrame是由浏览器专门为动画提供的API，在运行时浏览器会自动优化方法的调用，并且如果页面不是激活状态下的话，动画会自动暂停，有效节省了CPU开销</li>
-</ul>
-<h1 id="RequestAnimationFrame-的使用"><a href="#RequestAnimationFrame-的使用" class="headerlink" title="RequestAnimationFrame 的使用"></a>RequestAnimationFrame 的使用</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">&lt;div <span class="built_in">id</span>=<span class="string">&quot;myDiv&quot;</span> style=<span class="string">&quot;background-color: lightblue;width: 0;height: 20px;line-height: 20px;&quot;</span>&gt;0%&lt;/div&gt;</span><br><span class="line">&lt;button <span class="built_in">id</span>=<span class="string">&quot;btn&quot;</span>&gt;run&lt;/button&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  var timer;</span><br><span class="line">  const btn = document.getElementById(<span class="string">&#x27;btn&#x27;</span>)</span><br><span class="line">  btn.onclick = <span class="function"><span class="title">function</span></span> () &#123;</span><br><span class="line">    myDiv.style.width = <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">    cancelAnimationFrame(timer);</span><br><span class="line">    timer = requestAnimationFrame(<span class="keyword">function</span> <span class="function"><span class="title">fn</span></span>() &#123;</span><br><span class="line">      <span class="keyword">if</span> (parseInt(myDiv.style.width) &lt; 500) &#123;</span><br><span class="line">        myDiv.style.width = parseInt(myDiv.style.width) + 5 + <span class="string">&#x27;px&#x27;</span>;</span><br><span class="line">        myDiv.innerHTML = parseInt(myDiv.style.width) / 5 + <span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">        timer = requestAnimationFrame(fn);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        cancelAnimationFrame(timer);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/26/React16-%E8%AE%BE%E8%AE%A1%E4%B8%8E%E6%9E%B6%E6%9E%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/07/26/React16-%E8%AE%BE%E8%AE%A1%E4%B8%8E%E6%9E%B6%E6%9E%84/" class="post-title-link" itemprop="url">React16 设计与架构</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-26 11:01:21" itemprop="dateCreated datePublished" datetime="2022-07-26T11:01:21+08:00">2022-07-26</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="React-设计理念"><a href="#React-设计理念" class="headerlink" title="React 设计理念"></a>React 设计理念</h1><p>由于JS是单线程的，脚本执行与页面渲染无法同时进行。当项目庞大，组件繁多时，JS执行就会超过16.6ms（浏览器单帧时长），用户就会感受到卡顿。<br>为了解决JS执行事件过长的问题，React 采取了时间切片的方式。将长任务拆分成多个片段到每一帧中执行。</p>
-<h1 id="React16架构可以分为三层："><a href="#React16架构可以分为三层：" class="headerlink" title="React16架构可以分为三层："></a>React16架构可以分为三层：</h1><ul>
-<li><p>Scheduler（调度器）—— 调度任务的优先级，高优任务优先进入Reconciler<br>1.时间分片<br>每隔一段时间就把主线程还给浏览器，避免长时间占用主线程。当浏览器更新页面之后，继续执行未完成任务<br>浏览器每一帧JS执行流程：<br>task(宏任务) – 队列中全部job(微任务) – requestAnimationFrame – 浏览器重排&#x2F;重绘 – requestIdleCallback<br>requestIdleCallback 在ie和safair浏览器上会有兼容性问题。<br>React团队采用了宏任务中的 MessageChannel 来实现任务中断。<br>MessageChannel 可以在页面与内嵌iframe直接通信</p>
-</li>
-<li><p>Reconciler（协调器）—— 负责找出变化的组件 (render阶段)</p>
-</li>
-<li><p>Renderer（渲染器）—— 负责将变化的组件渲染到页面上 (commit阶段)</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/27/Github%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%87%AA%E5%8A%A8%E5%8C%96%E5%8F%91%E5%B8%83npm%E5%8C%85/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/06/27/Github%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E8%87%AA%E5%8A%A8%E5%8C%96%E5%8F%91%E5%B8%83npm%E5%8C%85/" class="post-title-link" itemprop="url">Github持续集成自动化发布npm包</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-27 11:03:18" itemprop="dateCreated datePublished" datetime="2022-06-27T11:03:18+08:00">2022-06-27</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h1><p>我们发布插件不可能每次都 npm run build 然后 npm login npm publish，这属实有点麻烦，能不能简单一点，我提交个代码或者合并代码的时候就发布呢？<br>那就是持续集成，自动化发布了。</p>
-<h1 id="什么是持续集成"><a href="#什么是持续集成" class="headerlink" title="什么是持续集成"></a>什么是持续集成</h1><p>持续集成指的是，频繁地（一天多次）将代码集成到主干。</p>
-<p>它的好处主要有两个。</p>
-<ul>
-<li>快速发现错误。每完成一点更新，就集成到主干，可以快速发现错误，定位错误也比较容易。</li>
-<li>防止分支大幅偏离主干。如果不是经常集成，主干又在不断更新，会导致以后集成的难度变大，甚至难以集成。<br>持续集成的目的，就是让产品可以快速迭代，同时还能保持高质量。它的核心措施是，代码集成到主干之前，必须通过自动化测试。只要有一个测试用例失败，就不能集成。</li>
-</ul>
-<h1 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h1><ul>
-<li><p>代码托管GitHub</p>
-</li>
-<li><p>找到Actions创建workflow模板<br>找到Publish Node.js Package 去 初始化config，并保存。<br>项目中即可生成下列文件<br>.github&#x2F;workflows&#x2F;npmpublish.yml</p>
-</li>
-<li><p>同步远程分支，并修改npmpublish.yml</p>
-</li>
-<li><p>npmpublish.yml 文件解释<br>name 此工作流的名称。<br>on 触发条件，上述文本表示当master分支合并和推送时会触发workflow。<br>jobs 工作集合，例如jobs内部的build、publish-npm表示具体的工作任务的ID，可以自定义。<br>needs 表示当前的job依赖与另外一个job，例如上面的publish-npm依赖于build。<br>runs-on 表示工作所在的虚拟机操作系统，目前可选的系统有ubuntu-latest、ubuntu-18.04、ubuntu-16.04、windows-latest、windows-2019、windows-2016、macOS-latest、macOS-10.14。<br>steps 表示job所执行的 actions 和 commands 集合。</p>
-</li>
-<li><p>添加npm access Tokens<br>登陆npm - accessTokens - Generate New Token 获取到token<br>在github对应项目&#x2F;settings&#x2F;secrets&#x2F;dependabot 上 New secret 保存，<br>名字要和npmpublish.yml设置的保持一致，一般不做修改: npm_token</p>
-</li>
-<li><p>提交之后就会自动构建更新npm</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/27/npm%E4%B8%8A%E6%9E%B6%E6%B5%81%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/06/27/npm%E4%B8%8A%E6%9E%B6%E6%B5%81%E7%A8%8B/" class="post-title-link" itemprop="url">npm上架流程</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-27 09:53:32" itemprop="dateCreated datePublished" datetime="2022-06-27T09:53:32+08:00">2022-06-27</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="步骤流程"><a href="#步骤流程" class="headerlink" title="步骤流程"></a>步骤流程</h1><ul>
-<li><p>注册npm账户 ，安装node.js</p>
-</li>
-<li><p>在本地创建自己的npm包<br>创建文件夹，名字建议不要与线上包重名<br>初始化npm包 npm init<br>创建一个index.js文件作为包入口文件（和package.json下的main保持一致）<br>编写完善index.js</p>
-</li>
-<li><p>发布npm包<br>npm adduser 添加登录用户，请确保当前链接源是官网，使用nrm工具可以快速查看和切换<br>npm publish 发布上传包</p>
-</li>
-<li><p>更新npm包<br>修改内容，更新版本号</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//直接修改package.json中的version</span><br><span class="line"><span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.1.0&quot;</span></span><br></pre></td></tr></table></figure>
-<p>npm publish 再次发布</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/10/uni%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E4%B8%BB%E9%A2%98%E8%89%B2%E8%B0%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/06/10/uni%E5%85%A8%E5%B1%80%E8%AE%BE%E7%BD%AE%E4%B8%BB%E9%A2%98%E8%89%B2%E8%B0%83/" class="post-title-link" itemprop="url">UNI全局设置主题色调</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-10 16:19:21" itemprop="dateCreated datePublished" datetime="2022-06-10T16:19:21+08:00">2022-06-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/UNI/" itemprop="url" rel="index"><span itemprop="name">UNI</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="UNI全局设置主题色调-的思路"><a href="#UNI全局设置主题色调-的思路" class="headerlink" title="UNI全局设置主题色调 的思路"></a>UNI全局设置主题色调 的思路</h1><ul>
-<li>通过全局设置主类，在主类下添加子类来控制样式</li>
-<li>基于scss去控制全局色调</li>
-<li>基于scss mixin去生成多色调</li>
-<li>通过vuex去控制全局色调的类</li>
-<li>通过mixin混到全局暴露出全局的类和色调</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">// themes.scss</span><br><span class="line"><span class="variable">$bg</span>-007aff: <span class="comment">#007aff;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$bg</span>-00C997: <span class="comment">#00C997; </span></span><br><span class="line"></span><br><span class="line">@mixin setTheme(<span class="variable">$color</span>)&#123;</span><br><span class="line">  .Text&#123;</span><br><span class="line">    color: <span class="variable">$color</span>!important;</span><br><span class="line">  &#125;</span><br><span class="line">  .u-button &#123;</span><br><span class="line">		background-color: <span class="variable">$color</span>!important;</span><br><span class="line">	&#125;</span><br><span class="line">  .uni-button-color &#123;</span><br><span class="line">    color: <span class="variable">$color</span>!important;</span><br><span class="line">  &#125;</span><br><span class="line">  .uni-modal__btn  &#123;</span><br><span class="line">    color: <span class="variable">$color</span>!important;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// uni.scss</span><br><span class="line"> @import <span class="string">&#x27;@/common/styles/themes.scss&#x27;</span>;</span><br><span class="line">.THEME-00C997 &#123;</span><br><span class="line">  @include setTheme(<span class="variable">$bg</span>-00C997)</span><br><span class="line">&#125;</span><br><span class="line">.THEME-007aff &#123;</span><br><span class="line">  @include setTheme(<span class="variable">$bg</span>-007aff)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// store/index.js</span><br><span class="line">import Vue from <span class="string">&#x27;vue&#x27;</span></span><br><span class="line">import Vuex from <span class="string">&#x27;vuex&#x27;</span></span><br><span class="line"></span><br><span class="line">Vue.use(Vuex) // vue的插件机制</span><br><span class="line"></span><br><span class="line">const store = new Vuex.Store(&#123;</span><br><span class="line">    // 为了不和页面或组件的data中的造成混淆，state中的变量前面建议加上$符号</span><br><span class="line">    state: &#123;</span><br><span class="line">      <span class="variable">$themeClass</span>: <span class="string">&#x27;&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    actions: &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;,</span><br><span class="line">    mutations: &#123;</span><br><span class="line">        SETTHEMECLASS(state,data)&#123;</span><br><span class="line">            state.<span class="variable">$themeClass</span> = data</span><br><span class="line">            uni.setStorageSync(<span class="string">&#x27;themeClass&#x27;</span>, data);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default store</span><br><span class="line"></span><br><span class="line">// 在app.vue中设置</span><br><span class="line">onLaunch: <span class="function"><span class="title">function</span></span>() &#123;</span><br><span class="line">  // 可以异步获取</span><br><span class="line">	this.<span class="variable">$store</span>.commit(<span class="string">&#x27;SETTHEMECLASS&#x27;</span>,<span class="string">&#x27;00C997&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 全局暴露</span><br><span class="line">computed:&#123;</span><br><span class="line">  <span class="function"><span class="title">GETTHEME</span></span>()&#123;</span><br><span class="line">    <span class="built_in">return</span> <span class="string">&#x27;THEME-&#x27;</span> + this.<span class="variable">$store</span>.state.<span class="variable">$themeClass</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">GETCOLOR</span></span>()&#123;</span><br><span class="line">    <span class="built_in">return</span> <span class="string">&#x27;#&#x27;</span> + this.<span class="variable">$store</span>.state.<span class="variable">$themeClass</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="使用注意"><a href="#使用注意" class="headerlink" title="使用注意"></a>使用注意</h1><p>需要在每个页面的根节点，动态注入该类 :class&#x3D;”GETTHEME”</p>
-<p>可以通过 GETCOLOR 获取到该主题的色值，辅助某些组件提供api修改状态值</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
@@ -1040,7 +978,7 @@
 
 <div class="copyright">
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

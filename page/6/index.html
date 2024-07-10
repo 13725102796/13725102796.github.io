@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">96</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">67</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -166,6 +166,616 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/01/git-%E5%A4%9A%E8%B4%A6%E5%8F%B7%E9%85%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/02/01/git-%E5%A4%9A%E8%B4%A6%E5%8F%B7%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">git 多账号配置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-02-01 00:12:23" itemprop="dateCreated datePublished" datetime="2021-02-01T00:12:23+08:00">2021-02-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="git-多账号账号切换使用"><a href="#git-多账号账号切换使用" class="headerlink" title="git 多账号账号切换使用"></a>git 多账号账号切换使用</h1><ul>
+<li>解决密钥问题。默认只有一个密钥，二次创建会覆盖</li>
+<li>使用哪个账号提交的</li>
+</ul>
+<h1 id="生成两个账号私钥在本地"><a href="#生成两个账号私钥在本地" class="headerlink" title="生成两个账号私钥在本地"></a>生成两个账号私钥在本地</h1><p>生成默认的 id_rsa 和id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱1”<br>在创建第二个的时候必须要重命名 比如 137_id_ras,这样会生成另外两个文件137_id_rsa 和 137_id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱2”</p>
+<h1 id="在-ssh下面创建config文件"><a href="#在-ssh下面创建config文件" class="headerlink" title="在.ssh下面创建config文件"></a>在.ssh下面创建config文件</h1><p>执行 touch config 创建<br>执行 vim config 编辑</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Default 第一个账号(123456@xxxx.com)</span></span><br><span class="line"></span><br><span class="line">Host default</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/137_id_rsa</span><br><span class="line"><span class="comment">#second 第二个账号（38894403@xxxx.com）    </span></span><br><span class="line">Host zc</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+<p>只需要修改 IdentityFile 即可<br>ssh -T <a href="mailto:&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#x74;&#104;&#117;&#98;&#46;&#x63;&#111;&#x6d;">&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#x74;&#104;&#117;&#98;&#46;&#x63;&#111;&#x6d;</a> 可以测试是否配置成功<br><code>配置成功会显示当前用户名</code> 这个很重要，因为当你想切换用户的时候没有这个不行<br>通过设置<br>git config –global user.name “13725102796”<br>git config –global user.email “<a href="mailto:&#x31;&#x34;&#x33;&#x39;&#x36;&#x35;&#53;&#55;&#54;&#52;&#x40;&#113;&#113;&#46;&#x63;&#x6f;&#109;">&#x31;&#x34;&#x33;&#x39;&#x36;&#x35;&#53;&#55;&#54;&#52;&#x40;&#113;&#113;&#46;&#x63;&#x6f;&#109;</a>“<br>还没有生效，因为ssh-add的代理始终指向默认的</p>
+<h1 id="通过ssh-add删除代理"><a href="#通过ssh-add删除代理" class="headerlink" title="通过ssh-add删除代理"></a>通过ssh-add删除代理</h1><p>查看 ssh-add -l<br>删除 ssh-add -D<br>添加<br>ssh-add ~&#x2F;.ssh&#x2F;id_rsa<br>ssh-add ~&#x2F;.ssh&#x2F;137_id_rsa </p>
+<h1 id="添加代理后还不可以，需要修改提交的git-clone-ssh链接"><a href="#添加代理后还不可以，需要修改提交的git-clone-ssh链接" class="headerlink" title="添加代理后还不可以，需要修改提交的git clone ssh链接"></a>添加代理后还不可以，需要修改提交的git clone ssh链接</h1><ul>
+<li><p>还没clone的可以通过 来拉取项目，这样可以让ssh-add正确代理<br>git clone zy@:18820677498&#x2F;Blog.git<br>原来是 <a href="mailto:&#x67;&#x69;&#x74;&#x40;&#103;&#105;&#x74;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;">&#x67;&#x69;&#x74;&#x40;&#103;&#105;&#x74;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;</a>:18820677498&#x2F;Blog.git</p>
+</li>
+<li><p>已经clone的 可以切换到当前项目下，命令行执行<br><code>vim .git/config</code><br>打开config文件 按i去修改，按esc退出修改，再按 <code>:qw!</code> 保存修改</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/29/Vue%E4%B8%8EReact-Diff%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/29/Vue%E4%B8%8EReact-Diff%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/" class="post-title-link" itemprop="url">Vue与React Diff算法比较</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-29 14:15:40" itemprop="dateCreated datePublished" datetime="2020-10-29T14:15:40+08:00">2020-10-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Vue/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="diff算法比对方式"><a href="#diff算法比对方式" class="headerlink" title="diff算法比对方式"></a>diff算法比对方式</h1><ol>
+<li>Vue采用的是递归加双指针的方式对比旧节点，react是从左到右逐个对比<br>当一个集合，只是把最后一个节点移动到了第一个，</li>
+<li>对比具体某个元素时，当元素类型相同，但是className不同，<br>vue认为是不同类型元素，删除重建。<br>react会认为是同类型节点，只是修改节点属性</li>
+</ol>
+<h1 id="diff-渲染机制不同"><a href="#diff-渲染机制不同" class="headerlink" title="diff 渲染机制不同"></a>diff 渲染机制不同</h1><ol>
+<li>Vue是边对比边更新DOM</li>
+<li>React使用的是队列保存需要更新的DDM，得到Patch树，再统一批量更新DOM</li>
+</ol>
+<h1 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h1><ol>
+<li>虚拟DOM在比较时只比较同一层级节点，复杂度都为 O(n)，降低了算法复杂度；</li>
+<li>都使用key比较是否是相同节点，都是为了尽可能的复用节点</li>
+<li>都是操作虚拟DOM，最小化操作真实DOM，提高性能</li>
+<li>都是不要用 index作为 key</li>
+<li>在同级节点中元素顺序的变换，都是复用处理，新增的插入，多余的删掉</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/25/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E8%AF%84%E4%BC%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/25/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E8%AF%84%E4%BC%B0/" class="post-title-link" itemprop="url">谷歌浏览器性能测试评估</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-10-25 11:51:22" itemprop="dateCreated datePublished" datetime="2020-10-25T11:51:22+08:00">2020-10-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">浏览器</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Console-面板"><a href="#Console-面板" class="headerlink" title="Console 面板"></a>Console 面板</h1><p>console.log(‘普通信息’)<br>console.info(‘提示性信息’)<br>console.error(‘错误信息’)<br>console.warn(‘警示信息’)<br>time 和 timeEnd 一般放在一起用，传入一个参数用来标识起始位置用于统计时间:<br>console.time(‘遍历九十万次执行时间’)<br>Array(900000).fill({}).forEach((v, index) &#x3D;&gt; v.index &#x3D; index)<br>console.timeEnd(‘遍历九十万次执行时间’)<br>&#x2F;&#x2F;打印输出 遍历九十万次执行时间: 21.874755859375 ms</p>
+<p>console.trace() 用于追踪代码的调用栈，不用专门断点去看了<br>performance.memory可以查看内存的使用情况<br>jsHeapSizeLimit: 4294705152<br>totalJSHeapSize: 31789794<br>usedJSHeapSize: 30112726<br>usedJSHeapSize &gt; totalJSHeapSize 则表明内存泄漏了</p>
+<h1 id="代码断点-源代码面板"><a href="#代码断点-源代码面板" class="headerlink" title="代码断点  源代码面板"></a>代码断点  源代码面板</h1><p>找到源代码，点击要中断代码执行的位置，点击红色按钮的位置。然后再触发该方法执行，因为已知点击按钮可以触发，精准的定位到代码行就可以了</p>
+<h1 id="Performance-面板"><a href="#Performance-面板" class="headerlink" title="Performance 面板"></a>Performance 面板</h1><ul>
+<li>首先点击控制条左边的第一个圆圈，开始记录日志</li>
+<li>等待几分钟(正常操作页面)</li>
+<li>点击 Stop 按钮，Devtools 停止录制，处理数据，然后显示性能报告</li>
+</ul>
+<h1 id="Lighthouse-Audits-面板"><a href="#Lighthouse-Audits-面板" class="headerlink" title="Lighthouse(Audits) 面板"></a>Lighthouse(Audits) 面板</h1><p>来自 Google 的描述： Lighthouse 是一个开源的自动化工具，用于改进网络应用的质量。 您可以将其作为一个 Chrome 扩展程序运行，或从命令行运行。 您为 Lighthouse 提供一个您要审查的网址，它将针对此页面运行一连串的测试，然后生成一个有关页面性能的报告</p>
+<p>会对页面的加载进行分析，然后给出提高页面性能的建议</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/25/webpack%E4%B8%ADloader%E5%92%8CPlugin/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/08/25/webpack%E4%B8%ADloader%E5%92%8CPlugin/" class="post-title-link" itemprop="url">webpack中loader和Plugin</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-25 10:17:14" itemprop="dateCreated datePublished" datetime="2020-08-25T10:17:14+08:00">2020-08-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Webpack/" itemprop="url" rel="index"><span itemprop="name">Webpack</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Loader"><a href="#Loader" class="headerlink" title="Loader"></a>Loader</h1><p>Loader直译为”加载器”。Webpack将一切文件视为模块，但是webpack原生是只能解析js文件，如果想将其他文件也打包的话，就会用到loader。 所以Loader的作用是让webpack拥有了加载和解析非JavaScript文件的能力。</p>
+<p>Loader在module.rules中配置，也就是说他作为模块的解析规则而存在。 类型为数组，每一项都是一个Object，里面描述了对于什么类型的文件（test），使用什么加载(loader)和使用的参数（options）</p>
+<p>常见的loader<br>样式：style-loader、css-loader、less-loader、sass-loader等<br>文件：raw-loader、file-loader 、url-loader等<br>编译：babel-loader(把 ES6 转换成 ES5)、coffee-loader 、ts-loader等<br>校验测试：mocha-loader、jshint-loader 、eslint-loader等<br>imports-loader、exports-loader等可以向模块注入变量或者提供导出模块功能</p>
+<h1 id="Plugin"><a href="#Plugin" class="headerlink" title="Plugin"></a>Plugin</h1><p>直译为”插件”。Plugin可以扩展webpack的功能，让webpack具有更多的灵活性。 在 Webpack 运行的生命周期中会广播出许多事件，Plugin 可以监听这些事件，在合适的时机通过 Webpack 提供的 API 改变输出结果</p>
+<p>Plugin在plugins中单独配置。 类型为数组，每一项是一个plugin的实例，参数都通过构造函数传入</p>
+<p>常见的Plugin<br>webpack内置UglifyJsPlugin，压缩和混淆代码,通过UglifyES压缩ES6代码。<br>webpack内置CommonsChunkPlugin，提取公共代码,提高打包效率，将第三方库和业务代码分开打包<br>ProvidePlugin：自动加载模块，代替require和import </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">new webpack.ProvidePlugin(&#123; </span><br><span class="line">   $: <span class="string">&#x27;jquery&#x27;</span>,</span><br><span class="line">   jQuery: <span class="string">&#x27;jquery&#x27;</span> </span><br><span class="line"> &#125;)</span><br></pre></td></tr></table></figure>
+<p>html-webpack-plugin可以根据模板自动生成html代码，并自动引用css和js文件<br>extract-text-webpack-plugin 将js文件中引用的样式单独抽离成css文件<br>DefinePlugin编译时配置全局变量，这对开发模式和发布模式的构建允许不同的行为非常有用<br>HotModuleReplacementPlugin 热更新</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/21/React%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/08/21/React%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90/" class="post-title-link" itemprop="url">React函数组件如何使用生命周期钩子</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-21 21:28:16" itemprop="dateCreated datePublished" datetime="2020-08-21T21:28:16+08:00">2020-08-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="useEffect-Hook-useState-Hook"><a href="#useEffect-Hook-useState-Hook" class="headerlink" title="useEffect Hook useState Hook"></a>useEffect Hook useState Hook</h1><p>Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Counter</span></span>()&#123;</span><br><span class="line"></span><br><span class="line">  const [counter,setCounter] = useState(0)</span><br><span class="line">  <span class="comment"># 这句话等同于 class Components 的</span></span><br><span class="line">  <span class="comment"># state = &#123;</span></span><br><span class="line">  <span class="comment">#   counter: 0</span></span><br><span class="line">  <span class="comment"># &#125;</span></span><br><span class="line">  <span class="comment"># 可以在函数内使用多次，用法和state一样，不一定是值，可以是对象，like：</span></span><br><span class="line">  <span class="comment"># const [counter1,setCounter1] = useState(&#123;id:1,value: 2&#125;)</span></span><br><span class="line">  <span class="comment"># 通过setCounter设置counter的值</span></span><br><span class="line">  </span><br><span class="line">  useEffect(()=&gt;&#123;</span><br><span class="line">    <span class="comment"># 这里处理的是 componentDidMount 和 componentDidUpdate</span></span><br><span class="line">    setCounter(counter+1)</span><br><span class="line">    <span class="built_in">return</span> ()=&gt;&#123;</span><br><span class="line">      <span class="comment"># 这里处理的是componentWillUnmount</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="comment"># useEffect也可以设定多个，他还有第二个参数，用于设置他是否在更新的时候执行</span></span><br><span class="line">  <span class="comment"># useEffect(()=&gt;&#123;</span></span><br><span class="line">  <span class="comment">#   setCounter(counter+1)</span></span><br><span class="line">  <span class="comment"># &#125;,[counter])</span></span><br><span class="line">  <span class="comment"># 这里监听了counter，只有counter发生改变才会执行</span></span><br><span class="line">  <span class="comment"># useEffect(()=&gt;&#123;</span></span><br><span class="line">  <span class="comment">#   setCounter(counter+1)</span></span><br><span class="line">  <span class="comment"># &#125;,[])</span></span><br><span class="line">  <span class="comment"># 是空数组的话，就可以在更新的时候不执行，只会在第一次加载的时候执行</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="自定义Hook"><a href="#自定义Hook" class="headerlink" title="自定义Hook"></a>自定义Hook</h1><p>首先 自定义 Hook 是一种自然遵循 Hook 设计的约定，而并不是 React 的特性。<br>类似于将多个组件共同的功能抽离出来，统一封装使用<br>要点：</p>
+<ul>
+<li>自定义 Hook 必须以 “use” 开头，因为要判断某个函数是否包含对其内部 Hook 的调用，React 将需要自动检查你的 Hook 是否违反了 Hook 的规则。</li>
+<li>在两个组件中使用相同的 Hook 不会共享 state。自定义 Hook 是一种重用状态逻辑的机制(例如设置为订阅并存储当前值)，所以每次使用自定义 Hook 时，其中的所有 state 和副作用都是完全隔离的。</li>
+</ul>
+<p>由于使用相同的 Hook 不会共享 state，大多数情况还是需要依赖redux等辅助工具来统一状态管理。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/20/React-%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0%E4%BB%A3%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/08/20/React-%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0%E4%BB%A3%E7%90%86/" class="post-title-link" itemprop="url">React 配置本地代理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-20 23:34:59" itemprop="dateCreated datePublished" datetime="2020-08-20T23:34:59+08:00">2020-08-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="React配置代理"><a href="#React配置代理" class="headerlink" title="React配置代理"></a>React配置代理</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.检查自己的create-react-app脚手架若在2.0版本以下，使用对象类型配置代理，在自己项目的package.json文件中配置如下：</span></span><br><span class="line"><span class="string">&quot;proxy&quot;</span>:&#123;</span><br><span class="line">   <span class="string">&quot;/api&quot;</span>:&#123;</span><br><span class="line">      <span class="string">&quot;target&quot;</span>:<span class="string">&quot;代理服务器的地址&quot;</span>,  <span class="comment"># 跨域地址</span></span><br><span class="line">      <span class="string">&quot;changeOrigin&quot;</span>: <span class="literal">true</span>,    <span class="comment"># 是否允许跨域</span></span><br><span class="line">      <span class="string">&quot;pathRewrite&quot;</span>: &#123;        <span class="comment"># 重写路径</span></span><br><span class="line">           <span class="string">&quot;^/api&quot;</span>: <span class="string">&quot;/&quot;</span></span><br><span class="line">       &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 2.若脚手架版本在2.0以上只能配置string类型</span></span><br><span class="line"><span class="string">&quot;proxy&quot;</span>: <span class="string">&quot;代理服务器的地址&quot;</span>,</span><br><span class="line"><span class="comment"># 多代理配置可以使用中间件的方式 http-proxy-middleware</span></span><br><span class="line"><span class="comment"># 安装 http-proxy-middleware，然后在项目的src目录下建立setupProxy.js文件</span></span><br><span class="line">const &#123; createProxyMiddleware &#125; = require(<span class="string">&#x27;http-proxy-middleware&#x27;</span>);</span><br><span class="line">module.exports = <span class="keyword">function</span> (app) &#123;</span><br><span class="line">    app.use(</span><br><span class="line">      createProxyMiddleware(<span class="string">&#x27;/api&#x27;</span>, &#123;</span><br><span class="line">        target: <span class="string">&#x27;代理地址1&#x27;</span>,</span><br><span class="line">        secure: <span class="literal">false</span>,    <span class="comment"># 指定Cookies能否被用户读取</span></span><br><span class="line">        changeOrigin: <span class="literal">true</span>,</span><br><span class="line">        pathRewrite: &#123;</span><br><span class="line">            <span class="string">&quot;^/api&quot;</span>: <span class="string">&quot;/&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;),</span><br><span class="line">      <span class="comment"># 配置多个代理继续往下加就可以</span></span><br><span class="line">      createProxyMiddleware(<span class="string">&#x27;/api1&#x27;</span>, &#123;</span><br><span class="line">        target: <span class="string">&#x27;代理地址2&#x27;</span>,</span><br><span class="line">        secure: <span class="literal">false</span>,    <span class="comment"># 指定Cookies能否被用户读取</span></span><br><span class="line">        changeOrigin: <span class="literal">true</span>,</span><br><span class="line">        pathRewrite: &#123;</span><br><span class="line">            <span class="string">&quot;^/api&quot;</span>: <span class="string">&quot;/&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;)</span><br><span class="line">    );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/17/React%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/08/17/React%E6%89%8B%E5%86%99%E4%B8%80%E4%B8%AA%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">React手写一个高阶组件</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-17 16:04:50" itemprop="dateCreated datePublished" datetime="2020-08-17T16:04:50+08:00">2020-08-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="高级组件是为了让数据和视图分离，这里以Clock为例"><a href="#高级组件是为了让数据和视图分离，这里以Clock为例" class="headerlink" title="高级组件是为了让数据和视图分离，这里以Clock为例"></a>高级组件是为了让数据和视图分离，这里以Clock为例</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取当前运动的时间点</span></span><br><span class="line">class Clock extends React.Components &#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span></span>()&#123;</span><br><span class="line">    super()</span><br><span class="line">    this.state = &#123;</span><br><span class="line">      <span class="built_in">date</span>: new Date().toLocaleTimeString()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">componentDidMount</span></span>()&#123;</span><br><span class="line">    this.timerId = setInterval(()=&gt;&#123;</span><br><span class="line">      this.tick()</span><br><span class="line">    &#125;,1000)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">componentWillUnmount</span></span>()&#123;</span><br><span class="line">    clearInterval(this.timerId)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">tick</span></span>()&#123;</span><br><span class="line">    this.setState(&#123;</span><br><span class="line">      <span class="built_in">date</span>: new Date().toLocaleTimeString()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>()&#123;</span><br><span class="line">    <span class="built_in">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;This is Clock&lt;/h1&gt;</span><br><span class="line">        &lt;h2&gt;&#123;this.state.date&#125;&lt;/h2&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面一个普通的时钟组件就写好了，但是我想要很多个不同外观的时钟。<br>这个时候我不可能去一个个的复制这个Clock-》Clock1-》Clock2… 然后去修改里面的render里面html的外观。</p>
+<p>首先要明确一点，这里的获取和生成数据的逻辑都是一样的，是可以复用<br>这时候，就可以使用高阶组件去包装，把数据操作层和UI层分离出来<br>通过向高阶组件传递UI的组件去复用数据的逻辑</p>
+<p>实现代码如下： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="keyword">function</span> HightClock(UIComponents)&#123;</span><br><span class="line">  <span class="built_in">return</span> class extends React.Component &#123;</span><br><span class="line">    constructor(props)&#123;</span><br><span class="line">      super(props)</span><br><span class="line">      this.state = &#123;</span><br><span class="line">        <span class="built_in">date</span>: new Date().toLocaleTimeString()</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">componentDidMount</span></span>()&#123;</span><br><span class="line">      this.timerId = setInterval(()=&gt;&#123;</span><br><span class="line">        this.tick()</span><br><span class="line">      &#125;,1000)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">componentWillUnmount</span></span>()&#123;</span><br><span class="line">      clearInterval(this.timerId)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">tick</span></span>()&#123;</span><br><span class="line">      this.setState(&#123;</span><br><span class="line">        <span class="built_in">date</span>: new Date().toLocaleTimeString()</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">render</span></span>()&#123;</span><br><span class="line">      <span class="built_in">return</span> (</span><br><span class="line">        &lt;UIComponents <span class="built_in">date</span>=&#123;this.state.date&#125; &#123;...this.props&#125; /&gt;</span><br><span class="line">      )</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> Clock1 (props)&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h1&gt;Clock1&lt;/h1&gt;</span><br><span class="line">      &lt;h2&gt;&#123;props.date&#125;&lt;/h2&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> Clock2 (props)&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div style=&#123;&#123;color: <span class="string">&#x27;red&#x27;</span>&#125;&#125; &gt;</span><br><span class="line">      &lt;h1&gt;Clock2&lt;/h1&gt;</span><br><span class="line">      &lt;h2&gt;&#123;props.date&#125;&lt;/h2&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line">const Clock1Componetns = HightClock(Clock1)</span><br><span class="line">const Clock2Componetns = HightClock(Clock12)</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Clock</span></span> ()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;Clock1Componetns /&gt;</span><br><span class="line">      &lt;Clock2Componetns /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default Clock</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -451,674 +1061,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/26/Egg-%E7%9A%84%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/07/26/Egg-%E7%9A%84%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" class="post-title-link" itemprop="url">Egg 的初步认识</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-07-26 21:58:25" itemprop="dateCreated datePublished" datetime="2020-07-26T21:58:25+08:00">2020-07-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Node-js/" itemprop="url" rel="index"><span itemprop="name">Node.js</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Egg-js-是什么"><a href="#Egg-js-是什么" class="headerlink" title="Egg.js 是什么?"></a>Egg.js 是什么?</h1><p>Egg.js 为企业级框架和应用而生，我们希望由 Egg.js 孕育出更多上层框架，帮助开发团队和开发人员降低开发和维护成本。<br>通过 Egg，团队的架构师和技术负责人可以非常容易地基于自身的技术架构在 Egg 基础上扩展出适合自身业务场景的框架。<br>Egg 的插件机制有很高的可扩展性，一个插件只做一件事（比如 Nunjucks 模板封装成了 egg-view-nunjucks、MySQL 数据库封装成了 egg-mysql）。Egg 通过框架聚合这些插件，并根据自己的业务场景定制配置，这样应用的开发成本就变得很低。</p>
-<p>优势：</p>
-<ul>
-<li>Egg 奉行『约定优于配置』，按照一套统一的约定进行应用开发，减少开发人员的学习成本，</li>
-<li>没有约定的团队，沟通成本是非常高的，比如有人会按目录分栈而其他人按目录分功能<br>特性： </li>
-<li>提供基于 Egg 定制上层框架的能力</li>
-<li>高度可扩展的插件机制</li>
-<li>内置多进程管理</li>
-<li>基于 Koa 开发，性能优异</li>
-<li>框架稳定，测试覆盖率高</li>
-<li>渐进式开发</li>
-</ul>
-<h1 id="主要约定文件目录"><a href="#主要约定文件目录" class="headerlink" title="主要约定文件目录"></a>主要约定文件目录</h1><ul>
-<li>config 配置</li>
-<li>middleware</li>
-<li>Router</li>
-<li>Controller</li>
-<li>service</li>
-</ul>
-<h1 id="内置对象"><a href="#内置对象" class="headerlink" title="内置对象"></a>内置对象</h1><ul>
-<li>Application</li>
-<li>Context</li>
-<li>Request &amp; Response</li>
-<li>Controller（类）</li>
-<li>Service</li>
-<li>Helper</li>
-<li>Config</li>
-<li>Logger</li>
-<li>Subscription</li>
-</ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>express 是基于nodejs开发的框架，但是会产生很多callback（回调地狱）<br>为了解决callback，koa支持async await的方式<br>而egg则基于koa集成多种内置对象，以及各种约定，让多人协作开发更友好，还可以安装各种各样的插件来实现想要功能</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/17/react%E7%BB%84%E4%BB%B6%E4%BB%B6%E7%9A%84%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%94%A8%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%B8%BA%E4%BD%95%E5%BC%83%E7%94%A8mixins%E7%9A%84%E6%80%9D%E8%80%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/07/17/react%E7%BB%84%E4%BB%B6%E4%BB%B6%E7%9A%84%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%94%A8%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%B8%BA%E4%BD%95%E5%BC%83%E7%94%A8mixins%E7%9A%84%E6%80%9D%E8%80%83/" class="post-title-link" itemprop="url">react组件件的代码复用，以及为何弃用mixins的思考</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-07-17 08:49:37" itemprop="dateCreated datePublished" datetime="2020-07-17T08:49:37+08:00">2020-07-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="为何弃用mixins，故事背景"><a href="#为何弃用mixins，故事背景" class="headerlink" title="为何弃用mixins，故事背景"></a>为何弃用mixins，故事背景</h1><p>“我如何在几个组件之间共享代码？” 是人们在学习 React 时首先提出的问题之一。我们的答案一直是使用组件组合来进行代码重用。您可以定义一个组件并在其他几个组件中使用它。<br>如何通过组合来解决某种模式并不总是很明显。React 受到函数式编程的影响，但它进入了由面向对象库主导的领域。<br>mixin 系统就是其中之一，它的目标是当你不确定如何用组合解决同样的问题时，它的目标是为你提供一种在组件之间重用代码的方法。<br>随着组件数量越来越多，使用 React 的一些代码逐渐变得难以理解。<br>这些组件太容易被意外破坏，让新开发人员感到困惑，最终也让最初编写它们的人感到困惑。这种混乱大部分是由 mixins 引起的。</p>
-<p>Mixins 打破了常见且通常安全的假设，即您可以通过在组件文件中搜索其出现来重命名状态键或方法。您可能会编写一个有状态的组件，然后您的同事可能会添加一个读取此状态的 mixin。几个月后，您可能希望将该状态移至父组件，以便与兄弟姐妹共享。你会记得更新 mixin 来读取道具吗？如果现在其他组件也使用这个 mixin 怎么办？</p>
-<p>有时候可能要修改mixin的部分功能，但是不知道在哪个地方哪个角落调用了这个方法。你不得不复制一份出来单独维护。<br>这就是mixin为何被弃用的主要原因。<br>当数量上来了，复用的功效就没那么明显，还可能是一种累赘。</p>
-<p>每一个新的需求都会让 mixins 更难理解。随着时间的推移，使用相同 mixin 的组件变得越来越耦合。任何新功能都会被添加到使用该 mixin 的所有组件中。如果不复制代码或在 mixin 之间引入更多的依赖关系和间接性，就无法拆分 mixin 的“更简单”部分。逐渐地，封装边界被侵蚀，并且由于很难更改或删除现有的 mixin，它们变得越来越抽象，直到没有人了解它们是如何工作的。</p>
-<h1 id="解决方案-之-高阶组件"><a href="#解决方案-之-高阶组件" class="headerlink" title="解决方案 之 高阶组件"></a>解决方案 之 高阶组件</h1><p>高阶组件（HOC）是 React 中用于复用组件逻辑的一种高级技巧。HOC 自身不是 React API 的一部分，它是一种基于 React 的组合特性而形成的设计模式</p>
-<p>具体而言，高阶组件是参数为组件，返回值为新组件的函数。</p>
-<p>目的是为了数据与视图分离，所有操作数据的方法都封装在高阶组件的函数内部，视图的展示，通过传递的组件参数去表达</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">// 此函数接收一个组件...</span><br><span class="line"><span class="keyword">function</span> withSubscription(WrappedComponent, selectData) &#123;</span><br><span class="line">  // ...并返回另一个组件...</span><br><span class="line">  <span class="built_in">return</span> class extends React.Component &#123;</span><br><span class="line">    constructor(props) &#123;</span><br><span class="line">      super(props);</span><br><span class="line">      this.handleChange = this.handleChange.<span class="built_in">bind</span>(this);</span><br><span class="line">      this.state = &#123;</span><br><span class="line">        data: selectData(DataSource, props)</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">componentDidMount</span></span>() &#123;</span><br><span class="line">      // ...负责订阅相关的操作...</span><br><span class="line">      DataSource.addChangeListener(this.handleChange);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">componentWillUnmount</span></span>() &#123;</span><br><span class="line">      DataSource.removeChangeListener(this.handleChange);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">handleChange</span></span>() &#123;</span><br><span class="line">      this.setState(&#123;</span><br><span class="line">        data: selectData(DataSource, this.props)</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">      // ... 并使用新数据渲染被包装的组件!</span><br><span class="line">      // 请注意，我们可能还会传递其他属性</span><br><span class="line">      <span class="built_in">return</span> &lt;WrappedComponent data=&#123;this.state.data&#125; &#123;...this.props&#125; /&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>HOC 不会修改传入的组件，也不会使用继承来复制其行为。相反，HOC 通过将组件包装在容器组件中来组成新组件。HOC 是纯函数，没有副作用</p>
-<h1 id="HOC-约定：将不相关的-props-传递给被包裹的组件"><a href="#HOC-约定：将不相关的-props-传递给被包裹的组件" class="headerlink" title="HOC 约定：将不相关的 props 传递给被包裹的组件"></a>HOC 约定：将不相关的 props 传递给被包裹的组件</h1><p>HOC 为组件添加特性。自身不应该大幅改变约定。HOC 返回的组件与原组件应保持类似的接口。<br>HOC 应该透传与自身无关的 props。大多数 HOC 都应该包含一个类似于下面的 render 方法：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">  // 过滤掉非此 HOC 额外的 props，且不要进行透传</span><br><span class="line">  const &#123; extraProp, ...passThroughProps &#125; = this.props;</span><br><span class="line"></span><br><span class="line">  // 将 props 注入到被包装的组件中。</span><br><span class="line">  // 通常为 state 的值或者实例方法。</span><br><span class="line">  const injectedProp = someStateOrInstanceMethod;</span><br><span class="line"></span><br><span class="line">  // 将 props 传递给被包装组件</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;WrappedComponent</span><br><span class="line">      injectedProp=&#123;injectedProp&#125;</span><br><span class="line">      &#123;...passThroughProps&#125;</span><br><span class="line">    /&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="HOC约定：最大化可组合性"><a href="#HOC约定：最大化可组合性" class="headerlink" title="HOC约定：最大化可组合性"></a>HOC约定：最大化可组合性</h1><p>并不是所有的 HOC 都一样。有时候它仅接受一个参数，也就是被包裹的组件：<br>const NavbarWithRouter &#x3D; withRouter(Navbar);</p>
-<p>HOC 通常可以接收多个参数。比如在 Relay 中，HOC 额外接收了一个配置对象用于指定组件的数据依赖：<br>const CommentWithRelay &#x3D; Relay.createContainer(Comment, config);</p>
-<p>甚至可能是返回高阶组件的高阶函数！！！<br>&#x2F;&#x2F; React Redux 的 <code>connect</code> 函数<br>const ConnectedComment &#x3D; connect(commentSelector, commentActions)(CommentList);</p>
-<p>类似于函数柯里化<br>把函数的参数</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> createCurry = (fn,...params)=&gt;&#123;</span><br><span class="line">  <span class="built_in">let</span> args = params || []</span><br><span class="line">  <span class="built_in">let</span> fnLen = fn.length</span><br><span class="line">  <span class="built_in">return</span> (...res)=&gt;&#123;</span><br><span class="line">    <span class="built_in">let</span> allArgs = args.slice(0)</span><br><span class="line">    allArgs.push(...res)</span><br><span class="line">    <span class="keyword">if</span>(allArgs.length &lt; fnLen&gt;)&#123;</span><br><span class="line">      <span class="built_in">return</span> createCurry.call(this,fn,...allArgs);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">return</span> fn.apply(this,allArgs);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ul>
-<li><p>不要在 render 方法中使用 HOC<br>React 的 diff 算法使用组件标识来确定它是应该更新现有子树还是将其丢弃并挂载新子树。 如果从 render 返回的组件与前一个渲染中的组件相同（&#x3D;&#x3D;&#x3D;），则 React 通过将子树与新子树进行区分来递归更新子树。 如果它们不相等，则完全卸载前一个子树。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">  // 每次调用 render 函数都会创建一个新的 EnhancedComponent</span><br><span class="line">  // EnhancedComponent1 !== EnhancedComponent2</span><br><span class="line">  const EnhancedComponent = enhance(MyComponent);</span><br><span class="line">  // 这将导致子树每次渲染都会进行卸载，和重新挂载的操作！</span><br><span class="line">  <span class="built_in">return</span> &lt;EnhancedComponent /&gt;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>在每次render时都会重新创建，重新挂载组件会导致该组件及其所有子组件的状态丢失。<br>如果在组件之外创建 HOC，这样一来组件只会创建一次。因此，每次 render 时都会是同一个组件。<br>在极少数情况下，你需要动态调用 HOC。你可以在组件的生命周期方法或其构造函数中进行调用。</p>
-</li>
-<li><p>务必复制静态方法</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// 定义静态函数</span><br><span class="line">WrappedComponent.staticMethod = <span class="function"><span class="title">function</span></span>() &#123;/*...*/&#125;</span><br><span class="line">// 现在使用 HOC</span><br><span class="line">const EnhancedComponent = enhance(WrappedComponent);</span><br><span class="line"></span><br><span class="line">// 增强组件没有 staticMethod</span><br><span class="line">typeof EnhancedComponent.staticMethod === <span class="string">&#x27;undefined&#x27;</span> // <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 传入组件的静态方法会随着被高阶组件聚合而丢失</span></span><br><span class="line"><span class="comment"># 可以通过在高阶组件内部复制一份</span></span><br><span class="line"><span class="keyword">function</span> enhance(WrappedComponent) &#123;</span><br><span class="line">  class Enhance extends React.Component &#123;/*...*/&#125;</span><br><span class="line">  // 必须准确知道应该拷贝哪些方法 :(</span><br><span class="line">  Enhance.staticMethod = WrappedComponent.staticMethod;</span><br><span class="line">  <span class="built_in">return</span> Enhance;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 借用第三方库，无感拷贝 hoist-non-react-statics 自动拷贝所有非 React 静态方法:</span></span><br><span class="line"></span><br><span class="line">import hoistNonReactStatic from <span class="string">&#x27;hoist-non-react-statics&#x27;</span>;</span><br><span class="line"><span class="keyword">function</span> enhance(WrappedComponent) &#123;</span><br><span class="line">  class Enhance extends React.Component &#123;/*...*/&#125;</span><br><span class="line"></span><br><span class="line">  hoistNonReactStatic(Enhance, WrappedComponent);</span><br><span class="line">  <span class="built_in">return</span> Enhance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Refs 不会被传递<br>那是因为 ref 实际上并不是一个 prop，它就像 key 一样，是由 React 专门处理的。如果将 ref 添加到 HOC 的返回组件中，则 ref 引用指向容器组件，而不是被包装组件。</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/05/16/react%E5%9F%BA%E4%BA%8Econtext%E5%AE%9E%E7%8E%B0%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/05/16/react%E5%9F%BA%E4%BA%8Econtext%E5%AE%9E%E7%8E%B0%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">react基于content实现全局变量的方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-05-16 22:41:24" itemprop="dateCreated datePublished" datetime="2020-05-16T22:41:24+08:00">2020-05-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="先生成一个context-js"><a href="#先生成一个context-js" class="headerlink" title="先生成一个context.js"></a>先生成一个context.js</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="built_in">export</span> const fontSize = &#123;</span><br><span class="line">  small: <span class="string">&#x27;12px&#x27;</span>,</span><br><span class="line">  big: <span class="string">&#x27;36px&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">export</span> const ThemeContext = React.createContext(&#123;</span><br><span class="line">  fontSize: fontSize.small,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h1 id="创建一个组件-App-js-并导入context"><a href="#创建一个组件-App-js-并导入context" class="headerlink" title="创建一个组件 App.js,并导入context"></a>创建一个组件 App.js,并导入context</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line">import &#123; ThemeContext,fontSize&#125; from <span class="string">&#x27;./context&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个顶级组件,将context的变量同步到state，通过修改state去更新子组件的视图</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line">  constructor(props)&#123;</span><br><span class="line">    super(props)</span><br><span class="line">    // 该方法可以封装在fontSize对象里面，通过<span class="built_in">bind</span>(this)挂载到state上面</span><br><span class="line">    this.handleFontSize = () =&gt; &#123;</span><br><span class="line">      this.setState(state =&gt; (&#123;</span><br><span class="line">        fontSize: state.fontSize === fontSize.small</span><br><span class="line">            ? fontSize.big</span><br><span class="line">            : fontSize.small,</span><br><span class="line">      &#125;));</span><br><span class="line">    &#125;</span><br><span class="line">    // State 也包含了更新函数，因此它会被传递进 context provider。</span><br><span class="line">    this.state = &#123;</span><br><span class="line">      fontSize: fontSize.small,</span><br><span class="line">      handleFontSize: this.handleFontSize,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment"># 通过 ThemeContext.Provider 将该state往里面的组件传递</span></span><br><span class="line">  <span class="function"><span class="title">render</span></span>()&#123;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">       &lt;ThemeContext.Provider value=&#123;this.state&#125;&gt;</span><br><span class="line">          &lt;div&gt;</span><br><span class="line">            &lt;ChangeFontSizeBtn /&gt;</span><br><span class="line">          &lt;/div&gt;</span><br><span class="line">        &lt;/ThemeContext.Provider&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义使用该全局变量的组件 ChangeFontSizeBtn</span></span><br><span class="line"><span class="comment"># 通过 &lt;ThemeContext.Consumer&gt; &#123;(state)=&gt;()&#125;&lt;/ThemeContext.Consumer&gt;组件获取该state</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">ChangeFontSizeBtn</span></span>()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;ThemeContext.Consumer&gt;</span><br><span class="line">      &#123;(&#123;fontSize,handleFontSize&#125;)=&gt;(</span><br><span class="line">        &lt;button</span><br><span class="line">          onClick=&#123;handleFontSize&#125;</span><br><span class="line">          style=&#123;&#123;fontSize: fontSize&#125;&#125;  </span><br><span class="line">        &gt;</span><br><span class="line">          change</span><br><span class="line">        &lt;/button&gt;</span><br><span class="line">      )&#125;</span><br><span class="line">    &lt;/ThemeContext.Consumer&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>最终完成某层子组件修改全局变量的方法</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
-<li>定义一个context对象，通过React.creatContext({fontSize: ‘12px’})暴露出来</li>
-<li>在全局组件中引入该context，用state去同步context对象的数据，并创建一个修改数据的方法</li>
-<li>定义一个ThemeContext.Provider组件可以，并将state作为value的值传递进去 &lt;ThemeContext.Provider value&#x3D;{this.state}&gt;&lt;&#x2F;ThemeContext.Provider&gt;</li>
-<li>在某个需要修改该数据的组件中，通过ThemeContext.Consumer去获取state的数据 &lt;ThemeContext.Consumer&gt; {(state)&#x3D;&gt;()}&lt;&#x2F;ThemeContext.Consumer&gt;</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/27/Diff%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/04/27/Diff%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">Vue Diff算法详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-04-27 16:39:55" itemprop="dateCreated datePublished" datetime="2020-04-27T16:39:55+08:00">2020-04-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="vue2-递归-双指针"><a href="#vue2-递归-双指针" class="headerlink" title="vue2: 递归+双指针"></a>vue2: 递归+双指针</h1><ul>
-<li>判断是否是同一个元素<br>不是同一个元素，直接替换<br>是同一个元素-》比对属性-》比对下级</li>
-</ul>
-<ol>
-<li>旧的有下级，新的没有 直接删除</li>
-<li>新的有下级，旧的没有 直接插入</li>
-<li>是文本的情况 直接插入</li>
-<li>都有下级 双指针比较，对比查找之后复用</li>
-</ol>
-<h1 id="vue3：-采用最长递增子序列"><a href="#vue3：-采用最长递增子序列" class="headerlink" title="vue3： 采用最长递增子序列"></a>vue3： 采用最长递增子序列</h1>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/14/Redux-%E6%89%8B%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/04/14/Redux-%E6%89%8B%E8%AE%B0/" class="post-title-link" itemprop="url">Redux 手记</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-04-14 15:35:45" itemprop="dateCreated datePublished" datetime="2020-04-14T15:35:45+08:00">2020-04-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="什么是Redux"><a href="#什么是Redux" class="headerlink" title="什么是Redux"></a>什么是Redux</h1><p>Redux 是 JavaScript 状态容器，提供可预测化的状态管理<br>可以让你构建一致化的应用，运行于不同的环境（客户端、服务器、原生应用），并且易于测试。</p>
-<h1 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先用一个普通的对象来描述 state</span></span><br><span class="line">&#123;</span><br><span class="line">  visibilityFilter: <span class="string">&#x27;SHOW_COMPLETED&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 想要更新state中的数据，你需要发起一个action（Action 就是一个普通 JavaScript 对象）</span></span><br><span class="line">&#123; <span class="built_in">type</span>: <span class="string">&#x27;SET_VISIBILITY_FILTER&#x27;</span>, filter: <span class="string">&#x27;SHOW_ALL&#x27;</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此刻的action 和 state 并没有任何关联。reducer 可以一个接收 state 和 action，并返回新的 state 的函数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> visibilityFilter(state = <span class="string">&#x27;SHOW_ALL&#x27;</span>, action) &#123;</span><br><span class="line">  <span class="keyword">if</span> (action.type === <span class="string">&#x27;SET_VISIBILITY_FILTER&#x27;</span>) &#123;</span><br><span class="line">    <span class="built_in">return</span> action.filter;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="三大原则"><a href="#三大原则" class="headerlink" title="三大原则"></a>三大原则</h1><ul>
-<li>单一数据源 整个应用的 state 被储存在一棵 object tree 中，并且这个 object tree 只存在于唯一一个 store 中。</li>
-<li>State 是只读的。 唯一改变 state 的方法就是触发 action，action 是一个用于描述已发生事件的普通对象。</li>
-<li>使用纯函数来执行修改。 为了描述 action 如何改变 state tree ，你需要编写reducers。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/14/TCP-IP-%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/04/14/TCP-IP-%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">TCP/IP 详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-04-14 09:08:01" itemprop="dateCreated datePublished" datetime="2020-04-14T09:08:01+08:00">2020-04-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Http/" itemprop="url" rel="index"><span itemprop="name">Http</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="1-TCP-和-UDP"><a href="#1-TCP-和-UDP" class="headerlink" title="1. TCP 和 UDP"></a>1. TCP 和 UDP</h1><h3 id="用户数据报协议-UDP"><a href="#用户数据报协议-UDP" class="headerlink" title="用户数据报协议 UDP"></a>用户数据报协议 UDP</h3><ul>
-<li>UDP 在传送数据之前不需要先建立连接，远程主机在收到 UDP 报文后，不需要给出任何确认。</li>
-<li>虽然 UDP 不提供可靠交付，但在某些情况下 UDP 确是一种最有效的工作方式（一般用于即时通信），比如：QQ 语音、 QQ 视频 、直播等等</li>
-</ul>
-<h1 id="2-传输控制协议-TCP"><a href="#2-传输控制协议-TCP" class="headerlink" title="2.传输控制协议 TCP"></a>2.传输控制协议 TCP</h1><ul>
-<li>TCP 提供 面向连接的服务。在传送数据之前必须先建立连接，数据传送结束后要释放连接。</li>
-<li>TCP 不提供广播或多播服务。由于 TCP 要提供 可靠的，面向连接的传输服务（TCP的可靠体现在TCP在传递数据之前，会有三次握手来建立连接，而且在数据传递时，有确认、窗口、重传、流量控制、拥塞控制机制，在数据传完后，还会四次挥手断开连接用来节约系统资源），这不仅使协议数据单元的首部增大很多，还要占用许多处理机资源</li>
-<li>TCP 一般用于文件传输、发送和接收邮件、远程登录等场景。</li>
-</ul>
-<h1 id="TCP-三次握手建立连接"><a href="#TCP-三次握手建立连接" class="headerlink" title="TCP 三次握手建立连接"></a>TCP 三次握手建立连接</h1><ul>
-<li><ol>
-<li>第一次握手：客户端向服务端发送一个 SYN 报文（SYN &#x3D; 1），此时客户端处于 SYN_Send 状态（在发送连接请求后等待匹配的连接请求）。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>第二次握手：服务器收到客户端的 SYN 报文之后，会发送 ACK 通知客户端我已收到。 此时服务器处于 SYN_REVD 的状态（收到和发送一个连接请求后等待对连接请求的确认）。</li>
-</ol>
-</li>
-<li><ol start="3">
-<li>客户端收到服务器端响应的 ACK 报文之后，会发送一个 ack 报文，，表示已经收到了服务端发来的通知，此时客户端处于 Establised 状态。服务器收到 ack 报文之后，也处于 Establised 状态（代表一个打开的连接，数据可以传送给用户），至此，双方建立起了 TCP 连接。</li>
-</ol>
-</li>
-</ul>
-<h1 id="为什么要三次握手"><a href="#为什么要三次握手" class="headerlink" title="为什么要三次握手"></a>为什么要三次握手</h1><p>三次握手的目的是建立可靠的通信信道，说到通讯，简单来说就是数据的发送与接收，而三次握手最主要的目的就是双方确认自己与对方的发送与接收是正常的。</p>
-<h1 id="三次握手过程中可以携带数据吗"><a href="#三次握手过程中可以携带数据吗" class="headerlink" title="三次握手过程中可以携带数据吗"></a>三次握手过程中可以携带数据吗</h1><p>第三次握手的时候，是可以携带数据的。但是，第一次、第二次握手绝对不可以携带数据假如第一次握手可以携带数据的话，容易被攻击。<br>SYN 洪泛攻击<br>就是 Client 在短时间内伪造大量不存在的 IP 地址，并向 Server 不断地发送 SYN 包，Server 则回复确认包，并等待 Client 确认，由于源地址不存在，因此 Server 需要不断重发直至超时，这些伪造的 SYN 包将长时间占用半连接队列，导致正常的 SYN 请求因为队列满而被丢弃，从而引起网络拥塞甚至系统瘫痪。</p>
-<h1 id="TCP-四次挥手释放连接"><a href="#TCP-四次挥手释放连接" class="headerlink" title="TCP 四次挥手释放连接"></a>TCP 四次挥手释放连接</h1><p>建立一个 TCP 连接需要三次握手，而终止一个 TCP 连接要经过四次挥手（也有将四次挥手叫做四次握手的）。这是由于 TCP 的半关闭（half-close）特性造成的，TCP 提供了连接的一端在结束它的发送后还能接收来自另一端数据的能力。</p>
-<ul>
-<li>第一次挥手：客户端发送一个 FIN 报文主动关闭 TCP 连接。此时客户端处于 FIN_WAIT1 状态（等待远程TCP的连接中断请求，或先前的连接中断请求的确认；），等待服务端的确认。</li>
-<li>第二次挥手：服务端收到 FIN 之后，会发送 ACK 报文，表明已经收到客户端的报文了，此时服务端处于 CLOSE_WAIT状态（等待从本地用户发来的连接中断请求）。</li>
-</ul>
-<h2 id="此时的-TCP-处于半关闭状态，客户端到服务端的连接释放。客户端收到服务端的确认后，进入FIN-WAIT2（终止等待-2）状态，等待服务端发出的连接释放报文段。"><a href="#此时的-TCP-处于半关闭状态，客户端到服务端的连接释放。客户端收到服务端的确认后，进入FIN-WAIT2（终止等待-2）状态，等待服务端发出的连接释放报文段。" class="headerlink" title="此时的 TCP 处于半关闭状态，客户端到服务端的连接释放。客户端收到服务端的确认后，进入FIN_WAIT2（终止等待 2）状态，等待服务端发出的连接释放报文段。"></a>此时的 TCP 处于半关闭状态，客户端到服务端的连接释放。客户端收到服务端的确认后，进入FIN_WAIT2（终止等待 2）状态，等待服务端发出的连接释放报文段。</h2><ul>
-<li>第三次挥手：如果服务端也想断开连接了（没有要向客户端发出的数据），和客户端的第一次挥手一样，发送 FIN 报文，且指定一个序列号。此时服务端处于 LAST_ACK 的状态，等待客户端的确认</li>
-<li>第四次挥手：客户端收到 FIN 之后，一样发送一个 ACK 报文作为应答（ack &#x3D; w+1），且把服务端的序列值 +1 作为自己 ACK 报文的序号值（seq&#x3D;u+1），此时客户端处于 TIME_WAIT（时间等待）状态。</li>
-</ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>三次握手，为了测试双方能够正常发送，接收<br>第一次握手： 客户端发送SYN服务器 ，服务器正常接受   客户端发送正常 服务器接收正常<br>第二次握手： 服务器发送ACK到客户端，客户端正常接受  服务器发送正常 客户端接收正常<br>第三次握手： 客户端向服务器发送正式链接，至此，双方建立起了 TCP 连接</p>
-<p>四次挥手，因为TCP半关闭的特性<br>TCP 提供了连接的一端在结束它的发送后还能接收来自另一端数据的能力。<br>A 和 B 打电话，通话即将结束后，A 说 “我没啥要说的了”，B 回答 “我知道了”，于是 A 向 B 的连接释放了。但是 B 可能还会有要说的话，于是 B 可能又巴拉巴拉说了一通，最后 B 说“我说完了”，A 回答“知道了”，于是 B 向 A 的连接释放了，</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/13/Vue-v-model%E7%9A%84%E5%AE%9E%E8%B7%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/04/13/Vue-v-model%E7%9A%84%E5%AE%9E%E8%B7%B5/" class="post-title-link" itemprop="url">Vue v-model的实践</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-04-13 23:00:42" itemprop="dateCreated datePublished" datetime="2020-04-13T23:00:42+08:00">2020-04-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Vue-v-model的实践"><a href="#Vue-v-model的实践" class="headerlink" title="Vue v-model的实践"></a>Vue v-model的实践</h1><p>v-model 只是语法糖，主要是通过input事件来触发input标签value值来实现我们说的“双向数据绑定”,其实它还是单向数据流。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> v-model=<span class="string">&quot;value&quot;</span> /&gt;</span><br><span class="line"><span class="comment">#等价于</span></span><br><span class="line">&lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> :value=<span class="string">&quot;value&quot;</span> @input=v=&gt;<span class="variable">$emit</span>(<span class="string">&#x27;input&#x27;</span>, v)/&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义组件实现v-model</span></span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> :value=<span class="string">&quot;value&quot;</span> @input=<span class="string">&quot;handleInput&quot;</span> :placeholder=<span class="string">&quot;placehodler&quot;</span> /&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="built_in">export</span> default &#123;</span><br><span class="line">    name: <span class="string">&#x27;kInput&#x27;</span>,</span><br><span class="line">    props: &#123;</span><br><span class="line">        value: [<span class="string">&#x27;String&#x27;</span>, <span class="string">&#x27;Number&#x27;</span>],</span><br><span class="line">        placeholder: String</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        handleInput(<span class="variable">$event</span>) &#123;</span><br><span class="line">            // 通过input标签的原生事件input将值emit出去，以达到值得改变实现双向绑定</span><br><span class="line">            this.<span class="variable">$emit</span>(<span class="string">&#x27;input&#x27;</span>, <span class="variable">$event</span>.target.value)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
@@ -1130,7 +1074,7 @@
 
 <div class="copyright">
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

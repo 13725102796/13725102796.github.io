@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">89</span>
+          <span class="site-state-item-count">96</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -137,7 +137,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">67</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -166,6 +166,600 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/25/useCallback-%E5%92%8C-useMemo-%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/25/useCallback-%E5%92%8C-useMemo-%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">useCallback 和 useMemo 的区别</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-25 20:52:17" itemprop="dateCreated datePublished" datetime="2022-04-25T20:52:17+08:00">2022-04-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="useCallback"><a href="#useCallback" class="headerlink" title="useCallback"></a>useCallback</h1><p>const memoizedCallback &#x3D; useCallback(<br>  () &#x3D;&gt; {<br>    doSomething(a, b);<br>  },<br>  [a, b],<br>);<br>把内联回调函数及依赖项数组作为参数传入 useCallback，它将返回该回调函数的 memoized 版本，该回调函数仅在某个依赖项改变时才会更新。当你把回调函数传递给经过优化的并使用引用相等性去避免非必要渲染（例如 shouldComponentUpdate）的子组件时，它将非常有用。</p>
+<h1 id="useMemo"><a href="#useMemo" class="headerlink" title="useMemo"></a>useMemo</h1><p>const memoizedValue &#x3D; useMemo(() &#x3D;&gt; computeExpensiveValue(a, b), [a, b]);<br>返回一个 memoized 值 。</p>
+<p>把“创建”函数和依赖项数组作为参数传入 useMemo，它仅会在某个依赖项改变时才重新计算 memoized 值。这种优化有助于避免在每次渲染时都进行高开销的计算。</p>
+<p>你可以把 useMemo 作为性能优化的手段，但不要把它当成语义上的保证<br>将来，React 可能会选择“遗忘”以前的一些 memoized 值，并在下次渲染时重新计算它们，比如为离屏组件释放内存。先编写在没有 useMemo 的情况下也可以执行的代码 —— 之后再在你的代码中添加 useMemo，以达到优化性能的目的。</p>
+<p>function Example() {<br>    const [count, setCount] &#x3D; useState(1);<br>    const [val, setValue] &#x3D; useState(‘’);</p>
+<pre><code>const getNum = useMemo(() =&gt; &#123;
+    return Array.from(&#123;length: count * 100&#125;, (v, i) =&gt; i).reduce((a, b) =&gt; a+b)
+&#125;, [count])
+
+return &lt;div&gt;
+    &lt;h4&gt;总和：&#123;getNum()&#125;&lt;/h4&gt;
+    &lt;div&gt;
+        &lt;button onClick=&#123;() =&gt; setCount(count + 1)&#125;&gt;+1&lt;/button&gt;
+        &lt;input value=&#123;val&#125; onChange=&#123;event =&gt; setValue(event.target.value)&#125;/&gt;
+    &lt;/div&gt;
+&lt;/div&gt;;
+</code></pre>
+<p>}</p>
+<p>避免因为val变化而导致getNum重新渲染</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>useCallback 返回的是一个函数<br>useMemo 返回的的函数的执行结果</p>
+<p>类似于计算属性computed，避免使用了该函数或者该值的组件重复渲染。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 把事件写进render里面会在重新渲染的时候重新生成新的onclick</span></span><br><span class="line">class Demo extends Component&#123;</span><br><span class="line">    <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> </span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; () =&gt; &#123; console.log(<span class="string">&#x27;Hello World！！&#x27;</span>); &#125;&#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 在组件中可以在constructor里面</span></span><br><span class="line">class Demo extends Component&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span></span>()&#123;</span><br><span class="line">        super();</span><br><span class="line">        this.buttonClick = this.buttonClick.<span class="built_in">bind</span>(this);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> </span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; this.buttonClick &#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 在函数式组件中开发</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Demo</span></span>()&#123;</span><br><span class="line">    const buttonClick = useCallback(() =&gt; &#123; </span><br><span class="line">    	console.log(<span class="string">&#x27;Hello World！！&#x27;</span>)</span><br><span class="line">    &#125;,[])</span><br><span class="line">    <span class="built_in">return</span>(</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; buttonClick &#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">内存泄漏详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-25 13:15:32" itemprop="dateCreated datePublished" datetime="2022-04-25T13:15:32+08:00">2022-04-25</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="JS的回收机制"><a href="#JS的回收机制" class="headerlink" title="JS的回收机制"></a>JS的回收机制</h1><p>JS垃圾回收的机制（GC）会按照固定的时间间隔，周期性的执行。<br>标记清除：<br>当变量进入环境时，例如，在函数中声明一个变量，就将这个变量标记为“进入环境”。从逻辑上讲，永远不能释放进入环境的变量所占用的内存，因为只要执行流进入相应的环境，就可能会用到它们。而当变量离开环境时，则将其标记为“离开环境”。</p>
+<p>function test(){<br>  var a&#x3D;10;&#x2F;&#x2F;被标记，进入环境<br>  var b&#x3D;20;&#x2F;&#x2F;被标记，进入环境<br>}<br>test();&#x2F;&#x2F;执行完毕之后a、b又被标记离开环境，被回收</p>
+<h1 id="哪些操作会造成内存泄露"><a href="#哪些操作会造成内存泄露" class="headerlink" title="哪些操作会造成内存泄露"></a>哪些操作会造成内存泄露</h1><p>意外的全局变量引起的内存泄露：<br>function leak(){<br>  leak&#x3D;”xxx”;&#x2F;&#x2F;leak成为一个全局变量，不会被回收<br>}<br>闭包引起的内存泄漏<br>function bindEvent(){<br>  var obj&#x3D;document.createElement(“XXX”);<br>  obj.οnclick&#x3D;function(){<br>    &#x2F;&#x2F;Even if it’s a empty function<br>  }<br>}<br>解决方法：</p>
+<ul>
+<li>将事件处理函数定义在外部，解除闭包。<br>&#x2F;&#x2F;将事件处理函数定义在外部<br>function onclickHandler(){<br>&#x2F;&#x2F;do something<br>}<br>function bindEvent(){<br>var obj&#x3D;document.createElement(“XXX”);<br>obj.οnclick&#x3D;onclickHandler;<br>}</li>
+<li>在定义事件处理函数的外部函数中，删除对 DOM 的引用<br>function bindEvent(){<br>var obj&#x3D;document.createElement(“XXX”);<br>obj.οnclick&#x3D;function(){<br>  &#x2F;&#x2F;Even if it’s a empty function<br>}<br>obj&#x3D;null;<br>}</li>
+<li>没有清理的 DOM 元素引用：<br>var elements&#x3D;{<br>  button: document.getElementById(“button”),<br>  image: document.getElementById(“image”),<br>  text: document.getElementById(“text”)<br>};<br>function doStuff(){<br>  image.src&#x3D;”<a target="_blank" rel="noopener" href="http://some.url/image&quot;">http://some.url/image&quot;</a>;<br>  button.click():<br>  console.log(text.innerHTML)<br>}<br>function removeButton(){<br>  document.body.removeChild(document.getElementById(‘button’))<br>}</li>
+<li>被遗忘的定时器或者回调：<br>var someResouce&#x3D;getData();<br>setInterval(function(){<br>  var node&#x3D;document.getElementById(‘Node’);<br>  if(node){<br>  node.innerHTML&#x3D;JSON.stringify(someResouce)<br>  }<br>},1000)</li>
+</ul>
+<h1 id="怎样避免内存泄露："><a href="#怎样避免内存泄露：" class="headerlink" title="怎样避免内存泄露："></a>怎样避免内存泄露：</h1><ul>
+<li>减少不必要的全局变量，或者生命周期较长的对象，及时对无用的数据进行垃圾回收；</li>
+<li>注意程序逻辑，避免“死循环”之类的；</li>
+<li>避免创建过多的对象，原则：不用了的东西要及时归还。</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>定义全局变量，闭包，dom的引用，定时器都会产生内存使用的问题。不处理会导致内存泄漏</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/24/Vue-Computd%E4%B8%8Ewatch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/24/Vue-Computd%E4%B8%8Ewatch/" class="post-title-link" itemprop="url">Vue Computd与watch</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-24 16:21:34" itemprop="dateCreated datePublished" datetime="2022-04-24T16:21:34+08:00">2022-04-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="共同点"><a href="#共同点" class="headerlink" title="共同点"></a>共同点</h1><p>computed 和 watch 都是在  beforeCreate - initState(vm) - created 阶段初始化监听的</p>
+<p>最终实现原理都是通过 new Watcher 实现 监听的</p>
+<h1 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h1><p>watch 支持 watch[key]的值，可以是 包含handle属性的对象, 某个method 名称的字符串，以及存在new old Value 的Function</p>
+<p>computed 必须存在return 值。所以不支持异步，如果存在异步，则返回promise</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">export</span> <span class="keyword">function</span> initState (vm: Component) &#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">if</span> (opts.computed) initComputed(vm, opts.computed)</span><br><span class="line">  <span class="keyword">if</span> (opts.watch &amp;&amp; opts.watch !== nativeWatch) &#123;</span><br><span class="line">    initWatch(vm, opts.watch)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h1 id="Computd"><a href="#Computd" class="headerlink" title="Computd"></a>Computd</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在vue 实例化后，会判断是否存在computed</span></span><br><span class="line"><span class="comment"># 存在则 遍历computed对象，初始化各个值</span></span><br><span class="line"><span class="keyword">function</span> initComputed (vm: Component, computed: Object) &#123;</span><br><span class="line">  const watchers = vm._computedWatchers = Object.create(null)</span><br><span class="line">  const isSSR = isServerRendering()</span><br><span class="line">  <span class="keyword">for</span> (const key <span class="keyword">in</span> computed) &#123;</span><br><span class="line">    const userDef = computed[key]</span><br><span class="line">    const getter = typeof userDef === <span class="string">&#x27;function&#x27;</span> ? userDef : userDef.get</span><br><span class="line">    watchers[key] = new Watcher(</span><br><span class="line">      vm,</span><br><span class="line">      getter || noop,</span><br><span class="line">      noop,</span><br><span class="line">      computedWatcherOptions</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    // 判断是否与<span class="built_in">date</span> 数据冲突，没有则开始定义Computed</span><br><span class="line">    <span class="keyword">if</span> (!(key <span class="keyword">in</span> vm)) &#123;</span><br><span class="line">      defineComputed(vm, key, userDef)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># </span></span><br><span class="line"><span class="built_in">export</span> <span class="keyword">function</span> defineComputed (</span><br><span class="line">  target: any,</span><br><span class="line">  key: string,</span><br><span class="line">  userDef: Object | Function</span><br><span class="line">) &#123;</span><br><span class="line">  const shouldCache = !isServerRendering()</span><br><span class="line">  <span class="keyword">if</span> (typeof userDef === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">    sharedPropertyDefinition.get = shouldCache</span><br><span class="line">      ? createComputedGetter(key)</span><br><span class="line">      : createGetterInvoker(userDef)</span><br><span class="line">    sharedPropertyDefinition.<span class="built_in">set</span> = noop</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    sharedPropertyDefinition.get = userDef.get</span><br><span class="line">      ? shouldCache &amp;&amp; userDef.cache !== <span class="literal">false</span></span><br><span class="line">        ? createComputedGetter(key)</span><br><span class="line">        : createGetterInvoker(userDef.get)</span><br><span class="line">      : noop</span><br><span class="line">    sharedPropertyDefinition.<span class="built_in">set</span> = userDef.<span class="built_in">set</span> || noop</span><br><span class="line">  &#125;</span><br><span class="line">  Object.defineProperty(target, key, sharedPropertyDefinition)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 在初始化的时候，获取defineComputed创建的watch，去执行一次 计算 evaluate </span></span><br><span class="line"><span class="comment"># 也就是对应key的方法。存在watcher.value中，return出去</span></span><br><span class="line"><span class="keyword">function</span> createComputedGetter (key) &#123;</span><br><span class="line">  <span class="built_in">return</span> <span class="keyword">function</span> <span class="function"><span class="title">computedGetter</span></span> () &#123;</span><br><span class="line">    const watcher = this._computedWatchers &amp;&amp; this._computedWatchers[key]</span><br><span class="line">    <span class="keyword">if</span> (watcher) &#123;</span><br><span class="line">      <span class="keyword">if</span> (watcher.dirty) &#123;</span><br><span class="line">        watcher.evaluate()</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (Dep.target) &#123;</span><br><span class="line">        watcher.depend()</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">return</span> watcher.value</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>计算属性的结果会被缓存，除非依赖的响应式 property 变化才会重新计算。注意，如果某个依赖 (比如非响应式 property) 在该实例范畴之外，则计算属性是不会被更新的。<br>computed 就是一个带了缓存的执行函数，只有依赖的数据发生的变化才会重新求值</p>
+<p>当计算属性依赖的响应式属性发生修改会做两件事<br>是将计算属性的watcher 中的dirty属性更新为true ，表示要重新求值<br>是将渲染函数的watcher 加入任务队列。当渲染函数重新执行的时候就会触发计算属性的getter 并重新计算，这样就达到的缓存计算结果的目的。</p>
+<h1 id="watch"><a href="#watch" class="headerlink" title="watch"></a>watch</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 和Computed 一样初始化时，遍历 watch ，去挨个createWatcher</span></span><br><span class="line"><span class="keyword">function</span> initWatch(vm: Component, watch: Object) &#123;</span><br><span class="line">  <span class="keyword">for</span> (const key <span class="keyword">in</span> watch) &#123;</span><br><span class="line">    const handler = watch[key]</span><br><span class="line">    <span class="keyword">if</span> (Array.isArray(handler)) &#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="built_in">let</span> i = 0; i &lt; handler.length; i++) &#123;</span><br><span class="line">        createWatcher(vm, key, handler[i])</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      createWatcher(vm, key, handler)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> createWatcher(</span><br><span class="line">  vm: Component,</span><br><span class="line">  expOrFn: string | Function,</span><br><span class="line">  handler: any,</span><br><span class="line">  options?: Object</span><br><span class="line">) &#123;</span><br><span class="line">  <span class="keyword">if</span> (isPlainObject(handler)) &#123;</span><br><span class="line">    options = handler</span><br><span class="line">    handler = handler.handler</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (typeof handler === <span class="string">&#x27;string&#x27;</span>) &#123;</span><br><span class="line">    handler = vm[handler]</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">return</span> vm.<span class="variable">$watch</span>(expOrFn, handler, options)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一个对象，键是需要观察的表达式，值是对应回调函数。值也可以是方法名，或者包含选项的对象。Vue 实例将会在实例化时调用$watch()，遍历 watch 对象的每一个 property。<br>watch 更像是一个观察者，只要监测到数据变动就会重新执行回调<br>首先Vue 会根据用户传入的参数类型做格式处理，按处理后的参数调用 $<br>watch 生成观察器</p>
+<h1 id="watcher-的构造"><a href="#watcher-的构造" class="headerlink" title="watcher 的构造"></a>watcher 的构造</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> default class Watcher &#123;</span><br><span class="line">  vm: Component;</span><br><span class="line">  expression: string;</span><br><span class="line">  cb: Function;</span><br><span class="line">  <span class="built_in">id</span>: number;</span><br><span class="line">  deep: boolean;</span><br><span class="line">  user: boolean;</span><br><span class="line">  lazy: boolean;</span><br><span class="line">  <span class="built_in">sync</span>: boolean;</span><br><span class="line">  dirty: boolean;</span><br><span class="line">  active: boolean;</span><br><span class="line">  deps: Array&lt;Dep&gt;;</span><br><span class="line">  newDeps: Array&lt;Dep&gt;;</span><br><span class="line">  depIds: SimpleSet;</span><br><span class="line">  newDepIds: SimpleSet;</span><br><span class="line">  before: ?Function;</span><br><span class="line">  getter: Function;</span><br><span class="line">  value: any;</span><br><span class="line"></span><br><span class="line">  constructor(</span><br><span class="line">    vm: Component,</span><br><span class="line">    expOrFn: string | Function,</span><br><span class="line">    cb: Function,</span><br><span class="line">    options?: ?Object,</span><br><span class="line">    isRenderWatcher?: boolean</span><br><span class="line">  ) &#123;</span><br><span class="line">    this.vm = vm</span><br><span class="line">    <span class="keyword">if</span> (isRenderWatcher) &#123;</span><br><span class="line">      vm._watcher = this</span><br><span class="line">    &#125;</span><br><span class="line">    vm._watchers.push(this)</span><br><span class="line">    // options</span><br><span class="line">    <span class="keyword">if</span> (options) &#123;</span><br><span class="line">      this.deep = !!options.deep</span><br><span class="line">      this.user = !!options.user</span><br><span class="line">      this.lazy = !!options.lazy</span><br><span class="line">      this.sync = !!options.sync</span><br><span class="line">      this.before = options.before</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      this.deep = this.user = this.lazy = this.sync = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    this.cb = cb</span><br><span class="line">    this.id = ++uid // uid <span class="keyword">for</span> batching</span><br><span class="line">    this.active = <span class="literal">true</span></span><br><span class="line">    this.dirty = this.lazy // <span class="keyword">for</span> lazy watchers</span><br><span class="line">    this.deps = []</span><br><span class="line">    this.newDeps = []</span><br><span class="line">    this.depIds = new Set()</span><br><span class="line">    this.newDepIds = new Set()</span><br><span class="line">    this.expression = process.env.NODE_ENV !== <span class="string">&#x27;production&#x27;</span></span><br><span class="line">      ? expOrFn.toString()</span><br><span class="line">      : <span class="string">&#x27;&#x27;</span></span><br><span class="line">    // parse expression <span class="keyword">for</span> getter</span><br><span class="line">    <span class="keyword">if</span> (typeof expOrFn === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">      this.getter = expOrFn</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      this.getter = parsePath(expOrFn)</span><br><span class="line">      <span class="keyword">if</span> (!this.getter) &#123;</span><br><span class="line">        this.getter = noop</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    this.value = this.lazy</span><br><span class="line">      ? undefined</span><br><span class="line">      : this.get()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">get</span></span>() &#123;</span><br><span class="line">    pushTarget(this)</span><br><span class="line">    <span class="built_in">let</span> value</span><br><span class="line">    const vm = this.vm</span><br><span class="line">    value = this.getter.call(vm, vm)</span><br><span class="line">    <span class="keyword">if</span> (this.deep) &#123;</span><br><span class="line">      traverse(value)</span><br><span class="line">    &#125;</span><br><span class="line">    popTarget()</span><br><span class="line">    this.cleanupDeps()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">return</span> value</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">update</span></span>() &#123;</span><br><span class="line">    /* istanbul ignore <span class="keyword">else</span> */</span><br><span class="line">    console.log(<span class="string">&#x27;watch update &#x27;</span> + this.id)</span><br><span class="line">    <span class="keyword">if</span> (this.lazy) &#123;</span><br><span class="line">      this.dirty = <span class="literal">true</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (this.sync) &#123;</span><br><span class="line">      this.run()</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      queueWatcher(this)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">run</span></span>() &#123;</span><br><span class="line">    <span class="keyword">if</span> (this.active) &#123;</span><br><span class="line">      const value = this.get()</span><br><span class="line">      <span class="keyword">if</span> (value !== this.value || isObject(value) || this.deep) &#123;</span><br><span class="line">        // <span class="built_in">set</span> new value</span><br><span class="line">        const oldValue = this.value</span><br><span class="line">        this.value = value</span><br><span class="line">        this.cb.call(this.vm, value, oldValue)</span><br><span class="line">        </span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">evaluate</span></span>() &#123;</span><br><span class="line">    this.value = this.get()</span><br><span class="line">    this.dirty = <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  /**</span><br><span class="line">   * Depend on all deps collected by this watcher.</span><br><span class="line">   */</span><br><span class="line">  <span class="function"><span class="title">depend</span></span>() &#123;</span><br><span class="line">    <span class="built_in">let</span> i = this.deps.length</span><br><span class="line">    <span class="keyword">while</span> (i--) &#123;</span><br><span class="line">      this.deps[i].depend()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  /**</span><br><span class="line">   * Remove self from all dependencies<span class="string">&#x27; subscriber list.</span></span><br><span class="line"><span class="string">   */</span></span><br><span class="line"><span class="string">  teardown() &#123;</span></span><br><span class="line"><span class="string">    # ...移除监听</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<h1 id="Vue-初始化的时候"><a href="#Vue-初始化的时候" class="headerlink" title="Vue 初始化的时候"></a>Vue 初始化的时候</h1><p>vue 在init 阶段会根据传入的options 进行初始化，如果传入的options 中包含有computed , 会执行initComputed<br>vue 会为每个computed 属性生成一个watcher 实例，并将其中的lazy 属性设置为true (这个状态是用来标识 watcher 做惰性求值， 配合watcher 实例中的dirty 属性来实现)。并调用 createComputedGetter 重写计算属性的getter</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> createComputedGetter (key) &#123;</span><br><span class="line">  // 重写计算属性的 getter, </span><br><span class="line">  <span class="built_in">return</span> <span class="keyword">function</span> <span class="function"><span class="title">computedGetter</span></span> () &#123;</span><br><span class="line">    const watcher = this._computedWatchers &amp;&amp; this._computedWatchers[key]</span><br><span class="line">    <span class="keyword">if</span> (watcher) &#123;</span><br><span class="line">      // 初始化的时候会根据 lazy 来初始化dirty属性； </span><br><span class="line">      // 只有当依赖的响应属性变化，才会重新将计算属性的watcher.dirty 更新为 <span class="literal">true</span></span><br><span class="line">      // 表示在下次重新渲染的时候要重新求值。</span><br><span class="line">      <span class="keyword">if</span> (watcher.dirty) &#123;</span><br><span class="line">        watcher.evaluate()</span><br><span class="line">      &#125;</span><br><span class="line">      // 当前watcher 中收集了依赖的响应属性的dep</span><br><span class="line">      // 在这个阶段把计算属性依赖的渲染函数的watcher 收集到相同的dep中。</span><br><span class="line">      <span class="keyword">if</span> (Dep.target) &#123;</span><br><span class="line">        watcher.depend()</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="built_in">return</span> watcher.value</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// watcher 内定义的方法。  </span><br><span class="line"><span class="function"><span class="title">update</span></span> () &#123;</span><br><span class="line">    /* istanbul ignore <span class="keyword">else</span> */</span><br><span class="line">    // 计算属性</span><br><span class="line">    <span class="keyword">if</span> (this.lazy) &#123;</span><br><span class="line">      this.dirty = <span class="literal">true</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (this.sync) &#123;</span><br><span class="line">      this.run()</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      // 其他异步 watcher 加入任务队列等待执行</span><br><span class="line">      queueWatcher(this)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>重写后的 getter 做了两件事:</p>
+<ul>
+<li>是判断watcher 的dirty 属性，如果为true表示要重新执行watcher 实例的get 函数（重新求值的函数）</li>
+<li>将计算属性依赖的渲染函数的 watcher 收集到自己依赖的响应属性的Dep 实例中。经过这样的一个初始化后在响应式数据的 dep 中将收集了两个watcher 一个是计算属性的 watcher , 另一个是计算属性关联的渲染函数的watcher</li>
+</ul>
+<p>当计算属性关联的渲染函数的watcher收到来自更新的通知后，就会执行其 update 方法，要求重新求值。判断计算后的值是否相等，不等就通知计算属性的 watcher更新</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>computed 、watch 的底层都是通过生成一个Watcher 对响应数据进行观察，并在需要的时候重新执行求值，他们的不同点主要在于：</p>
+<ul>
+<li>计算属性的依赖收集并能实现在依赖的数据变化的时候能触发视图的更新，也就要求这个属性必须在组件的 render 函数中有引用到，这样他才能收集渲染函数的watcher 。当在依赖的数据变化后进行重新求值并通知渲染函数重新渲染。</li>
+<li>虽然watch 要求监听的也是响应式数据，但用户对监听的数据做了修改，用户定义的回调就会被执行。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/24/Redux-saga-%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/24/Redux-saga-%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">Redux-saga 详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-24 11:20:36" itemprop="dateCreated datePublished" datetime="2022-04-24T11:20:36+08:00">2022-04-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="在与redux-toolkit-一起使用的-基础配置"><a href="#在与redux-toolkit-一起使用的-基础配置" class="headerlink" title="在与redux-toolkit 一起使用的 基础配置"></a>在与redux-toolkit 一起使用的 基础配置</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 新建一个saga.js</span></span><br><span class="line">import &#123; call, put, takeEvery &#125; from <span class="string">&#x27;redux-saga/effects&#x27;</span></span><br><span class="line">import axios from <span class="string">&#x27;axios&#x27;</span></span><br><span class="line">const testApi = <span class="string">&#x27;/public/page/getHomePageModules&#x27;</span></span><br><span class="line"></span><br><span class="line">// worker Saga : 将在 USER_FETCH_REQUESTED action 被 dispatch 时调用</span><br><span class="line"><span class="keyword">function</span>* fetchUser(action)&#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    const user = yield call(axios.get(testApi),action.payload.userId)</span><br><span class="line">    console.log(user)</span><br><span class="line">    yield put (&#123;<span class="built_in">type</span>:<span class="string">&quot;USER_FETCH_SUCCEEDED&quot;</span>,user:user&#125;)</span><br><span class="line">  &#125; catch (e)&#123;</span><br><span class="line">    yield put(&#123;<span class="built_in">type</span>: <span class="string">&quot;USER_FETCH_FAILED&quot;</span>,message:e.message&#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">  在每个 `USER_FETCH_REQUESTED` action 被 dispatch 时调用 fetchUser</span><br><span class="line">  允许并发（译注：即同时处理多个相同的 action）</span><br><span class="line">*/</span><br><span class="line"><span class="keyword">function</span>* <span class="function"><span class="title">mySaga</span></span>()&#123;</span><br><span class="line">  yield takeEvery(<span class="string">&quot;USER_FETCH_REQUESTED&quot;</span>,fetchUser)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">  也可以使用 takeLatest</span><br><span class="line"></span><br><span class="line">  不允许并发，dispatch 一个 `USER_FETCH_REQUESTED` action 时，</span><br><span class="line">  如果在这之前已经有一个 `USER_FETCH_REQUESTED` action 在处理中，</span><br><span class="line">  那么处理中的 action 会被取消，只会执行当前的</span><br><span class="line">*/</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default mySaga;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集中到store里面的写法</span></span><br><span class="line">import counterSlice from <span class="string">&quot;./test&quot;</span></span><br><span class="line">import &#123; configureStore &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">import thunksSlice from <span class="string">&quot;./thunks&quot;</span></span><br><span class="line">import createSagaMiddleware from <span class="string">&#x27;redux-saga&#x27;</span></span><br><span class="line">import mySaga from <span class="string">&#x27;./saga&#x27;</span></span><br><span class="line"></span><br><span class="line">// create the saga middleware</span><br><span class="line">const sagaMiddleware = createSagaMiddleware()</span><br><span class="line">const store = configureStore(&#123;</span><br><span class="line">  reducer:&#123;</span><br><span class="line">    counter: counterSlice,</span><br><span class="line">    thunks: thunksSlice,</span><br><span class="line">    </span><br><span class="line">  &#125;,</span><br><span class="line">  middleware: defaultMiddleware =&gt; defaultMiddleware().concat(sagaMiddleware)</span><br><span class="line"> </span><br><span class="line">&#125;)</span><br><span class="line">sagaMiddleware.run(mySaga)</span><br><span class="line"><span class="built_in">export</span> default store</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用与其他的一致，通过dispatch</span></span><br><span class="line">import HightClock from <span class="string">&#x27;../hightComponents/clock&#x27;</span></span><br><span class="line">import &#123; useSelector,useDispatch &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">import &#123; useEffect &#125; from <span class="string">&#x27;react&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default HightClock((props)=&gt;&#123;</span><br><span class="line">  const count = useSelector(state=&gt;state.counter.value)</span><br><span class="line">  const dispatch = useDispatch()</span><br><span class="line">  useEffect(()=&gt;&#123;</span><br><span class="line">    dispatch(&#123;<span class="built_in">type</span>: <span class="string">&#x27;USER_FETCH_REQUESTED&#x27;</span>, payload: &#123;&#125;&#125;)</span><br><span class="line">  &#125;,[])</span><br><span class="line">  // </span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &lt;h1&gt;Home Child1&lt;/h1&gt;</span><br><span class="line">      &lt;h2&gt;counterValue: &#123;count&#125;&lt;/h2&gt;</span><br><span class="line">      &lt;div&gt;&#123;props.date&#125;&lt;/div&gt;</span><br><span class="line">      &#123;/* &lt;Link to=<span class="string">&quot;/about&quot;</span>&gt;To About Clock&lt;/Link&gt; */&#125;</span><br><span class="line">    &lt;/&gt;</span><br><span class="line">)&#125;)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/22/people-X%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/22/people-X%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">people X后台管理项目介绍</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-22 11:11:10" itemprop="dateCreated datePublished" datetime="2022-04-22T11:11:10+08:00">2022-04-22</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="依赖包版本"><a href="#依赖包版本" class="headerlink" title="依赖包版本"></a>依赖包版本</h1><p>“antd”: “3.26.16”<br>“dva”: “^2.4.0”<br>“react-router-dom”: “^4.3.1”,</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/21/%E8%8B%B1%E6%96%87%E7%89%88%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/21/%E8%8B%B1%E6%96%87%E7%89%88%E8%87%AA%E6%88%91%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">英文版自我介绍</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-21 15:37:25" itemprop="dateCreated datePublished" datetime="2022-04-21T15:37:25+08:00">2022-04-21</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="自我介绍"><a href="#自我介绍" class="headerlink" title="自我介绍"></a>自我介绍</h1><p>  Hello!<br>  My name is Zhang YeChang. twenty-six years old.<br>  I’m very glad to join in the interview.<br>  First, I come from GuangDong ZhangJiang. Graduated from Panyu University of Technology. majoring in marketing<br>  I have about four point five years of front-end development experience.<br>  I’m mainly good at Vue React and Uni-app.<br>  Lead the construction of too many large projects.<br>  Like: people X,PinPin Bear Shop<br>  I like to communicate with others, discuss problems and share new learning technologies.<br>  In my free time.I will Continue to focus on front-end technology updates, like: mobx six version, Redux Toolkit.<br>  now, End of introduction.<br>  thank you very much.</p>
+<h1 id="最近的项目-people-X"><a href="#最近的项目-people-X" class="headerlink" title="最近的项目 people X"></a>最近的项目 people X</h1><p>  Recently, In my led projects is people-x.<br>  People-x is P &amp; G’s enterprise wechat multi tenant  platform.<br>  The old version is based on PHP + angular1 Developed by X.</p>
+<p>  Why should we refactor it.</p>
+<p>  The response of the old system is too slow, the experience is very poor, and the request link is too long, resulting in easy disconnection. The most important thing is that one set of code for one tenant is inconvenient for future maintenance.<br>  The new system architecture scheme is as follows</p>
+<p>● front end: enterprise wechat is based on Vue + vant . The background management system is based on react + ant-design-pro</p>
+<p>● back end: Based on spring boot </p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/19/React-Router-%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/19/React-Router-%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">React-Router 主要功能详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-19 10:18:43" itemprop="dateCreated datePublished" datetime="2022-04-19T10:18:43+08:00">2022-04-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p><code> $ npm install react-router-dom@6</code></p>
+<h1 id="使用-（使用组件注册路由）"><a href="#使用-（使用组件注册路由）" class="headerlink" title="使用 （使用组件注册路由）"></a>使用 （使用组件注册路由）</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&quot;react&quot;</span>;</span><br><span class="line">import &#123; Routes, Route, Link,BrowserRouter &#125; from <span class="string">&quot;react-router-dom&quot;</span>;</span><br><span class="line">import ReactDOM from <span class="string">&quot;react-dom&quot;</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div &gt;</span><br><span class="line">      &lt;h1&gt;Welcome to React Router!&lt;/h1&gt;</span><br><span class="line">      &lt;Routes&gt;</span><br><span class="line">        &lt;Route path=<span class="string">&quot;/&quot;</span> element=&#123;&lt;Home /&gt;&#125; /&gt;</span><br><span class="line">        &lt;Route path=<span class="string">&quot;about&quot;</span> element=&#123;&lt;About /&gt;&#125; /&gt;</span><br><span class="line">      &lt;/Routes&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Home</span></span>()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      Home</span><br><span class="line">      &lt;Link to=<span class="string">&quot;/about&quot;</span>&gt;About&lt;/Link&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">About</span></span>()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;About&lt;Link to=<span class="string">&quot;/&quot;</span>&gt;About&lt;/Link&gt;&lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;BrowserRouter&gt;</span><br><span class="line">    &lt;App /&gt;</span><br><span class="line">  &lt;/BrowserRouter&gt;,</span><br><span class="line">  document.getElementById(<span class="string">&quot;root&quot;</span>)</span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="使用useRoutes注册路由"><a href="#使用useRoutes注册路由" class="headerlink" title="使用useRoutes注册路由"></a>使用useRoutes注册路由</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">//路由表配置：src/routes/index.js</span><br><span class="line">import About from <span class="string">&#x27;../pages/About&#x27;</span></span><br><span class="line">import Home from <span class="string">&#x27;../pages/Home&#x27;</span></span><br><span class="line">import &#123;Navigate&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default [</span><br><span class="line">	&#123;</span><br><span class="line">		path:<span class="string">&#x27;/about&#x27;</span>,</span><br><span class="line">		element:&lt;About/&gt;,</span><br><span class="line">    children: [&#123;</span><br><span class="line">      path:<span class="string">&#x27;aboutChild1&#x27;</span>,</span><br><span class="line">		  element:&lt;AboutChild1 /&gt;,</span><br><span class="line">    &#125;,&#123;</span><br><span class="line">      path:<span class="string">&#x27;aboutChild2&#x27;</span>,</span><br><span class="line">		  element:&lt;AboutChild2 /&gt;,</span><br><span class="line">    &#125;</span><br><span class="line">    ]</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		path:<span class="string">&#x27;/home&#x27;</span>,</span><br><span class="line">		element:&lt;Home/&gt;</span><br><span class="line">	&#125;,</span><br><span class="line">	&#123;</span><br><span class="line">		path:<span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">		element:&lt;Navigate to=<span class="string">&quot;/about&quot;</span>/&gt;</span><br><span class="line">	&#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">//App.jsx</span><br><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line">import &#123;NavLink,useRoutes&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import routes from <span class="string">&#x27;./routes&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default <span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">	//根据路由表生成对应的路由规则</span><br><span class="line">	const element = useRoutes(routes)</span><br><span class="line">	<span class="built_in">return</span> (</span><br><span class="line">		&lt;div&gt;</span><br><span class="line">			......</span><br><span class="line">      &#123;/* 注册路由 */&#125;</span><br><span class="line">      &#123;element&#125;</span><br><span class="line">		  ......</span><br><span class="line">		&lt;/div&gt;</span><br><span class="line">	)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="子路由渲染位置"><a href="#子路由渲染位置" class="headerlink" title=" 子路由渲染位置"></a><Outlet> 子路由渲染位置</h1><h1 id="useNavigate-返回一个函数用来实现编程式导航。"><a href="#useNavigate-返回一个函数用来实现编程式导航。" class="headerlink" title="useNavigate 返回一个函数用来实现编程式导航。"></a>useNavigate 返回一个函数用来实现编程式导航。</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import &#123;useNavigate&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line">import &#123;useNavigate&#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default <span class="keyword">function</span> <span class="function"><span class="title">Demo</span></span>() &#123;</span><br><span class="line">  const navigate = useNavigate()</span><br><span class="line">  const handle = () =&gt; &#123;</span><br><span class="line">    //第一种使用方式：指定具体的路径</span><br><span class="line">    navigate(<span class="string">&#x27;/login&#x27;</span>, &#123;</span><br><span class="line">      replace: <span class="literal">false</span>,</span><br><span class="line">      state: &#123;a:1, b:2&#125;</span><br><span class="line">    &#125;) </span><br><span class="line">    //第二种使用方式：传入数值进行前进或后退，类似于5.x中的 history.go()方法</span><br><span class="line">    navigate(-1)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;button onClick=&#123;handle&#125;&gt;按钮&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="useParams-返回当前匹配路由的params参数-useSearchParams-用于读取和修改当前位置的-URL-中的查询字符串。-useLocation-获取当前-location-信息"><a href="#useParams-返回当前匹配路由的params参数-useSearchParams-用于读取和修改当前位置的-URL-中的查询字符串。-useLocation-获取当前-location-信息" class="headerlink" title="useParams 返回当前匹配路由的params参数 | useSearchParams 用于读取和修改当前位置的 URL 中的查询字符串。 | useLocation 获取当前 location 信息"></a>useParams 返回当前匹配路由的params参数 | useSearchParams 用于读取和修改当前位置的 URL 中的查询字符串。 | useLocation 获取当前 location 信息</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># useParams</span></span><br><span class="line">import &#123; Routes, Route, useParams,useSearchParams,useLocation &#125; from <span class="string">&#x27;react-router-dom&#x27;</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">ProfilePage</span></span>() &#123;</span><br><span class="line">  // 获取URL中携带过来的params参数</span><br><span class="line">  <span class="built_in">let</span> &#123; <span class="built_in">id</span> &#125; = useParams();</span><br><span class="line">  // 返回一个包含两个值的数组，内容分别为：当前的seaech参数、更新search的函数。</span><br><span class="line">  const [search,setSearch] = useSearchParams()</span><br><span class="line">  // update</span><br><span class="line">  const <span class="built_in">id</span> = search.get(<span class="string">&#x27;id&#x27;</span>)</span><br><span class="line">  setSearch(<span class="string">&#x27;id=12123123&#x27;</span>) </span><br><span class="line">  // 获取当前 location 信息</span><br><span class="line">  const x = useLocation()</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">App</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;Routes&gt;</span><br><span class="line">      &lt;Route path=<span class="string">&quot;users/:id&quot;</span> element=&#123;&lt;User /&gt;&#125;/&gt;</span><br><span class="line">    &lt;/Routes&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="路由钩子-routerWillLeave"><a href="#路由钩子-routerWillLeave" class="headerlink" title="路由钩子 routerWillLeave"></a>路由钩子 routerWillLeave</h1><p>可以拦截正在发生的跳转，或在离开 route 前提示用户。<br>routerWillLeave 返回值有以下两种：</p>
+<ul>
+<li>return false 取消此次跳转</li>
+<li>return 返回提示信息，在离开 route 前提示用户进行确认。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -429,632 +1023,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/22/React%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/22/React%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF/" class="post-title-link" itemprop="url">React组件通讯</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-09-22 11:49:28" itemprop="dateCreated datePublished" datetime="2021-09-22T11:49:28+08:00">2021-09-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="父子组件通讯"><a href="#父子组件通讯" class="headerlink" title="父子组件通讯"></a>父子组件通讯</h1><p>通过props，父组件向子组件传递值或者方法，子组件向父组件通讯，子组件可以调用父组件通过props传递的方法</p>
-<h1 id="全局context"><a href="#全局context" class="headerlink" title="全局context"></a>全局context</h1><ol>
-<li>通过createContext创建一个上下文 const Context &#x3D; React.createContext({color: red})</li>
-<li>通过 当前节点的state复制一份Context的值</li>
-<li>当前节点用&lt;Context.Provider value&#x3D;{this.state}&gt;包裹</li>
-<li>在该节点下的某个组件使用，可以通过 &lt;Context.Consumer&gt;{(value)&#x3D;&gt;{}}&lt;&#x2F;Context.Consumer&gt; 组件下接收传递的value<br> 也可以给类组件 MyClass.contextType &#x3D; MyContext;直接赋值，在组件内部通过this.context访问</li>
-</ol>
-<h1 id="想要在子组件修改该context的值，需要将修改的方法一并传入进去"><a href="#想要在子组件修改该context的值，需要将修改的方法一并传入进去" class="headerlink" title="想要在子组件修改该context的值，需要将修改的方法一并传入进去"></a>想要在子组件修改该context的值，需要将修改的方法一并传入进去</h1><p>在复制context的值给节点的state的时候，需要额外定义一个修改该值的方法<br>this.handleFontSize &#x3D; () &#x3D;&gt; {<br>  this.setState(state &#x3D;&gt; ({<br>    fontSize: state.fontSize &#x3D;&#x3D;&#x3D; fontSize.small<br>        ? fontSize.big<br>        : fontSize.small,<br>  }));<br>}<br>&#x2F;&#x2F; State 也包含了更新函数，因此它会被传递进 context provider。<br>this.state &#x3D; {<br>  fontSize: fontSize.small,<br>  handleFontSize: this.handleFontSize,<br>};</p>
-<p>在子组件通过 this.context.handleFontSize()去修改即可</p>
-<h1 id="全局通讯之-redux-toolkit"><a href="#全局通讯之-redux-toolkit" class="headerlink" title="全局通讯之 redux toolkit"></a>全局通讯之 redux toolkit</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 先创建一个 Slice 通过 createSlice</span></span><br><span class="line">import &#123; createSlice,createAsyncThunk &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">import axios from <span class="string">&#x27;axios&#x27;</span></span><br><span class="line">const testApi = <span class="string">&#x27;/public/page/getHomePageModules&#x27;</span></span><br><span class="line"><span class="built_in">export</span> const fetchThunks = createAsyncThunk(<span class="string">&#x27;thunks/fetchThunks&#x27;</span>, async () =&gt; &#123;</span><br><span class="line">  const response = await axios.get(testApi,&#123;&#125;)</span><br><span class="line">  <span class="built_in">return</span> response.data</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">const counterSlice = createSlice(&#123;</span><br><span class="line">  name: <span class="string">&#x27;counter&#x27;</span>,</span><br><span class="line">  initialState: &#123;</span><br><span class="line">    value: 0,</span><br><span class="line">    state: <span class="string">&#x27;idle&#x27;</span>,</span><br><span class="line">    error: null</span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    incremented: state =&gt; &#123;</span><br><span class="line">      state.value += 1</span><br><span class="line">    &#125;,</span><br><span class="line">    decremented: state =&gt; &#123;</span><br><span class="line">      state.value -= 1</span><br><span class="line">    &#125;,</span><br><span class="line">    incrementByAmount: (state,action) =&gt; &#123;</span><br><span class="line">      state.value += action.payload</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  extraReducers(builder)&#123;</span><br><span class="line">    builder.addCase(fetchThunks.fulfilled,(state,action)=&gt;&#123;</span><br><span class="line"></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">export</span> const &#123; incremented,incrementByAmount, decremented &#125; = counterSlice.actions</span><br><span class="line"><span class="built_in">export</span> const asyncFun = (args)=&gt;&#123;</span><br><span class="line">  <span class="built_in">return</span> async (dispatch,getState)=&gt;&#123;</span><br><span class="line">    const data = await axios.get(testApi,&#123;&#125;)</span><br><span class="line">    const stateBefore = getState()</span><br><span class="line">    console.log(`Counter before: <span class="variable">$&#123;stateBefore.counter.value&#125;</span>`)</span><br><span class="line">    dispatch(incrementByAmount(args))</span><br><span class="line">    const stateAfter = getState()</span><br><span class="line">    console.log(`Counter after: <span class="variable">$&#123;stateAfter.counter.value&#125;</span>`)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default counterSlice.reducer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># redux 是不支持异步操作，所以需要支持异步的中间件来完成，如Thunk</span></span><br><span class="line"><span class="comment"># createAsyncThunk(&#x27;type名称&#x27;,asyncFn) 对应dispath(&#123;type:&#x27;actionname&#x27;,payload:&#x27;&#x27;&#125;)</span></span><br><span class="line"><span class="comment"># asyncFn的返回值就是payload</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建完后就关联到store集合里面，通过 configureStore</span></span><br><span class="line">import counterSlice from <span class="string">&quot;./test&quot;</span></span><br><span class="line">import &#123; configureStore &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">import thunksSlice from <span class="string">&quot;./thunks&quot;</span></span><br><span class="line">const store = configureStore(&#123;</span><br><span class="line">  reducer:&#123;</span><br><span class="line">    counter: counterSlice,</span><br><span class="line">    thunks: thunksSlice</span><br><span class="line">  &#125; </span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default store</span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/22/React%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/08/22/React%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">React开发使用总结</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-08-22 11:24:31" itemprop="dateCreated datePublished" datetime="2021-08-22T11:24:31+08:00">2021-08-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="首先在根index全局引入redux，router-css等"><a href="#首先在根index全局引入redux，router-css等" class="headerlink" title="首先在根index全局引入redux，router,css等"></a>首先在根index全局引入redux，router,css等</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line">import ReactDOM from <span class="string">&#x27;react-dom&#x27;</span>;</span><br><span class="line">import <span class="string">&#x27;./index.css&#x27;</span>;</span><br><span class="line">import <span class="string">&#x27;antd/dist/antd.css&#x27;</span>;</span><br><span class="line">import &#123; BrowserRouter,useRoutes &#125; from <span class="string">&quot;react-router-dom&quot;</span></span><br><span class="line">import store from <span class="string">&#x27;./reduces/index&#x27;</span></span><br><span class="line">import &#123; Provider &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">import routes from <span class="string">&#x27;./routes/index&#x27;</span></span><br><span class="line">const element = useRoutes(routes)</span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;BrowserRouter&gt;</span><br><span class="line">    &lt;Provider store=&#123;store&#125;&gt;</span><br><span class="line">      &#123;element&#125;</span><br><span class="line">    &lt;/Provider&gt;</span><br><span class="line">  &lt;/BrowserRouter&gt;</span><br><span class="line">  ,</span><br><span class="line">  document.getElementById(<span class="string">&#x27;root&#x27;</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/21/React-Toolkit-%E5%BC%82%E6%AD%A5%E5%92%8C%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96%E7%9A%84%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/21/React-Toolkit-%E5%BC%82%E6%AD%A5%E5%92%8C%E6%95%B0%E6%8D%AE%E8%8E%B7%E5%8F%96%E7%9A%84%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">React-Toolkit 异步和数据获取的方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-07-21 08:14:14" itemprop="dateCreated datePublished" datetime="2021-07-21T08:14:14+08:00">2021-07-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Thunks-中间件"><a href="#Thunks-中间件" class="headerlink" title="Thunks 中间件"></a>Thunks 中间件</h1><p>Thunks 内部可能有异步逻辑，例如setTimeout、Promises 和async&#x2F;await. 这使它们成为将 AJAX 调用放入服务器 API 的好地方。<br>Redux 的数据获取逻辑通常遵循可预测的模式：</p>
-<ul>
-<li>在请求之前调度“开始”操作，以指示请求正在进行中。这可用于跟踪加载状态以允许跳过重复请求或在 UI 中显示加载指示符。</li>
-<li>发出异步请求</li>
-<li>根据请求结果，异步逻辑分派包含结果数据的“成功”操作或包含错误详细信息的“失败”操作。在这两种情况下，reducer 逻辑都会清除加载状态，或者处理来自成功案例的结果数据，或者存储错误值以供潜在显示。</li>
-</ul>
-<p>这些步骤不是必需的，但很常用。（如果您只关心一个成功的结果，您可以在请求完成时分派一个“成功”操作，并跳过“开始”和“失败”操作。）</p>
-<p>Redux Toolkit 提供了一个createAsyncThunk API 来实现这些操作的创建和分派</p>
-<h1 id="请求的加载状态"><a href="#请求的加载状态" class="headerlink" title="请求的加载状态"></a>请求的加载状态</h1><ul>
-<li>请求尚未开始</li>
-<li>请求正在进行中</li>
-<li>请求成功，我们现在有了我们需要的数据</li>
-<li>请求失败，可能有错误消息<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> &#123;</span><br><span class="line">  // Multiple possible status enum values</span><br><span class="line">  status: <span class="string">&#x27;idle&#x27;</span> | <span class="string">&#x27;loading&#x27;</span> | <span class="string">&#x27;succeeded&#x27;</span> | <span class="string">&#x27;failed&#x27;</span>,</span><br><span class="line">  error: string | null</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">import &#123; createSlice,createAsyncThunk &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">import axios from <span class="string">&#x27;axios&#x27;</span></span><br><span class="line">const testApi = <span class="string">&#x27;/public/page/getHomePageModules&#x27;</span></span><br><span class="line"><span class="comment"># 通过createAsyncThunk，创建一个异步的thunk</span></span><br><span class="line"><span class="built_in">export</span> const fetchThunks = createAsyncThunk(<span class="string">&#x27;thunks/fetchThunks&#x27;</span>, async () =&gt; &#123;</span><br><span class="line">  const response = await axios.get(testApi,&#123;&#125;)</span><br><span class="line">  <span class="built_in">return</span> response.data</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment"># 创建一个thubksSlice，里面包含initialState，reducers，extraReducers</span></span><br><span class="line">const thunksSlice = createSlice(&#123;</span><br><span class="line">  name: <span class="string">&#x27;thunks&#x27;</span>,</span><br><span class="line">  initialState: &#123;</span><br><span class="line">    posts: [],</span><br><span class="line">    status: <span class="string">&#x27;idle&#x27;</span>,</span><br><span class="line">    error: null</span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;&#125;,</span><br><span class="line">  extraReducers(builder)&#123;</span><br><span class="line">    builder</span><br><span class="line">      .addCase(fetchThunks.pending,(state,action)=&gt;&#123;</span><br><span class="line">        state.status = <span class="string">&#x27;loading&#x27;</span></span><br><span class="line">      &#125;)</span><br><span class="line">      .addCase(fetchThunks.fulfilled, (state, action) =&gt; &#123;</span><br><span class="line">        state.status = <span class="string">&#x27;succeeded&#x27;</span></span><br><span class="line">        // Add any fetched posts to the array</span><br><span class="line">        state.posts = state.posts.concat(action.payload)</span><br><span class="line">      &#125;)</span><br><span class="line">      .addCase(fetchThunks.rejected, (state, action) =&gt; &#123;</span><br><span class="line">        state.status = <span class="string">&#x27;failed&#x27;</span></span><br><span class="line">        state.error = action.error.message</span><br><span class="line">      &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default thunksSlice.reducer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在组件中通过</span></span><br><span class="line">useDispatch()(fetchThunks()) 调用获取异步的数据</span><br><span class="line"><span class="comment"># 当触发 fetchThunks 时，extraReducers会监听到该请求的状态，从而根据状态执行相应的操作。</span></span><br><span class="line"><span class="comment"># 在使用了该reducer的state的组件的地方都会同步更新视图</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/25/useState%E5%8E%9F%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/25/useState%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">useState原理</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-06-25 21:35:06" itemprop="dateCreated datePublished" datetime="2021-06-25T21:35:06+08:00">2021-06-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="state是异步的"><a href="#state是异步的" class="headerlink" title="state是异步的"></a>state是异步的</h1><p>在控制台中，我们可以看到，打印的num并不是页面上显示的结果，这是因为react中state的更新是异步的。当我们setState后，react并不会立即将值做出改变，而是将其暂时放入pedding队列中。react会合并多个state，然后只render 一次。</p>
-<h1 id="state改变却没有重新初始化"><a href="#state改变却没有重新初始化" class="headerlink" title="state改变却没有重新初始化"></a>state改变却没有重新初始化</h1><p>页面在首次渲染时会 render 渲染 <App /> 函数组件，其实际上是调用 App() 方法，得到虚拟 DOM 元素，并将其渲染到浏览器页面上。当用户点击 button 按钮时会调用 setN(n+1) 方法，然后再进行一次 render 渲染 <App /> 函数组件，其实际上还是调用了 App() 方法，得到一个新的虚拟 DOM 元素，然后 React 会执行 DOM diff 算法，将改变的部分更新到浏览器的页面上。</p>
-<p>页面首次渲染和进行 +1 操作，都会调用 App() 函数去执行 const [n, setN] &#x3D; React.useState(0); 这行代码，那它是怎么做到在 +1 操作后，第二次渲染时执行同样的代码，却不对变量 n 进行初始化的，而是拿到 n 的最新值的呢 </p>
-<p>let _state; &#x2F;&#x2F; 把 state 存储在外面</p>
-<p>function useState(initialValue) {<br>  _state &#x3D; _state || initialValue; &#x2F;&#x2F; 如果没有 _state，说明是第一次执行，把 initialValue 复制给它<br>  function setState(newState) {<br>    _state &#x3D; newState;    &#x2F;&#x2F;实际修改的是_state，重新渲染也会去拿_state<br>    render();<br>  }<br>  return [_state, setState];<br>}</p>
-<h1 id="这种使用-useState的方式在-React-中是不被允许-useEffect同理"><a href="#这种使用-useState的方式在-React-中是不被允许-useEffect同理" class="headerlink" title="这种使用 useState的方式在 React 中是不被允许 useEffect同理"></a>这种使用 useState的方式在 React 中是不被允许 useEffect同理</h1><p>if (n % 2 &#x3D;&#x3D;&#x3D; 1) {    的<br>    [m, setM] &#x3D; React.useState(0);<br>}<br>应对多个变量的问题，React 引用了数组对其进行解决，但是这中改进方式有一个缺点，由于数组不像对象，有对应的键，数组只能依靠顺序找到对应的变量，所以在 React 中不允许将 useState() hook 放到 if 判断语句中，这样就会导致变量在数组中的顺序混乱</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>useState是通过将变量抽离到函数体外形成闭包，在函数体内部判断而形成的缓存<br>因为允许组件多次调用的问题，useState只接受一个参数，所以采用数组的方式进行缓存。<br>不能在顶层做条件执行就是怕数组乱序</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/20/Redux-React-Redux-Reduxjs-toolkit%E7%BB%84%E5%90%88%E6%8B%B3%E7%9A%84%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/20/Redux-React-Redux-Reduxjs-toolkit%E7%BB%84%E5%90%88%E6%8B%B3%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Redux React-Redux @Reduxjs/toolkit组合拳的使用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-04-20 21:18:31" itemprop="dateCreated datePublished" datetime="2021-04-20T21:18:31+08:00">2021-04-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>因为redux不仅仅是react专用的状态管理工具，所以需要用到react-redux来帮助我们更好的在react项目中使用它<br>@reduxjs&#x2F;toolkit 是状态管理使用便捷的工具</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># NPM</span></span><br><span class="line">npm install @reduxjs/toolkit react-redux redux</span><br></pre></td></tr></table></figure>
-<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个reducer  counter.js</span></span><br><span class="line">import &#123; createSlice &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line"></span><br><span class="line">const counterSlice = createSlice(&#123;</span><br><span class="line">  name: <span class="string">&#x27;counter&#x27;</span>,</span><br><span class="line">  initialState: &#123;</span><br><span class="line">    value: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    incremented: state =&gt; &#123;</span><br><span class="line">      state.value += 1</span><br><span class="line">    &#125;,</span><br><span class="line">    decremented: state =&gt; &#123;</span><br><span class="line">      state.value -= 1</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> const &#123; incremented, decremented &#125; = counterSlice.actions</span><br><span class="line"><span class="built_in">export</span> default counterSlice.reducer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集中到store里面</span></span><br><span class="line"><span class="comment"># 引入刚刚的创建的counter.js</span></span><br><span class="line">import counterSlice from <span class="string">&quot;./counter&quot;</span></span><br><span class="line">import &#123; configureStore &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">const store = configureStore(&#123;</span><br><span class="line">  reducer:&#123;</span><br><span class="line">    counter: counterSlice</span><br><span class="line">  &#125; </span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default store</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集成到入口文件， 通过react-redux组件&lt;Provider&gt;传递到全局</span></span><br><span class="line">import React from <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line">import ReactDOM from <span class="string">&#x27;react-dom&#x27;</span>;</span><br><span class="line">import <span class="string">&#x27;./index.css&#x27;</span>;</span><br><span class="line">import &#123; BrowserRouter &#125; from <span class="string">&quot;react-router-dom&quot;</span></span><br><span class="line">import App from <span class="string">&#x27;./App&#x27;</span></span><br><span class="line">import store from <span class="string">&#x27;./reduces/index&#x27;</span></span><br><span class="line">import &#123; Provider &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;BrowserRouter&gt;</span><br><span class="line">    &lt;Provider store=&#123;store&#125;&gt;</span><br><span class="line">      &lt;App /&gt;</span><br><span class="line">    &lt;/Provider&gt;</span><br><span class="line">  &lt;/BrowserRouter&gt;</span><br><span class="line">  ,</span><br><span class="line">  document.getElementById(<span class="string">&#x27;root&#x27;</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 某个组件内部调用</span></span><br><span class="line"></span><br><span class="line">import &#123; Link &#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import HightClock from <span class="string">&#x27;../hightComponents/clock&#x27;</span></span><br><span class="line">import &#123; useSelector, useDispatch &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">import &#123; decremented, incremented &#125; from <span class="string">&#x27;./../reduces/test&#x27;</span></span><br><span class="line"><span class="built_in">export</span> default HightClock((props)=&gt;&#123;</span><br><span class="line">  <span class="comment"># useSelector 用于获取值</span></span><br><span class="line">  const count = useSelector(state =&gt; state.counter.value)</span><br><span class="line">  <span class="comment"># useDispatch() 用于触发action</span></span><br><span class="line">  const dispatch = useDispatch()</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &lt;h1&gt;About&lt;/h1&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(incremented())&#125;&gt;Add One&lt;/h2&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(decremented())&#125;&gt;reduce One&lt;/h2&gt;</span><br><span class="line">      &lt;h2&gt;&#123;count&#125;&lt;/h2&gt;</span><br><span class="line">      &lt;div style=&#123;&#123;color: <span class="string">&#x27;blue&#x27;</span>&#125;&#125;&gt;&#123;props.date&#125;&lt;/div&gt;</span><br><span class="line">      &lt;Link to=<span class="string">&quot;/&quot;</span>&gt;To Home Clock&lt;/Link&gt;</span><br><span class="line">    &lt;/&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h1 id="异步的数据更新视图-中间件-thunk"><a href="#异步的数据更新视图-中间件-thunk" class="headerlink" title="异步的数据更新视图 中间件 thunk"></a>异步的数据更新视图 中间件 thunk</h1><p>Redux 存储对异步逻辑一无所知。它只知道如何同步调度动作，通过调用根 reducer 函数更新状态，并通知 UI 发生了一些变化。任何异步都必须在store之外发生。<br>但是，如果您想通过调度或检查当前存储状态来让异步逻辑与存储交互怎么办？这就是Redux 中间件的用武之地。它们扩展了存储，并允许您：</p>
-<ul>
-<li>在dispatch任何操作时执行额外的逻辑（例如记录操作和状态）</li>
-<li>暂停、修改、延迟、替换或暂停已调度的操作</li>
-<li>编写可以访问dispatch和getState</li>
-<li>教dispatch如何接受除了普通动作对象之外的其他值，例如函数和promise，通过拦截它们并派发真实的动作对象来代替</li>
-</ul>
-<p>Redux Toolkit 的configureStore功能默认自动设置 thunk 中间件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改 reducer counter.js</span></span><br><span class="line">import &#123; createSlice &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line"></span><br><span class="line">const counterSlice = createSlice(&#123;</span><br><span class="line">  name: <span class="string">&#x27;counter&#x27;</span>,</span><br><span class="line">  initialState: &#123;</span><br><span class="line">    value: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    incremented: state =&gt; &#123;</span><br><span class="line">      state.value += 1</span><br><span class="line">    &#125;,</span><br><span class="line">    decremented: state =&gt; &#123;</span><br><span class="line">      state.value -= 1</span><br><span class="line">    &#125;,</span><br><span class="line">    incrementByAmount: (state,action) =&gt; &#123;</span><br><span class="line">      state.value += action.payload</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">export</span> const &#123; incremented,incrementByAmount, decremented &#125; = counterSlice.actions</span><br><span class="line"><span class="comment">#  在这里可以 新增异步操作，根据异步的结果再执行更不更新视图的操作</span></span><br><span class="line"><span class="built_in">export</span> const asyncFun = (args)=&gt;&#123;</span><br><span class="line">  <span class="built_in">return</span> async (dispatch,getState)=&gt;&#123;</span><br><span class="line">    // 这里需要引入axios 触发get的请求</span><br><span class="line">    const data = await axios.get(<span class="string">&#x27;url&#x27;</span>)</span><br><span class="line">    const stateBefore = getState()</span><br><span class="line">    console.log(`Counter before: <span class="variable">$&#123;stateBefore.counter.value&#125;</span>`)</span><br><span class="line">    dispatch(incrementByAmount(args))</span><br><span class="line">    const stateAfter = getState()</span><br><span class="line">    console.log(`Counter after: <span class="variable">$&#123;stateAfter.counter.value&#125;</span>`)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default counterSlice.reducer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 组件内部调用 方法同其他dispatch保持一致</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import &#123; Link &#125; from <span class="string">&#x27;react-router-dom&#x27;</span></span><br><span class="line">import HightClock from <span class="string">&#x27;../hightComponents/clock&#x27;</span></span><br><span class="line">import &#123; useSelector, useDispatch &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">import &#123; decremented, incremented,asyncFun &#125; from <span class="string">&#x27;./../reduces/test&#x27;</span></span><br><span class="line"><span class="built_in">export</span> default HightClock((props)=&gt;&#123;</span><br><span class="line">  const count = useSelector(state =&gt; state.counter.value)</span><br><span class="line">  // const selectCounter = useSelector(state =&gt; state.counter.value)</span><br><span class="line">  // console.log(selectCounter)</span><br><span class="line">  const dispatch = useDispatch()</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &lt;h1&gt;About&lt;/h1&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(incremented())&#125;&gt;Add One&lt;/h2&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(decremented())&#125;&gt;reduce One&lt;/h2&gt;</span><br><span class="line">      &lt;h2 onClick=&#123;() =&gt; dispatch(asyncFun(5))&#125;&gt;add Five&lt;/h2&gt;</span><br><span class="line">      &lt;h2&gt;&#123;count&#125;&lt;/h2&gt;</span><br><span class="line">      &lt;div style=&#123;&#123;color: <span class="string">&#x27;blue&#x27;</span>&#125;&#125;&gt;&#123;props.date&#125;&lt;/div&gt;</span><br><span class="line">      &lt;Link to=<span class="string">&quot;/&quot;</span>&gt;To Home Clock&lt;/Link&gt;</span><br><span class="line">    &lt;/&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/20/Redux-%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E5%85%B6%E4%BB%96%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7%E4%B8%80%E8%B5%B7%E5%AE%8C%E6%88%90%E6%95%B0%E6%8D%AE%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/20/Redux-%E4%B8%BA%E4%BD%95%E9%9C%80%E8%A6%81%E5%85%B6%E4%BB%96%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7%E4%B8%80%E8%B5%B7%E5%AE%8C%E6%88%90%E6%95%B0%E6%8D%AE%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">Redux 为何需要其他辅助工具一起完成数据状态管理</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-04-20 11:02:25" itemprop="dateCreated datePublished" datetime="2021-04-20T11:02:25+08:00">2021-04-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Redux-为何需要其他辅助工具一起完成数据状态管理"><a href="#Redux-为何需要其他辅助工具一起完成数据状态管理" class="headerlink" title="Redux 为何需要其他辅助工具一起完成数据状态管理"></a>Redux 为何需要其他辅助工具一起完成数据状态管理</h1><p>Web 应用程序通常需要从服务器获取数据才能显示它。他们通常还需要对该数据进行更新，将这些更新发送到服务器，并使客户端上的缓存数据与服务器上的数据保持同步。由于需要实现当今应用程序中使用的其他行为，这变得更加复杂：</p>
-<ul>
-<li>跟踪加载状态以显示 UI 微调器</li>
-<li>避免对相同数据的重复请求</li>
-<li>乐观的更新，让 UI 感觉更快</li>
-<li>在用户与 UI 交互时管理缓存生命周期</li>
-</ul>
-<h1 id="产生的问题"><a href="#产生的问题" class="headerlink" title="产生的问题"></a>产生的问题</h1><p>Redux 核心一直非常小 而且 Redux 从来没有内置任何东西来帮助解决这些用例。<br>用户仍然需要编写大量的 reducer 逻辑来管理加载状态和缓存数据。</p>
-<h1 id="生态中优秀的辅助工具"><a href="#生态中优秀的辅助工具" class="headerlink" title="生态中优秀的辅助工具"></a>生态中优秀的辅助工具</h1><ul>
-<li>RTK Query（官方的）</li>
-<li>Apollo Client</li>
-<li>React Query</li>
-<li>Urql </li>
-<li>SWR</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/16/mobx6-x%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/16/mobx6-x%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="post-title-link" itemprop="url">mobx6.x使用指南</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-04-16 09:30:41" itemprop="dateCreated datePublished" datetime="2021-04-16T09:30:41+08:00">2021-04-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="直接开启动态监听，与视图双向绑定"><a href="#直接开启动态监听，与视图双向绑定" class="headerlink" title="直接开启动态监听，与视图双向绑定"></a>直接开启动态监听，与视图双向绑定</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">import &#123;extendObservable&#125; from <span class="string">&#x27;mobx&#x27;</span>;</span><br><span class="line">import &#123; observer &#125; from <span class="string">&#x27;mobx-react&#x27;</span>;</span><br><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line"></span><br><span class="line">class ShoppingList extends React.Component &#123;</span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    super(props);</span><br><span class="line">    extendObservable(this, &#123;</span><br><span class="line">      counter: 0,</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  onIncrement = () =&gt; &#123;</span><br><span class="line">    this.counter++;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  onDecrement = () =&gt; &#123;</span><br><span class="line">    this.counter--;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    // const &#123; value &#125; = this.props</span><br><span class="line">    // const &#123; authStore &#125; = this.props.store;</span><br><span class="line">    console.log(this.props)</span><br><span class="line">    <span class="built_in">return</span> (</span><br><span class="line">      &lt;div className=<span class="string">&quot;shopping-list&quot;</span>&gt;</span><br><span class="line">        &lt;h1&gt; &#123; this.counter&#125;&lt;/h1&gt;</span><br><span class="line">        &lt;ul&gt;</span><br><span class="line">          &lt;li onClick=&#123;this.onIncrement&#125; &gt;onIncrement&lt;/li&gt;</span><br><span class="line">          &lt;li onClick=&#123;this.onDecrement&#125;&gt;onDecrement&lt;/li&gt;</span><br><span class="line">          &lt;li&gt;Oculus&lt;/li&gt;</span><br><span class="line">        &lt;/ul&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">export</span> default observer(ShoppingList)</span><br></pre></td></tr></table></figure>
-
-<h1 id="注意要点"><a href="#注意要点" class="headerlink" title="注意要点"></a>注意要点</h1><ul>
-<li>安装 mobx mobx-react</li>
-<li>初始化需要监听的数据,<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">constructor(props) &#123;</span><br><span class="line">  super(props);</span><br><span class="line">  extendObservable(this, &#123;</span><br><span class="line">    counter: 0,</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>export 的时候 observer(ShoppingList) 一下</li>
-</ul>
-<p>这是实现了组件内的双向绑定类似于 data(){return{…obj}} v-model </p>
-<pre><code>
-
-</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
@@ -1066,7 +1036,7 @@
 
 <div class="copyright">
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
