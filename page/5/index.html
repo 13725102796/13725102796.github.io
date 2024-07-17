@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-count">106</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,6 +166,188 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/25/useCallback-%E5%92%8C-useMemo-%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/25/useCallback-%E5%92%8C-useMemo-%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">useCallback 和 useMemo 的区别</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-25 20:52:17" itemprop="dateCreated datePublished" datetime="2022-04-25T20:52:17+08:00">2022-04-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="useCallback"><a href="#useCallback" class="headerlink" title="useCallback"></a>useCallback</h1><p>const memoizedCallback &#x3D; useCallback(<br>  () &#x3D;&gt; {<br>    doSomething(a, b);<br>  },<br>  [a, b],<br>);<br>把内联回调函数及依赖项数组作为参数传入 useCallback，它将返回该回调函数的 memoized 版本，该回调函数仅在某个依赖项改变时才会更新。当你把回调函数传递给经过优化的并使用引用相等性去避免非必要渲染（例如 shouldComponentUpdate）的子组件时，它将非常有用。</p>
+<h1 id="useMemo"><a href="#useMemo" class="headerlink" title="useMemo"></a>useMemo</h1><p>const memoizedValue &#x3D; useMemo(() &#x3D;&gt; computeExpensiveValue(a, b), [a, b]);<br>返回一个 memoized 值 。</p>
+<p>把“创建”函数和依赖项数组作为参数传入 useMemo，它仅会在某个依赖项改变时才重新计算 memoized 值。这种优化有助于避免在每次渲染时都进行高开销的计算。</p>
+<p>你可以把 useMemo 作为性能优化的手段，但不要把它当成语义上的保证<br>将来，React 可能会选择“遗忘”以前的一些 memoized 值，并在下次渲染时重新计算它们，比如为离屏组件释放内存。先编写在没有 useMemo 的情况下也可以执行的代码 —— 之后再在你的代码中添加 useMemo，以达到优化性能的目的。</p>
+<p>function Example() {<br>    const [count, setCount] &#x3D; useState(1);<br>    const [val, setValue] &#x3D; useState(‘’);</p>
+<pre><code>const getNum = useMemo(() =&gt; &#123;
+    return Array.from(&#123;length: count * 100&#125;, (v, i) =&gt; i).reduce((a, b) =&gt; a+b)
+&#125;, [count])
+
+return &lt;div&gt;
+    &lt;h4&gt;总和：&#123;getNum()&#125;&lt;/h4&gt;
+    &lt;div&gt;
+        &lt;button onClick=&#123;() =&gt; setCount(count + 1)&#125;&gt;+1&lt;/button&gt;
+        &lt;input value=&#123;val&#125; onChange=&#123;event =&gt; setValue(event.target.value)&#125;/&gt;
+    &lt;/div&gt;
+&lt;/div&gt;;
+</code></pre>
+<p>}</p>
+<p>避免因为val变化而导致getNum重新渲染</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>useCallback 返回的是一个函数<br>useMemo 返回的的函数的执行结果</p>
+<p>类似于计算属性computed，避免使用了该函数或者该值的组件重复渲染。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 把事件写进render里面会在重新渲染的时候重新生成新的onclick</span></span><br><span class="line">class Demo extends Component&#123;</span><br><span class="line">    <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> </span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; () =&gt; &#123; console.log(<span class="string">&#x27;Hello World！！&#x27;</span>); &#125;&#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 在组件中可以在constructor里面</span></span><br><span class="line">class Demo extends Component&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span></span>()&#123;</span><br><span class="line">        super();</span><br><span class="line">        this.buttonClick = this.buttonClick.<span class="built_in">bind</span>(this);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> </span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; this.buttonClick &#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 在函数式组件中开发</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Demo</span></span>()&#123;</span><br><span class="line">    const buttonClick = useCallback(() =&gt; &#123; </span><br><span class="line">    	console.log(<span class="string">&#x27;Hello World！！&#x27;</span>)</span><br><span class="line">    &#125;,[])</span><br><span class="line">    <span class="built_in">return</span>(</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; buttonClick &#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">内存泄漏详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-25 13:15:32" itemprop="dateCreated datePublished" datetime="2022-04-25T13:15:32+08:00">2022-04-25</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="JS的回收机制"><a href="#JS的回收机制" class="headerlink" title="JS的回收机制"></a>JS的回收机制</h1><p>JS垃圾回收的机制（GC）会按照固定的时间间隔，周期性的执行。<br>标记清除：<br>当变量进入环境时，例如，在函数中声明一个变量，就将这个变量标记为“进入环境”。从逻辑上讲，永远不能释放进入环境的变量所占用的内存，因为只要执行流进入相应的环境，就可能会用到它们。而当变量离开环境时，则将其标记为“离开环境”。</p>
+<p>function test(){<br>  var a&#x3D;10;&#x2F;&#x2F;被标记，进入环境<br>  var b&#x3D;20;&#x2F;&#x2F;被标记，进入环境<br>}<br>test();&#x2F;&#x2F;执行完毕之后a、b又被标记离开环境，被回收</p>
+<h1 id="哪些操作会造成内存泄露"><a href="#哪些操作会造成内存泄露" class="headerlink" title="哪些操作会造成内存泄露"></a>哪些操作会造成内存泄露</h1><p>意外的全局变量引起的内存泄露：<br>function leak(){<br>  leak&#x3D;”xxx”;&#x2F;&#x2F;leak成为一个全局变量，不会被回收<br>}<br>闭包引起的内存泄漏<br>function bindEvent(){<br>  var obj&#x3D;document.createElement(“XXX”);<br>  obj.οnclick&#x3D;function(){<br>    &#x2F;&#x2F;Even if it’s a empty function<br>  }<br>}<br>解决方法：</p>
+<ul>
+<li>将事件处理函数定义在外部，解除闭包。<br>&#x2F;&#x2F;将事件处理函数定义在外部<br>function onclickHandler(){<br>&#x2F;&#x2F;do something<br>}<br>function bindEvent(){<br>var obj&#x3D;document.createElement(“XXX”);<br>obj.οnclick&#x3D;onclickHandler;<br>}</li>
+<li>在定义事件处理函数的外部函数中，删除对 DOM 的引用<br>function bindEvent(){<br>var obj&#x3D;document.createElement(“XXX”);<br>obj.οnclick&#x3D;function(){<br>  &#x2F;&#x2F;Even if it’s a empty function<br>}<br>obj&#x3D;null;<br>}</li>
+<li>没有清理的 DOM 元素引用：<br>var elements&#x3D;{<br>  button: document.getElementById(“button”),<br>  image: document.getElementById(“image”),<br>  text: document.getElementById(“text”)<br>};<br>function doStuff(){<br>  image.src&#x3D;”<a target="_blank" rel="noopener" href="http://some.url/image&quot;">http://some.url/image&quot;</a>;<br>  button.click():<br>  console.log(text.innerHTML)<br>}<br>function removeButton(){<br>  document.body.removeChild(document.getElementById(‘button’))<br>}</li>
+<li>被遗忘的定时器或者回调：<br>var someResouce&#x3D;getData();<br>setInterval(function(){<br>  var node&#x3D;document.getElementById(‘Node’);<br>  if(node){<br>  node.innerHTML&#x3D;JSON.stringify(someResouce)<br>  }<br>},1000)</li>
+</ul>
+<h1 id="怎样避免内存泄露："><a href="#怎样避免内存泄露：" class="headerlink" title="怎样避免内存泄露："></a>怎样避免内存泄露：</h1><ul>
+<li>减少不必要的全局变量，或者生命周期较长的对象，及时对无用的数据进行垃圾回收；</li>
+<li>注意程序逻辑，避免“死循环”之类的；</li>
+<li>避免创建过多的对象，原则：不用了的东西要及时归还。</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>定义全局变量，闭包，dom的引用，定时器都会产生内存使用的问题。不处理会导致内存泄漏</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -824,173 +1006,6 @@
           <h1 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fun</span></span>()&#123;</span><br><span class="line">  const [arr,setArr] = useState([1,2])</span><br><span class="line">  arr.splice(1,3)</span><br><span class="line">  setArr(arr)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>这时候发现是没有效果的。<br>因为splice是修改原数组，并返回被切掉的元素。<br>而arr保存的是引用地址<br>所以要先copy一份arr再操作<br>const copyArr &#x3D; arr.slice()  ||  const copyArr &#x3D; […arr]</p>
 <h1 id="正解"><a href="#正解" class="headerlink" title="正解"></a>正解</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fun</span></span>()&#123;</span><br><span class="line">  const [arr,setArr] = useState([1,2])</span><br><span class="line">  const copyArr = arr.slice() </span><br><span class="line">  copyArr.splice(1,3)</span><br><span class="line">  setArr(copyArr)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/22/React%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/22/React%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF/" class="post-title-link" itemprop="url">React组件通讯</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-09-22 11:49:28" itemprop="dateCreated datePublished" datetime="2021-09-22T11:49:28+08:00">2021-09-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="父子组件通讯"><a href="#父子组件通讯" class="headerlink" title="父子组件通讯"></a>父子组件通讯</h1><p>通过props，父组件向子组件传递值或者方法，子组件向父组件通讯，子组件可以调用父组件通过props传递的方法</p>
-<h1 id="全局context"><a href="#全局context" class="headerlink" title="全局context"></a>全局context</h1><ol>
-<li>通过createContext创建一个上下文 const Context &#x3D; React.createContext({color: red})</li>
-<li>通过 当前节点的state复制一份Context的值</li>
-<li>当前节点用&lt;Context.Provider value&#x3D;{this.state}&gt;包裹</li>
-<li>在该节点下的某个组件使用，可以通过 &lt;Context.Consumer&gt;{(value)&#x3D;&gt;{}}&lt;&#x2F;Context.Consumer&gt; 组件下接收传递的value<br> 也可以给类组件 MyClass.contextType &#x3D; MyContext;直接赋值，在组件内部通过this.context访问</li>
-</ol>
-<h1 id="想要在子组件修改该context的值，需要将修改的方法一并传入进去"><a href="#想要在子组件修改该context的值，需要将修改的方法一并传入进去" class="headerlink" title="想要在子组件修改该context的值，需要将修改的方法一并传入进去"></a>想要在子组件修改该context的值，需要将修改的方法一并传入进去</h1><p>在复制context的值给节点的state的时候，需要额外定义一个修改该值的方法<br>this.handleFontSize &#x3D; () &#x3D;&gt; {<br>  this.setState(state &#x3D;&gt; ({<br>    fontSize: state.fontSize &#x3D;&#x3D;&#x3D; fontSize.small<br>        ? fontSize.big<br>        : fontSize.small,<br>  }));<br>}<br>&#x2F;&#x2F; State 也包含了更新函数，因此它会被传递进 context provider。<br>this.state &#x3D; {<br>  fontSize: fontSize.small,<br>  handleFontSize: this.handleFontSize,<br>};</p>
-<p>在子组件通过 this.context.handleFontSize()去修改即可</p>
-<h1 id="全局通讯之-redux-toolkit"><a href="#全局通讯之-redux-toolkit" class="headerlink" title="全局通讯之 redux toolkit"></a>全局通讯之 redux toolkit</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 先创建一个 Slice 通过 createSlice</span></span><br><span class="line">import &#123; createSlice,createAsyncThunk &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">import axios from <span class="string">&#x27;axios&#x27;</span></span><br><span class="line">const testApi = <span class="string">&#x27;/public/page/getHomePageModules&#x27;</span></span><br><span class="line"><span class="built_in">export</span> const fetchThunks = createAsyncThunk(<span class="string">&#x27;thunks/fetchThunks&#x27;</span>, async () =&gt; &#123;</span><br><span class="line">  const response = await axios.get(testApi,&#123;&#125;)</span><br><span class="line">  <span class="built_in">return</span> response.data</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">const counterSlice = createSlice(&#123;</span><br><span class="line">  name: <span class="string">&#x27;counter&#x27;</span>,</span><br><span class="line">  initialState: &#123;</span><br><span class="line">    value: 0,</span><br><span class="line">    state: <span class="string">&#x27;idle&#x27;</span>,</span><br><span class="line">    error: null</span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    incremented: state =&gt; &#123;</span><br><span class="line">      state.value += 1</span><br><span class="line">    &#125;,</span><br><span class="line">    decremented: state =&gt; &#123;</span><br><span class="line">      state.value -= 1</span><br><span class="line">    &#125;,</span><br><span class="line">    incrementByAmount: (state,action) =&gt; &#123;</span><br><span class="line">      state.value += action.payload</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  extraReducers(builder)&#123;</span><br><span class="line">    builder.addCase(fetchThunks.fulfilled,(state,action)=&gt;&#123;</span><br><span class="line"></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">export</span> const &#123; incremented,incrementByAmount, decremented &#125; = counterSlice.actions</span><br><span class="line"><span class="built_in">export</span> const asyncFun = (args)=&gt;&#123;</span><br><span class="line">  <span class="built_in">return</span> async (dispatch,getState)=&gt;&#123;</span><br><span class="line">    const data = await axios.get(testApi,&#123;&#125;)</span><br><span class="line">    const stateBefore = getState()</span><br><span class="line">    console.log(`Counter before: <span class="variable">$&#123;stateBefore.counter.value&#125;</span>`)</span><br><span class="line">    dispatch(incrementByAmount(args))</span><br><span class="line">    const stateAfter = getState()</span><br><span class="line">    console.log(`Counter after: <span class="variable">$&#123;stateAfter.counter.value&#125;</span>`)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default counterSlice.reducer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># redux 是不支持异步操作，所以需要支持异步的中间件来完成，如Thunk</span></span><br><span class="line"><span class="comment"># createAsyncThunk(&#x27;type名称&#x27;,asyncFn) 对应dispath(&#123;type:&#x27;actionname&#x27;,payload:&#x27;&#x27;&#125;)</span></span><br><span class="line"><span class="comment"># asyncFn的返回值就是payload</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建完后就关联到store集合里面，通过 configureStore</span></span><br><span class="line">import counterSlice from <span class="string">&quot;./test&quot;</span></span><br><span class="line">import &#123; configureStore &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">import thunksSlice from <span class="string">&quot;./thunks&quot;</span></span><br><span class="line">const store = configureStore(&#123;</span><br><span class="line">  reducer:&#123;</span><br><span class="line">    counter: counterSlice,</span><br><span class="line">    thunks: thunksSlice</span><br><span class="line">  &#125; </span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default store</span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/22/React%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/08/22/React%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">React开发使用总结</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-08-22 11:24:31" itemprop="dateCreated datePublished" datetime="2021-08-22T11:24:31+08:00">2021-08-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="首先在根index全局引入redux，router-css等"><a href="#首先在根index全局引入redux，router-css等" class="headerlink" title="首先在根index全局引入redux，router,css等"></a>首先在根index全局引入redux，router,css等</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line">import ReactDOM from <span class="string">&#x27;react-dom&#x27;</span>;</span><br><span class="line">import <span class="string">&#x27;./index.css&#x27;</span>;</span><br><span class="line">import <span class="string">&#x27;antd/dist/antd.css&#x27;</span>;</span><br><span class="line">import &#123; BrowserRouter,useRoutes &#125; from <span class="string">&quot;react-router-dom&quot;</span></span><br><span class="line">import store from <span class="string">&#x27;./reduces/index&#x27;</span></span><br><span class="line">import &#123; Provider &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">import routes from <span class="string">&#x27;./routes/index&#x27;</span></span><br><span class="line">const element = useRoutes(routes)</span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;BrowserRouter&gt;</span><br><span class="line">    &lt;Provider store=&#123;store&#125;&gt;</span><br><span class="line">      &#123;element&#125;</span><br><span class="line">    &lt;/Provider&gt;</span><br><span class="line">  &lt;/BrowserRouter&gt;</span><br><span class="line">  ,</span><br><span class="line">  document.getElementById(<span class="string">&#x27;root&#x27;</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
       
     </div>
 

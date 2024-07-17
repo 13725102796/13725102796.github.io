@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-count">106</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,6 +166,173 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/22/React%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/09/22/React%E7%BB%84%E4%BB%B6%E9%80%9A%E8%AE%AF/" class="post-title-link" itemprop="url">React组件通讯</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-09-22 11:49:28" itemprop="dateCreated datePublished" datetime="2021-09-22T11:49:28+08:00">2021-09-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="父子组件通讯"><a href="#父子组件通讯" class="headerlink" title="父子组件通讯"></a>父子组件通讯</h1><p>通过props，父组件向子组件传递值或者方法，子组件向父组件通讯，子组件可以调用父组件通过props传递的方法</p>
+<h1 id="全局context"><a href="#全局context" class="headerlink" title="全局context"></a>全局context</h1><ol>
+<li>通过createContext创建一个上下文 const Context &#x3D; React.createContext({color: red})</li>
+<li>通过 当前节点的state复制一份Context的值</li>
+<li>当前节点用&lt;Context.Provider value&#x3D;{this.state}&gt;包裹</li>
+<li>在该节点下的某个组件使用，可以通过 &lt;Context.Consumer&gt;{(value)&#x3D;&gt;{}}&lt;&#x2F;Context.Consumer&gt; 组件下接收传递的value<br> 也可以给类组件 MyClass.contextType &#x3D; MyContext;直接赋值，在组件内部通过this.context访问</li>
+</ol>
+<h1 id="想要在子组件修改该context的值，需要将修改的方法一并传入进去"><a href="#想要在子组件修改该context的值，需要将修改的方法一并传入进去" class="headerlink" title="想要在子组件修改该context的值，需要将修改的方法一并传入进去"></a>想要在子组件修改该context的值，需要将修改的方法一并传入进去</h1><p>在复制context的值给节点的state的时候，需要额外定义一个修改该值的方法<br>this.handleFontSize &#x3D; () &#x3D;&gt; {<br>  this.setState(state &#x3D;&gt; ({<br>    fontSize: state.fontSize &#x3D;&#x3D;&#x3D; fontSize.small<br>        ? fontSize.big<br>        : fontSize.small,<br>  }));<br>}<br>&#x2F;&#x2F; State 也包含了更新函数，因此它会被传递进 context provider。<br>this.state &#x3D; {<br>  fontSize: fontSize.small,<br>  handleFontSize: this.handleFontSize,<br>};</p>
+<p>在子组件通过 this.context.handleFontSize()去修改即可</p>
+<h1 id="全局通讯之-redux-toolkit"><a href="#全局通讯之-redux-toolkit" class="headerlink" title="全局通讯之 redux toolkit"></a>全局通讯之 redux toolkit</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 先创建一个 Slice 通过 createSlice</span></span><br><span class="line">import &#123; createSlice,createAsyncThunk &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">import axios from <span class="string">&#x27;axios&#x27;</span></span><br><span class="line">const testApi = <span class="string">&#x27;/public/page/getHomePageModules&#x27;</span></span><br><span class="line"><span class="built_in">export</span> const fetchThunks = createAsyncThunk(<span class="string">&#x27;thunks/fetchThunks&#x27;</span>, async () =&gt; &#123;</span><br><span class="line">  const response = await axios.get(testApi,&#123;&#125;)</span><br><span class="line">  <span class="built_in">return</span> response.data</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">const counterSlice = createSlice(&#123;</span><br><span class="line">  name: <span class="string">&#x27;counter&#x27;</span>,</span><br><span class="line">  initialState: &#123;</span><br><span class="line">    value: 0,</span><br><span class="line">    state: <span class="string">&#x27;idle&#x27;</span>,</span><br><span class="line">    error: null</span><br><span class="line">  &#125;,</span><br><span class="line">  reducers: &#123;</span><br><span class="line">    incremented: state =&gt; &#123;</span><br><span class="line">      state.value += 1</span><br><span class="line">    &#125;,</span><br><span class="line">    decremented: state =&gt; &#123;</span><br><span class="line">      state.value -= 1</span><br><span class="line">    &#125;,</span><br><span class="line">    incrementByAmount: (state,action) =&gt; &#123;</span><br><span class="line">      state.value += action.payload</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  extraReducers(builder)&#123;</span><br><span class="line">    builder.addCase(fetchThunks.fulfilled,(state,action)=&gt;&#123;</span><br><span class="line"></span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">export</span> const &#123; incremented,incrementByAmount, decremented &#125; = counterSlice.actions</span><br><span class="line"><span class="built_in">export</span> const asyncFun = (args)=&gt;&#123;</span><br><span class="line">  <span class="built_in">return</span> async (dispatch,getState)=&gt;&#123;</span><br><span class="line">    const data = await axios.get(testApi,&#123;&#125;)</span><br><span class="line">    const stateBefore = getState()</span><br><span class="line">    console.log(`Counter before: <span class="variable">$&#123;stateBefore.counter.value&#125;</span>`)</span><br><span class="line">    dispatch(incrementByAmount(args))</span><br><span class="line">    const stateAfter = getState()</span><br><span class="line">    console.log(`Counter after: <span class="variable">$&#123;stateAfter.counter.value&#125;</span>`)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default counterSlice.reducer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># redux 是不支持异步操作，所以需要支持异步的中间件来完成，如Thunk</span></span><br><span class="line"><span class="comment"># createAsyncThunk(&#x27;type名称&#x27;,asyncFn) 对应dispath(&#123;type:&#x27;actionname&#x27;,payload:&#x27;&#x27;&#125;)</span></span><br><span class="line"><span class="comment"># asyncFn的返回值就是payload</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建完后就关联到store集合里面，通过 configureStore</span></span><br><span class="line">import counterSlice from <span class="string">&quot;./test&quot;</span></span><br><span class="line">import &#123; configureStore &#125; from <span class="string">&#x27;@reduxjs/toolkit&#x27;</span></span><br><span class="line">import thunksSlice from <span class="string">&quot;./thunks&quot;</span></span><br><span class="line">const store = configureStore(&#123;</span><br><span class="line">  reducer:&#123;</span><br><span class="line">    counter: counterSlice,</span><br><span class="line">    thunks: thunksSlice</span><br><span class="line">  &#125; </span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> default store</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/22/React%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/22/React%E5%BC%80%E5%8F%91%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">React开发使用总结</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-08-22 11:24:31" itemprop="dateCreated datePublished" datetime="2021-08-22T11:24:31+08:00">2021-08-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="首先在根index全局引入redux，router-css等"><a href="#首先在根index全局引入redux，router-css等" class="headerlink" title="首先在根index全局引入redux，router,css等"></a>首先在根index全局引入redux，router,css等</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&#x27;react&#x27;</span>;</span><br><span class="line">import ReactDOM from <span class="string">&#x27;react-dom&#x27;</span>;</span><br><span class="line">import <span class="string">&#x27;./index.css&#x27;</span>;</span><br><span class="line">import <span class="string">&#x27;antd/dist/antd.css&#x27;</span>;</span><br><span class="line">import &#123; BrowserRouter,useRoutes &#125; from <span class="string">&quot;react-router-dom&quot;</span></span><br><span class="line">import store from <span class="string">&#x27;./reduces/index&#x27;</span></span><br><span class="line">import &#123; Provider &#125; from <span class="string">&#x27;react-redux&#x27;</span></span><br><span class="line">import routes from <span class="string">&#x27;./routes/index&#x27;</span></span><br><span class="line">const element = useRoutes(routes)</span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;BrowserRouter&gt;</span><br><span class="line">    &lt;Provider store=&#123;store&#125;&gt;</span><br><span class="line">      &#123;element&#125;</span><br><span class="line">    &lt;/Provider&gt;</span><br><span class="line">  &lt;/BrowserRouter&gt;</span><br><span class="line">  ,</span><br><span class="line">  document.getElementById(<span class="string">&#x27;root&#x27;</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -884,194 +1051,6 @@
 
 
 
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/01/git-%E5%A4%9A%E8%B4%A6%E5%8F%B7%E9%85%8D%E7%BD%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/02/01/git-%E5%A4%9A%E8%B4%A6%E5%8F%B7%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">git 多账号配置</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-02-01 00:12:23" itemprop="dateCreated datePublished" datetime="2021-02-01T00:12:23+08:00">2021-02-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/git/" itemprop="url" rel="index"><span itemprop="name">git</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="git-多账号账号切换使用"><a href="#git-多账号账号切换使用" class="headerlink" title="git 多账号账号切换使用"></a>git 多账号账号切换使用</h1><ul>
-<li>解决密钥问题。默认只有一个密钥，二次创建会覆盖</li>
-<li>使用哪个账号提交的</li>
-</ul>
-<h1 id="生成两个账号私钥在本地"><a href="#生成两个账号私钥在本地" class="headerlink" title="生成两个账号私钥在本地"></a>生成两个账号私钥在本地</h1><p>生成默认的 id_rsa 和id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱1”<br>在创建第二个的时候必须要重命名 比如 137_id_ras,这样会生成另外两个文件137_id_rsa 和 137_id_rsa.pub<br>ssh-keygen -t rsa -C “你的github注册邮箱2”</p>
-<h1 id="在-ssh下面创建config文件"><a href="#在-ssh下面创建config文件" class="headerlink" title="在.ssh下面创建config文件"></a>在.ssh下面创建config文件</h1><p>执行 touch config 创建<br>执行 vim config 编辑</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Default 第一个账号(123456@xxxx.com)</span></span><br><span class="line"></span><br><span class="line">Host default</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/137_id_rsa</span><br><span class="line"><span class="comment">#second 第二个账号（38894403@xxxx.com）    </span></span><br><span class="line">Host zc</span><br><span class="line">    HostName github.com</span><br><span class="line">    PreferredAuthentications publickey</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
-<p>只需要修改 IdentityFile 即可<br>ssh -T <a href="mailto:&#103;&#105;&#x74;&#x40;&#103;&#105;&#116;&#x68;&#x75;&#98;&#x2e;&#x63;&#x6f;&#109;">&#103;&#105;&#x74;&#x40;&#103;&#105;&#116;&#x68;&#x75;&#98;&#x2e;&#x63;&#x6f;&#109;</a> 可以测试是否配置成功<br><code>配置成功会显示当前用户名</code> 这个很重要，因为当你想切换用户的时候没有这个不行<br>通过设置<br>git config –global user.name “13725102796”<br>git config –global user.email “<a href="mailto:&#x31;&#x34;&#x33;&#57;&#x36;&#53;&#x35;&#55;&#54;&#52;&#64;&#113;&#113;&#x2e;&#99;&#111;&#109;">&#x31;&#x34;&#x33;&#57;&#x36;&#53;&#x35;&#55;&#54;&#52;&#64;&#113;&#113;&#x2e;&#99;&#111;&#109;</a>“<br>还没有生效，因为ssh-add的代理始终指向默认的</p>
-<h1 id="通过ssh-add删除代理"><a href="#通过ssh-add删除代理" class="headerlink" title="通过ssh-add删除代理"></a>通过ssh-add删除代理</h1><p>查看 ssh-add -l<br>删除 ssh-add -D<br>添加<br>ssh-add ~&#x2F;.ssh&#x2F;id_rsa<br>ssh-add ~&#x2F;.ssh&#x2F;137_id_rsa </p>
-<h1 id="添加代理后还不可以，需要修改提交的git-clone-ssh链接"><a href="#添加代理后还不可以，需要修改提交的git-clone-ssh链接" class="headerlink" title="添加代理后还不可以，需要修改提交的git clone ssh链接"></a>添加代理后还不可以，需要修改提交的git clone ssh链接</h1><ul>
-<li><p>还没clone的可以通过 来拉取项目，这样可以让ssh-add正确代理<br>git clone zy@:18820677498&#x2F;Blog.git<br>原来是 <a href="mailto:&#103;&#105;&#x74;&#x40;&#x67;&#105;&#116;&#x68;&#117;&#98;&#46;&#x63;&#111;&#x6d;">&#103;&#105;&#x74;&#x40;&#x67;&#105;&#116;&#x68;&#117;&#98;&#46;&#x63;&#111;&#x6d;</a>:18820677498&#x2F;Blog.git</p>
-</li>
-<li><p>已经clone的 可以切换到当前项目下，命令行执行<br><code>vim .git/config</code><br>打开config文件 按i去修改，按esc退出修改，再按 <code>:qw!</code> 保存修改</p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/10/29/Vue%E4%B8%8EReact-Diff%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/29/Vue%E4%B8%8EReact-Diff%E7%AE%97%E6%B3%95%E6%AF%94%E8%BE%83/" class="post-title-link" itemprop="url">Vue与React Diff算法比较</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2020-10-29 14:15:40" itemprop="dateCreated datePublished" datetime="2020-10-29T14:15:40+08:00">2020-10-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Vue/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="diff算法比对方式"><a href="#diff算法比对方式" class="headerlink" title="diff算法比对方式"></a>diff算法比对方式</h1><ol>
-<li>Vue采用的是递归加双指针的方式对比旧节点，react是从左到右逐个对比<br>当一个集合，只是把最后一个节点移动到了第一个，</li>
-<li>对比具体某个元素时，当元素类型相同，但是className不同，<br>vue认为是不同类型元素，删除重建。<br>react会认为是同类型节点，只是修改节点属性</li>
-</ol>
-<h1 id="diff-渲染机制不同"><a href="#diff-渲染机制不同" class="headerlink" title="diff 渲染机制不同"></a>diff 渲染机制不同</h1><ol>
-<li>Vue是边对比边更新DOM</li>
-<li>React使用的是队列保存需要更新的DDM，得到Patch树，再统一批量更新DOM</li>
-</ol>
-<h1 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h1><ol>
-<li>虚拟DOM在比较时只比较同一层级节点，复杂度都为 O(n)，降低了算法复杂度；</li>
-<li>都使用key比较是否是相同节点，都是为了尽可能的复用节点</li>
-<li>都是操作虚拟DOM，最小化操作真实DOM，提高性能</li>
-<li>都是不要用 index作为 key</li>
-<li>在同级节点中元素顺序的变换，都是复用处理，新增的插入，多余的删掉</li>
-</ol>
 
       
     </div>

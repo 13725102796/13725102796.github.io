@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-count">106</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,6 +166,219 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/26/Egg-%E7%9A%84%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/07/26/Egg-%E7%9A%84%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/" class="post-title-link" itemprop="url">Egg 的初步认识</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-07-26 21:58:25" itemprop="dateCreated datePublished" datetime="2020-07-26T21:58:25+08:00">2020-07-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Node-js/" itemprop="url" rel="index"><span itemprop="name">Node.js</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Egg-js-是什么"><a href="#Egg-js-是什么" class="headerlink" title="Egg.js 是什么?"></a>Egg.js 是什么?</h1><p>Egg.js 为企业级框架和应用而生，我们希望由 Egg.js 孕育出更多上层框架，帮助开发团队和开发人员降低开发和维护成本。<br>通过 Egg，团队的架构师和技术负责人可以非常容易地基于自身的技术架构在 Egg 基础上扩展出适合自身业务场景的框架。<br>Egg 的插件机制有很高的可扩展性，一个插件只做一件事（比如 Nunjucks 模板封装成了 egg-view-nunjucks、MySQL 数据库封装成了 egg-mysql）。Egg 通过框架聚合这些插件，并根据自己的业务场景定制配置，这样应用的开发成本就变得很低。</p>
+<p>优势：</p>
+<ul>
+<li>Egg 奉行『约定优于配置』，按照一套统一的约定进行应用开发，减少开发人员的学习成本，</li>
+<li>没有约定的团队，沟通成本是非常高的，比如有人会按目录分栈而其他人按目录分功能<br>特性： </li>
+<li>提供基于 Egg 定制上层框架的能力</li>
+<li>高度可扩展的插件机制</li>
+<li>内置多进程管理</li>
+<li>基于 Koa 开发，性能优异</li>
+<li>框架稳定，测试覆盖率高</li>
+<li>渐进式开发</li>
+</ul>
+<h1 id="主要约定文件目录"><a href="#主要约定文件目录" class="headerlink" title="主要约定文件目录"></a>主要约定文件目录</h1><ul>
+<li>config 配置</li>
+<li>middleware</li>
+<li>Router</li>
+<li>Controller</li>
+<li>service</li>
+</ul>
+<h1 id="内置对象"><a href="#内置对象" class="headerlink" title="内置对象"></a>内置对象</h1><ul>
+<li>Application</li>
+<li>Context</li>
+<li>Request &amp; Response</li>
+<li>Controller（类）</li>
+<li>Service</li>
+<li>Helper</li>
+<li>Config</li>
+<li>Logger</li>
+<li>Subscription</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>express 是基于nodejs开发的框架，但是会产生很多callback（回调地狱）<br>为了解决callback，koa支持async await的方式<br>而egg则基于koa集成多种内置对象，以及各种约定，让多人协作开发更友好，还可以安装各种各样的插件来实现想要功能</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/07/17/react%E7%BB%84%E4%BB%B6%E4%BB%B6%E7%9A%84%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%94%A8%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%B8%BA%E4%BD%95%E5%BC%83%E7%94%A8mixins%E7%9A%84%E6%80%9D%E8%80%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/07/17/react%E7%BB%84%E4%BB%B6%E4%BB%B6%E7%9A%84%E4%BB%A3%E7%A0%81%E5%A4%8D%E7%94%A8%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%B8%BA%E4%BD%95%E5%BC%83%E7%94%A8mixins%E7%9A%84%E6%80%9D%E8%80%83/" class="post-title-link" itemprop="url">react组件件的代码复用，以及为何弃用mixins的思考</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-07-17 08:49:37" itemprop="dateCreated datePublished" datetime="2020-07-17T08:49:37+08:00">2020-07-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="为何弃用mixins，故事背景"><a href="#为何弃用mixins，故事背景" class="headerlink" title="为何弃用mixins，故事背景"></a>为何弃用mixins，故事背景</h1><p>“我如何在几个组件之间共享代码？” 是人们在学习 React 时首先提出的问题之一。我们的答案一直是使用组件组合来进行代码重用。您可以定义一个组件并在其他几个组件中使用它。<br>如何通过组合来解决某种模式并不总是很明显。React 受到函数式编程的影响，但它进入了由面向对象库主导的领域。<br>mixin 系统就是其中之一，它的目标是当你不确定如何用组合解决同样的问题时，它的目标是为你提供一种在组件之间重用代码的方法。<br>随着组件数量越来越多，使用 React 的一些代码逐渐变得难以理解。<br>这些组件太容易被意外破坏，让新开发人员感到困惑，最终也让最初编写它们的人感到困惑。这种混乱大部分是由 mixins 引起的。</p>
+<p>Mixins 打破了常见且通常安全的假设，即您可以通过在组件文件中搜索其出现来重命名状态键或方法。您可能会编写一个有状态的组件，然后您的同事可能会添加一个读取此状态的 mixin。几个月后，您可能希望将该状态移至父组件，以便与兄弟姐妹共享。你会记得更新 mixin 来读取道具吗？如果现在其他组件也使用这个 mixin 怎么办？</p>
+<p>有时候可能要修改mixin的部分功能，但是不知道在哪个地方哪个角落调用了这个方法。你不得不复制一份出来单独维护。<br>这就是mixin为何被弃用的主要原因。<br>当数量上来了，复用的功效就没那么明显，还可能是一种累赘。</p>
+<p>每一个新的需求都会让 mixins 更难理解。随着时间的推移，使用相同 mixin 的组件变得越来越耦合。任何新功能都会被添加到使用该 mixin 的所有组件中。如果不复制代码或在 mixin 之间引入更多的依赖关系和间接性，就无法拆分 mixin 的“更简单”部分。逐渐地，封装边界被侵蚀，并且由于很难更改或删除现有的 mixin，它们变得越来越抽象，直到没有人了解它们是如何工作的。</p>
+<h1 id="解决方案-之-高阶组件"><a href="#解决方案-之-高阶组件" class="headerlink" title="解决方案 之 高阶组件"></a>解决方案 之 高阶组件</h1><p>高阶组件（HOC）是 React 中用于复用组件逻辑的一种高级技巧。HOC 自身不是 React API 的一部分，它是一种基于 React 的组合特性而形成的设计模式</p>
+<p>具体而言，高阶组件是参数为组件，返回值为新组件的函数。</p>
+<p>目的是为了数据与视图分离，所有操作数据的方法都封装在高阶组件的函数内部，视图的展示，通过传递的组件参数去表达</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">// 此函数接收一个组件...</span><br><span class="line"><span class="keyword">function</span> withSubscription(WrappedComponent, selectData) &#123;</span><br><span class="line">  // ...并返回另一个组件...</span><br><span class="line">  <span class="built_in">return</span> class extends React.Component &#123;</span><br><span class="line">    constructor(props) &#123;</span><br><span class="line">      super(props);</span><br><span class="line">      this.handleChange = this.handleChange.<span class="built_in">bind</span>(this);</span><br><span class="line">      this.state = &#123;</span><br><span class="line">        data: selectData(DataSource, props)</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">componentDidMount</span></span>() &#123;</span><br><span class="line">      // ...负责订阅相关的操作...</span><br><span class="line">      DataSource.addChangeListener(this.handleChange);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">componentWillUnmount</span></span>() &#123;</span><br><span class="line">      DataSource.removeChangeListener(this.handleChange);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">handleChange</span></span>() &#123;</span><br><span class="line">      this.setState(&#123;</span><br><span class="line">        data: selectData(DataSource, this.props)</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">      // ... 并使用新数据渲染被包装的组件!</span><br><span class="line">      // 请注意，我们可能还会传递其他属性</span><br><span class="line">      <span class="built_in">return</span> &lt;WrappedComponent data=&#123;this.state.data&#125; &#123;...this.props&#125; /&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>HOC 不会修改传入的组件，也不会使用继承来复制其行为。相反，HOC 通过将组件包装在容器组件中来组成新组件。HOC 是纯函数，没有副作用</p>
+<h1 id="HOC-约定：将不相关的-props-传递给被包裹的组件"><a href="#HOC-约定：将不相关的-props-传递给被包裹的组件" class="headerlink" title="HOC 约定：将不相关的 props 传递给被包裹的组件"></a>HOC 约定：将不相关的 props 传递给被包裹的组件</h1><p>HOC 为组件添加特性。自身不应该大幅改变约定。HOC 返回的组件与原组件应保持类似的接口。<br>HOC 应该透传与自身无关的 props。大多数 HOC 都应该包含一个类似于下面的 render 方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">  // 过滤掉非此 HOC 额外的 props，且不要进行透传</span><br><span class="line">  const &#123; extraProp, ...passThroughProps &#125; = this.props;</span><br><span class="line"></span><br><span class="line">  // 将 props 注入到被包装的组件中。</span><br><span class="line">  // 通常为 state 的值或者实例方法。</span><br><span class="line">  const injectedProp = someStateOrInstanceMethod;</span><br><span class="line"></span><br><span class="line">  // 将 props 传递给被包装组件</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;WrappedComponent</span><br><span class="line">      injectedProp=&#123;injectedProp&#125;</span><br><span class="line">      &#123;...passThroughProps&#125;</span><br><span class="line">    /&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="HOC约定：最大化可组合性"><a href="#HOC约定：最大化可组合性" class="headerlink" title="HOC约定：最大化可组合性"></a>HOC约定：最大化可组合性</h1><p>并不是所有的 HOC 都一样。有时候它仅接受一个参数，也就是被包裹的组件：<br>const NavbarWithRouter &#x3D; withRouter(Navbar);</p>
+<p>HOC 通常可以接收多个参数。比如在 Relay 中，HOC 额外接收了一个配置对象用于指定组件的数据依赖：<br>const CommentWithRelay &#x3D; Relay.createContainer(Comment, config);</p>
+<p>甚至可能是返回高阶组件的高阶函数！！！<br>&#x2F;&#x2F; React Redux 的 <code>connect</code> 函数<br>const ConnectedComment &#x3D; connect(commentSelector, commentActions)(CommentList);</p>
+<p>类似于函数柯里化<br>把函数的参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> createCurry = (fn,...params)=&gt;&#123;</span><br><span class="line">  <span class="built_in">let</span> args = params || []</span><br><span class="line">  <span class="built_in">let</span> fnLen = fn.length</span><br><span class="line">  <span class="built_in">return</span> (...res)=&gt;&#123;</span><br><span class="line">    <span class="built_in">let</span> allArgs = args.slice(0)</span><br><span class="line">    allArgs.push(...res)</span><br><span class="line">    <span class="keyword">if</span>(allArgs.length &lt; fnLen&gt;)&#123;</span><br><span class="line">      <span class="built_in">return</span> createCurry.call(this,fn,...allArgs);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">return</span> fn.apply(this,allArgs);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><ul>
+<li><p>不要在 render 方法中使用 HOC<br>React 的 diff 算法使用组件标识来确定它是应该更新现有子树还是将其丢弃并挂载新子树。 如果从 render 返回的组件与前一个渲染中的组件相同（&#x3D;&#x3D;&#x3D;），则 React 通过将子树与新子树进行区分来递归更新子树。 如果它们不相等，则完全卸载前一个子树。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">  // 每次调用 render 函数都会创建一个新的 EnhancedComponent</span><br><span class="line">  // EnhancedComponent1 !== EnhancedComponent2</span><br><span class="line">  const EnhancedComponent = enhance(MyComponent);</span><br><span class="line">  // 这将导致子树每次渲染都会进行卸载，和重新挂载的操作！</span><br><span class="line">  <span class="built_in">return</span> &lt;EnhancedComponent /&gt;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在每次render时都会重新创建，重新挂载组件会导致该组件及其所有子组件的状态丢失。<br>如果在组件之外创建 HOC，这样一来组件只会创建一次。因此，每次 render 时都会是同一个组件。<br>在极少数情况下，你需要动态调用 HOC。你可以在组件的生命周期方法或其构造函数中进行调用。</p>
+</li>
+<li><p>务必复制静态方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// 定义静态函数</span><br><span class="line">WrappedComponent.staticMethod = <span class="function"><span class="title">function</span></span>() &#123;/*...*/&#125;</span><br><span class="line">// 现在使用 HOC</span><br><span class="line">const EnhancedComponent = enhance(WrappedComponent);</span><br><span class="line"></span><br><span class="line">// 增强组件没有 staticMethod</span><br><span class="line">typeof EnhancedComponent.staticMethod === <span class="string">&#x27;undefined&#x27;</span> // <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 传入组件的静态方法会随着被高阶组件聚合而丢失</span></span><br><span class="line"><span class="comment"># 可以通过在高阶组件内部复制一份</span></span><br><span class="line"><span class="keyword">function</span> enhance(WrappedComponent) &#123;</span><br><span class="line">  class Enhance extends React.Component &#123;/*...*/&#125;</span><br><span class="line">  // 必须准确知道应该拷贝哪些方法 :(</span><br><span class="line">  Enhance.staticMethod = WrappedComponent.staticMethod;</span><br><span class="line">  <span class="built_in">return</span> Enhance;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 借用第三方库，无感拷贝 hoist-non-react-statics 自动拷贝所有非 React 静态方法:</span></span><br><span class="line"></span><br><span class="line">import hoistNonReactStatic from <span class="string">&#x27;hoist-non-react-statics&#x27;</span>;</span><br><span class="line"><span class="keyword">function</span> enhance(WrappedComponent) &#123;</span><br><span class="line">  class Enhance extends React.Component &#123;/*...*/&#125;</span><br><span class="line"></span><br><span class="line">  hoistNonReactStatic(Enhance, WrappedComponent);</span><br><span class="line">  <span class="built_in">return</span> Enhance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Refs 不会被传递<br>那是因为 ref 实际上并不是一个 prop，它就像 key 一样，是由 React 专门处理的。如果将 ref 添加到 HOC 的返回组件中，则 ref 引用指向容器组件，而不是被包装组件。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -840,198 +1053,6 @@
     <div class="post-body" itemprop="articleBody">
           <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在项目根目录 执行</span></span><br><span class="line">yarn add antd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在入口文件index.js 全局引入css 一般是 ./src/index.js</span></span><br><span class="line">import <span class="string">&#x27;antd/dist/antd.css&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">#在某个页面局部导入需要使用的组件</span></span><br><span class="line">import &#123; DatePicker &#125; from <span class="string">&#x27;antd&#x27;</span>;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(&lt;DatePicker /&gt;, mountNode);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/06/25/%E9%A6%96%E5%B1%8F%E7%99%BD%E5%B1%8F%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/06/25/%E9%A6%96%E5%B1%8F%E7%99%BD%E5%B1%8F%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">首屏白屏问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-06-25 10:26:22" itemprop="dateCreated datePublished" datetime="2019-06-25T10:26:22+08:00">2019-06-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">浏览器</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="白屏原因"><a href="#白屏原因" class="headerlink" title="白屏原因"></a>白屏原因</h1><ul>
-<li>js&#x2F;css依赖包过于庞大，导致spa应用首次进入页面白屏</li>
-<li>浏览器兼容问题，vue代码在ie中显示白屏</li>
-<li>URL 网址无效或者含有中文字符</li>
-<li>缓存导致 vue项目打包后，在非首次线上替换dist文件时，某些手机&#x2F;浏览器在之后首次打开页面，可能出现白屏情况</li>
-</ul>
-<h1 id="js-x2F-css依赖包过于庞大，导致spa应用首次进入页面白屏"><a href="#js-x2F-css依赖包过于庞大，导致spa应用首次进入页面白屏" class="headerlink" title="js&#x2F;css依赖包过于庞大，导致spa应用首次进入页面白屏"></a>js&#x2F;css依赖包过于庞大，导致spa应用首次进入页面白屏</h1><p>这个就是要做首屏优化 请求优化</p>
-<ul>
-<li>js，css分包加载</li>
-<li>大型插件依赖用cdn链接的方式</li>
-<li>请求gzip压缩</li>
-</ul>
-<p>代码层优化</p>
-<ul>
-<li>路由按需加载 </li>
-<li>webpack 启用摇树优化</li>
-<li>图片懒加载 lazy<br>…</li>
-</ul>
-<h1 id="缓存导致-vue项目打包后，在非首次线上替换dist文件时，某些手机-x2F-浏览器在之后首次打开页面，可能出现白屏情况"><a href="#缓存导致-vue项目打包后，在非首次线上替换dist文件时，某些手机-x2F-浏览器在之后首次打开页面，可能出现白屏情况" class="headerlink" title="缓存导致 vue项目打包后，在非首次线上替换dist文件时，某些手机&#x2F;浏览器在之后首次打开页面，可能出现白屏情况"></a>缓存导致 vue项目打包后，在非首次线上替换dist文件时，某些手机&#x2F;浏览器在之后首次打开页面，可能出现白屏情况</h1><p>客户端: 解决方案一般是强制刷新页面或者清除缓存重新加载。<br>服务端：直接在网站后台清除缓存。或者链接服务器，去清理缓存文件</p>
-<p>原因：在用户端会默认缓存index.html入口文件，而由于vue打包生成的css&#x2F;js都是哈希值，跟上次的文件名都不同，因此会出现找不到css&#x2F;js的情况，导致白屏的产生。在服务端更新包之后，由于旧的文件被删除，而index.html所链接的路径依然是旧文件路径，因此会找不到文件，从而白屏。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/06/14/JS%E5%BE%AE%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%AE%8F%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/06/14/JS%E5%BE%AE%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%AE%8F%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/" class="post-title-link" itemprop="url">JS微任务和宏任务的执行顺序</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-06-14 11:03:11" itemprop="dateCreated datePublished" datetime="2019-06-14T11:03:11+08:00">2019-06-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">浏览器</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>浏览器是多线程的，JS是单线程的（浏览器只分配一个线程来执行JS）意味着js每次只能执行一个任务，那么，遇到异步任务首先会放到任务队列中（执行栈），先执行主线程中的任务，当主线程中的任务被执行完后，在回过来依次将执行任务队列中任务放入主线程去执行。</p>
-<p>js中的任务分为：同步任务和异步任务，而异步任务又可以分为微任务和宏任务</p>
-<p>宏任务：macro task</p>
-<ul>
-<li>定时器(setTimeout,setInterval,setImmediate)</li>
-<li>事件绑定(onClick)</li>
-<li>ajax</li>
-<li>回调函数    </li>
-<li>nodejs中的fs I&#x2F;O操作</li>
-</ul>
-<p>微任务: micro task</p>
-<ul>
-<li>Promsie(async&#x2F;await)</li>
-<li>process.nextTick</li>
-<li>MutationObserver</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">async <span class="keyword">function</span> <span class="function"><span class="title">asy1</span></span>()&#123;</span><br><span class="line">  await console.log(<span class="string">&#x27;asy1&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line">console.log(<span class="string">&#x27;script start&#x27;</span>)</span><br><span class="line">setTimeout(()=&gt;&#123;</span><br><span class="line">  console.log(<span class="string">&#x27;time out&#x27;</span>)</span><br><span class="line">&#125;,0)</span><br><span class="line">setTimeout(()=&gt;&#123;</span><br><span class="line">  setTimeout(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;宏任务中的宏任务&#x27;</span>)</span><br><span class="line">  &#125;,0)</span><br><span class="line">  Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;timeOut+promise1&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  console.log(<span class="string">&#x27;timeOut+promise1之前还是之后&#x27;</span>)</span><br><span class="line">&#125;,0)</span><br><span class="line"></span><br><span class="line">asy1()</span><br><span class="line">Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">  console.log(<span class="string">&#x27;promise1&#x27;</span>)</span><br><span class="line">&#125;).<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">  Promise.resolve().<span class="keyword">then</span>(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;promise1+promise1&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  setTimeout(()=&gt;&#123;</span><br><span class="line">    console.log(<span class="string">&#x27;promise time out&#x27;</span>)</span><br><span class="line">  &#125;,0)</span><br><span class="line">  console.log(<span class="string">&#x27;promise2&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">console.log(<span class="string">&#x27;script end&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># script start</span></span><br><span class="line"><span class="comment"># asy1</span></span><br><span class="line"><span class="comment"># script end</span></span><br><span class="line"><span class="comment"># promise1</span></span><br><span class="line"><span class="comment"># promise2</span></span><br><span class="line"><span class="comment"># promise1+promise1</span></span><br><span class="line"><span class="comment"># time out</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>先执行微任务，执行完所有微任务之后（微任务中产生的微任务也要执行完），再执行宏任务，（宏任务中产生的微任务要优先执行）</p>
 
       
     </div>

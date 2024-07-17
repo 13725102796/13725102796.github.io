@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-count">106</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,6 +166,166 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/21/JS-%E6%BB%9A%E5%8A%A8%E7%AA%97%E5%8F%A3%E8%A7%86%E5%9B%BE%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/21/JS-%E6%BB%9A%E5%8A%A8%E7%AA%97%E5%8F%A3%E8%A7%86%E5%9B%BE%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">JS 滚动窗口视图算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-21 12:52:37" itemprop="dateCreated datePublished" datetime="2022-05-21T12:52:37+08:00">2022-05-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="滑动窗口算法"><a href="#滑动窗口算法" class="headerlink" title="滑动窗口算法"></a>滑动窗口算法</h1><p>滑动窗口算法在一个特定大小的字符串或数组上进行操作，而不在整个字符串和数组上操作，这样就降低了问题的复杂度，从而也达到降低了循环的嵌套深度。</p>
+<h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><p>无重复字符的最长子串<br>给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。<br>输入: s &#x3D; “abcabcbb”<br>输出: 3<br>解释: 因为无重复字符的最长子串是 “abc”，所以其长度为 3。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @param &#123;string&#125; s</span><br><span class="line"> * @<span class="built_in">return</span> &#123;number&#125;</span><br><span class="line"> */</span><br><span class="line">var lengthOfLongestSubstring = <span class="keyword">function</span>(s) &#123;</span><br><span class="line">    // 窗口视图拖动</span><br><span class="line">    var maxL = 0</span><br><span class="line">    var i = 0</span><br><span class="line">    <span class="keyword">while</span>(s.length &gt;= i) &#123;</span><br><span class="line">        var j = i+1      </span><br><span class="line">        <span class="keyword">while</span>(s.length &gt;= j)&#123;</span><br><span class="line">            var tmpStr = s.substring(i,j)</span><br><span class="line">            maxL = Math.max(maxL,tmpStr.length)</span><br><span class="line">            <span class="keyword">if</span>(tmpStr.indexOf(s.charAt(j)) &gt; -1)&#123;</span><br><span class="line">              <span class="built_in">break</span>  </span><br><span class="line">            &#125;</span><br><span class="line">            j++</span><br><span class="line">        &#125;</span><br><span class="line">        i++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">return</span> maxL</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/21/JS-%E5%8F%8C%E6%8C%87%E9%92%88%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/21/JS-%E5%8F%8C%E6%8C%87%E9%92%88%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">JS 双指针算法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-21 12:42:48" itemprop="dateCreated datePublished" datetime="2022-05-21T12:42:48+08:00">2022-05-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h1><p>双指针指的是在遍历对象的过程中，不是普通的使用单个指针进行访问，而是使用两个相同方向（快慢指针）或者相反方向（对撞指针）的指针进行扫描，从而达到相应的目的。</p>
+<h1 id="案例-对撞指针"><a href="#案例-对撞指针" class="headerlink" title="案例 对撞指针"></a>案例 对撞指针</h1><p>给你一个整数 x ，如果 x 是一个回文整数，返回 true ；否则，返回 false 。<br>回文数是指正序（从左向右）和倒序（从右向左）读都是一样的整数。<br>例如，121 是回文，而 123 不是。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * @param &#123;number&#125; x</span><br><span class="line"> * @<span class="built_in">return</span> &#123;boolean&#125;</span><br><span class="line"> */</span><br><span class="line">var isPalindrome = <span class="keyword">function</span>(x) &#123;</span><br><span class="line">    // 双指针解法 </span><br><span class="line">    x = String(x)</span><br><span class="line">    <span class="keyword">if</span>(x.length == 1) <span class="built_in">return</span> <span class="literal">true</span></span><br><span class="line">    <span class="built_in">let</span> i = 0,j=x.length -1</span><br><span class="line">    <span class="keyword">while</span>(x.charAt(i) === x.charAt(j) )&#123;</span><br><span class="line">        i++;</span><br><span class="line">        j--;</span><br><span class="line">        <span class="keyword">if</span>(i &gt;= j ) <span class="built_in">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">return</span> <span class="literal">false</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -992,188 +1152,6 @@
 <h1 id="自定义一个loader"><a href="#自定义一个loader" class="headerlink" title="自定义一个loader"></a>自定义一个loader</h1><ul>
 <li>首先定义一个loader自动在jsx文件中</li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/25/useCallback-%E5%92%8C-useMemo-%E7%9A%84%E5%8C%BA%E5%88%AB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/25/useCallback-%E5%92%8C-useMemo-%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">useCallback 和 useMemo 的区别</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-25 20:52:17" itemprop="dateCreated datePublished" datetime="2022-04-25T20:52:17+08:00">2022-04-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="useCallback"><a href="#useCallback" class="headerlink" title="useCallback"></a>useCallback</h1><p>const memoizedCallback &#x3D; useCallback(<br>  () &#x3D;&gt; {<br>    doSomething(a, b);<br>  },<br>  [a, b],<br>);<br>把内联回调函数及依赖项数组作为参数传入 useCallback，它将返回该回调函数的 memoized 版本，该回调函数仅在某个依赖项改变时才会更新。当你把回调函数传递给经过优化的并使用引用相等性去避免非必要渲染（例如 shouldComponentUpdate）的子组件时，它将非常有用。</p>
-<h1 id="useMemo"><a href="#useMemo" class="headerlink" title="useMemo"></a>useMemo</h1><p>const memoizedValue &#x3D; useMemo(() &#x3D;&gt; computeExpensiveValue(a, b), [a, b]);<br>返回一个 memoized 值 。</p>
-<p>把“创建”函数和依赖项数组作为参数传入 useMemo，它仅会在某个依赖项改变时才重新计算 memoized 值。这种优化有助于避免在每次渲染时都进行高开销的计算。</p>
-<p>你可以把 useMemo 作为性能优化的手段，但不要把它当成语义上的保证<br>将来，React 可能会选择“遗忘”以前的一些 memoized 值，并在下次渲染时重新计算它们，比如为离屏组件释放内存。先编写在没有 useMemo 的情况下也可以执行的代码 —— 之后再在你的代码中添加 useMemo，以达到优化性能的目的。</p>
-<p>function Example() {<br>    const [count, setCount] &#x3D; useState(1);<br>    const [val, setValue] &#x3D; useState(‘’);</p>
-<pre><code>const getNum = useMemo(() =&gt; &#123;
-    return Array.from(&#123;length: count * 100&#125;, (v, i) =&gt; i).reduce((a, b) =&gt; a+b)
-&#125;, [count])
-
-return &lt;div&gt;
-    &lt;h4&gt;总和：&#123;getNum()&#125;&lt;/h4&gt;
-    &lt;div&gt;
-        &lt;button onClick=&#123;() =&gt; setCount(count + 1)&#125;&gt;+1&lt;/button&gt;
-        &lt;input value=&#123;val&#125; onChange=&#123;event =&gt; setValue(event.target.value)&#125;/&gt;
-    &lt;/div&gt;
-&lt;/div&gt;;
-</code></pre>
-<p>}</p>
-<p>避免因为val变化而导致getNum重新渲染</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>useCallback 返回的是一个函数<br>useMemo 返回的的函数的执行结果</p>
-<p>类似于计算属性computed，避免使用了该函数或者该值的组件重复渲染。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 把事件写进render里面会在重新渲染的时候重新生成新的onclick</span></span><br><span class="line">class Demo extends Component&#123;</span><br><span class="line">    <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> </span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; () =&gt; &#123; console.log(<span class="string">&#x27;Hello World！！&#x27;</span>); &#125;&#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 在组件中可以在constructor里面</span></span><br><span class="line">class Demo extends Component&#123;</span><br><span class="line">    <span class="function"><span class="title">constructor</span></span>()&#123;</span><br><span class="line">        super();</span><br><span class="line">        this.buttonClick = this.buttonClick.<span class="built_in">bind</span>(this);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> </span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; this.buttonClick &#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 在函数式组件中开发</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Demo</span></span>()&#123;</span><br><span class="line">    const buttonClick = useCallback(() =&gt; &#123; </span><br><span class="line">    	console.log(<span class="string">&#x27;Hello World！！&#x27;</span>)</span><br><span class="line">    &#125;,[])</span><br><span class="line">    <span class="built_in">return</span>(</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;Button onClick=&#123; buttonClick &#125;  /&gt;</span><br><span class="line">        &lt;/div&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/25/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">内存泄漏详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-04-25 13:15:32" itemprop="dateCreated datePublished" datetime="2022-04-25T13:15:32+08:00">2022-04-25</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="JS的回收机制"><a href="#JS的回收机制" class="headerlink" title="JS的回收机制"></a>JS的回收机制</h1><p>JS垃圾回收的机制（GC）会按照固定的时间间隔，周期性的执行。<br>标记清除：<br>当变量进入环境时，例如，在函数中声明一个变量，就将这个变量标记为“进入环境”。从逻辑上讲，永远不能释放进入环境的变量所占用的内存，因为只要执行流进入相应的环境，就可能会用到它们。而当变量离开环境时，则将其标记为“离开环境”。</p>
-<p>function test(){<br>  var a&#x3D;10;&#x2F;&#x2F;被标记，进入环境<br>  var b&#x3D;20;&#x2F;&#x2F;被标记，进入环境<br>}<br>test();&#x2F;&#x2F;执行完毕之后a、b又被标记离开环境，被回收</p>
-<h1 id="哪些操作会造成内存泄露"><a href="#哪些操作会造成内存泄露" class="headerlink" title="哪些操作会造成内存泄露"></a>哪些操作会造成内存泄露</h1><p>意外的全局变量引起的内存泄露：<br>function leak(){<br>  leak&#x3D;”xxx”;&#x2F;&#x2F;leak成为一个全局变量，不会被回收<br>}<br>闭包引起的内存泄漏<br>function bindEvent(){<br>  var obj&#x3D;document.createElement(“XXX”);<br>  obj.οnclick&#x3D;function(){<br>    &#x2F;&#x2F;Even if it’s a empty function<br>  }<br>}<br>解决方法：</p>
-<ul>
-<li>将事件处理函数定义在外部，解除闭包。<br>&#x2F;&#x2F;将事件处理函数定义在外部<br>function onclickHandler(){<br>&#x2F;&#x2F;do something<br>}<br>function bindEvent(){<br>var obj&#x3D;document.createElement(“XXX”);<br>obj.οnclick&#x3D;onclickHandler;<br>}</li>
-<li>在定义事件处理函数的外部函数中，删除对 DOM 的引用<br>function bindEvent(){<br>var obj&#x3D;document.createElement(“XXX”);<br>obj.οnclick&#x3D;function(){<br>  &#x2F;&#x2F;Even if it’s a empty function<br>}<br>obj&#x3D;null;<br>}</li>
-<li>没有清理的 DOM 元素引用：<br>var elements&#x3D;{<br>  button: document.getElementById(“button”),<br>  image: document.getElementById(“image”),<br>  text: document.getElementById(“text”)<br>};<br>function doStuff(){<br>  image.src&#x3D;”<a target="_blank" rel="noopener" href="http://some.url/image&quot;">http://some.url/image&quot;</a>;<br>  button.click():<br>  console.log(text.innerHTML)<br>}<br>function removeButton(){<br>  document.body.removeChild(document.getElementById(‘button’))<br>}</li>
-<li>被遗忘的定时器或者回调：<br>var someResouce&#x3D;getData();<br>setInterval(function(){<br>  var node&#x3D;document.getElementById(‘Node’);<br>  if(node){<br>  node.innerHTML&#x3D;JSON.stringify(someResouce)<br>  }<br>},1000)</li>
-</ul>
-<h1 id="怎样避免内存泄露："><a href="#怎样避免内存泄露：" class="headerlink" title="怎样避免内存泄露："></a>怎样避免内存泄露：</h1><ul>
-<li>减少不必要的全局变量，或者生命周期较长的对象，及时对无用的数据进行垃圾回收；</li>
-<li>注意程序逻辑，避免“死循环”之类的；</li>
-<li>避免创建过多的对象，原则：不用了的东西要及时归还。</li>
-</ul>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>定义全局变量，闭包，dom的引用，定时器都会产生内存使用的问题。不处理会导致内存泄漏</p>
 
       
     </div>
