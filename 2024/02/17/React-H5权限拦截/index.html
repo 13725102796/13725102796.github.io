@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="功能明细 页面功能划分，游客与用户之间的页面访问控制 游客只能访问指定的页面 超出权限的，需要打回登陆流程  实现明细123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960# 通过路由前置拦截去实现，React 与 Vue 的实现方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React H5权限拦截">
+<meta property="og:url" content="http://example.com/2024/02/17/React-H5%E6%9D%83%E9%99%90%E6%8B%A6%E6%88%AA/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="功能明细 页面功能划分，游客与用户之间的页面访问控制 游客只能访问指定的页面 超出权限的，需要打回登陆流程  实现明细123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960# 通过路由前置拦截去实现，React 与 Vue 的实现方">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-02-17T02:49:35.000Z">
+<meta property="article:modified_time" content="2024-07-17T03:01:43.136Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="Blog,Hexo,Theme,Coder,YeChang Zhang">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2024/02/17/React-H5%E6%9D%83%E9%99%90%E6%8B%A6%E6%88%AA/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2024/02/17/React-H5%E6%9D%83%E9%99%90%E6%8B%A6%E6%88%AA/","path":"2024/02/17/React-H5权限拦截/","title":"React H5权限拦截"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React H5权限拦截 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E6%98%8E%E7%BB%86"><span class="nav-number">1.</span> <span class="nav-text">功能明细</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%98%8E%E7%BB%86"><span class="nav-number">2.</span> <span class="nav-text">实现明细</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/02/17/React-H5%E6%9D%83%E9%99%90%E6%8B%A6%E6%88%AA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="React H5权限拦截 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React H5权限拦截
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-02-17 10:49:35" itemprop="dateCreated datePublished" datetime="2024-02-17T10:49:35+08:00">2024-02-17</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="功能明细"><a href="#功能明细" class="headerlink" title="功能明细"></a>功能明细</h3><ol>
+<li>页面功能划分，游客与用户之间的页面访问控制</li>
+<li>游客只能访问指定的页面</li>
+<li>超出权限的，需要打回登陆流程</li>
+</ol>
+<h3 id="实现明细"><a href="#实现明细" class="headerlink" title="实现明细"></a>实现明细</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过路由前置拦截去实现，React 与 Vue 的实现方式有所差异</span></span><br><span class="line"><span class="comment"># Vue 是通过BeforeRouter，路由前置拦截；React相当于设置一个全局页面开关，由这个页面去控制，改次跳转的路径是否成功</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># route.js</span></span><br><span class="line">const routes: RouteObject[] = [</span><br><span class="line">  &#123;</span><br><span class="line">    path: <span class="string">&#x27;/&#x27;</span>,</span><br><span class="line">    element: &lt;AuthRoute /&gt;,</span><br><span class="line">    children: [</span><br><span class="line">      &#123;</span><br><span class="line">        path: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">        element: &lt;Navigate to=<span class="string">&quot;/index&quot;</span> replace /&gt;,</span><br><span class="line">        handle: &#123; title: <span class="string">&#x27;研学甄选&#x27;</span> &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">     ...</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    path: <span class="string">&#x27;/index-no-user&#x27;</span>,</span><br><span class="line">    element: useLazy(() =&gt; import(<span class="string">&#x27;@/pages/404&#x27;</span>)),</span><br><span class="line">    handle: &#123; title: <span class="string">&#x27;无法访问&#x27;</span> &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">];</span><br><span class="line"><span class="built_in">export</span> default routes;</span><br><span class="line"></span><br><span class="line"><span class="comment"># AuthRoute 就相当于一个总页面开关</span></span><br><span class="line">import &#123; useSelector &#125; from <span class="string">&#x27;react-redux&#x27;</span>;</span><br><span class="line">import &#123; RootState &#125; from <span class="string">&#x27;@/reduces/user&#x27;</span>;</span><br><span class="line"><span class="built_in">export</span> const whiteList = [</span><br><span class="line">  <span class="string">&#x27;/application&#x27;</span>,</span><br><span class="line">  ...</span><br><span class="line">];</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">AuthRoute</span></span>() &#123;</span><br><span class="line">  const matches = useMatches();</span><br><span class="line">  console.log(matches);</span><br><span class="line">  const outlet = useOutlet();</span><br><span class="line">  const isLogined = <span class="literal">false</span>;</span><br><span class="line">  const user = useSelector((state: RootState) =&gt; state.user.userMsg);</span><br><span class="line">  // 根据白名单的登录状态进行鉴权</span><br><span class="line">  const page = useMemo(() =&gt; &#123;</span><br><span class="line">    const &#123; pathname &#125; = matches[1];</span><br><span class="line">    const isInWL = whiteList.includes(pathname);</span><br><span class="line"></span><br><span class="line">    const isLogined = user.mobile ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (isInWL) <span class="built_in">return</span> &lt;Outlet /&gt;;</span><br><span class="line">    <span class="keyword">if</span> (isLogined) <span class="built_in">return</span> &lt;Outlet /&gt;;</span><br><span class="line">    <span class="built_in">return</span> &lt;Navigate to=<span class="string">&quot;/index-no-user?type=1&quot;</span> replace /&gt;;</span><br><span class="line">  &#125;, [isLogined, matches, outlet]);</span><br><span class="line">  // 路由后置钩子更改网页标题</span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    const title = (matches[1].handle as any)?.title;</span><br><span class="line">    const isHasTitle = typeof title === <span class="string">&#x27;string&#x27;</span>;</span><br><span class="line">    <span class="keyword">if</span> (isHasTitle &amp;&amp; title) &#123;</span><br><span class="line">      document.title = title;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, [matches]);</span><br><span class="line">  <span class="built_in">return</span> page;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/11/28/H5-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%80%E9%94%AE%E6%8D%A2%E8%82%A4/" rel="prev" title="H5&&小程序一键换肤">
+                  <i class="fa fa-chevron-left"></i> H5&&小程序一键换肤
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/03/10/React-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%9E%84%E5%BB%BA%E5%90%8E%EF%BC%8C%E7%99%BD%E5%B1%8F%E9%97%AE%E9%A2%98/" rel="next" title="React 服务端构建后，白屏问题">
+                  React 服务端构建后，白屏问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

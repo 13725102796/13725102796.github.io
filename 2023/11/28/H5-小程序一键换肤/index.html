@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一键换肤功能分析 通过配置好的指定颜色，一键切换 与UI提前沟通好需要换肤的模块组件等页面功能  功能难点 与后台管理系统换肤的实现方法有差异，后台直接通过全局类注入，再动态切换该类即可。但是小程序的本质是多页面的。虽然基于Uni开发，看起来像是单页面的。但是最终生成的都是一个页面一个wxml文件。 小程序包大小有限制，不能超过2M。所以不能无限制的设置N个颜色。因为最终所有颜色类都会构建生成到小">
+<meta property="og:type" content="article">
+<meta property="og:title" content="H5&amp;&amp;小程序一键换肤">
+<meta property="og:url" content="http://example.com/2023/11/28/H5-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%80%E9%94%AE%E6%8D%A2%E8%82%A4/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="一键换肤功能分析 通过配置好的指定颜色，一键切换 与UI提前沟通好需要换肤的模块组件等页面功能  功能难点 与后台管理系统换肤的实现方法有差异，后台直接通过全局类注入，再动态切换该类即可。但是小程序的本质是多页面的。虽然基于Uni开发，看起来像是单页面的。但是最终生成的都是一个页面一个wxml文件。 小程序包大小有限制，不能超过2M。所以不能无限制的设置N个颜色。因为最终所有颜色类都会构建生成到小">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-28T02:21:17.000Z">
+<meta property="article:modified_time" content="2024-07-17T02:48:41.812Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="Blog,Hexo,Theme,Coder,YeChang Zhang">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2023/11/28/H5-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%80%E9%94%AE%E6%8D%A2%E8%82%A4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/11/28/H5-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%80%E9%94%AE%E6%8D%A2%E8%82%A4/","path":"2023/11/28/H5-小程序一键换肤/","title":"H5&&小程序一键换肤"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>H5&&小程序一键换肤 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E9%94%AE%E6%8D%A2%E8%82%A4%E5%8A%9F%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">一键换肤功能分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E9%9A%BE%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">功能难点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="nav-number">3.</span> <span class="nav-text">实现细节</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/28/H5-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%80%E9%94%AE%E6%8D%A2%E8%82%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="H5&&小程序一键换肤 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          H5&&小程序一键换肤
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-11-28 10:21:17" itemprop="dateCreated datePublished" datetime="2023-11-28T10:21:17+08:00">2023-11-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="一键换肤功能分析"><a href="#一键换肤功能分析" class="headerlink" title="一键换肤功能分析"></a>一键换肤功能分析</h3><ol>
+<li>通过配置好的指定颜色，一键切换</li>
+<li>与UI提前沟通好需要换肤的模块组件等页面功能</li>
+</ol>
+<h3 id="功能难点"><a href="#功能难点" class="headerlink" title="功能难点"></a>功能难点</h3><ol>
+<li>与后台管理系统换肤的实现方法有差异，后台直接通过全局类注入，再动态切换该类即可。<br>但是小程序的本质是多页面的。虽然基于Uni开发，看起来像是单页面的。但是最终生成的都是一个页面一个wxml文件。</li>
+<li>小程序包大小有限制，不能超过2M。所以不能无限制的设置N个颜色。因为最终所有颜色类都会构建生成到小程序的wxss。</li>
+</ol>
+<h3 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过Vuex去存储全局的颜色类名</span></span><br><span class="line">SETTHEMECLASS(state, data) &#123;</span><br><span class="line">   state.<span class="variable">$themeClass</span> = data</span><br><span class="line">   uni.setStorageSync(<span class="string">&#x27;themeClass&#x27;</span>, data);</span><br><span class="line">&#125;,</span><br><span class="line"><span class="comment"># 将主题色文件单独维护</span></span><br><span class="line">@import url(<span class="string">&quot;@/common/styles/theme-app.css&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># themes.scss 通过scss批量设置多颜色class，这样就写一次就可以了 </span></span><br><span class="line">@mixin setTheme(<span class="variable">$color</span>,<span class="variable">$rgba</span>)&#123;</span><br><span class="line">   // 日历组件 </span><br><span class="line">  .uni-calendar-item--checked &#123;</span><br><span class="line">    background:  <span class="variable">$color</span> ;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 批量生成类</span></span><br><span class="line"> @import <span class="string">&#x27;@/common/styles/themes.scss&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$bg</span>-6C61E6: <span class="comment">#6C61E6;</span></span><br><span class="line"><span class="variable">$rgba</span>-6C61E6: rgba(108,97,230,0.06);</span><br><span class="line">.THEME-6C61E6 &#123;</span><br><span class="line">  @include setTheme(<span class="variable">$bg</span>-6C61E6,<span class="variable">$rgba</span>-6C61E6)</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$bg</span>-1167FF: <span class="comment">#1167FF ;</span></span><br><span class="line"><span class="variable">$rgba</span>-1167FF: rgba(17,103,255,0.06);</span><br><span class="line"></span><br><span class="line">.THEME-1167FF &#123;</span><br><span class="line">  @include setTheme(<span class="variable">$bg</span>-1167FF,<span class="variable">$rgba</span>-1167FF)</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$bg</span>-0AB8A0: <span class="comment">#0AB8A0;</span></span><br><span class="line"><span class="variable">$rgba</span>-0AB8A0: rgba(10,184,160,0.06);</span><br><span class="line"></span><br><span class="line">.THEME-0AB8A0 &#123;</span><br><span class="line">  @include setTheme(<span class="variable">$bg</span>-0AB8A0,<span class="variable">$rgba</span>-0AB8A0)</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$bg</span>-F7BA1E: <span class="comment">#F7BA1E;</span></span><br><span class="line"><span class="variable">$rgba</span>-F7BA1E: rgba(247,186,30,0.06);</span><br><span class="line"></span><br><span class="line">.THEME-F7BA1E &#123;</span><br><span class="line">  @include setTheme(<span class="variable">$bg</span>-F7BA1E,<span class="variable">$rgba</span>-F7BA1E)</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$bg</span>-F14356: <span class="comment">#F14356;</span></span><br><span class="line"><span class="variable">$rgba</span>-F14356: rgba(241,67,86,0.06);</span><br><span class="line"></span><br><span class="line">.THEME-F14356 &#123;</span><br><span class="line">  @include setTheme(<span class="variable">$bg</span>-F14356,<span class="variable">$rgba</span>-F14356)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">### 使用方法</span></span><br><span class="line">&lt;button</span><br><span class="line">  class=<span class="string">&quot;btn-default&quot;</span></span><br><span class="line">  :style=<span class="string">&quot;&#123; background: GETCOLOR &#125;&quot;</span></span><br><span class="line">  @click=<span class="string">&quot;navigateTo&quot;</span></span><br><span class="line">&gt;</span><br><span class="line">  添加孩子</span><br><span class="line">&lt;/button&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">### 当前页面覆盖,顶层DIV设置</span></span><br><span class="line">&lt;view</span><br><span class="line">    class=<span class="string">&quot;container&quot;</span></span><br><span class="line">    :class=<span class="string">&quot;GETTHEME&quot;</span></span><br><span class="line">  &gt;</span><br><span class="line">  ...</span><br><span class="line">&lt;/view&gt;</span><br><span class="line"><span class="comment"># GETCOLOR 是全局的计算方法，获取当前系统的主题色</span></span><br><span class="line"><span class="comment"># GETTHEME 获取当前系统的主题</span></span><br><span class="line"> computed: &#123;</span><br><span class="line">    <span class="function"><span class="title">GETTHEME</span></span>() &#123;</span><br><span class="line">      <span class="built_in">return</span> <span class="string">&#x27;THEME-&#x27;</span> + this.<span class="variable">$store</span>.state.<span class="variable">$themeClass</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="title">GETCOLOR</span></span>() &#123;</span><br><span class="line">      <span class="built_in">return</span> <span class="string">&#x27;#&#x27;</span> + this.<span class="variable">$store</span>.state.<span class="variable">$themeClass</span></span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/11/11/H5%E7%AD%BE%E5%90%8D%E6%89%8B%E5%86%99%E6%9D%BF%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/" rel="prev" title="H5签名手写板功能的实现">
+                  <i class="fa fa-chevron-left"></i> H5签名手写板功能的实现
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/02/17/React-H5%E6%9D%83%E9%99%90%E6%8B%A6%E6%88%AA/" rel="next" title="React H5权限拦截">
+                  React H5权限拦截 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

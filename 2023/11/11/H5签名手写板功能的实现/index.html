@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="实现功能明细 实现一个手写版，支持通过手指滑动绘制线条 将绘制的线条保存成图片 图片粘贴到文件制定签名的位置  功能难点 手写版需要兼容小程序 用户在操作过程可能会存在横竖屏的方式，导致签名图片颠倒 绘制线条涉及到Canvas，Canvas在小程序中表现并不理想  好在该功能市场有成熟的产品可以参考，说明该功能是可以通过技术去实现的 实现细节1234567891011121314151617181">
+<meta property="og:type" content="article">
+<meta property="og:title" content="H5签名手写板功能的实现">
+<meta property="og:url" content="http://example.com/2023/11/11/H5%E7%AD%BE%E5%90%8D%E6%89%8B%E5%86%99%E6%9D%BF%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="Zyc Blog">
+<meta property="og:description" content="实现功能明细 实现一个手写版，支持通过手指滑动绘制线条 将绘制的线条保存成图片 图片粘贴到文件制定签名的位置  功能难点 手写版需要兼容小程序 用户在操作过程可能会存在横竖屏的方式，导致签名图片颠倒 绘制线条涉及到Canvas，Canvas在小程序中表现并不理想  好在该功能市场有成熟的产品可以参考，说明该功能是可以通过技术去实现的 实现细节1234567891011121314151617181">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-11T01:53:49.000Z">
+<meta property="article:modified_time" content="2024-07-17T02:19:46.586Z">
+<meta property="article:author" content="YeChang Zhang">
+<meta property="article:tag" content="Blog,Hexo,Theme,Coder,YeChang Zhang">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2023/11/11/H5%E7%AD%BE%E5%90%8D%E6%89%8B%E5%86%99%E6%9D%BF%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/11/11/H5%E7%AD%BE%E5%90%8D%E6%89%8B%E5%86%99%E6%9D%BF%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/","path":"2023/11/11/H5签名手写板功能的实现/","title":"H5签名手写板功能的实现"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>H5签名手写板功能的实现 | Zyc Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Zyc Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%8A%9F%E8%83%BD%E6%98%8E%E7%BB%86"><span class="nav-number">1.</span> <span class="nav-text">实现功能明细</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E9%9A%BE%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">功能难点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="nav-number">3.</span> <span class="nav-text">实现细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">插件存在的问题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">YeChang Zhang</p>
+  <div class="site-description" itemprop="description">Hi, welcome to Hexo Coder!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/11/11/H5%E7%AD%BE%E5%90%8D%E6%89%8B%E5%86%99%E6%9D%BF%E5%8A%9F%E8%83%BD%E7%9A%84%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="H5签名手写板功能的实现 | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          H5签名手写板功能的实现
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-11-11 09:53:49" itemprop="dateCreated datePublished" datetime="2023-11-11T09:53:49+08:00">2023-11-11</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="实现功能明细"><a href="#实现功能明细" class="headerlink" title="实现功能明细"></a>实现功能明细</h3><ol>
+<li>实现一个手写版，支持通过手指滑动绘制线条</li>
+<li>将绘制的线条保存成图片</li>
+<li>图片粘贴到文件制定签名的位置</li>
+</ol>
+<h3 id="功能难点"><a href="#功能难点" class="headerlink" title="功能难点"></a>功能难点</h3><ol>
+<li>手写版需要兼容小程序</li>
+<li>用户在操作过程可能会存在横竖屏的方式，导致签名图片颠倒</li>
+<li>绘制线条涉及到Canvas，Canvas在小程序中表现并不理想</li>
+</ol>
+<p>好在该功能市场有成熟的产品可以参考，说明该功能是可以通过技术去实现的</p>
+<h3 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 采用 lime-signature 插件完成在手指滑动绘制线条的操作</span></span><br><span class="line">&lt;l-signature</span><br><span class="line">   disableScroll</span><br><span class="line">   backgroundColor=<span class="string">&quot;rgba(0,0,0,0)&quot;</span></span><br><span class="line">   ref=<span class="string">&quot;signatureRef&quot;</span></span><br><span class="line">   :penColor=<span class="string">&quot;penColor&quot;</span></span><br><span class="line">   :penSize=<span class="string">&quot;penSize&quot;</span></span><br><span class="line">   :openSmooth=<span class="string">&quot;openSmooth&quot;</span></span><br><span class="line">   @handleIsEmpty=<span class="string">&quot;handleIsEmpty&quot;</span></span><br><span class="line">&gt;&lt;/l-signature&gt;</span><br><span class="line">import lSignature from <span class="string">&quot;@/uni_modules/lime-signature/components/l-signature/l-signature&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过判断屏幕宽高来确定用户是否出于横屏还是竖屏</span></span><br><span class="line"><span class="comment"># 因为有些用户会锁死竖屏，所以要做一些兼容处理</span></span><br><span class="line"><span class="comment"># 通过 handleCanvas 去判断采用横屏手绘板还是竖屏手绘板</span></span><br><span class="line"><span class="comment"># 然后上传给后端合成签名协议</span></span><br><span class="line"><span class="function"><span class="title">onShow</span></span>() &#123;</span><br><span class="line"> console.log(uni.getSystemInfoSync().windowHeight);</span><br><span class="line"> const initDate = uni.getSystemInfoSync();</span><br><span class="line"> <span class="keyword">if</span> (initDate.windowWidth &gt; initDate.windowHeight) &#123;</span><br><span class="line">   this.handleCanvas = <span class="literal">false</span>;</span><br><span class="line"> &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">   this.handleCanvas = <span class="literal">true</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> const windowResizeCallback = (res) =&gt; &#123;</span><br><span class="line">   <span class="keyword">if</span> (res.size.windowWidth &gt; res.size.windowHeight) &#123;</span><br><span class="line">     this.handleCanvas = <span class="literal">false</span>;</span><br><span class="line">     this.getStatus = <span class="literal">true</span>;</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     this.handleCanvas = <span class="literal">true</span>;</span><br><span class="line">     this.getStatus = <span class="literal">true</span>;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;;</span><br><span class="line"> uni.onWindowResize(windowResizeCallback);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过 canvasToTempFilePath 方法，获取到用户的签名图片临时路径</span></span><br><span class="line"></span><br><span class="line">this.<span class="variable">$refs</span>.signatureRef.canvasToTempFilePath(&#123;</span><br><span class="line">  success: async (res) =&gt; &#123;</span><br><span class="line">            // 是否为空画板 无签名</span><br><span class="line">            // console.log(res.isEmpty);</span><br><span class="line">            <span class="keyword">if</span> (res.isEmpty) &#123;</span><br><span class="line">              // alert(<span class="string">&quot;签名不能为空！&quot;</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">              this.imgBase64 = res.tempFilePath;</span><br><span class="line">              // console.log(res.tempFilePath);</span><br><span class="line">              // <span class="comment">#ifdef MP-WEIXIN</span></span><br><span class="line">              base64ToUrl(res.tempFilePath, (url) =&gt; &#123;</span><br><span class="line">                this.img = url;</span><br><span class="line">                this.handleSign();</span><br><span class="line">              &#125;);</span><br><span class="line"></span><br><span class="line">              // <span class="comment">#endif</span></span><br><span class="line">              // <span class="comment">#ifdef H5</span></span><br><span class="line">              this.img = res.tempFilePath;</span><br><span class="line">              this.handleSign();</span><br><span class="line">              // <span class="comment">#endif</span></span><br><span class="line">            &#125;</span><br><span class="line">            // 生成图片的临时路径</span><br><span class="line">            // app | H5 | 微信小程序 生成的是<span class="built_in">base64</span></span><br><span class="line">          &#125;,</span><br><span class="line">&#125;);</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="插件存在的问题"><a href="#插件存在的问题" class="headerlink" title="插件存在的问题"></a>插件存在的问题</h3><p>在开发的过程中，发现插件并没有达到自己的理想效果<br>比如，初始化时，并没有提供该手绘有没有签名，导致可以直接生成一张空白的图片。<br>需要监听手绘板，只有签名了才能生成并上传图片<br>翻阅源码后，增加了是否为空的回调</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">touchEnd(e) &#123;</span><br><span class="line">   <span class="keyword">if</span> (!this.canvasEl) <span class="built_in">return</span>;</span><br><span class="line">   this.isStart = <span class="literal">false</span>;</span><br><span class="line">   this.canvasEl.dispatchEvent(<span class="string">&quot;touchend&quot;</span>, wrapEvent(e));</span><br><span class="line">   this.<span class="variable">$emit</span>(<span class="string">&quot;handleIsEmpty&quot;</span>, <span class="literal">false</span>);</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/08/17/Chatgpt-%E5%89%8D%E7%AB%AF%E5%B1%82%E6%8A%80%E6%9C%AF/" rel="prev" title="Chatgpt 前端层技术">
+                  <i class="fa fa-chevron-left"></i> Chatgpt 前端层技术
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/11/28/H5-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%B8%80%E9%94%AE%E6%8D%A2%E8%82%A4/" rel="next" title="H5&&小程序一键换肤">
+                  H5&&小程序一键换肤 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YeChang Zhang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

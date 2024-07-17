@@ -126,7 +126,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-count">104</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,6 +166,537 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/05/16/react%E5%9F%BA%E4%BA%8Econtext%E5%AE%9E%E7%8E%B0%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/05/16/react%E5%9F%BA%E4%BA%8Econtext%E5%AE%9E%E7%8E%B0%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E7%9A%84%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">react基于content实现全局变量的方法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-16 22:41:24" itemprop="dateCreated datePublished" datetime="2020-05-16T22:41:24+08:00">2020-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="先生成一个context-js"><a href="#先生成一个context-js" class="headerlink" title="先生成一个context.js"></a>先生成一个context.js</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="built_in">export</span> const fontSize = &#123;</span><br><span class="line">  small: <span class="string">&#x27;12px&#x27;</span>,</span><br><span class="line">  big: <span class="string">&#x27;36px&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">export</span> const ThemeContext = React.createContext(&#123;</span><br><span class="line">  fontSize: fontSize.small,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h1 id="创建一个组件-App-js-并导入context"><a href="#创建一个组件-App-js-并导入context" class="headerlink" title="创建一个组件 App.js,并导入context"></a>创建一个组件 App.js,并导入context</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">import React from <span class="string">&#x27;react&#x27;</span></span><br><span class="line">import &#123; ThemeContext,fontSize&#125; from <span class="string">&#x27;./context&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个顶级组件,将context的变量同步到state，通过修改state去更新子组件的视图</span></span><br><span class="line"><span class="comment"># </span></span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line">  constructor(props)&#123;</span><br><span class="line">    super(props)</span><br><span class="line">    // 该方法可以封装在fontSize对象里面，通过<span class="built_in">bind</span>(this)挂载到state上面</span><br><span class="line">    this.handleFontSize = () =&gt; &#123;</span><br><span class="line">      this.setState(state =&gt; (&#123;</span><br><span class="line">        fontSize: state.fontSize === fontSize.small</span><br><span class="line">            ? fontSize.big</span><br><span class="line">            : fontSize.small,</span><br><span class="line">      &#125;));</span><br><span class="line">    &#125;</span><br><span class="line">    // State 也包含了更新函数，因此它会被传递进 context provider。</span><br><span class="line">    this.state = &#123;</span><br><span class="line">      fontSize: fontSize.small,</span><br><span class="line">      handleFontSize: this.handleFontSize,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment"># 通过 ThemeContext.Provider 将该state往里面的组件传递</span></span><br><span class="line">  <span class="function"><span class="title">render</span></span>()&#123;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">       &lt;ThemeContext.Provider value=&#123;this.state&#125;&gt;</span><br><span class="line">          &lt;div&gt;</span><br><span class="line">            &lt;ChangeFontSizeBtn /&gt;</span><br><span class="line">          &lt;/div&gt;</span><br><span class="line">        &lt;/ThemeContext.Provider&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义使用该全局变量的组件 ChangeFontSizeBtn</span></span><br><span class="line"><span class="comment"># 通过 &lt;ThemeContext.Consumer&gt; &#123;(state)=&gt;()&#125;&lt;/ThemeContext.Consumer&gt;组件获取该state</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">ChangeFontSizeBtn</span></span>()&#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;ThemeContext.Consumer&gt;</span><br><span class="line">      &#123;(&#123;fontSize,handleFontSize&#125;)=&gt;(</span><br><span class="line">        &lt;button</span><br><span class="line">          onClick=&#123;handleFontSize&#125;</span><br><span class="line">          style=&#123;&#123;fontSize: fontSize&#125;&#125;  </span><br><span class="line">        &gt;</span><br><span class="line">          change</span><br><span class="line">        &lt;/button&gt;</span><br><span class="line">      )&#125;</span><br><span class="line">    &lt;/ThemeContext.Consumer&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>最终完成某层子组件修改全局变量的方法</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>定义一个context对象，通过React.creatContext({fontSize: ‘12px’})暴露出来</li>
+<li>在全局组件中引入该context，用state去同步context对象的数据，并创建一个修改数据的方法</li>
+<li>定义一个ThemeContext.Provider组件可以，并将state作为value的值传递进去 &lt;ThemeContext.Provider value&#x3D;{this.state}&gt;&lt;&#x2F;ThemeContext.Provider&gt;</li>
+<li>在某个需要修改该数据的组件中，通过ThemeContext.Consumer去获取state的数据 &lt;ThemeContext.Consumer&gt; {(state)&#x3D;&gt;()}&lt;&#x2F;ThemeContext.Consumer&gt;</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/27/Diff%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/04/27/Diff%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">Vue Diff算法详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-27 16:39:55" itemprop="dateCreated datePublished" datetime="2020-04-27T16:39:55+08:00">2020-04-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="vue2-递归-双指针"><a href="#vue2-递归-双指针" class="headerlink" title="vue2: 递归+双指针"></a>vue2: 递归+双指针</h1><ul>
+<li>判断是否是同一个元素<br>不是同一个元素，直接替换<br>是同一个元素-》比对属性-》比对下级</li>
+</ul>
+<ol>
+<li>旧的有下级，新的没有 直接删除</li>
+<li>新的有下级，旧的没有 直接插入</li>
+<li>是文本的情况 直接插入</li>
+<li>都有下级 双指针比较，对比查找之后复用</li>
+</ol>
+<h1 id="vue3：-采用最长递增子序列"><a href="#vue3：-采用最长递增子序列" class="headerlink" title="vue3： 采用最长递增子序列"></a>vue3： 采用最长递增子序列</h1>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/14/Redux-%E6%89%8B%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/04/14/Redux-%E6%89%8B%E8%AE%B0/" class="post-title-link" itemprop="url">Redux 手记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-14 15:35:45" itemprop="dateCreated datePublished" datetime="2020-04-14T15:35:45+08:00">2020-04-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="什么是Redux"><a href="#什么是Redux" class="headerlink" title="什么是Redux"></a>什么是Redux</h1><p>Redux 是 JavaScript 状态容器，提供可预测化的状态管理<br>可以让你构建一致化的应用，运行于不同的环境（客户端、服务器、原生应用），并且易于测试。</p>
+<h1 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先用一个普通的对象来描述 state</span></span><br><span class="line">&#123;</span><br><span class="line">  visibilityFilter: <span class="string">&#x27;SHOW_COMPLETED&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 想要更新state中的数据，你需要发起一个action（Action 就是一个普通 JavaScript 对象）</span></span><br><span class="line">&#123; <span class="built_in">type</span>: <span class="string">&#x27;SET_VISIBILITY_FILTER&#x27;</span>, filter: <span class="string">&#x27;SHOW_ALL&#x27;</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此刻的action 和 state 并没有任何关联。reducer 可以一个接收 state 和 action，并返回新的 state 的函数。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> visibilityFilter(state = <span class="string">&#x27;SHOW_ALL&#x27;</span>, action) &#123;</span><br><span class="line">  <span class="keyword">if</span> (action.type === <span class="string">&#x27;SET_VISIBILITY_FILTER&#x27;</span>) &#123;</span><br><span class="line">    <span class="built_in">return</span> action.filter;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="三大原则"><a href="#三大原则" class="headerlink" title="三大原则"></a>三大原则</h1><ul>
+<li>单一数据源 整个应用的 state 被储存在一棵 object tree 中，并且这个 object tree 只存在于唯一一个 store 中。</li>
+<li>State 是只读的。 唯一改变 state 的方法就是触发 action，action 是一个用于描述已发生事件的普通对象。</li>
+<li>使用纯函数来执行修改。 为了描述 action 如何改变 state tree ，你需要编写reducers。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/14/TCP-IP-%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/04/14/TCP-IP-%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">TCP/IP 详解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-14 09:08:01" itemprop="dateCreated datePublished" datetime="2020-04-14T09:08:01+08:00">2020-04-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Http/" itemprop="url" rel="index"><span itemprop="name">Http</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="1-TCP-和-UDP"><a href="#1-TCP-和-UDP" class="headerlink" title="1. TCP 和 UDP"></a>1. TCP 和 UDP</h1><h3 id="用户数据报协议-UDP"><a href="#用户数据报协议-UDP" class="headerlink" title="用户数据报协议 UDP"></a>用户数据报协议 UDP</h3><ul>
+<li>UDP 在传送数据之前不需要先建立连接，远程主机在收到 UDP 报文后，不需要给出任何确认。</li>
+<li>虽然 UDP 不提供可靠交付，但在某些情况下 UDP 确是一种最有效的工作方式（一般用于即时通信），比如：QQ 语音、 QQ 视频 、直播等等</li>
+</ul>
+<h1 id="2-传输控制协议-TCP"><a href="#2-传输控制协议-TCP" class="headerlink" title="2.传输控制协议 TCP"></a>2.传输控制协议 TCP</h1><ul>
+<li>TCP 提供 面向连接的服务。在传送数据之前必须先建立连接，数据传送结束后要释放连接。</li>
+<li>TCP 不提供广播或多播服务。由于 TCP 要提供 可靠的，面向连接的传输服务（TCP的可靠体现在TCP在传递数据之前，会有三次握手来建立连接，而且在数据传递时，有确认、窗口、重传、流量控制、拥塞控制机制，在数据传完后，还会四次挥手断开连接用来节约系统资源），这不仅使协议数据单元的首部增大很多，还要占用许多处理机资源</li>
+<li>TCP 一般用于文件传输、发送和接收邮件、远程登录等场景。</li>
+</ul>
+<h1 id="TCP-三次握手建立连接"><a href="#TCP-三次握手建立连接" class="headerlink" title="TCP 三次握手建立连接"></a>TCP 三次握手建立连接</h1><ul>
+<li><ol>
+<li>第一次握手：客户端向服务端发送一个 SYN 报文（SYN &#x3D; 1），此时客户端处于 SYN_Send 状态（在发送连接请求后等待匹配的连接请求）。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>第二次握手：服务器收到客户端的 SYN 报文之后，会发送 ACK 通知客户端我已收到。 此时服务器处于 SYN_REVD 的状态（收到和发送一个连接请求后等待对连接请求的确认）。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>客户端收到服务器端响应的 ACK 报文之后，会发送一个 ack 报文，，表示已经收到了服务端发来的通知，此时客户端处于 Establised 状态。服务器收到 ack 报文之后，也处于 Establised 状态（代表一个打开的连接，数据可以传送给用户），至此，双方建立起了 TCP 连接。</li>
+</ol>
+</li>
+</ul>
+<h1 id="为什么要三次握手"><a href="#为什么要三次握手" class="headerlink" title="为什么要三次握手"></a>为什么要三次握手</h1><p>三次握手的目的是建立可靠的通信信道，说到通讯，简单来说就是数据的发送与接收，而三次握手最主要的目的就是双方确认自己与对方的发送与接收是正常的。</p>
+<h1 id="三次握手过程中可以携带数据吗"><a href="#三次握手过程中可以携带数据吗" class="headerlink" title="三次握手过程中可以携带数据吗"></a>三次握手过程中可以携带数据吗</h1><p>第三次握手的时候，是可以携带数据的。但是，第一次、第二次握手绝对不可以携带数据假如第一次握手可以携带数据的话，容易被攻击。<br>SYN 洪泛攻击<br>就是 Client 在短时间内伪造大量不存在的 IP 地址，并向 Server 不断地发送 SYN 包，Server 则回复确认包，并等待 Client 确认，由于源地址不存在，因此 Server 需要不断重发直至超时，这些伪造的 SYN 包将长时间占用半连接队列，导致正常的 SYN 请求因为队列满而被丢弃，从而引起网络拥塞甚至系统瘫痪。</p>
+<h1 id="TCP-四次挥手释放连接"><a href="#TCP-四次挥手释放连接" class="headerlink" title="TCP 四次挥手释放连接"></a>TCP 四次挥手释放连接</h1><p>建立一个 TCP 连接需要三次握手，而终止一个 TCP 连接要经过四次挥手（也有将四次挥手叫做四次握手的）。这是由于 TCP 的半关闭（half-close）特性造成的，TCP 提供了连接的一端在结束它的发送后还能接收来自另一端数据的能力。</p>
+<ul>
+<li>第一次挥手：客户端发送一个 FIN 报文主动关闭 TCP 连接。此时客户端处于 FIN_WAIT1 状态（等待远程TCP的连接中断请求，或先前的连接中断请求的确认；），等待服务端的确认。</li>
+<li>第二次挥手：服务端收到 FIN 之后，会发送 ACK 报文，表明已经收到客户端的报文了，此时服务端处于 CLOSE_WAIT状态（等待从本地用户发来的连接中断请求）。</li>
+</ul>
+<h2 id="此时的-TCP-处于半关闭状态，客户端到服务端的连接释放。客户端收到服务端的确认后，进入FIN-WAIT2（终止等待-2）状态，等待服务端发出的连接释放报文段。"><a href="#此时的-TCP-处于半关闭状态，客户端到服务端的连接释放。客户端收到服务端的确认后，进入FIN-WAIT2（终止等待-2）状态，等待服务端发出的连接释放报文段。" class="headerlink" title="此时的 TCP 处于半关闭状态，客户端到服务端的连接释放。客户端收到服务端的确认后，进入FIN_WAIT2（终止等待 2）状态，等待服务端发出的连接释放报文段。"></a>此时的 TCP 处于半关闭状态，客户端到服务端的连接释放。客户端收到服务端的确认后，进入FIN_WAIT2（终止等待 2）状态，等待服务端发出的连接释放报文段。</h2><ul>
+<li>第三次挥手：如果服务端也想断开连接了（没有要向客户端发出的数据），和客户端的第一次挥手一样，发送 FIN 报文，且指定一个序列号。此时服务端处于 LAST_ACK 的状态，等待客户端的确认</li>
+<li>第四次挥手：客户端收到 FIN 之后，一样发送一个 ACK 报文作为应答（ack &#x3D; w+1），且把服务端的序列值 +1 作为自己 ACK 报文的序号值（seq&#x3D;u+1），此时客户端处于 TIME_WAIT（时间等待）状态。</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>三次握手，为了测试双方能够正常发送，接收<br>第一次握手： 客户端发送SYN服务器 ，服务器正常接受   客户端发送正常 服务器接收正常<br>第二次握手： 服务器发送ACK到客户端，客户端正常接受  服务器发送正常 客户端接收正常<br>第三次握手： 客户端向服务器发送正式链接，至此，双方建立起了 TCP 连接</p>
+<p>四次挥手，因为TCP半关闭的特性<br>TCP 提供了连接的一端在结束它的发送后还能接收来自另一端数据的能力。<br>A 和 B 打电话，通话即将结束后，A 说 “我没啥要说的了”，B 回答 “我知道了”，于是 A 向 B 的连接释放了。但是 B 可能还会有要说的话，于是 B 可能又巴拉巴拉说了一通，最后 B 说“我说完了”，A 回答“知道了”，于是 B 向 A 的连接释放了，</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/13/Vue-v-model%E7%9A%84%E5%AE%9E%E8%B7%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/04/13/Vue-v-model%E7%9A%84%E5%AE%9E%E8%B7%B5/" class="post-title-link" itemprop="url">Vue v-model的实践</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-13 23:00:42" itemprop="dateCreated datePublished" datetime="2020-04-13T23:00:42+08:00">2020-04-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Vue-v-model的实践"><a href="#Vue-v-model的实践" class="headerlink" title="Vue v-model的实践"></a>Vue v-model的实践</h1><p>v-model 只是语法糖，主要是通过input事件来触发input标签value值来实现我们说的“双向数据绑定”,其实它还是单向数据流。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> v-model=<span class="string">&quot;value&quot;</span> /&gt;</span><br><span class="line"><span class="comment">#等价于</span></span><br><span class="line">&lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> :value=<span class="string">&quot;value&quot;</span> @input=v=&gt;<span class="variable">$emit</span>(<span class="string">&#x27;input&#x27;</span>, v)/&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 自定义组件实现v-model</span></span><br><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;input <span class="built_in">type</span>=<span class="string">&quot;text&quot;</span> :value=<span class="string">&quot;value&quot;</span> @input=<span class="string">&quot;handleInput&quot;</span> :placeholder=<span class="string">&quot;placehodler&quot;</span> /&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="built_in">export</span> default &#123;</span><br><span class="line">    name: <span class="string">&#x27;kInput&#x27;</span>,</span><br><span class="line">    props: &#123;</span><br><span class="line">        value: [<span class="string">&#x27;String&#x27;</span>, <span class="string">&#x27;Number&#x27;</span>],</span><br><span class="line">        placeholder: String</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        handleInput(<span class="variable">$event</span>) &#123;</span><br><span class="line">            // 通过input标签的原生事件input将值emit出去，以达到值得改变实现双向绑定</span><br><span class="line">            this.<span class="variable">$emit</span>(<span class="string">&#x27;input&#x27;</span>, <span class="variable">$event</span>.target.value)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/04/07/reactAPI%E5%85%A8%E5%B1%80props/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="YeChang Zhang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zyc Blog">
+      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Zyc Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/04/07/reactAPI%E5%85%A8%E5%B1%80props/" class="post-title-link" itemprop="url">reactAPI全局props</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-07 15:00:19" itemprop="dateCreated datePublished" datetime="2020-04-07T15:00:19+08:00">2020-04-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="createContext"><a href="#createContext" class="headerlink" title="createContext"></a>createContext</h1><p>Context 提供了一个无需为每层组件手动添加 props，就能在组件树间进行数据传递的方法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用传统props蹈入props</span></span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> &lt;Toolbar theme=<span class="string">&quot;dark&quot;</span> /&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> Toolbar(props) &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;ThemedButton theme=&#123;props.theme&#125; /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ThemedButton extends React.Component &#123;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> &lt;Button theme=&#123;this.props.theme&#125; /&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># ---------------------------------------------------</span></span><br><span class="line"><span class="comment"># 使用 context, 我们可以避免通过中间元素传递 props：</span></span><br><span class="line"><span class="comment"># 为当前的 theme 创建一个 context（“light”为默认值）。</span></span><br><span class="line">const ThemeContext = React.createContext(<span class="string">&#x27;light&#x27;</span>);</span><br><span class="line">class App extends React.Component &#123;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    // 使用一个 Provider 来将当前的 theme 传递给以下的组件树。</span><br><span class="line">    // 无论多深，任何组件都能读取这个值。</span><br><span class="line">    // 在这个例子中，我们将 “dark” 作为当前的值传递下去。</span><br><span class="line">    <span class="built_in">return</span> (</span><br><span class="line">      &lt;ThemeContext.Provider value=<span class="string">&quot;dark&quot;</span>&gt;</span><br><span class="line">        &lt;Toolbar /&gt;</span><br><span class="line">      &lt;/ThemeContext.Provider&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 中间的组件再也不必指明往下传递 theme 了。</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">Toolbar</span></span>() &#123;</span><br><span class="line">  <span class="built_in">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;ThemedButton /&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line">class ThemedButton extends React.Component &#123;</span><br><span class="line">  // 指定 contextType 读取当前的 theme context。</span><br><span class="line">  // React 会往上找到最近的 theme Provider，然后使用它的值。</span><br><span class="line">  // 在这个例子中，当前的 theme 值为 “dark”。</span><br><span class="line">  static contextType = ThemeContext;</span><br><span class="line">  <span class="function"><span class="title">render</span></span>() &#123;</span><br><span class="line">    <span class="built_in">return</span> &lt;Button theme=&#123;this.context&#125; /&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -519,535 +1050,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/05/28/%E6%B5%8F%E8%A7%88%E5%99%A8%E9%87%8D%E6%8E%92%E5%92%8C%E9%87%8D%E7%BB%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/05/28/%E6%B5%8F%E8%A7%88%E5%99%A8%E9%87%8D%E6%8E%92%E5%92%8C%E9%87%8D%E7%BB%98/" class="post-title-link" itemprop="url">浏览器重排和重绘</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-05-28 19:37:52" itemprop="dateCreated datePublished" datetime="2019-05-28T19:37:52+08:00">2019-05-28</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">浏览器</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="重排和重绘区别"><a href="#重排和重绘区别" class="headerlink" title="重排和重绘区别"></a>重排和重绘区别</h1><p>重排顾名思义就是重新排列，意味着重新计算文档中元素的位置和几何信息（元素的位置、大小），会影响部分或整个页面的布局。元素的重排将导致DOM中所有子元素和其他兄弟元素重新排列。<br>重绘是更改元素的可见性，但是不影响元素的布局。例如可见性、背景色、轮廓等。</p>
-<h1 id="什么会触发重排和重绘？"><a href="#什么会触发重排和重绘？" class="headerlink" title="什么会触发重排和重绘？"></a>什么会触发重排和重绘？</h1><ul>
-<li>添加、删除、更新DOM节点都会触发重排</li>
-<li>使用 display: none 隐藏元素会触发重排和重绘</li>
-<li>使用 visibility:hidden 只会引起重绘，因为没有布局和位置的变更</li>
-<li>移动节点、添加动画都会触发重排和重绘</li>
-<li>改变浏览器窗口大小会触发重排</li>
-<li>更改元素字体大小会触发重排</li>
-<li>添加或者删除样式会触发重排和重绘</li>
-<li>操作 DOM 脚本是昂贵的操作，因为每次 document 或者 document的部分改变时，它们都会重新计算</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var bodyStyle = document.body.style; // cache</span><br><span class="line"></span><br><span class="line">bodyStyle.padding = <span class="string">&quot;20px&quot;</span>; // reflow, repaint</span><br><span class="line">bodyStyle.border = <span class="string">&quot;10px solid red&quot;</span>; // reflow, repaint</span><br><span class="line"></span><br><span class="line">bodyStyle.color = <span class="string">&quot;blue&quot;</span>; // repaint only, no dimensions changed</span><br><span class="line">bstyle.backgroundColor = <span class="string">&quot;#cc0000&quot;</span>; // repaint</span><br><span class="line"></span><br><span class="line">bodyStyle.fontSize = <span class="string">&quot;2em&quot;</span>; // reflow, repaint</span><br><span class="line"></span><br><span class="line">// new DOM element - reflow, repaint</span><br><span class="line">document.body.appendChild(document.createTextNode(<span class="string">&#x27;Hello!&#x27;</span>));</span><br></pre></td></tr></table></figure>
-
-<h1 id="重排一定触发重绘，重绘不一定触发重排"><a href="#重排一定触发重绘，重绘不一定触发重排" class="headerlink" title="重排一定触发重绘，重绘不一定触发重排"></a>重排一定触发重绘，重绘不一定触发重排</h1><h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><ul>
-<li>尽量批次改变元素css属性</li>
-<li>将动画的元素设置position属性为absolute或fixed，这样使元素脱离文本流，不会影响渲染树。</li>
-<li>当多个添加DOM元素时，使用文本碎片fragment（隐藏的元素不再渲染树中，）只触发一次重排重绘</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/04/14/JS-%E4%B8%8E-CSS-%E6%98%AF%E5%90%A6%E9%98%BB%E5%A1%9E-DOM/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/04/14/JS-%E4%B8%8E-CSS-%E6%98%AF%E5%90%A6%E9%98%BB%E5%A1%9E-DOM/" class="post-title-link" itemprop="url">JS 与 CSS 是否阻塞 DOM</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-04-14 11:06:45" itemprop="dateCreated datePublished" datetime="2019-04-14T11:06:45+08:00">2019-04-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">浏览器</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>浏览器的解析渲染过程，解析DOM生成DOM Tree，解析CSS生成CSSOM Tree，两者结合生成render tree渲染树，最后浏览器根据渲染树渲染至页面。</p>
-<h1 id="所以CSS不会阻塞DOM的解析，因为两者是并行解析的。"><a href="#所以CSS不会阻塞DOM的解析，因为两者是并行解析的。" class="headerlink" title="所以CSS不会阻塞DOM的解析，因为两者是并行解析的。"></a>所以CSS不会阻塞DOM的解析，因为两者是并行解析的。</h1><p>但是由于render tree的生成是依赖DOM Tree和CSSOM Tree的，因此CSS必然会阻塞DOM的渲染。<br>最终生成页面依赖的渲染数 是由DOM Tree和CSSOM Tree组成的，如果CSSOM Tree阻塞了，那么DOM的渲染也就没那么快完成</p>
-<h1 id="JS-会阻塞-DOM-解析"><a href="#JS-会阻塞-DOM-解析" class="headerlink" title="JS 会阻塞 DOM 解析"></a>JS 会阻塞 DOM 解析</h1><p>首先浏览器无法知晓JS的具体内容，倘若先解析DOM，万一JS内部全部删除掉DOM，那么浏览器就白忙活了，所以就干脆暂停解析DOM，等到JS执行完成再继续解析。<br>开发者可以优先考虑使用defer的方式，其次是async方式让页面的JS进行异步执行，</p>
-<ul>
-<li>defer 异步加载， 加载完后会等待Html标签全部解析完才去执行<br>比如第三方sdk 不影响页面形式的js 都可以延时解析</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/04/10/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/04/10/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">浏览器缓存机制</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-04-10 17:02:52" itemprop="dateCreated datePublished" datetime="2019-04-10T17:02:52+08:00">2019-04-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index"><span itemprop="name">浏览器</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/%E7%BC%93%E5%AD%98/" itemprop="url" rel="index"><span itemprop="name">缓存</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="浏览器缓存机制"><a href="#浏览器缓存机制" class="headerlink" title="浏览器缓存机制"></a>浏览器缓存机制</h1><h3 id="浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下："><a href="#浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下：" class="headerlink" title="浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下："></a>浏览器缓存分为强缓存和协商缓存，浏览器加载一个页面的简单流程如下：</h3><ul>
-<li>浏览器先根据这个资源的http头信息来判断是否命中强缓存。如果命中则直接加在缓存中的资源，并不会将请求发送到服务器。（强缓存）</li>
-<li>如果未命中强缓存，则浏览器会将资源加载请求发送到服务器。服务器来判断浏览器本地缓存是否失效。若可以使用，则服务器并不会返回资源信息，浏览器继续从缓存加载资源。（协商缓存）</li>
-<li>如果未命中协商缓存，则服务器会将完整的资源返回给浏览器，浏览器加载新资源，并更新缓存。（新的请求）</li>
-</ul>
-<h3 id="命中强缓存时，浏览器并不会将请求发送给服务器。code-200-Size：from-cache"><a href="#命中强缓存时，浏览器并不会将请求发送给服务器。code-200-Size：from-cache" class="headerlink" title="命中强缓存时，浏览器并不会将请求发送给服务器。code: 200 Size：from cache"></a>命中强缓存时，浏览器并不会将请求发送给服务器。code: 200 Size：from cache</h3><h3 id="利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间"><a href="#利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间" class="headerlink" title="利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间"></a>利用http的返回头中的Expires或者Cache-Control两个字段来控制的缓存的过期时间</h3><h3 id="若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify-x2F-If-Modify-Since或Etag-x2F-If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。"><a href="#若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify-x2F-If-Modify-Since或Etag-x2F-If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。" class="headerlink" title="若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify&#x2F;If-Modify-Since或Etag&#x2F;If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。"></a>若未命中强缓存，则浏览器会将请求发送至服务器。服务器根据http头信息中的Last-Modify&#x2F;If-Modify-Since或Etag&#x2F;If-None-Match来判断是否命中协商缓存。如果命中，则http返回码为304，浏览器从缓存中加载资源。</h3>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/02/25/Vuex%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/02/25/Vuex%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">Vuex详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-02-25 08:48:42" itemprop="dateCreated datePublished" datetime="2019-02-25T08:48:42+08:00">2019-02-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Vuex-是什么"><a href="#Vuex-是什么" class="headerlink" title="Vuex 是什么"></a>Vuex 是什么</h1><p>Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式 + 库。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。</p>
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p><code>yarn add vuex</code></p>
-<h1 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个 store，全局数据状态管理中心 store.js</span></span><br><span class="line">import Vue from <span class="string">&#x27;vue&#x27;</span></span><br><span class="line">import Vuex from <span class="string">&#x27;vuex&#x27;</span></span><br><span class="line"></span><br><span class="line">Vue.use(Vuex)</span><br><span class="line"></span><br><span class="line">const store = new Vuex.Store(&#123;</span><br><span class="line">  state: &#123;</span><br><span class="line">    count: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  action: &#123;</span><br><span class="line">    async handleAsync(state, <span class="built_in">date</span>)&#123;</span><br><span class="line">      <span class="comment"># date 是dispatch传递的第二个参数</span></span><br><span class="line">      <span class="comment"># 这里可以操作异步</span></span><br><span class="line">      <span class="comment"># const result = await axios.get(url,params)</span></span><br><span class="line">      <span class="comment"># 然后根据结果触发mutations</span></span><br><span class="line">      state.commit(<span class="string">&#x27;increment&#x27;</span>,<span class="built_in">date</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    increment(state,<span class="built_in">date</span>) &#123;</span><br><span class="line">      state.count = state.count + <span class="built_in">date</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在入口文件 new Vue 实例化的时候注入进去 index.js</span></span><br><span class="line">import store from <span class="string">&#x27;./store&#x27;</span></span><br><span class="line">...</span><br><span class="line">new Vue(&#123;</span><br><span class="line">  el: <span class="string">&#x27;#app&#x27;</span>,</span><br><span class="line">  store: store,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在组件内部调用</span></span><br><span class="line">...</span><br><span class="line">methods: &#123;</span><br><span class="line">  <span class="function"><span class="title">handleAction</span></span>()&#123;</span><br><span class="line">    this.<span class="variable">$store</span>.state.dispatch(<span class="string">&#x27;handleAsync&#x27;</span>,1)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
-<li>创建一个store，里面有action，mutation方法</li>
-<li>全局注入到Vue的实例</li>
-<li>通过this.$store.state.dispatch(‘actionName’,params) 触发action</li>
-<li>action方法内部可以执行异步，通过在action 触发state.commit(‘mutationName’,params) 去修改state的值</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/02/13/Vue-%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E6%8C%89%E9%92%AE%E7%BB%84%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/02/13/Vue-%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E6%8C%89%E9%92%AE%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">Vue 开发一个按钮组件</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-02-13 22:56:17" itemprop="dateCreated datePublished" datetime="2019-02-13T22:56:17+08:00">2019-02-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Vue-开发一个按钮组件"><a href="#Vue-开发一个按钮组件" class="headerlink" title="Vue 开发一个按钮组件"></a>Vue 开发一个按钮组件</h1><p>解决思路：<br>通过父子组件通讯（$refs 和 props）<br>props接受参数, $refs调用子组件的方法<br>来达到点击提交改变按钮状态，如果不成功则取消按钮状态</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">&lt;!-- use plane  --&gt;</span><br><span class="line">&lt;!-- 传入bgColor改变按钮背景色 --&gt;</span><br><span class="line">&lt;!-- state切换button的状态 调用cancel()可以切换 --&gt;</span><br><span class="line">&lt;!-- text为按钮文字 --&gt;</span><br><span class="line">  &lt;div class=<span class="string">&quot;container&quot;</span>&gt;</span><br><span class="line">    &lt;button  </span><br><span class="line">      @click=<span class="string">&quot;confirm&quot;</span></span><br><span class="line">      :disabled=<span class="string">&quot;state&quot;</span> </span><br><span class="line">      class=<span class="string">&quot;confirm&quot;</span> </span><br><span class="line">      :style=<span class="string">&quot;&#123;background: btnData.bgColor&#125;&quot;</span></span><br><span class="line">    &gt;&#123;&#123;text&#125;&#125;&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line"><span class="built_in">export</span> default &#123;</span><br><span class="line">  <span class="function"><span class="title">data</span></span>()&#123;</span><br><span class="line">    <span class="built_in">return</span> &#123;</span><br><span class="line">      text: this.btnData.text,</span><br><span class="line">      state: <span class="literal">false</span>,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    btnData: &#123;</span><br><span class="line">      types: Array,</span><br><span class="line">      <span class="function"><span class="title">default</span></span>() &#123;</span><br><span class="line">        <span class="built_in">return</span> &#123;</span><br><span class="line">          text: <span class="string">&#x27;确认&#x27;</span>,</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="function"><span class="title">confirm</span></span>()&#123;</span><br><span class="line">      this.text += <span class="string">&#x27;...&#x27;</span></span><br><span class="line">      this.state = <span class="literal">true</span></span><br><span class="line">      //这里是激活父组件的事件，因为子组件是不会冒泡到父组件上的，必须手动调用<span class="variable">$emit</span></span><br><span class="line">      //相对应父组件要在调用该组件的时候，将其挂载到上面</span><br><span class="line">      this.<span class="variable">$emit</span>(<span class="string">&quot;confirm&quot;</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="title">cancel</span></span>()&#123;</span><br><span class="line">      this.text = this.btnData.text</span><br><span class="line">      this.state = <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style lang=<span class="string">&quot;less&quot;</span> scoped&gt;</span><br><span class="line">.confirm &#123;</span><br><span class="line">  border: none;</span><br><span class="line">  color: <span class="comment">#fff;</span></span><br><span class="line">  width: 100%;</span><br><span class="line">  padding: 1rem 0;</span><br><span class="line">  border-radius: 4px;</span><br><span class="line">  font-size: 1.6rem;</span><br><span class="line">  background: <span class="comment">#5da1fd;</span></span><br><span class="line">  &amp;:focus &#123;</span><br><span class="line">    outline: none;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
-
-<p>在页面中调用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div class=<span class="string">&quot;btn-box&quot;</span>&gt;</span><br><span class="line">      &lt;Btn </span><br><span class="line">        :btnData=<span class="string">&quot;&#123;text: &#x27;确认注册&#x27;&#125;&quot;</span></span><br><span class="line">        &lt;!--这里就要挂载<span class="variable">$emit</span>调用的事件 @confirm=<span class="string">&quot;想要调用事件的名字&quot;</span>--&gt;</span><br><span class="line">        @confirm=<span class="string">&quot;confirm&quot;</span></span><br><span class="line">        ref=<span class="string">&quot;btn&quot;</span></span><br><span class="line">      &gt;&lt;/Btn&gt;</span><br><span class="line">    &lt;/div&gt; </span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Btn from <span class="string">&#x27;@/components/button&#x27;</span></span><br><span class="line"><span class="built_in">export</span> default &#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    Btn</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="function"><span class="title">confirm</span></span>()&#123;</span><br><span class="line">      <span class="keyword">if</span>(!this.companyName)&#123;</span><br><span class="line">        this.<span class="variable">$toast</span>(<span class="string">&quot;公司名不能为空&quot;</span>)  </span><br><span class="line">        this.<span class="variable">$refs</span>.btn.cancel()</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>在这里，要注意一些细节：</p>
-<ul>
-<li><ol>
-<li>button组件形成之后和其它div元素的间距，如果是在组件内定死是很难复用的。</li>
-</ol>
-</li>
-<li><ol start="2">
-<li>在复用的时候，在父组件中是改变不了子组件的样式的，如果要强制更改，单独写一个并去掉scoped。</li>
-</ol>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/12/25/New%E6%93%8D%E4%BD%9C%E7%AC%A6%E8%AF%A6%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="YeChang Zhang">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Zyc Blog">
-      <meta itemprop="description" content="Hi, welcome to Hexo Coder!">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Zyc Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/12/25/New%E6%93%8D%E4%BD%9C%E7%AC%A6%E8%AF%A6%E8%A7%A3/" class="post-title-link" itemprop="url">New操作符详解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-12-25 08:32:36" itemprop="dateCreated datePublished" datetime="2018-12-25T08:32:36+08:00">2018-12-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JS/" itemprop="url" rel="index"><span itemprop="name">JS</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="new操作符做了什么"><a href="#new操作符做了什么" class="headerlink" title="new操作符做了什么"></a>new操作符做了什么</h1><ul>
-<li>创建一个空的简单JavaScript对象（即{}）；</li>
-<li>链接该对象（即设置该对象的构造函数）到另一个对象 ；</li>
-<li>将步骤1新创建的对象作为this的上下文 ；</li>
-<li>判断返回值 返回对象就用该对象,没有的话就创建一个对象</li>
-</ul>
-<p>new是用来做继承的，而创建对象的其实是Object.create(null)。 在new操作符的作用下，我们使用新创建的对象去继承了他的构造函数上的属性和方法、以及他的原型链上的属性和方法</p>
-<h1 id="手写一个new函数"><a href="#手写一个new函数" class="headerlink" title="手写一个new函数"></a>手写一个new函数</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> new(Func,args)&#123;</span><br><span class="line">  <span class="built_in">let</span> obj = obj.create(null)</span><br><span class="line">  obj._protp_ = Func.prototype</span><br><span class="line">  const result = Func.apply(obj,args)</span><br><span class="line">  <span class="built_in">return</span> result instanceof Object ? result : obj</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
